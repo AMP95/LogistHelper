@@ -9,11 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.17" />
+    <ProjectReference Include="..\Log4NetLogger\Log4NetLogger.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
 </Project>

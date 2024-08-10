@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using Log4NetLogger;
+using Shared.Logger;
+using System.Configuration;
 using System.Data;
 using System.Windows;
 
