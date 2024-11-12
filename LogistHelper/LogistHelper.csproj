@@ -16,7 +16,6 @@
   <ItemGroup>
     <Folder Include="UI\Pages\" />
     <Folder Include="UI\Views\" />
-    <Folder Include="UI\Design\" />
     <Folder Include="ViewModels\Pages\" />
     <Folder Include="ViewModels\Views\" />
   </ItemGroup>

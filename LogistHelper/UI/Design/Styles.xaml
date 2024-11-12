@@ -1,0 +1,106 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--#region  TEXT BLOCK-->
+    
+    <Style x:Key="DefaultText" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="{DynamicResource DarkSolid}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="MaxWidth" Value="200"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5 2"/>
+    </Style>
+
+    <Style x:Key="CenterText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultText}">
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="HeaderOne" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultText}">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
+        <Setter Property="MaxWidth" Value="250"/>
+    </Style>
+
+    <Style x:Key="HeaderTwo" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource HeaderOne}">
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <Style x:Key="HeaderThree" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource HeaderOne}">
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <!--#endregion  TEXT BLOCK-->
+    
+    <!--#region TEXT BOX-->
+    
+    <Style x:Key="CustomTextBox" TargetType="{x:Type TextBox}">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="MinHeight" Value="35"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="5 2"/>
+        <Setter Property="Padding" Value="5 2"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="FirstTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource CustomTextBox}">
+        <Setter Property="Background" Value="{DynamicResource NeuralOneSolid}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DarkSolid}"/>
+    </Style>
+
+    <Style x:Key="SecondTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource CustomTextBox}">
+        <Setter Property="Background" Value="{DynamicResource ContrastTwoSolidTrans}"/>
+        <Setter Property="Foreground" Value="{DynamicResource NeuralTwoSolid}"/>
+    </Style>
+
+
+    <!--#endregion TEXT BOX-->
+    
+    <!--#region  BUTTONS-->
+
+    <Style x:Key="CustomButton" TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="DemiBold"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="35"/>
+        <Setter Property="Margin" Value="5 2"/>
+        <Setter Property="Padding" Value="5 2"/>
+        <Setter Property="BorderThickness" Value="3"/>
+    </Style>
+
+    <Style x:Key="AcceptButton" TargetType="{x:Type Button}" BasedOn="{StaticResource CustomButton}">
+        <Setter Property="Background" Value="{DynamicResource NeuralTwoSolid}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource NeuralOneSolid}"/>
+        <Setter Property="Foreground" Value="{DynamicResource NeuralOneSolid}"/>
+    </Style>
+
+    <Style x:Key="DenyButton" TargetType="{x:Type Button}" BasedOn="{StaticResource CustomButton}">
+        <Setter Property="Background" Value="{DynamicResource ContrastOneSolid}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DarkSolid}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DarkSolid}"/>
+    </Style>
+
+    <Style x:Key="FirstButton" TargetType="{x:Type Button}" BasedOn="{StaticResource CustomButton}">
+        <Setter Property="Background" Value="{DynamicResource NeuralOneSolid}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DarkSolid}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DarkSolid}"/>
+    </Style>
+
+    <Style x:Key="SecondButton" TargetType="{x:Type Button}" BasedOn="{StaticResource CustomButton}">
+        <Setter Property="Background" Value="{DynamicResource ContrastTwoSolid}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource NeuralOneSolid}"/>
+        <Setter Property="Foreground" Value="{DynamicResource NeuralOneSolid}"/>
+    </Style>
+
+    <!--#endregion  BUTTONS-->
+
+</ResourceDictionary>
