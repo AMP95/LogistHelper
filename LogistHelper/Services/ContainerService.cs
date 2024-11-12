@@ -1,5 +1,6 @@
 ﻿using Log4NetLogger;
 using LogistHelper.Models.Settings;
+using LogistHelper.ViewModels.Pages;
 using LogistHelper.ViewModels.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Logger;
@@ -26,6 +27,8 @@ namespace LogistHelper.Services
 
             #region Pages
 
+            services.AddTransient<EnterPageViewModel, EnterPageViewModel>();
+            services.AddTransient<MenuPageViewModel, MenuPageViewModel>();
 
             #endregion Pages
 

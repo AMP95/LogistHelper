@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:LogistHelper"
         mc:Ignorable="d"
         Title="Помошник логиста" Height="450" Width="800">
-    <Grid>
+    <Grid
+        Background="{StaticResource NeuralOneSolidTrans}">
         <ContentControl
             x:Name="content"/>
     </Grid>

@@ -14,9 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UI\Pages\" />
     <Folder Include="UI\Views\" />
-    <Folder Include="ViewModels\Pages\" />
     <Folder Include="ViewModels\Views\" />
   </ItemGroup>
 

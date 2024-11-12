@@ -5,4 +5,10 @@
         Enter,
         Menu
     }
+
+    public enum Role 
+    { 
+        Logist,
+        Helper
+    }
 }

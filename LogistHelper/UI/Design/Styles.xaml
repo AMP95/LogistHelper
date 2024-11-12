@@ -39,24 +39,26 @@
     <Style x:Key="CustomTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="MinHeight" Value="35"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Height" Value="35"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Margin" Value="5 2"/>
         <Setter Property="Padding" Value="5 2"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="BorderThickness" Value="1"/>
     </Style>
 
     <Style x:Key="FirstTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource CustomTextBox}">
-        <Setter Property="Background" Value="{DynamicResource NeuralOneSolid}"/>
+        <Setter Property="Background" Value="{DynamicResource ContrastTwoSolidTrans}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DarkSolid}"/>
         <Setter Property="Foreground" Value="{DynamicResource DarkSolid}"/>
     </Style>
 
     <Style x:Key="SecondTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource CustomTextBox}">
-        <Setter Property="Background" Value="{DynamicResource ContrastTwoSolidTrans}"/>
-        <Setter Property="Foreground" Value="{DynamicResource NeuralTwoSolid}"/>
+        <Setter Property="Background" Value="{DynamicResource ContrastOneSolidTrans}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DarkSolid}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DarkSolid}"/>
     </Style>
 
 
@@ -70,24 +72,24 @@
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="MinHeight" Value="35"/>
         <Setter Property="Margin" Value="5 2"/>
         <Setter Property="Padding" Value="5 2"/>
-        <Setter Property="BorderThickness" Value="3"/>
+        <Setter Property="BorderThickness" Value="1"/>
     </Style>
 
     <Style x:Key="AcceptButton" TargetType="{x:Type Button}" BasedOn="{StaticResource CustomButton}">
-        <Setter Property="Background" Value="{DynamicResource NeuralTwoSolid}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource NeuralOneSolid}"/>
-        <Setter Property="Foreground" Value="{DynamicResource NeuralOneSolid}"/>
-    </Style>
-
-    <Style x:Key="DenyButton" TargetType="{x:Type Button}" BasedOn="{StaticResource CustomButton}">
-        <Setter Property="Background" Value="{DynamicResource ContrastOneSolid}"/>
+        <Setter Property="Background" Value="{DynamicResource ContrastTwoSolidTrans}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource DarkSolid}"/>
         <Setter Property="Foreground" Value="{DynamicResource DarkSolid}"/>
     </Style>
+
+    <Style x:Key="DenyButton" TargetType="{x:Type Button}" BasedOn="{StaticResource CustomButton}">
+        <Setter Property="Background" Value="{DynamicResource ContrastOneSolidTrans}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DarkSolid}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DarkSolid}"/>
+    </Style>
+
 
     <Style x:Key="FirstButton" TargetType="{x:Type Button}" BasedOn="{StaticResource CustomButton}">
         <Setter Property="Background" Value="{DynamicResource NeuralOneSolid}"/>
@@ -96,10 +98,15 @@
     </Style>
 
     <Style x:Key="SecondButton" TargetType="{x:Type Button}" BasedOn="{StaticResource CustomButton}">
-        <Setter Property="Background" Value="{DynamicResource ContrastTwoSolid}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource NeuralOneSolid}"/>
-        <Setter Property="Foreground" Value="{DynamicResource NeuralOneSolid}"/>
+        <Setter Property="Background" Value="{DynamicResource NeuralTwoSolidTrans}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource DarkSolid}"/>
+        <Setter Property="Foreground" Value="{DynamicResource DarkSolid}"/>
     </Style>
+
+    
+
+    
+    
 
     <!--#endregion  BUTTONS-->
 

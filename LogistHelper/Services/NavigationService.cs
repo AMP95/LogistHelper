@@ -1,4 +1,5 @@
 ﻿using LogistHelper.Models;
+using LogistHelper.ViewModels.Pages;
 using System.Windows.Controls;
 
 namespace LogistHelper.Services
@@ -19,7 +20,8 @@ namespace LogistHelper.Services
 
         public static void RegisterPages()
         {
-
+            pages.Add(PageType.Enter, typeof(EnterPageViewModel));
+            pages.Add(PageType.Menu, typeof(MenuPageViewModel));
         }
     }
 }
