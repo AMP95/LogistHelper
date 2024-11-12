@@ -13,4 +13,18 @@
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UI\Pages\" />
+    <Folder Include="UI\Views\" />
+    <Folder Include="UI\Design\" />
+    <Folder Include="ViewModels\Pages\" />
+    <Folder Include="ViewModels\Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+  </ItemGroup>
+
 </Project>

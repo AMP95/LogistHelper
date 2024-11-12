@@ -1,7 +1,4 @@
-﻿using Log4NetLogger;
-using Shared.Logger;
-using System.Configuration;
-using System.Data;
+﻿using LogistHelper.Services;
 using System.Windows;
 
 namespace LogistHelper
@@ -11,6 +8,12 @@ namespace LogistHelper
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            ContainerService.ConfigureServices();
+            NavigationService.RegisterPages();
+            ContainerService.Logger.Log(message: "APP START");
+        }
     }
 
 }

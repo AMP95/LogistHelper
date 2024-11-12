@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogistHelper", "LogistHelper\LogistHelper.csproj", "{5BEF1F54-07EB-40AF-8A06-31BBDB434A0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogistHelper", "LogistHelper\LogistHelper.csproj", "{5BEF1F54-07EB-40AF-8A06-31BBDB434A0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{1B7944AC-2C6D-43CC-B295-94D455E8A24B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{1B7944AC-2C6D-43CC-B295-94D455E8A24B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4NetLogger", "Log4NetLogger\Log4NetLogger.csproj", "{AA5799FE-F041-465C-8F46-7B74D297D318}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log4NetLogger", "Log4NetLogger\Log4NetLogger.csproj", "{AA5799FE-F041-465C-8F46-7B74D297D318}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomDialog", "CustomDialog\CustomDialog.csproj", "{A357FBA1-1859-4F91-B023-0848933257CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{AA5799FE-F041-465C-8F46-7B74D297D318}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA5799FE-F041-465C-8F46-7B74D297D318}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA5799FE-F041-465C-8F46-7B74D297D318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A357FBA1-1859-4F91-B023-0848933257CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A357FBA1-1859-4F91-B023-0848933257CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A357FBA1-1859-4F91-B023-0848933257CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A357FBA1-1859-4F91-B023-0848933257CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
