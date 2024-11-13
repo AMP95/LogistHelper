@@ -40,7 +40,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             set => SetProperty(ref _passportDate, value);
         }
 
-        public List<string> Phones
+        public ObservableCollection<string> Phones
         {
             get => _phones;
             set => SetProperty(ref _phones, value);
