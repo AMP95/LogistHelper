@@ -22,6 +22,7 @@ namespace LogistHelper.Services
         {
             pages.Add(PageType.Enter, typeof(EnterPageViewModel));
             pages.Add(PageType.Menu, typeof(MenuPageViewModel));
+            pages.Add(PageType.CarrierMenu, typeof(CarrierMenuViewModel));
         }
     }
 }

@@ -23,6 +23,11 @@
                 DataType="{x:Type pagesVM:MenuPageViewModel}">
                 <pages:MenuPage/>
             </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type pagesVM:CarrierMenuViewModel}">
+                <pages:CarrierMenuPage/>
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

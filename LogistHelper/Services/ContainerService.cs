@@ -30,6 +30,7 @@ namespace LogistHelper.Services
 
             services.AddTransient<EnterPageViewModel, EnterPageViewModel>();
             services.AddTransient<MenuPageViewModel, MenuPageViewModel>();
+            services.AddTransient<CarrierMenuViewModel, CarrierMenuViewModel>();
 
             #endregion Pages
 
