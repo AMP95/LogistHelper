@@ -1,4 +1,4 @@
-﻿namespace Shared.Logger
+﻿namespace Shared
 {
     public interface IDialog
     {
@@ -6,7 +6,7 @@
         public void ShowWarning(string message, string title = "Внимание");
         public void ShowInfo(string message, string title = "Информация");
         public bool ShowQuestion(string message, string title = "Вопрос");
-        public bool ShowShure(string title);
-        public bool ShowSuccess(string title);
+        public bool ShowSure(string title);
+        public void ShowSuccess(string title);
     }
 }

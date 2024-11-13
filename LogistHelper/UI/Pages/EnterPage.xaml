@@ -4,8 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Pages"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:models="clr-namespace:LogistHelper.Models"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+
+        <ObjectDataProvider 
+                x:Key="roles"
+                MethodName="GetValues" 
+                ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:Role"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -31,19 +46,30 @@
             </Grid.RowDefinitions>
 
             <TextBlock
-                Style="{StaticResource HeaderOne}"
+                Style="{StaticResource HeaderOneText}"
                 Text="Вход"/>
 
             <ComboBox
-                Grid.Row="1"/>
+                Style="{StaticResource CustomComboBox}"
+                Grid.Row="1"
+                ItemsSource="{Binding Source={StaticResource roles}}"
+                SelectedValue="{Binding SelectedEmployee}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Style="{StaticResource DefaultText}"
+                            Text="{Binding Converter={StaticResource EnumToDescriptionConverter}, ConverterParameter={x:Type models:Role} }"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
-            <TextBox
+            <PasswordBox
                 Grid.Row="2"
-                Style="{StaticResource FirstTextBox}"/>
+                Style="{StaticResource MainPasswordBox}"/>
 
             <Button
                 Grid.Row="3"
-                Style="{StaticResource AcceptButton}"
+                Style="{StaticResource NeutralButton}"
                 Content="Вход"
                 Command="{Binding EnterCommand}"/>
         </Grid>

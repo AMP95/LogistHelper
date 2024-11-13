@@ -1137,7 +1137,7 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="FontWeight" Value="Medium"/>
-            <Setter Property="Foreground" Value="{StaticResource SemiDarkBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkBrush}"/>
         </Style.Setters>
     </Style>
 

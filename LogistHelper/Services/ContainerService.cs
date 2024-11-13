@@ -1,8 +1,10 @@
-﻿using Log4NetLogger;
+﻿using CustomDialog;
+using Log4NetLogger;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Pages;
 using LogistHelper.ViewModels.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Shared;
 using Shared.Logger;
 
 namespace LogistHelper.Services
@@ -22,7 +24,6 @@ namespace LogistHelper.Services
         private static IServiceProvider AddServices()
         {
             ServiceCollection services = new ServiceCollection();
-
 
 
             #region Pages
@@ -46,6 +47,7 @@ namespace LogistHelper.Services
 
             services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ISettingsRepository<Settings>, JsonRepository>();
+            services.AddSingleton<IDialog, CustomDialogService>();
 
             #endregion Services
 

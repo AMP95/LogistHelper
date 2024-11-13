@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CustomDialog\CustomDialog.csproj" />
     <ProjectReference Include="..\Log4NetLogger\Log4NetLogger.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
