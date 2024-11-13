@@ -1383,6 +1383,7 @@
 
     <Style x:Key="MainLeftTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
     <Style x:Key="SubCentralTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
@@ -1393,6 +1394,7 @@
 
     <Style x:Key="SubLeftTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource SubCentralTextBox}">
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
     <Style x:Key="NumericTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">

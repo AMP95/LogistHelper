@@ -1,0 +1,145 @@
+﻿<UserControl x:Class="LogistHelper.UI.Views.EditDriverView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock
+                Style="{StaticResource DefaultText}"
+                Text="ФИО"/>
+
+            <TextBox
+                Style="{StaticResource SubLeftTextBox}"
+                Text="{Binding SelectedDriver.Name}"/>
+
+            <TextBlock
+                Style="{StaticResource DefaultText}"
+                Text="Паспорт"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Style="{StaticResource MiniText}"
+                    Text="Серия и номер"/>
+
+                <TextBox
+                    Grid.Column="1"
+                    Style="{StaticResource SubLeftTextBox}"
+                    Text="{Binding SelectedDriver.PassportSerial}"/>
+
+                <TextBlock
+                    Grid.Row="1"
+                    Style="{StaticResource MiniText}"
+                    Text="Кем выдан"/>
+
+                <TextBox
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Style="{StaticResource SubLeftTextBox}"
+                    Text="{Binding SelectedDriver.PassportIssuer}"/>
+
+                <TextBlock
+                    Grid.Row="2"
+                    Style="{StaticResource MiniText}"
+                    Text="Дата"/>
+
+                <DatePicker
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    SelectedDate="{Binding SelectedDriver.PassportDate}"
+                    Style="{StaticResource CustomDatePickerStyle}"/>
+            </Grid>
+
+            <TextBlock
+                Style="{StaticResource DefaultText}"
+                Text="Телефон"/>
+
+            <TextBox
+                Style="{StaticResource SubLeftTextBox}"
+                Text="{Binding SelectedDriver.Phones}"/>
+
+            <TextBlock
+                Style="{StaticResource DefaultText}"
+                Text="ТС"/>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    Style="{StaticResource MiniText}"
+                    Text="Тягач"/>
+
+                <ComboBox
+                    Grid.Column="1"
+                    Style="{StaticResource CustomComboBox}"
+                    ItemsSource="{Binding SelectedCarrier.Tractors}"
+                    SelectedItem="{Binding SelectedDriver.Vehicle.Tractor}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Style="{StaticResource DefaultText}"
+                                Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <TextBlock
+                    Grid.Row="1"
+                    Style="{StaticResource MiniText}"
+                    Text="Прицеп"/>
+
+                <ComboBox
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Style="{StaticResource CustomComboBox}"
+                    ItemsSource="{Binding SelectedCarrier.Trailers}"
+                    SelectedItem="{Binding SelectedDriver.Vehicle.Trailer}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Style="{StaticResource DefaultText}"
+                                Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+            </Grid>
+
+        </StackPanel>
+
+        <Button
+            Grid.Row="1"
+            Style="{StaticResource AcceptButton}"
+            Content="Сохранить"
+            Command="{Binding SaveDriverCommand}"/>
+    </Grid>
+</UserControl>

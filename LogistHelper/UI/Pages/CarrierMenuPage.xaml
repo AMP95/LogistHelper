@@ -56,6 +56,14 @@
                     Command="{Binding FindCarrierCommand}"/>
             </Grid>
 
+            <views:EditCarierView
+                Grid.Row="1"/>
+
+            <ContentControl
+                Grid.Row="1"
+                Grid.Column="1"
+                Content="{Binding Content}"/>
+
         </Grid>
 
     </Grid>

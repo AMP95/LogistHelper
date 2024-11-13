@@ -7,7 +7,6 @@ namespace LogistHelper.ViewModels.DataViewModels
     {
         private string _name;
         private string _passportSerial;
-        private string _passportNumber;
         private string _passportIssuer;
         private DateTime _passportDate;
         private ObservableCollection<string> _phones;
@@ -24,16 +23,13 @@ namespace LogistHelper.ViewModels.DataViewModels
             get => _passportSerial;
             set => SetProperty(ref _passportSerial, value);
         }
-        public string PassportNumber
-        {
-            get => _passportNumber;
-            set => SetProperty(ref _passportNumber, value);
-        }
+
         public string PassportIssuer
         {
             get => _passportIssuer;
             set => SetProperty(ref _passportIssuer, value);
         }
+
         public DateTime PassportDate
         {
             get => _passportDate;
