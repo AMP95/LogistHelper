@@ -2,16 +2,27 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <Color x:Key="Light" A="255" R="246" G="247" B="247"/>
+    <Color x:Key="Dark" A="255" R="69" G="69" B="69"/>
 
-    <Color x:Key="Dark" A="255" R="75" G="48" B="61"/>
+    <Color x:Key="SemiDark" A="255" R="186" G="186" B="186"/>
 
-    <Color x:Key="NeuralOne" A="255" R="225" G="194" B="188"/>
+    <Color x:Key="Light" A="255" R="255" G="255" B="255"/>
 
-    <Color x:Key="NeuralTwo" A="255" R="107" G="105" B="65"/>
+    <Color x:Key="LightBlueTrans" A="50" R="100" G="149" B="237"/>
+    <Color x:Key="LightTrans"  A="150" R="255" G="255" B="255"/>
 
-    <Color x:Key="ContrastOne" A="255" R="213" G="164" B="63"/>
 
-    <Color x:Key="ContrastTwo" A="255" R="15" G="76" B="92"/>
-    
+    <Color x:Key="Accept" A="255" R="154" G="205" B="50"/>
+    <Color x:Key="AcceptDark" A="255" R="0" G="100" B="0"/>
+
+    <Color x:Key="Deny" A="255" R="212" G="42" B="42"/>
+    <Color x:Key="DenyDark" A="255" R="139" G="0" B="0"/>
+
+    <Color x:Key="NeutralOne" A="255" R="100" G="149" B="237"/>
+    <Color x:Key="NeutralOneDark" A="255" R="0" G="0" B="139"/>
+
+    <Color x:Key="NeutralTwo" A="255" R="255" G="215" B="0"/>
+    <Color x:Key="NeutralTwoDark" A="255" R="184" G="134" B="11"/>
+
+
 </ResourceDictionary>

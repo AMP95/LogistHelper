@@ -2,56 +2,30 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
 
-    <SolidColorBrush x:Key="LightSolid" Color="{DynamicResource Light}"/>
-    <SolidColorBrush x:Key="LightSolidTrans" Color="{DynamicResource Light}" Opacity="0.5"/>
-    
-    
-    <SolidColorBrush x:Key="DarkSolid" Color="{DynamicResource Dark}"/>
-    <SolidColorBrush x:Key="DarkSolidTrans" Color="{DynamicResource Dark}" Opacity="0.5"/>
-    
-    
-    <SolidColorBrush x:Key="NeuralOneSolid" Color="{DynamicResource NeuralOne}"/>
-    <SolidColorBrush x:Key="NeuralOneSolidTrans" Color="{DynamicResource NeuralOne}" Opacity="0.5"/>
-    
-    
-    <SolidColorBrush x:Key="NeuralTwoSolid" Color="{DynamicResource NeuralTwo}"/>
-    <SolidColorBrush x:Key="NeuralTwoSolidTrans" Color="{DynamicResource NeuralTwo}" Opacity="0.5"/>
-    
-    
-    <SolidColorBrush x:Key="ContrastOneSolid" Color="{DynamicResource ContrastOne}"/>
-    <SolidColorBrush x:Key="ContrastOneSolidTrans" Color="{DynamicResource ContrastOne}" Opacity="0.5"/>
-    
-    
-    <SolidColorBrush x:Key="ContrastTwoSolid" Color="{DynamicResource ContrastTwo}"/>
-    <SolidColorBrush x:Key="ContrastTwoSolidTrans" Color="{DynamicResource ContrastTwo}" Opacity="0.5"/>
+    <SolidColorBrush x:Key="DarkBrush" Color="{DynamicResource Dark}"/>
+    <SolidColorBrush x:Key="SemiDarkBrush" Color="{DynamicResource SemiDark}"/>
+    <SolidColorBrush x:Key="LightBrush" Color="{DynamicResource Light}"/>
+    <SolidColorBrush x:Key="LightBlueBrush" Color="{DynamicResource LightBlueTrans}"/>
 
-    <LinearGradientBrush x:Key="LightNeuralOneLinear" StartPoint="0.5 0" EndPoint="0.5 1">
-        <GradientStop Color="{DynamicResource Light}" Offset="0"/>
-        <GradientStop Color="{DynamicResource NeuralOne}" Offset="1"/>
+    <SolidColorBrush x:Key="AcceptBrush" Color="{DynamicResource Accept}"/>
+    <SolidColorBrush x:Key="AcceptDarkBrush" Color="{DynamicResource AcceptDark}"/>
+
+    <SolidColorBrush x:Key="DenyBrush" Color="{DynamicResource Deny}"/>
+    <SolidColorBrush x:Key="DenyDarkBrush" Color="{DynamicResource DenyDark}"/>
+
+    <SolidColorBrush x:Key="NeutralOneBrush" Color="{DynamicResource NeutralOne}"/>
+    <SolidColorBrush x:Key="NeutralOneDarkBrush" Color="{DynamicResource NeutralOneDark}"/>
+
+    <SolidColorBrush x:Key="NeutralTwoBrush" Color="{DynamicResource NeutralTwo}"/>
+    <SolidColorBrush x:Key="NeutralTwoDarkBrush" Color="{DynamicResource NeutralTwoDark}"/>
+
+    <LinearGradientBrush x:Key="BorderGradient" StartPoint="0.5 0" EndPoint="0.5 1">
+        <GradientStop Color="{DynamicResource LightBlueTrans}" Offset="0"/>
+        <GradientStop Color="{DynamicResource SemiDark}" Offset="1"/>
     </LinearGradientBrush>
 
-    <LinearGradientBrush x:Key="LightContrastOneLinear" StartPoint="0.5 0" EndPoint="0.5 1">
-        <GradientStop Color="{DynamicResource Light}" Offset="0"/>
-        <GradientStop Color="{DynamicResource ContrastOne}" Offset="1"/>
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="NeuralOneDarkLinear" StartPoint="0.5 0" EndPoint="0.5 1">
-        <GradientStop Color="{DynamicResource NeuralOne}" Offset="0"/>
-        <GradientStop Color="{DynamicResource Dark}" Offset="1"/>
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="NeuralContrastOneLinear" StartPoint="0.5 0" EndPoint="0.5 1">
-        <GradientStop Color="{DynamicResource NeuralOne}" Offset="0"/>
-        <GradientStop Color="{DynamicResource ContrastOne}" Offset="1"/>
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="ContrastOneNeuralTwoLinear" StartPoint="0.5 0" EndPoint="0.5 1">
-        <GradientStop Color="{DynamicResource ContrastOne}" Offset="0"/>
-        <GradientStop Color="{DynamicResource NeuralTwo}" Offset="1"/>
-    </LinearGradientBrush>
-
-    <LinearGradientBrush x:Key="NeuralContrastTwoLinear" StartPoint="0.5 0" EndPoint="0.5 1">
-        <GradientStop Color="{DynamicResource NeuralTwo}" Offset="0"/>
-        <GradientStop Color="{DynamicResource ContrastTwo}" Offset="1"/>
+    <LinearGradientBrush x:Key="GlassImitateGradient" StartPoint="0.5 0" EndPoint="0.5 1">
+        <GradientStop Offset="0.3" Color="{DynamicResource LightTrans}"/>
+        <GradientStop Offset="1" Color="{DynamicResource LightBlueTrans}"/>
     </LinearGradientBrush>
 </ResourceDictionary>
