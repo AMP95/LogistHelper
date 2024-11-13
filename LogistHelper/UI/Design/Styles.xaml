@@ -1140,6 +1140,14 @@
             <Setter Property="Foreground" Value="{StaticResource DarkBrush}"/>
         </Style.Setters>
     </Style>
+    
+    <Style x:Key="MiniText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultText}">
+        <Style.Setters>
+            <Setter Property="Margin" Value="5 2"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Light"/>
+        </Style.Setters>
+    </Style>
 
     <Style x:Key="HeaderOneText" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultText}">
         <Style.Setters>
@@ -1373,10 +1381,18 @@
         </Style.Setters>
     </Style>
 
+    <Style x:Key="MainLeftTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    </Style>
+
     <Style x:Key="SubCentralTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
         <Style.Setters>
             <Setter Property="Background" Value="Transparent"/>
         </Style.Setters>
+    </Style>
+
+    <Style x:Key="SubLeftTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource SubCentralTextBox}">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
     </Style>
 
     <Style x:Key="NumericTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">

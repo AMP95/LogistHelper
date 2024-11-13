@@ -10,8 +10,8 @@ namespace LogistHelper.ViewModels.DataViewModels
         private string _address;
         private string _inn;
         private string _kpp;
-        private string _email;
-        private ObservableCollection<string> _phones;
+        private List<string> _emails;
+        private string _phones;
 
         public string Name
         {
@@ -37,12 +37,16 @@ namespace LogistHelper.ViewModels.DataViewModels
                 }
             }
         }
-        public string Email
+        public string Emails
         {
-            get => _email;
-            set => SetProperty(ref _email, value);
+            get => string.Join(", ", _emails);
+            set 
+            {
+                _emails?.Clear();
+                _emails = value.Split(",").ToList();
+            }
         }
-        public ObservableCollection<string> Phones
+        public string Phones
         {
             get => _phones;
             set => SetProperty(ref _phones, value);
@@ -55,6 +59,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         private VAT _vat;
 
         private ObservableCollection<DriverViewModel> _drivers;
+        private ObservableCollection<VehicleViewModel> _vehicles;
         private ObservableCollection<TractorViewModel> _tractors;
         private ObservableCollection<TrailerViewModel> _trailers;
 
@@ -68,6 +73,11 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             get => _drivers;
             set => SetProperty(ref _drivers, value);
+        }
+        public ObservableCollection<VehicleViewModel> Vehicles
+        {
+            get => _vehicles;
+            set => SetProperty(ref _vehicles, value);
         }
         public ObservableCollection<TractorViewModel> Tractors
         {
