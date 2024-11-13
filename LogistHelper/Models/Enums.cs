@@ -18,6 +18,14 @@ namespace LogistHelper.Models
         Helper
     }
 
+    public enum VAT 
+    {
+        [Description("Без НДС")]
+        Without,
+        [Description("С НДС")]
+        With
+    }
+
     #region Extend
 
     public static class EnumExtensions
