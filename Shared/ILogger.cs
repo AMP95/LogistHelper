@@ -1,4 +1,4 @@
-﻿namespace Shared.Logger
+﻿namespace Shared
 {
     public enum LogLevel 
     { 
