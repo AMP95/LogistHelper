@@ -1,26 +1,31 @@
-﻿using LogistHelper.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using LogistHelper.Models.Settings;
+using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
+using ServerClient;
+using Shared;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Pages
 {
     public class CarrierMenuViewModel : BasePageViewModel
     {
-        private string _carrierName;
+        private ObservableObject _content;
 
 
-        public string CarrierName 
+        #region Public
+
+        public ObservableObject Content 
         {
-            get => _carrierName;
-            set => SetProperty(ref _carrierName, value);
+            get => _content;
+            set => SetProperty(ref _content, value);
         }
 
-
-        public ICommand FindCarrierCommand { get; }
+        #endregion Public
 
         public CarrierMenuViewModel()
         {
-            
+
         }
 
         protected override void BackCommandExecutor()

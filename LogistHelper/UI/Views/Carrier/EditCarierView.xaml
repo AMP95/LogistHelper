@@ -1,0 +1,166 @@
+﻿<UserControl x:Class="LogistHelper.UI.Views.EditCarierView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <ScrollViewer
+            Style="{StaticResource CustomScroll}">
+            <StackPanel>
+                <TextBlock
+                    Style="{StaticResource MiniText}"
+                    Text="Название"/>
+
+                <TextBox
+                    Style="{StaticResource SubLeftTextBox}"
+                    Text="{Binding SelectedCarrier.Name}"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <RadioButton
+                        FlowDirection="RightToLeft"
+                        Style="{StaticResource CustomRadio}"
+                        Content="С НДС"/>
+
+                    <RadioButton
+                        Grid.Column="1"
+                        Style="{StaticResource CustomRadio}"
+                        Content="Без НДС"/>
+                </Grid>
+
+                <TextBlock
+                    Style="{StaticResource MiniText}"
+                    Text="Адрес"/>
+
+                <TextBox
+                    Style="{StaticResource SubLeftTextBox}"
+                    Text="{Binding SelectedCarrier.Address}"/>
+
+                <TextBlock
+                    Style="{StaticResource MiniText}"
+                    Text="ИНН/КПП"/>
+
+                <TextBox
+                    Style="{StaticResource SubLeftTextBox}"
+                    Text="{Binding SelectedCarrier.InnKpp}"/>
+
+                <TextBlock
+                    Style="{StaticResource MiniText}"
+                    Text="Телефон"/>
+
+                <ItemsControl
+                    ItemsSource="{Binding SelectedCarrier.Phones}">
+                    <ItemsControl.Template>
+                        <ControlTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Button
+                                    Style="{StaticResource IconButton}"
+                                    Content="Добавить"
+                                    HorizontalAlignment="Right"
+                                    Command="{Binding AddPhoneCommand}"/>
+
+                                <ItemsPresenter
+                                    Grid.Row="1"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox
+                                     Style="{StaticResource SubLeftTextBox}"
+                                     Text="{Binding }"/>
+
+                                <Button
+                                    Grid.Column="1"
+                                    Style="{StaticResource IconButton}"
+                                    Command="{Binding DeletePhoneCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock
+                    Style="{StaticResource MiniText}"
+                    Text="Email"/>
+
+                <ItemsControl
+                    ItemsSource="{Binding SelectedCarrier.Emails}">
+
+                    <ItemsControl.Template>
+                        <ControlTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Button
+                                    Style="{StaticResource IconButton}"
+                                    Content="Добавить"
+                                    HorizontalAlignment="Right"
+                                    Command="{Binding AddEmailCommand}"/>
+
+                                <ItemsPresenter
+                                    Grid.Row="1"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </ItemsControl.Template>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox
+                                    Style="{StaticResource SubLeftTextBox}"
+                                    Text="{Binding }"/>
+
+                                <Button
+                                    Grid.Column="1"
+                                    Style="{StaticResource IconButton}"
+                                    Command="{Binding DeleteEmailCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button
+            Grid.Row="1"
+            Style="{StaticResource AcceptButton}"
+            Content="Сохранить"
+            Command="{Binding SaveCarrierCommand}"/>
+    </Grid>
+    
+</UserControl>

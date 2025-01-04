@@ -1,40 +1,126 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using DTOs;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
-    class DriverViewModel : ObservableObject
+    public class DriverViewModel : ObservableObject, IDataErrorInfo
     {
-        private string _name;
-        private string _passportSerial;
-        private string _passportIssuer;
-        private DateTime _passportDate;
-        private ObservableCollection<string> _phones;
-        private VehicleViewModel _vehicle;
+        #region Private
 
-        public string Name 
+        private DriverDto _driver;
+
+        private TruckViewModel _truck;
+        private TrailerViewModel _trailer;
+        private CarrierViewModel _carrier;
+        private ObservableCollection<string> _phones;
+
+        #endregion Private
+
+        #region Public
+
+        public Guid Id
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get => _driver.Id;
         }
 
+        public string Name
+        {
+            get => _driver.Name;
+            set
+            {
+                _driver.Name = value;
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+        public DateTime BirthDate
+        {
+            get => _driver.BirthDate;
+            set
+            {
+                _driver.BirthDate = value;
+                OnPropertyChanged(nameof(BirthDate));
+            }
+        }
         public string PassportSerial
         {
-            get => _passportSerial;
-            set => SetProperty(ref _passportSerial, value);
+            get => _driver.PassportSerial;
+            set
+            {
+                _driver.PassportSerial = value;
+                OnPropertyChanged(nameof(PassportSerial));
+            }
         }
-
         public string PassportIssuer
         {
-            get => _passportIssuer;
-            set => SetProperty(ref _passportIssuer, value);
+            get => _driver.PassportIssuer;
+            set
+            {
+                _driver.PassportIssuer = value;
+                OnPropertyChanged(nameof(PassportIssuer));
+            }
+        }
+        public DateTime PassportDateOfIssue
+        {
+            get => _driver.PassportDateOfIssue;
+            set
+            {
+                _driver.PassportDateOfIssue = value;
+                OnPropertyChanged(nameof(PassportDateOfIssue));
+            }
+        }
+        public TruckViewModel Truck
+        {
+            get => _truck;
+            set 
+            { 
+                SetProperty(ref _truck, value);
+                if (value != null)
+                {
+                    _driver.Truck = (TruckDto)Truck.GetDto();
+                }
+                else 
+                {
+                    _driver.Truck = null;
+                }
+            }
         }
 
-        public DateTime PassportDate
+        public TrailerViewModel Trailer
         {
-            get => _passportDate;
-            set => SetProperty(ref _passportDate, value);
+            get => _trailer;
+            set 
+            { 
+                SetProperty(ref _trailer, value);
+                if (value != null)
+                {
+                    _driver.Trailer = (TrailerDto)Trailer.GetDto();
+                }
+                else 
+                {
+                    _driver.Trailer = null;
+                }
+            }
         }
+
+        public CarrierViewModel Carrier
+        {
+            get => _carrier;
+            set
+            {
+                SetProperty(ref _carrier, value);
+                if (value != null)
+                {
+                    _driver.Carrier = (CarrierDto)Carrier.GetDto();
+                }
+                else
+                {
+                    _driver.Carrier = null;
+                }
+            }
+        }
+
 
         public ObservableCollection<string> Phones
         {
@@ -42,10 +128,41 @@ namespace LogistHelper.ViewModels.DataViewModels
             set => SetProperty(ref _phones, value);
         }
 
-        public VehicleViewModel Vehicle
+        #endregion Public
+
+        #region Validation
+
+        public string this[string columnName] => _driver[columnName];
+
+        public string Error => _driver.Error;
+
+        #endregion Validation
+
+        public DriverViewModel(DriverDto route)
         {
-            get => _vehicle;
-            set => SetProperty(ref _vehicle, value);
+            _driver = route;
+            _truck = new TruckViewModel(_driver.Truck);
+            _trailer = new TrailerViewModel(_driver.Trailer);
+            _carrier = new CarrierViewModel(_driver.Carrier);
+
+            Phones = new ObservableCollection<string>(route.Phones);
+        }
+
+        public DriverViewModel()
+        {
+            _driver = new DriverDto();
+
+            Truck = new TruckViewModel();
+            Trailer = new TrailerViewModel();
+            Carrier = new CarrierViewModel();
+
+            Phones = new ObservableCollection<string>();
+        }
+
+        public DriverDto GetDto()
+        {
+            _driver.Phones = _phones.ToList();
+            return _driver;
         }
     }
 }
