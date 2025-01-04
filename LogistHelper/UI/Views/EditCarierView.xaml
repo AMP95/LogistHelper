@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="300">
+             d:DesignHeight="800" d:DesignWidth="300">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -72,52 +72,6 @@
                 <TextBox
                     Style="{StaticResource SubLeftTextBox}"
                     Text="{Binding SelectedCarrier.Emails}"/>
-
-                <TextBlock
-                    Style="{StaticResource MiniText}"
-                    Text="Водители"/>
-
-                <ComboBox
-                    Style="{StaticResource CustomComboBox}"
-                    ItemsSource="{Binding SelectedCarrier.Drivers}"
-                    SelectedItem="{Binding SelectedDriver}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock
-                        Style="{StaticResource MiniText}"
-                        Text="{Binding Name}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-
-                <Button
-                    Style="{StaticResource SemiDarkButton}"
-                    Content="Новый"
-                    Command="{Binding AddDriverCommand}"/>
-
-                <TextBlock
-                    Style="{StaticResource MiniText}"
-                    Text="ТС"/>
-
-                <ComboBox
-                    Style="{StaticResource CustomComboBox}"
-                    ItemsSource="{Binding SelectedCarrier.Vehicles}"
-                    SelectedItem="{Binding SelectedVehicle}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock
-                        Style="{StaticResource DefaultText}">
-                        <Run Text="{Binding Tractor.Name}"/>
-                        <Run Text="{Binding Trailer.Name}"/>
-                            </TextBlock>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-
-                <Button
-                    Style="{StaticResource SemiDarkButton}"
-                    Content="Новый"
-                    Command="{Binding AddVehicleCommand}"/>
 
             </StackPanel>
         </ScrollViewer>

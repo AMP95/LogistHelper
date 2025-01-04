@@ -5,7 +5,6 @@ using LogistHelper.ViewModels.Pages;
 using LogistHelper.ViewModels.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Shared;
-using Shared.Logger;
 
 namespace LogistHelper.Services
 {

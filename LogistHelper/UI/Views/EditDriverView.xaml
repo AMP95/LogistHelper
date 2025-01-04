@@ -20,6 +20,21 @@
                 Style="{StaticResource SubLeftTextBox}"
                 Text="{Binding SelectedDriver.Name}"/>
 
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Style="{StaticResource MiniText}"
+                    Text="Дата рождения"/>
+
+                <TextBox
+                    Grid.Column="1"
+                    Style="{StaticResource SubLeftTextBox}"
+                    Text="{Binding SelectedDriver.BirthDate}"/>
+            </Grid>
+
             <TextBlock
                 Style="{StaticResource DefaultText}"
                 Text="Паспорт"/>
@@ -60,7 +75,7 @@
                 <TextBlock
                     Grid.Row="2"
                     Style="{StaticResource MiniText}"
-                    Text="Дата"/>
+                    Text="Дата выдачи"/>
 
                 <DatePicker
                     Grid.Row="2"

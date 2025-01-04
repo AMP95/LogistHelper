@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using LogistHelper.Models;
+using DTOs;
 using System.Collections.ObjectModel;
 
 namespace LogistHelper.ViewModels.DataViewModels
