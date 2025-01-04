@@ -1,7 +1,6 @@
 ﻿using log4net;
 using log4net.Config;
-using log4net.Repository.Hierarchy;
-using Shared.Logger;
+using Shared;
 
 namespace Log4NetLogger
 {
