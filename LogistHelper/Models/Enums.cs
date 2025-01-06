@@ -7,7 +7,8 @@ namespace LogistHelper.Models
     { 
         Enter,
         Menu,
-        CarrierMenu
+        CarrierMenu,
+        ClientMenu,
     }
 
     public enum Role 

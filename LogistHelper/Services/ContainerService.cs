@@ -1,6 +1,8 @@
 ﻿using CustomDialog;
+using DTOs;
 using Log4NetLogger;
 using LogistHelper.Models.Settings;
+using LogistHelper.ViewModels.DataViewModels;
 using LogistHelper.ViewModels.Pages;
 using LogistHelper.ViewModels.Views;
 using LogistHelper.ViewModels.Windows;
@@ -30,15 +32,17 @@ namespace LogistHelper.Services
 
             services.AddTransient<EnterPageViewModel, EnterPageViewModel>();
             services.AddTransient<MenuPageViewModel, MenuPageViewModel>();
-            services.AddTransient<CarrierMenuViewModel, CarrierMenuViewModel>();
+            services.AddTransient<CompanyMenuViewModel<CarrierDto>, CarrierMenuPageViewModel>();
+            services.AddTransient<CompanyMenuViewModel<CompanyDto>, ClientMenuPageViewModel>();
 
             #endregion Pages
 
             #region Views
 
-            services.AddTransient<CarrierListViewModel, CarrierListViewModel>();
-            services.AddTransient<EditCarrierViewModel, EditCarrierViewModel>();
-
+            services.AddTransient<CompanyListViewModel<CarrierDto>, CarrierListViewModel>();
+            services.AddTransient<CompanyListViewModel<CompanyDto>, ClientListViewModel>();
+            services.AddTransient<EditCompanyViewModel<CarrierDto>, EditCarrierViewModel>();
+            services.AddTransient<EditCompanyViewModel<CompanyDto>, EditClientViewModel>();
 
             #endregion Views
 
@@ -52,6 +56,9 @@ namespace LogistHelper.Services
             services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ISettingsRepository<Settings>, JsonRepository>();
             services.AddSingleton<IDialog, CustomDialogService>();
+
+            services.AddSingleton<ICompanyVmFactory<CompanyDto>, ClientVmFactory>();
+            services.AddSingleton<ICompanyVmFactory<CarrierDto>, CarrierVmFactory>();
 
             #endregion Services
 

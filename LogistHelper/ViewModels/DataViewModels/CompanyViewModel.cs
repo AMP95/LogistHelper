@@ -2,18 +2,16 @@
 using DTOs;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.IO.Packaging;
-using Windows.Devices.Sensors;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
-    public class CompanyViewModel : ObservableObject, IDataErrorInfo
+    public class CompanyViewModel<T> : ObservableObject, IDataErrorInfo where T : CompanyDto
     {
         #region Private
 
         private int _number;
 
-        protected CompanyDto _company;
+        protected T _company;
 
         private ObservableCollection<StringItem> _phones;
         private ObservableCollection<StringItem> _emails;
@@ -104,34 +102,109 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         #endregion Validation
 
-        public CompanyViewModel(CompanyDto company)
+        public CompanyViewModel(T company)
         {
             _company = company;
-            string[] innkpp = _company.InnKpp.Split('/');
-            _inn = innkpp[0];
-            if (innkpp.Length > 1) 
-            { 
-                _kpp = innkpp[1];
+            if (_company.InnKpp != null)
+            {
+                string[] innkpp = _company.InnKpp.Split('/');
+                _inn = innkpp[0];
+                if (innkpp.Length > 1)
+                {
+                    _kpp = innkpp[1];
+                }
+            }
+            if (company.Phones != null)
+            {
+                Phones = new ObservableCollection<StringItem>(company.Phones.Select(s => new StringItem(s)));
+            }
+            else 
+            {
+                Phones = new ObservableCollection<StringItem>();
             }
 
-            Phones = new ObservableCollection<StringItem>(company.Phones.Select(s => new StringItem(s)));
-            Emails = new ObservableCollection<StringItem>(company.Emails.Select(s => new StringItem(s)));
-
+            if (company.Emails != null)
+            {
+                Emails = new ObservableCollection<StringItem>(company.Emails.Select(s => new StringItem(s)));
+            }
+            else 
+            {
+                Emails = new ObservableCollection<StringItem>();
+            }
         }
 
-        public CompanyViewModel()
-        {
-            _company = new CompanyDto();
 
-            Phones = new ObservableCollection<StringItem>();
-            Emails = new ObservableCollection<StringItem>();
-        }
-
-        public CompanyDto GetDto()
+        public T GetDto()
         {
             _company.Phones = _phones.Select(s => s.Item).ToList();
             _company.Emails = _emails.Select(s => s.Item).ToList();
             return _company;
+        }
+    }
+
+    public class ClientViewModel : CompanyViewModel<CompanyDto> 
+    {
+        public ClientViewModel() : base(new CompanyDto())
+        {
+        }
+        public ClientViewModel(CompanyDto dto) : base(dto) { }
+    }
+
+    public class CarrierViewModel : CompanyViewModel<CarrierDto> 
+    {
+        public CarrierViewModel() : base(new CarrierDto()) { }
+        public CarrierViewModel(CarrierDto dto) : base(dto) { }
+        public VAT Vat
+        {
+            get => _company.Vat;
+            set
+            {
+                _company.Vat = value;
+                OnPropertyChanged(nameof(Vat));
+            }
+        }
+    }
+
+    public interface ICompanyVmFactory<T> where T : CompanyDto 
+    {
+        public CompanyViewModel<T> GetViewModel(T dto, int number);
+        public CompanyViewModel<T> GetViewModel(T dto);
+        public CompanyViewModel<T> GetViewModel();
+    }
+
+    public class ClientVmFactory : ICompanyVmFactory<CompanyDto>
+    {
+        public CompanyViewModel<CompanyDto> GetViewModel(CompanyDto dto, int number)
+        {
+            return new ClientViewModel(dto) { Number = number };
+        }
+
+        public CompanyViewModel<CompanyDto> GetViewModel()
+        {
+            return new ClientViewModel();
+        }
+
+        public CompanyViewModel<CompanyDto> GetViewModel(CompanyDto dto)
+        {
+            return new ClientViewModel(dto);
+        }
+    }
+
+    public class CarrierVmFactory : ICompanyVmFactory<CarrierDto>
+    {
+        public CompanyViewModel<CarrierDto> GetViewModel(CarrierDto dto, int number)
+        {
+            return new CarrierViewModel(dto) { Number = number };
+        }
+
+        public CompanyViewModel<CarrierDto> GetViewModel()
+        {
+            return new CarrierViewModel();
+        }
+
+        public CompanyViewModel<CarrierDto> GetViewModel(CarrierDto dto)
+        {
+            return new CarrierViewModel(dto);
         }
     }
 }

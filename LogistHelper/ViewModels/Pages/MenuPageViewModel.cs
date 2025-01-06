@@ -9,12 +9,18 @@ namespace LogistHelper.ViewModels.Pages
     public class MenuPageViewModel : BasePageViewModel
     {
         public ICommand NavigateCarrierMenuCommand { get; }
+        public ICommand NavigateClientMenuCommand { get; }
 
         public MenuPageViewModel()
         {
             NavigateCarrierMenuCommand = new RelayCommand(() => 
             {
                 NavigationService.Navigate(PageType.CarrierMenu);
+            });
+
+            NavigateClientMenuCommand = new RelayCommand(() =>
+            {
+                NavigationService.Navigate(PageType.ClientMenu);
             });
         }
 

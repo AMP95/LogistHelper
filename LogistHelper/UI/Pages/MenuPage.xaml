@@ -31,6 +31,11 @@
 
             <Button
                 Style="{StaticResource NeutralButton}"
+                Content="Клиенты"
+                Command="{Binding NavigateClientMenuCommand}"/>
+
+            <Button
+                Style="{StaticResource NeutralButton}"
                 Content="Перевозчики"
                 Command="{Binding NavigateCarrierMenuCommand}"/>
         </StackPanel>

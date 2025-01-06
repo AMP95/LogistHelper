@@ -1,4 +1,5 @@
-﻿using LogistHelper.Models;
+﻿using DTOs;
+using LogistHelper.Models;
 using LogistHelper.ViewModels.Pages;
 using System.Windows.Controls;
 
@@ -22,7 +23,8 @@ namespace LogistHelper.Services
         {
             pages.Add(PageType.Enter, typeof(EnterPageViewModel));
             pages.Add(PageType.Menu, typeof(MenuPageViewModel));
-            pages.Add(PageType.CarrierMenu, typeof(CarrierMenuViewModel));
+            pages.Add(PageType.CarrierMenu, typeof(CompanyMenuViewModel<CarrierDto>));
+            pages.Add(PageType.ClientMenu, typeof(CompanyMenuViewModel<CompanyDto>));
         }
     }
 }

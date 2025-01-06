@@ -27,8 +27,18 @@
             </DataTemplate>
 
             <DataTemplate
-                DataType="{x:Type pagesVM:CarrierMenuViewModel}">
+                DataType="{x:Type pagesVM:ClientMenuPageViewModel}">
                 <pages:CarrierMenuPage/>
+            </DataTemplate> 
+            
+            <DataTemplate
+                DataType="{x:Type pagesVM:CarrierMenuPageViewModel}">
+                <pages:CarrierMenuPage/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type viewsVM:ClientListViewModel}">
+                <views:CarrierListView/>
             </DataTemplate>
 
             <DataTemplate
@@ -38,6 +48,11 @@
 
             <DataTemplate
                 DataType="{x:Type viewsVM:EditCarrierViewModel}">
+                <views:EditCarierView/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type viewsVM:EditClientViewModel}">
                 <views:EditCarierView/>
             </DataTemplate>
         </ResourceDictionary>

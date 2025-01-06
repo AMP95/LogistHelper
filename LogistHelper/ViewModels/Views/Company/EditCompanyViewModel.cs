@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Dadata;
-using Dadata.Model;
 using DTOs;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
@@ -12,54 +11,27 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class EditCarrierViewModel : BlockedViewModel
+    public class EditCompanyViewModel<T> : BlockedViewModel where T : CompanyDto
     {
         #region Private
 
         private Settings _settings;
         private ApiClient _client;
         private IDialog _dialog;
+        private ICompanyVmFactory<T> _factory;
 
-        private CarrierViewModel _editedCarrier;
+        private CompanyViewModel<T> _editedCarrier;
 
         #endregion Private
 
         #region Public
 
-        public CarrierMenuViewModel Parent;
+        public CompanyMenuViewModel<T> Parent;
 
-        public CarrierViewModel EditedCarrier
+        public CompanyViewModel<T> EditedCarrier
         {
             get => _editedCarrier;
             set => SetProperty(ref _editedCarrier, value);
-        }
-
-        public bool IsWithVat 
-        {
-            get => _editedCarrier?.Vat == VAT.With;
-            set 
-            { 
-                if (value && EditedCarrier != null) 
-                {
-                    EditedCarrier.Vat = VAT.With;
-                    OnPropertyChanged(nameof(IsWithVat));   
-                    OnPropertyChanged(nameof(IsWithoutVat));   
-                }
-            }
-        }
-
-        public bool IsWithoutVat 
-        {
-            get => _editedCarrier?.Vat == VAT.Without;
-            set 
-            {
-                if (value && EditedCarrier != null)
-                {
-                    EditedCarrier.Vat = VAT.Without;
-                    OnPropertyChanged(nameof(IsWithVat));
-                    OnPropertyChanged(nameof(IsWithoutVat));
-                }
-            }
         }
 
         #endregion Public
@@ -79,15 +51,16 @@ namespace LogistHelper.ViewModels.Views
 
         #endregion Commands
 
-        public EditCarrierViewModel(ISettingsRepository<Settings> repository, IDialog dialog)
+        public EditCompanyViewModel(ISettingsRepository<Settings> repository, ICompanyVmFactory<T> factory, IDialog dialog)
         {
             _settings = repository.GetSettings();
             _client = new ApiClient(_settings.ServerUri);
             _dialog = dialog;
+            _factory = factory;
 
             #region CommandsInit
 
-            SaveCommand = new RelayCommand(async () => 
+            SaveCommand = new RelayCommand(async () =>
             {
                 if (_dialog.ShowSure("Сохранить изменения"))
                 {
@@ -95,39 +68,39 @@ namespace LogistHelper.ViewModels.Views
                 }
             });
 
-            CancelCommand = new RelayCommand(async () => 
+            CancelCommand = new RelayCommand(async () =>
             {
-                if (_dialog.ShowSure("Отменить изменения")) 
+                if (_dialog.ShowSure("Отменить изменения"))
                 {
                     await Load(EditedCarrier.Id);
                 }
             });
 
-            BackCommand = new RelayCommand(() => 
+            BackCommand = new RelayCommand(() =>
             {
                 Parent.SwitchToList();
             });
 
-            AddPhoneCommand = new RelayCommand(() => 
+            AddPhoneCommand = new RelayCommand(() =>
             {
                 EditedCarrier.Phones.Add(new StringItem());
             });
 
-            AddEmailCommand = new RelayCommand(() => 
-            { 
+            AddEmailCommand = new RelayCommand(() =>
+            {
                 EditedCarrier.Emails.Add(new StringItem());
             });
 
-            DeleteEmailCommand = new RelayCommand<Guid>((id) => 
+            DeleteEmailCommand = new RelayCommand<Guid>((id) =>
             {
                 StringItem item = EditedCarrier.Emails.FirstOrDefault(e => e.Id == id);
-                if (item != null) 
-                { 
+                if (item != null)
+                {
                     EditedCarrier.Emails.Remove(item);
                 }
             });
 
-            DeletePhoneCommand = new RelayCommand<Guid>((id) => 
+            DeletePhoneCommand = new RelayCommand<Guid>((id) =>
             {
                 StringItem item = EditedCarrier.Phones.FirstOrDefault(e => e.Id == id);
                 if (item != null)
@@ -136,7 +109,7 @@ namespace LogistHelper.ViewModels.Views
                 }
             });
 
-            SearchDataCommand = new RelayCommand(async () => 
+            SearchDataCommand = new RelayCommand(async () =>
             {
                 await Search();
             });
@@ -144,31 +117,29 @@ namespace LogistHelper.ViewModels.Views
             #endregion CommandsInit
         }
 
-        public async Task Load(Guid id) 
+        public async Task Load(Guid id)
         {
             if (id == Guid.Empty)
             {
-                EditedCarrier = new CarrierViewModel();
+                EditedCarrier = _factory.GetViewModel();
             }
-            else 
+            else
             {
                 IsBlock = true;
                 BlockText = "Загрузка";
 
-                RequestResult<CarrierDto> result = await _client.GetId<CarrierDto>(id);
+                RequestResult<T> result = await _client.GetId<T>(id);
 
                 if (result.IsSuccess)
                 {
-                    EditedCarrier = new CarrierViewModel(result.Result);
+                    EditedCarrier = _factory.GetViewModel(result.Result);
                 }
 
                 IsBlock = false;
             }
-            OnPropertyChanged(nameof(IsWithVat));
-            OnPropertyChanged(nameof(IsWithoutVat));
         }
 
-        public async Task Save() 
+        public async Task Save()
         {
             IsBlock = true;
             BlockText = "Сохранение";
@@ -177,31 +148,31 @@ namespace LogistHelper.ViewModels.Views
 
             if (EditedCarrier.Id == Guid.Empty)
             {
-                result = await _client.Add<CarrierDto>((CarrierDto)EditedCarrier.GetDto());
+                result = await _client.Add<T>(EditedCarrier.GetDto());
             }
-            else 
+            else
             {
-                result = await _client.Update<CarrierDto>((CarrierDto)EditedCarrier.GetDto());
+                result = await _client.Update<T>(EditedCarrier.GetDto());
             }
 
             if (result.IsSuccess)
             {
                 _dialog.ShowSuccess("Сохранение");
             }
-            else 
+            else
             {
-                _dialog.ShowError("Не удалось сохранить изменения","Сохранение");
+                _dialog.ShowError("Не удалось сохранить изменения", "Сохранение");
             }
 
             IsBlock = false;
         }
 
-        public async Task Search() 
+        public async Task Search()
         {
             var api = new SuggestClientAsync(_settings.DaDataApiKey);
             var response = await api.SuggestParty($"{EditedCarrier.Inn} {EditedCarrier.Kpp}");
             var result = response.suggestions.FirstOrDefault();
-            if (result != null) 
+            if (result != null)
             {
                 EditedCarrier.Name = result.value;
                 EditedCarrier.Address = result.data.address.value;
@@ -209,6 +180,19 @@ namespace LogistHelper.ViewModels.Views
                 EditedCarrier.Kpp = result.data.kpp;
             }
         }
+    }
 
+    public class EditClientViewModel : EditCompanyViewModel<CompanyDto>
+    {
+        public EditClientViewModel(ISettingsRepository<Settings> repository, ICompanyVmFactory<CompanyDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        {
+        }
+    }
+
+    public class EditCarrierViewModel : EditCompanyViewModel<CarrierDto>
+    {
+        public EditCarrierViewModel(ISettingsRepository<Settings> repository, ICompanyVmFactory<CarrierDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        {
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
@@ -12,12 +11,13 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class CarrierListViewModel : BlockedViewModel
+    public class CompanyListViewModel<T> : BlockedViewModel where T : CompanyDto
     {
         #region Private
 
         IDialog _dialog;
 
+        private ICompanyVmFactory<T> _factory;
         private Settings _settings;
         private ApiClient _client;
 
@@ -28,33 +28,33 @@ namespace LogistHelper.ViewModels.Views
         private bool _isBackwardAwaliable;
 
         private string _searchString;
-        private ObservableCollection<CarrierViewModel> _shownCarriers;
+        private ObservableCollection<CompanyViewModel<T>> _shownCarriers;
 
         #endregion Private
 
         #region Public
 
-        public CarrierMenuViewModel Parent;
+        public CompanyMenuViewModel<T> Parent;
 
-        public string SearchString 
-        { 
+        public string SearchString
+        {
             get => _searchString;
             set => SetProperty(ref _searchString, value);
         }
 
-        public bool IsForwardAwaliable 
+        public bool IsForwardAwaliable
         {
             get => _isForwardAwaliable;
             set => SetProperty(ref _isForwardAwaliable, value);
         }
 
-        public bool IsBackwardAwaliable 
+        public bool IsBackwardAwaliable
         {
             get => _isBackwardAwaliable;
             set => SetProperty(ref _isBackwardAwaliable, value);
         }
 
-        public ObservableCollection<CarrierViewModel> ShownCarriers 
+        public ObservableCollection<CompanyViewModel<T>> ShownCarriers
         {
             get => _shownCarriers;
             set => SetProperty(ref _shownCarriers, value);
@@ -73,45 +73,46 @@ namespace LogistHelper.ViewModels.Views
 
         #endregion Commands
 
-        public CarrierListViewModel(ISettingsRepository<Settings> repository, IDialog dialog)
+        public CompanyListViewModel(ISettingsRepository<Settings> repository, ICompanyVmFactory<T> vmFactory, IDialog dialog)
         {
             _settings = repository.GetSettings();
             _client = new ApiClient(_settings.ServerUri);
             _dialog = dialog;
+            _factory = vmFactory;
 
             #region CommandsInit
 
-            BackwardCommand = new RelayCommand(async () => 
+            BackwardCommand = new RelayCommand(async () =>
             {
-                if (IsBackwardAwaliable) 
+                if (IsBackwardAwaliable)
                 {
                     _startIndex -= _count;
                     await Load();
                 }
             });
 
-            ForwardCommand = new RelayCommand(async () => 
+            ForwardCommand = new RelayCommand(async () =>
             {
-                if (IsForwardAwaliable) 
-                { 
+                if (IsForwardAwaliable)
+                {
                     _startIndex += _count;
                     await Load();
                 }
             });
 
-            SearchCommand = new RelayCommand(async () => 
-            { 
+            SearchCommand = new RelayCommand(async () =>
+            {
                 await Search();
             });
 
-            
-            ResetSearchCommand = new RelayCommand(async () => 
-            { 
+
+            ResetSearchCommand = new RelayCommand(async () =>
+            {
                 SearchString = string.Empty;
                 await Load();
             });
 
-            EditCommand = new RelayCommand<Guid>((id) => 
+            EditCommand = new RelayCommand<Guid>((id) =>
             {
                 Parent.SwitchToEdit(id);
             });
@@ -123,9 +124,9 @@ namespace LogistHelper.ViewModels.Views
 
             DeleteCommand = new RelayCommand<Guid>(async (id) =>
             {
-                if (_dialog.ShowSure("Удаление")) 
+                if (_dialog.ShowSure("Удаление"))
                 {
-                    await Delete(id);   
+                    await Delete(id);
                 }
             });
 
@@ -133,19 +134,19 @@ namespace LogistHelper.ViewModels.Views
             #endregion CommandsInit
         }
 
-        public async Task Load() 
+        public async Task Load()
         {
             IsBlock = true;
             BlockText = "Загрузка";
 
             ShownCarriers?.Clear();
 
-            RequestResult<IEnumerable<CarrierDto>> result = await _client.GetRange<CarrierDto>(_startIndex, _count);
+            RequestResult<IEnumerable<T>> result = await _client.GetRange<T>(_startIndex, _count);
 
-            if (result.IsSuccess) 
+            if (result.IsSuccess)
             {
                 int counter = _startIndex + 1;
-                ShownCarriers = new ObservableCollection<CarrierViewModel>(result.Result.Select(c => new CarrierViewModel(c) { Number = counter++ }));
+                ShownCarriers = new ObservableCollection<CompanyViewModel<T>>(result.Result.Select(c => _factory.GetViewModel(c, counter++)));
             }
 
             IsForwardAwaliable = ShownCarriers != null && ShownCarriers.Count == _count;
@@ -154,19 +155,19 @@ namespace LogistHelper.ViewModels.Views
             IsBlock = false;
         }
 
-        public async Task Search() 
+        public async Task Search()
         {
             IsBlock = true;
             BlockText = "Поиск";
 
             ShownCarriers?.Clear();
 
-            RequestResult<IEnumerable<CarrierDto>> result = await _client.Search<CarrierDto>(SearchString);
+            RequestResult<IEnumerable<T>> result = await _client.Search<T>(SearchString);
 
             if (result.IsSuccess)
             {
                 int counter = 1;
-                ShownCarriers = new ObservableCollection<CarrierViewModel>(result.Result.Select(c => new CarrierViewModel(c) { Number = counter++ }));
+                ShownCarriers = new ObservableCollection<CompanyViewModel<T>>(result.Result.Select(c => _factory.GetViewModel(c, counter++)));
             }
 
             IsForwardAwaliable = false;
@@ -176,22 +177,39 @@ namespace LogistHelper.ViewModels.Views
 
         }
 
-        public async Task Delete(Guid id) 
+        public async Task Delete(Guid id)
         {
             IsBlock = true;
             BlockText = "Удаление";
 
-            RequestResult<bool> result = await _client.Delete<CarrierDto>(id);
+            RequestResult<bool> result = await _client.Delete<T>(id);
 
             if (result.IsSuccess)
             {
                 await Load();
             }
-            else 
+            else
             {
                 _dialog.ShowError("Не удалось удалить перевозчика. Удаление невозможно если с перевозчиком есть заключенные заявки.");
                 IsBlock = false;
             }
         }
+
     }
+
+    public class ClientListViewModel : CompanyListViewModel<CompanyDto>
+    {
+        public ClientListViewModel(ISettingsRepository<Settings> repository, ICompanyVmFactory<CompanyDto> vmFactory, IDialog dialog) : base(repository, vmFactory, dialog)
+        {
+        }
+    }
+
+    public class CarrierListViewModel : CompanyListViewModel<CarrierDto>
+    {
+        public CarrierListViewModel(ISettingsRepository<Settings> repository, ICompanyVmFactory<CarrierDto> vmFactory, IDialog dialog) : base(repository, vmFactory, dialog)
+        {
+        }
+    }
+
+
 }
