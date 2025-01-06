@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="LogistHelper.UI.Views.EditCarierView"
+﻿<UserControl x:Class="LogistHelper.UI.Views.EditCompanyView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -175,7 +175,7 @@
                                     <Button
                                         Grid.Column="1"
                                         Style="{StaticResource IconButton}"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCarierView}, Path=DataContext.DeletePhoneCommand}"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeletePhoneCommand}"
                                         CommandParameter="{Binding Id}"/>
                                 </Grid>
                             </DataTemplate>
@@ -229,7 +229,7 @@
                                     <Button
                                         Grid.Column="1"
                                         Style="{StaticResource IconButton}"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCarierView}, Path=DataContext.DeleteEmailCommand}"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeleteEmailCommand}"
                                         CommandParameter="{Binding Id}"/>
                                 </Grid>
                             </DataTemplate>

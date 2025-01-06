@@ -81,8 +81,7 @@ namespace ServerClient
 
             switch (typeName)
             {
-                case nameof(TruckDto): return "truck";
-                case nameof(TrailerDto): return "trailer";
+                case nameof(VehicleDto): return "vehicle";
                 case nameof(DriverDto): return "driver";
                 case nameof(CarrierDto): return "carrier";
                 case nameof(CompanyDto): return "company";

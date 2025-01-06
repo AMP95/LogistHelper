@@ -28,32 +28,32 @@
 
             <DataTemplate
                 DataType="{x:Type pagesVM:ClientMenuPageViewModel}">
-                <pages:CarrierMenuPage/>
+                <pages:DataMenuPage/>
             </DataTemplate> 
             
             <DataTemplate
                 DataType="{x:Type pagesVM:CarrierMenuPageViewModel}">
-                <pages:CarrierMenuPage/>
+                <pages:DataMenuPage/>
             </DataTemplate>
 
             <DataTemplate
                 DataType="{x:Type viewsVM:ClientListViewModel}">
-                <views:CarrierListView/>
+                <views:CompanyListView/>
             </DataTemplate>
 
             <DataTemplate
                 DataType="{x:Type viewsVM:CarrierListViewModel}">
-                <views:CarrierListView/>
+                <views:CompanyListView/>
             </DataTemplate>
 
             <DataTemplate
                 DataType="{x:Type viewsVM:EditCarrierViewModel}">
-                <views:EditCarierView/>
+                <views:EditCompanyView/>
             </DataTemplate>
 
             <DataTemplate
                 DataType="{x:Type viewsVM:EditClientViewModel}">
-                <views:EditCarierView/>
+                <views:EditCompanyView/>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

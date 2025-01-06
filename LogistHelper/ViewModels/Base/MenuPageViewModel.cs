@@ -1,9 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using DTOs.Dtos;
 using LogistHelper.Services;
 
 namespace LogistHelper.ViewModels.Base
 {
-    public class MenuPageViewModel<T> : BasePageViewModel where T : class
+    public class MenuPageViewModel<T> : BasePageViewModel where T : IDto
     {
         private ObservableObject _content;
 

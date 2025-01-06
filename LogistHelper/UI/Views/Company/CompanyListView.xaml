@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="LogistHelper.UI.Views.CarrierListView"
+﻿<UserControl x:Class="LogistHelper.UI.Views.CompanyListView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -29,7 +29,7 @@
             Margin="0 0 12 0"
             HorizontalAlignment="Right"
             Grid.ColumnSpan="3"
-            DataContext="{Binding RelativeSource={RelativeSource AncestorType=pages:CarrierMenuPage}, Path=DataContext}"/>
+            DataContext="{Binding RelativeSource={RelativeSource AncestorType=pages:DataMenuPage}, Path=DataContext}"/>
 
         <Grid
             Grid.Row="1"
@@ -83,7 +83,7 @@
 
             <ItemsControl
                 Grid.Row="1"
-                ItemsSource="{Binding ShownCarriers}">
+                ItemsSource="{Binding List}">
                 <ItemsControl.Template>
                     <ControlTemplate>
                         <Grid>
@@ -192,14 +192,14 @@
                                 Grid.Column="4"
                                 Style="{StaticResource IconButton}"
                                 Content="Реда"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:CarrierListView}, Path=DataContext.EditCommand}"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.EditCommand}"
                                 CommandParameter="{Binding Id}"/>
 
                             <Button
                                 Grid.Column="5"
                                 Style="{StaticResource IconButton}"
                                 Content="Удал"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:CarrierListView}, Path=DataContext.DeleteCommand}"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.DeleteCommand}"
                                 CommandParameter="{Binding Id}"/>
                         </Grid>
                     </DataTemplate>
