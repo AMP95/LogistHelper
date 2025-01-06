@@ -1,17 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using DTOs;
+﻿using DTOs;
+using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
-    public class CompanyViewModel<T> : ObservableObject, IDataErrorInfo where T : CompanyDto
+    public class CompanyViewModel<T> : DataViewModel<T> where T : CompanyDto
     {
         #region Private
-
-        private int _number;
-
-        protected T _company;
 
         private ObservableCollection<StringItem> _phones;
         private ObservableCollection<StringItem> _emails;
@@ -23,33 +18,21 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         #region Public
 
-        
-        public int Number 
-        {
-            get => _number;
-            set=> SetProperty(ref _number, value);
-        }
-
-        public Guid Id
-        {
-            get => _company.Id;
-        }
-
         public string Name
         {
-            get => _company.Name;
+            get => _dto.Name;
             set
             {
-                _company.Name = value;
+                _dto.Name = value;
                 OnPropertyChanged(nameof(Name));
             }
         }
         public string Address
         {
-            get => _company.Address;
+            get => _dto.Address;
             set
             {
-                _company.Address = value;
+                _dto.Address = value;
                 OnPropertyChanged(nameof(Address));
             }
         }
@@ -59,10 +42,10 @@ namespace LogistHelper.ViewModels.DataViewModels
             set
             {
                 SetProperty(ref _inn, value);
-                _company.InnKpp = $"{Inn}";
+                _dto.InnKpp = $"{Inn}";
                 if (string.IsNullOrWhiteSpace(Kpp))
                 {
-                    _company.InnKpp += $"/{Kpp}";
+                    _dto.InnKpp += $"/{Kpp}";
                 }
             }
         }
@@ -73,10 +56,10 @@ namespace LogistHelper.ViewModels.DataViewModels
             set
             {
                 SetProperty(ref _kpp, value);
-                _company.InnKpp = $"{Inn}";
+                _dto.InnKpp = $"{Inn}";
                 if (string.IsNullOrWhiteSpace(Kpp))
                 {
-                    _company.InnKpp += $"/{Kpp}";
+                    _dto.InnKpp += $"/{Kpp}";
                 }
             }
         }
@@ -94,38 +77,29 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         #endregion Public
 
-        #region Validation
-
-        public string this[string columnName] => _company[columnName];
-
-        public string Error => _company.Error;
-
-        #endregion Validation
-
-        public CompanyViewModel(T company)
+        public CompanyViewModel(T dto, int counter) : base(dto, counter)
         {
-            _company = company;
-            if (_company.InnKpp != null)
+            if (_dto.InnKpp != null)
             {
-                string[] innkpp = _company.InnKpp.Split('/');
+                string[] innkpp = _dto.InnKpp.Split('/');
                 _inn = innkpp[0];
                 if (innkpp.Length > 1)
                 {
                     _kpp = innkpp[1];
                 }
             }
-            if (company.Phones != null)
+            if (dto.Phones != null)
             {
-                Phones = new ObservableCollection<StringItem>(company.Phones.Select(s => new StringItem(s)));
+                Phones = new ObservableCollection<StringItem>(dto.Phones.Select(s => new StringItem(s)));
             }
             else 
             {
                 Phones = new ObservableCollection<StringItem>();
             }
 
-            if (company.Emails != null)
+            if (dto.Emails != null)
             {
-                Emails = new ObservableCollection<StringItem>(company.Emails.Select(s => new StringItem(s)));
+                Emails = new ObservableCollection<StringItem>(dto.Emails.Select(s => new StringItem(s)));
             }
             else 
             {
@@ -133,78 +107,75 @@ namespace LogistHelper.ViewModels.DataViewModels
             }
         }
 
+        public CompanyViewModel(T dto) : this(dto, 0) { }
 
-        public T GetDto()
+        public CompanyViewModel() { }
+
+
+        public override T GetDto()
         {
-            _company.Phones = _phones.Select(s => s.Item).ToList();
-            _company.Emails = _emails.Select(s => s.Item).ToList();
-            return _company;
+            _dto.Phones = _phones.Select(s => s.Item).ToList();
+            _dto.Emails = _emails.Select(s => s.Item).ToList();
+            return base.GetDto();
         }
     }
 
     public class ClientViewModel : CompanyViewModel<CompanyDto> 
     {
-        public ClientViewModel() : base(new CompanyDto())
-        {
-        }
+        public ClientViewModel() : base(new CompanyDto()) { }
         public ClientViewModel(CompanyDto dto) : base(dto) { }
+        public ClientViewModel(CompanyDto dto, int number) : base(dto, number) { }
     }
 
     public class CarrierViewModel : CompanyViewModel<CarrierDto> 
     {
         public CarrierViewModel() : base(new CarrierDto()) { }
         public CarrierViewModel(CarrierDto dto) : base(dto) { }
+        public CarrierViewModel(CarrierDto dto, int counter) : base(dto, counter) { }
         public VAT Vat
         {
-            get => _company.Vat;
+            get => _dto.Vat;
             set
             {
-                _company.Vat = value;
+                _dto.Vat = value;
                 OnPropertyChanged(nameof(Vat));
             }
         }
     }
 
-    public interface ICompanyVmFactory<T> where T : CompanyDto 
+    public class ClientViewModelFactory : IViewModelFactory<CompanyDto>
     {
-        public CompanyViewModel<T> GetViewModel(T dto, int number);
-        public CompanyViewModel<T> GetViewModel(T dto);
-        public CompanyViewModel<T> GetViewModel();
-    }
-
-    public class ClientVmFactory : ICompanyVmFactory<CompanyDto>
-    {
-        public CompanyViewModel<CompanyDto> GetViewModel(CompanyDto dto, int number)
+        public DataViewModel<CompanyDto> GetViewModel(CompanyDto dto, int number)
         {
-            return new ClientViewModel(dto) { Number = number };
+            return new ClientViewModel(dto,  number);
         }
 
-        public CompanyViewModel<CompanyDto> GetViewModel()
-        {
-            return new ClientViewModel();
-        }
-
-        public CompanyViewModel<CompanyDto> GetViewModel(CompanyDto dto)
+        public DataViewModel<CompanyDto> GetViewModel(CompanyDto dto)
         {
             return new ClientViewModel(dto);
         }
+
+        public DataViewModel<CompanyDto> GetViewModel()
+        {
+            return new ClientViewModel();
+        }
     }
 
-    public class CarrierVmFactory : ICompanyVmFactory<CarrierDto>
+    public class CarrierViewModelFactory : IViewModelFactory<CarrierDto>
     {
-        public CompanyViewModel<CarrierDto> GetViewModel(CarrierDto dto, int number)
+        public DataViewModel<CarrierDto> GetViewModel(CarrierDto dto, int number)
         {
-            return new CarrierViewModel(dto) { Number = number };
+            return new CarrierViewModel(dto, number);
         }
 
-        public CompanyViewModel<CarrierDto> GetViewModel()
-        {
-            return new CarrierViewModel();
-        }
-
-        public CompanyViewModel<CarrierDto> GetViewModel(CarrierDto dto)
+        public DataViewModel<CarrierDto> GetViewModel(CarrierDto dto)
         {
             return new CarrierViewModel(dto);
+        }
+
+        public DataViewModel<CarrierDto> GetViewModel()
+        {
+            return new CarrierViewModel();
         }
     }
 }

@@ -1,101 +1,77 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using DTOs;
-using System.ComponentModel;
+﻿using DTOs;
+using LogistHelper.ViewModels.Base;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
-    public abstract class VahiclePartViewModel : ObservableObject, IDataErrorInfo
+    public class VehicleViewModel : DataViewModel<VehicleDto>
     {
-        protected VehicleDto _part;
-
-        private int _listNumber;
-
         #region Public
 
-        public int ListNumber
+        public string TruckModel
         {
-            get => _listNumber;
-            set => SetProperty(ref _listNumber, value);
-        }
-
-        public Guid Id
-        {
-            get => _part.Id;
-        }
-
-        public string Model
-        {
-            get => _part.Model;
+            get => _dto.TruckModel;
             set
             {
-                _part.Model = value;
-                OnPropertyChanged(nameof(Model));
+                _dto.TruckModel = value;
+                OnPropertyChanged(nameof(TruckModel));
             }
         }
 
-        public string Number
+        public string TruckNumber
         {
-            get => _part.Number;
+            get => _dto.TruckNumber;
             set
             {
-                _part.Number = value;
-                OnPropertyChanged(nameof(Number));
+                _dto.TruckNumber = value;
+                OnPropertyChanged(nameof(TruckNumber));
             }
         }
 
+        public string TrailerModel
+        {
+            get => _dto.TrailerModel;
+            set
+            {
+                _dto.TrailerModel = value;
+                OnPropertyChanged(nameof(TrailerModel));
+            }
+        }
 
+        public string TrailerNumber
+        {
+            get => _dto.TrailerNumber;
+            set
+            {
+                _dto.TrailerNumber = value;
+                OnPropertyChanged(nameof(TrailerNumber));
+            }
+        }
 
         #endregion Public
 
-        #region Validation
-
-        public string Error => _part.Error;
-
-        public string this[string columnName]
+        public VehicleViewModel(VehicleDto dto) : base(dto) { }
+        public VehicleViewModel(VehicleDto dto, int counter) : base(dto, counter) { }
+        public VehicleViewModel()
         {
-            get
-            {
-                return _part[columnName];
-            }
-        }
-
-        #endregion Validation
-
-        public VahiclePartViewModel(VehicleDto part)
-        {
-            _part = part;
-        }
-
-        protected VahiclePartViewModel()
-        {
-            
-        }
-
-        public VehicleDto GetDto() 
-        { 
-            return _part;
+            _dto = new VehicleDto();
         }
     }
 
-    public class TruckViewModel : VahiclePartViewModel
+    public class VehicleViewModelFactory : IViewModelFactory<VehicleDto>
     {
-        public TruckViewModel()
+        public DataViewModel<VehicleDto> GetViewModel(VehicleDto dto, int number)
         {
-            _part = new TruckDto();
+            return new VehicleViewModel(dto, number);
         }
 
-        public TruckViewModel(TruckDto dto) : base(dto) { }
-
-    }
-
-    public class TrailerViewModel : VahiclePartViewModel
-    {
-        public TrailerViewModel()
+        public DataViewModel<VehicleDto> GetViewModel(VehicleDto dto)
         {
-            _part = new TrailerDto();
+            return new VehicleViewModel(dto);
         }
 
-        public TrailerViewModel(TrailerDto dto) : base(dto) { }
-
+        public DataViewModel<VehicleDto> GetViewModel()
+        {
+            return new VehicleViewModel();
+        }
     }
 }

@@ -1,59 +1,54 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using DTOs;
+﻿using DTOs;
+using DTOs.Dtos;
+using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
-    public class RoutePointViewModel : ObservableObject, IDataErrorInfo
+    public class RoutePointViewModel : DataViewModel<RoutePointDto>
     {
         #region Private
 
-        private RoutePointDto _route;
         private ObservableCollection<StringItem> _phones;
 
         #endregion Private
 
         #region Public
 
-        public Guid Id 
-        { 
-            get => _route.Id;
-        }
-
         public string Route 
         {
-            get => _route.Route;
+            get => _dto.Route;
             set 
-            { 
-                _route.Route = value;
+            {
+                _dto.Route = value;
                 OnPropertyChanged(nameof(Route));
             }
         }
         public string Address
         {
-            get => _route.Address;
+            get => _dto.Address;
             set
             {
-                _route.Address = value;
+                _dto.Address = value;
                 OnPropertyChanged(nameof(Address));
             }
         }
         public LoadingSide Side
         {
-            get => _route.Side;
+            get => _dto.Side;
             set
             {
-                _route.Side = value;
+                _dto.Side = value;
                 OnPropertyChanged(nameof(Side));
             }
         }
         public LoadPointType Type
         {
-            get => _route.Type;
+            get => _dto.Type;
             set
             {
-                _route.Type = value;
+                _dto.Type = value;
                 OnPropertyChanged(nameof(Type));
             }
         }
@@ -65,34 +60,44 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         #endregion Public
 
-        #region Validation
-
-        public string this[string columnName] => _route[columnName];
-
-        public string Error => _route.Error;
-
-        #endregion Validation
-
-        public RoutePointViewModel(RoutePointDto route)
+        public RoutePointViewModel(RoutePointDto route, int counter) : base(route, counter)
         {
-            _route = route; 
             Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
         }
 
+        public RoutePointViewModel(RoutePointDto route) : this(route, 0) { }
+
         public RoutePointViewModel()
         {
-            _route = new RoutePointDto()
+            _dto = new RoutePointDto()
             {
                 Phones = new List<string>()
             };
             Phones = new ObservableCollection<StringItem>();
         }
 
-        public RoutePointDto GetDto() 
+        public override RoutePointDto GetDto() 
         {
-            _route.Phones = _phones.Select(s => s.Item).ToList();
-            return _route;  
+            _dto.Phones = _phones.Select(s => s.Item).ToList();
+            return base.GetDto();  
+        }
+    }
+
+    public class RouteViewModelFactory : IViewModelFactory<RoutePointDto>
+    {
+        public DataViewModel<RoutePointDto> GetViewModel(RoutePointDto dto, int number)
+        {
+            return new RoutePointViewModel(dto, number);
         }
 
+        public DataViewModel<RoutePointDto> GetViewModel(RoutePointDto dto)
+        {
+            return new RoutePointViewModel(dto);
+        }
+
+        public DataViewModel<RoutePointDto> GetViewModel()
+        {
+            return new RoutePointViewModel();
+        }
     }
 }

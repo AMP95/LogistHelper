@@ -1,112 +1,79 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using DTOs;
+﻿using DTOs;
+using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
-    public class DriverViewModel : ObservableObject, IDataErrorInfo
+    public class DriverViewModel : DataViewModel<DriverDto>
     {
         #region Private
 
-        private int _number;
-        private DriverDto _driver;
-
-        private TruckViewModel _truck;
-        private TrailerViewModel _trailer;
+        private VehicleViewModel _vehicle;
         private CarrierViewModel _carrier;
         private ObservableCollection<StringItem> _phones;
 
         #endregion Private
 
         #region Public
-        
-        public int Number
-        {
-            get => _number;
-            set => SetProperty(ref _number, value);
-        }
-
-        public Guid Id
-        {
-            get => _driver.Id;
-        }
 
         public string Name
         {
-            get => _driver.Name;
+            get => _dto.Name;
             set
             {
-                _driver.Name = value;
+                _dto.Name = value;
                 OnPropertyChanged(nameof(Name));
             }
         }
         public DateTime BirthDate
         {
-            get => _driver.BirthDate;
+            get => _dto.BirthDate;
             set
             {
-                _driver.BirthDate = value;
+                _dto.BirthDate = value;
                 OnPropertyChanged(nameof(BirthDate));
             }
         }
         public string PassportSerial
         {
-            get => _driver.PassportSerial;
+            get => _dto.PassportSerial;
             set
             {
-                _driver.PassportSerial = value;
+                _dto.PassportSerial = value;
                 OnPropertyChanged(nameof(PassportSerial));
             }
         }
         public string PassportIssuer
         {
-            get => _driver.PassportIssuer;
+            get => _dto.PassportIssuer;
             set
             {
-                _driver.PassportIssuer = value;
+                _dto.PassportIssuer = value;
                 OnPropertyChanged(nameof(PassportIssuer));
             }
         }
         public DateTime PassportDateOfIssue
         {
-            get => _driver.PassportDateOfIssue;
+            get => _dto.PassportDateOfIssue;
             set
             {
-                _driver.PassportDateOfIssue = value;
+                _dto.PassportDateOfIssue = value;
                 OnPropertyChanged(nameof(PassportDateOfIssue));
             }
         }
-        public TruckViewModel Truck
+        public VehicleViewModel Vehicle
         {
-            get => _truck;
-            set 
-            { 
-                SetProperty(ref _truck, value);
+            get => _vehicle;
+            set
+            {
+                SetProperty(ref _vehicle, value);
                 if (value != null)
                 {
-                    _driver.Truck = (TruckDto)Truck.GetDto();
+                    _dto.Vehicle = Vehicle.GetDto();
                 }
-                else 
+                else
                 {
-                    _driver.Truck = null;
-                }
-            }
-        }
-
-        public TrailerViewModel Trailer
-        {
-            get => _trailer;
-            set 
-            { 
-                SetProperty(ref _trailer, value);
-                if (value != null)
-                {
-                    _driver.Trailer = (TrailerDto)Trailer.GetDto();
-                }
-                else 
-                {
-                    _driver.Trailer = null;
+                    _dto.Vehicle = null;
                 }
             }
         }
@@ -119,11 +86,11 @@ namespace LogistHelper.ViewModels.DataViewModels
                 SetProperty(ref _carrier, value);
                 if (value != null)
                 {
-                    _driver.Carrier = (CarrierDto)Carrier.GetDto();
+                    _dto.Carrier = Carrier.GetDto();
                 }
                 else
                 {
-                    _driver.Carrier = null;
+                    _dto.Carrier = null;
                 }
             }
         }
@@ -137,39 +104,50 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         #endregion Public
 
-        #region Validation
-
-        public string this[string columnName] => _driver[columnName];
-
-        public string Error => _driver.Error;
-
-        #endregion Validation
-
-        public DriverViewModel(DriverDto route)
+        public DriverViewModel(DriverDto dto, int counter) : base(dto, counter)
         {
-            _driver = route;
-            _truck = new TruckViewModel(_driver.Truck);
-            _trailer = new TrailerViewModel(_driver.Trailer);
-            _carrier = new CarrierViewModel(_driver.Carrier);
+            _vehicle = new VehicleViewModel(dto.Vehicle);
+            _carrier = new CarrierViewModel(dto.Carrier);
 
-            Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
+            Phones = new ObservableCollection<StringItem>(dto.Phones.Select(s => new StringItem(s)));
+        }
+
+        public DriverViewModel(DriverDto dto) : this(dto, 0)
+        {
         }
 
         public DriverViewModel()
         {
-            _driver = new DriverDto();
+            _dto = new DriverDto();
 
-            Truck = new TruckViewModel();
-            Trailer = new TrailerViewModel();
+            Vehicle = new VehicleViewModel();
             Carrier = new CarrierViewModel();
 
             Phones = new ObservableCollection<StringItem>();
         }
 
-        public DriverDto GetDto()
+        public override DriverDto GetDto()
         {
-            _driver.Phones = _phones.Select(s => s.Item).ToList();
-            return _driver;
+            _dto.Phones = _phones.Select(s => s.Item).ToList();
+            return base.GetDto();
+        }
+    }
+
+    public class DriverViewModelFactory : IViewModelFactory<DriverDto>
+    {
+        public DataViewModel<DriverDto> GetViewModel(DriverDto dto, int number)
+        {
+            return new DataViewModel<DriverDto>(dto, number);
+        }
+
+        public DataViewModel<DriverDto> GetViewModel(DriverDto dto)
+        {
+            return new DataViewModel<DriverDto>(dto);
+        }
+
+        public DataViewModel<DriverDto> GetViewModel()
+        {
+            return new DataViewModel<DriverDto>();
         }
     }
 }

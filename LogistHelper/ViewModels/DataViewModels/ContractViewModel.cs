@@ -1,17 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using DTOs;
+﻿using DTOs;
+using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
-    public class ContractViewModel : ObservableObject, IDataErrorInfo
+    public class ContractViewModel : DataViewModel<ContractDto>
     {
         #region Private
-
-        private ContractDto _contract;
-
-        private int _listNumber;
 
         private DriverViewModel _driver;
         private RoutePointViewModel _loadingPoint;
@@ -22,98 +17,87 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         #region Public
 
-        public int ListNumber
-        {
-            get => _listNumber;
-            set => SetProperty(ref _listNumber, value);
-        }
-
-        public Guid Id
-        {
-            get => _contract.Id;
-        }
-
         public short Number
         {
-            get => _contract.Number;
+            get => _dto.Number;
             set
             {
-                _contract.Number = value;
+                _dto.Number = value;
                 OnPropertyChanged(nameof(Number));
             }
         }
         public DateTime CreationDate
         {
-            get => _contract.CreationDate;
+            get => _dto.CreationDate;
             set
             {
-                _contract.CreationDate = value;
+                _dto.CreationDate = value;
                 OnPropertyChanged(nameof(CreationDate));
             }
         }
         public ContractStatus Status
         {
-            get => _contract.Status;
+            get => _dto.Status;
             set
             {
-                _contract.Status = value;
+                _dto.Status = value;
                 OnPropertyChanged(nameof(Status));
             }
         }
         public float Volume
         {
-            get => _contract.Volume;
+            get => _dto.Volume;
             set
             {
-                _contract.Volume = value;
+                _dto.Volume = value;
                 OnPropertyChanged(nameof(Volume));
             }
         }
         public float Weight
         {
-            get => _contract.Weight;
+            get => _dto.Weight;
             set
             {
-                _contract.Weight = value;
+                _dto.Weight = value;
                 OnPropertyChanged(nameof(Weight));
             }
         }
 
         public float Payment
         {
-            get => _contract.Payment;
+            get => _dto.Payment;
             set
             {
-                _contract.Payment = value;
+                _dto.Payment = value;
                 OnPropertyChanged(nameof(Payment));
             }
         }
 
         public float Prepayment
         {
-            get => _contract.Prepayment;
+            get => _dto.Prepayment;
             set
             {
-                _contract.Prepayment = value;
+                _dto.Prepayment = value;
                 OnPropertyChanged(nameof(Prepayment));
             }
         }
         public RecievingType PaymentCondition
         {
-            get => _contract.PaymentCondition;
+            get => _dto.PaymentCondition;
             set
             {
-                _contract.PaymentCondition = value;
+                _dto.PaymentCondition = value;
                 OnPropertyChanged(nameof(PaymentCondition));
             }
         }
 
         public PaymentPriority PayPriority
         {
-            get => _contract.PayPriority;
+            get => _dto.PayPriority;
             set
             {
-                _contract.PayPriority = value;
+                _dto.PayPriority = value;
                 OnPropertyChanged(nameof(PayPriority));
             }
         }
@@ -126,37 +110,24 @@ namespace LogistHelper.ViewModels.DataViewModels
                 SetProperty(ref _driver, value);
                 if (value != null)
                 {
-                    _contract.Driver = Driver.GetDto();
+                    _dto.Driver = Driver.GetDto();
                 }
                 else
                 {
-                    _contract.Driver = null;
+                    _dto.Driver = null;
                 }
             }
         }
 
-        public TruckViewModel Truck
+        public VehicleViewModel Vehicle
         {
-            get => _driver?.Truck;
+            get => _driver?.Vehicle;
             set
             {
                 if (_driver != null)
                 {
-                    _driver.Truck = value;
-                    OnPropertyChanged(nameof(Truck));
-                }
-            }
-        }
-
-        public TrailerViewModel Trailer
-        {
-            get => _driver?.Trailer;
-            set
-            {
-                if (_driver != null)
-                {
-                    _driver.Trailer = value;
-                    OnPropertyChanged(nameof(Trailer));
+                    _driver.Vehicle = value;
+                    OnPropertyChanged(nameof(Vehicle));
                 }
             }
         }
@@ -174,11 +145,11 @@ namespace LogistHelper.ViewModels.DataViewModels
                 SetProperty(ref _loadingPoint, value);
                 if (_loadingPoint != null)
                 {
-                    _contract.LoadPoint = LoadPoint.GetDto();
+                    _dto.LoadPoint = LoadPoint.GetDto();
                 }
                 else 
                 {
-                    _contract.LoadPoint = null;
+                    _dto.LoadPoint = null;
                 }
             }
         }
@@ -192,39 +163,52 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         #endregion Public
 
-        #region Validation
-
-        public string this[string columnName] => _contract[columnName];
-
-        public string Error => _contract.Error;
-
-        #endregion Validation
-
-        public ContractViewModel(ContractDto route)
+        public ContractViewModel(ContractDto dto, int counter) : base(dto, counter)
         {
-            _contract = route;
+            _driver = new DriverViewModel(_dto.Driver);
+            _loadingPoint = new RoutePointViewModel(_dto.LoadPoint);
+            UnloadPoints = new ObservableCollection<RoutePointViewModel>(_dto.UnloadPoints.Select(p => new RoutePointViewModel(p)));
+        }
 
-            _driver = new DriverViewModel(_contract.Driver);
-            _loadingPoint = new RoutePointViewModel(_contract.LoadPoint);
-            UnloadPoints = new ObservableCollection<RoutePointViewModel>(_contract.UnloadPoints.Select(p => new RoutePointViewModel(p)));
+        public ContractViewModel(ContractDto dto) : this (dto, 0)
+        {
+            _driver = new DriverViewModel(dto.Driver);
+            _loadingPoint = new RoutePointViewModel(dto.LoadPoint);
+            UnloadPoints = new ObservableCollection<RoutePointViewModel>(dto.UnloadPoints.Select(p => new RoutePointViewModel(p)));
         }
 
         public ContractViewModel()
         {
-            _contract = new ContractDto();
             Driver = new DriverViewModel();
             LoadPoint = new RoutePointViewModel();
             UnloadPoints = new ObservableCollection<RoutePointViewModel>();
         }
 
-        public ContractDto GetDto()
+        public override ContractDto GetDto()
         {
-            _contract.UnloadPoints = UnloadPoints.Select(p => p.GetDto()).ToList();
-            _contract.Carrier = _contract.Driver.Carrier;
-            _contract.Trailer = _contract.Driver.Trailer;
-            _contract.Truck = _contract.Driver.Truck;
+            _dto.UnloadPoints = UnloadPoints.Select(p => p.GetDto()).ToList();
+            _dto.Carrier = _dto.Driver.Carrier;
+            _dto.Vehicle = _dto.Driver.Vehicle;
 
-            return _contract;
+            return base.GetDto();
+        }
+    }
+
+    public class ContractViewModelFactory : IViewModelFactory<ContractDto>
+    {
+        public DataViewModel<ContractDto> GetViewModel(ContractDto dto, int number)
+        {
+            return new ContractViewModel(dto, number);
+        }
+
+        public DataViewModel<ContractDto> GetViewModel(ContractDto dto)
+        {
+            return new ContractViewModel(dto);
+        }
+
+        public DataViewModel<ContractDto> GetViewModel()
+        {
+            return new ContractViewModel();
         }
     }
 }
