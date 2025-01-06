@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
              xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600">
     <Grid>
@@ -44,20 +45,30 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBox
-                    Style="{StaticResource SubCentralTextBox}"
-                    Text="{Binding CarrierName}"/>
+                    x:Name="searchText"
+                    Style="{StaticResource SubCentralTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="SearchString" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <rules:EmptyStringValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
 
                 <Button
                     Grid.Column="1"
+                    IsEnabled="{Binding ElementName=searchText, Path=(Validation.HasError)}"
                     Height="30"
-                    Style="{StaticResource NeutralButton}"
                     Content="Поиск"
-                    Command="{Binding FindCarrierCommand}"/>
+                    Style="{StaticResource NeutralButton}"
+                    Command="{Binding FindCarrierCommand}">
+                </Button>
             </Grid>
 
             <ItemsControl
                 Grid.Row="1"
-                ItemsSource="{Binding ShowedCarriers}">
+                ItemsSource="{Binding ShownCarriers}">
                 <ItemsControl.Template>
                     <ControlTemplate>
                         <Grid>
@@ -173,12 +184,14 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button
+                    IsEnabled="{Binding IsBackwardAwaliable}"
                     Style="{StaticResource IconButton}"
                     Command="{Binding BackwardCommand}"
                     Content="Back"/>
 
                 <Button
                     Grid.Column="1"
+                    IsEnabled="{Binding IsForwardAwaliable}"
                     Style="{StaticResource IconButton}"
                     Command="{Binding ForwardCommand}"
                     Content="Forw"/>

@@ -1,16 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using LogistHelper.Models.Settings;
 using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
-using ServerClient;
-using Shared;
-using System.Windows.Input;
+using LogistHelper.ViewModels.Views;
 
 namespace LogistHelper.ViewModels.Pages
 {
     public class CarrierMenuViewModel : BasePageViewModel
     {
         private ObservableObject _content;
+
+        private CarrierListViewModel _list;
+        private EditCarrierViewModel _editCarrier;
 
 
         #region Public
@@ -23,9 +23,28 @@ namespace LogistHelper.ViewModels.Pages
 
         #endregion Public
 
-        public CarrierMenuViewModel()
+        public CarrierMenuViewModel(CarrierListViewModel list,
+                                    EditCarrierViewModel edit)
         {
+            _list = list;
+            _editCarrier = edit;
 
+            list.Parent = this;
+            _editCarrier.Parent = this;
+
+            SwitchToList();
+        }
+
+        public async Task SwitchToList() 
+        { 
+            Content = _list;
+            await _list.Load();
+        }
+
+        public async Task SwitchToEdit(Guid id) 
+        {
+            Content = _editCarrier;
+            await _editCarrier.Load(id);
         }
 
         protected override void BackCommandExecutor()

@@ -10,7 +10,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         #region Private
 
         private RoutePointDto _route;
-        private ObservableCollection<string> _phones;
+        private ObservableCollection<StringItem> _phones;
 
         #endregion Private
 
@@ -57,7 +57,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Type));
             }
         }
-        public ObservableCollection<string> Phones
+        public ObservableCollection<StringItem> Phones
         {
             get => _phones;
             set => SetProperty(ref _phones, value);
@@ -76,7 +76,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         public RoutePointViewModel(RoutePointDto route)
         {
             _route = route; 
-            Phones = new ObservableCollection<string>(route.Phones);
+            Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
         }
 
         public RoutePointViewModel()
@@ -85,12 +85,12 @@ namespace LogistHelper.ViewModels.DataViewModels
             {
                 Phones = new List<string>()
             };
-            Phones = new ObservableCollection<string>();
+            Phones = new ObservableCollection<StringItem>();
         }
 
         public RoutePointDto GetDto() 
         {
-            _route.Phones = _phones.ToList();
+            _route.Phones = _phones.Select(s => s.Item).ToList();
             return _route;  
         }
 

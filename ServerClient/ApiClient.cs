@@ -26,18 +26,32 @@ namespace ServerClient
             return await SendAsync<T>(HttpMethod.Get, $"{_url}/Get/{route}");
         }
 
-        public async Task<RequestResult<IEnumerable<T>>> Get<T>(string property = null, object value = null)
+        public async Task<RequestResult<T>> GetId<T>(Guid id)
         {
             string route = GetRoute(typeof(T));
-            RequestResult<Guid> result = await GetRequest<Guid>($"GetF/{route}/{property}/{value}");
+            RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/id/{id}");
+            return await GetResult<T>(result);
+        }
+
+        public async Task<RequestResult<IEnumerable<T>>> GetMainId<T>(Guid id)
+        {
+            string route = GetRoute(typeof(T));
+            RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/main/{id}");
             return await GetResult<IEnumerable<T>>(result);
         }
 
-        public async Task<RequestResult<T>> Get<T>(int id)
+        public async Task<RequestResult<IEnumerable<T>>> GetRange<T>(int start, int end)
         {
             string route = GetRoute(typeof(T));
-            RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/{id}");
-            return await GetResult<T>(result);
+            RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/range/{start}/{end}");
+            return await GetResult<IEnumerable<T>>(result);
+        }
+
+        public async Task<RequestResult<IEnumerable<T>>> Search<T>(string name)
+        {
+            string route = GetRoute(typeof(T));
+            RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/search/{name}");
+            return await GetResult<IEnumerable<T>>(result);
         }
 
         public async Task<RequestResult<bool>> Add<T>(T value)

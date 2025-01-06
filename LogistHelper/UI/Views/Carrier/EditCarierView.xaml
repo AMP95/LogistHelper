@@ -4,16 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="600">
+             d:DesignHeight="500" d:DesignWidth="600">
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
             <RowDefinition/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        
+
+        <Button
+            Style="{StaticResource IconButton}"
+            Content="Сохранить"
+            HorizontalAlignment="Right"
+            Command="{Binding BackCommand}"/>
+
         <ScrollViewer
+            Grid.Row="1"
             Style="{StaticResource CustomScroll}">
             <StackPanel>
                 <TextBlock
@@ -21,8 +30,15 @@
                     Text="Название"/>
 
                 <TextBox
-                    Style="{StaticResource SubLeftTextBox}"
-                    Text="{Binding SelectedCarrier.Name}"/>
+                    Style="{StaticResource SubLeftTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="EditedCarrier.Name">
+                            <Binding.ValidationRules>
+                                <rules:EmptyStringValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -33,12 +49,16 @@
                     <RadioButton
                         FlowDirection="RightToLeft"
                         Style="{StaticResource CustomRadio}"
-                        Content="С НДС"/>
+                        Content="С НДС"
+                        Command="{Binding SetVatCommand}"
+                        CommandParameter="With"/>
 
                     <RadioButton
                         Grid.Column="1"
                         Style="{StaticResource CustomRadio}"
-                        Content="Без НДС"/>
+                        Content="Без НДС"
+                        Command="{Binding SetVatCommand}"
+                        CommandParameter="Without"/>
                 </Grid>
 
                 <TextBlock
@@ -46,23 +66,37 @@
                     Text="Адрес"/>
 
                 <TextBox
-                    Style="{StaticResource SubLeftTextBox}"
-                    Text="{Binding SelectedCarrier.Address}"/>
+                    Style="{StaticResource SubLeftTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="EditedCarrier.Address">
+                            <Binding.ValidationRules>
+                                <rules:EmptyStringValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
 
                 <TextBlock
                     Style="{StaticResource MiniText}"
                     Text="ИНН/КПП"/>
 
                 <TextBox
-                    Style="{StaticResource SubLeftTextBox}"
-                    Text="{Binding SelectedCarrier.InnKpp}"/>
+                    Style="{StaticResource SubLeftTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="EditedCarrier.InnKpp">
+                            <Binding.ValidationRules>
+                                <rules:InnKppValidationRules/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
 
                 <TextBlock
                     Style="{StaticResource MiniText}"
                     Text="Телефон"/>
 
                 <ItemsControl
-                    ItemsSource="{Binding SelectedCarrier.Phones}">
+                    ItemsSource="{Binding EditedCarrier.Phones}">
                     <ItemsControl.Template>
                         <ControlTemplate>
                             <Grid>
@@ -91,14 +125,21 @@
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBox
-                                     Style="{StaticResource SubLeftTextBox}"
-                                     Text="{Binding }"/>
+                                    Style="{StaticResource SubLeftTextBox}">
+                                    <TextBox.Text>
+                                        <Binding Path="Item">
+                                            <Binding.ValidationRules>
+                                                <rules:PhoneValidationRule/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
 
                                 <Button
                                     Grid.Column="1"
                                     Style="{StaticResource IconButton}"
                                     Command="{Binding DeletePhoneCommand}"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext}"/>
+                                    CommandParameter="{Binding Id}"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -109,7 +150,7 @@
                     Text="Email"/>
 
                 <ItemsControl
-                    ItemsSource="{Binding SelectedCarrier.Emails}">
+                    ItemsSource="{Binding EditedCarrier.Emails}">
 
                     <ItemsControl.Template>
                         <ControlTemplate>
@@ -138,14 +179,21 @@
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBox
-                                    Style="{StaticResource SubLeftTextBox}"
-                                    Text="{Binding }"/>
+                                    Style="{StaticResource SubLeftTextBox}">
+                                    <TextBox.Text>
+                                        <Binding Path="Item">
+                                            <Binding.ValidationRules>
+                                                <rules:EmailValudationRule/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
 
                                 <Button
                                     Grid.Column="1"
                                     Style="{StaticResource IconButton}"
                                     Command="{Binding DeleteEmailCommand}"
-                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext}"/>
+                                    CommandParameter="{Binding Id}"/>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -156,11 +204,26 @@
             </StackPanel>
         </ScrollViewer>
 
-        <Button
-            Grid.Row="1"
-            Style="{StaticResource AcceptButton}"
-            Content="Сохранить"
-            Command="{Binding SaveCarrierCommand}"/>
+        <Grid
+            Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button
+                Style="{StaticResource AcceptButton}"
+                Content="Сохранить"
+                Command="{Binding SaveCommand}"/>
+
+            <Button
+                Grid.Column="1"
+                Style="{StaticResource CancelButton}"
+                Content="Отмена"
+                Command="{Binding CancelCommand}"/>
+        </Grid>
+
+        
     </Grid>
     
 </UserControl>

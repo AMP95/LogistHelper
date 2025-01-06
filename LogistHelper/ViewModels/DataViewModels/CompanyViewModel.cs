@@ -11,8 +11,8 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         protected CompanyDto _company;
 
-        private ObservableCollection<string> _phones;
-        private ObservableCollection<string> _emails;
+        private ObservableCollection<StringItem> _phones;
+        private ObservableCollection<StringItem> _emails;
 
         #endregion Private
 
@@ -51,12 +51,12 @@ namespace LogistHelper.ViewModels.DataViewModels
             }
         }
 
-        public ObservableCollection<string> Phones
+        public ObservableCollection<StringItem> Phones
         {
             get => _phones;
             set => SetProperty(ref _phones, value);
         }
-        public ObservableCollection<string> Emails
+        public ObservableCollection<StringItem> Emails
         {
             get => _emails;
             set => SetProperty(ref _emails, value);
@@ -76,28 +76,23 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             _company = company;
 
-            Phones = new ObservableCollection<string>(company.Phones);
-            Emails = new ObservableCollection<string>(company.Emails);
+            Phones = new ObservableCollection<StringItem>(company.Phones.Select(s => new StringItem(s)));
+            Emails = new ObservableCollection<StringItem>(company.Emails.Select(s => new StringItem(s)));
 
-            Phones.CollectionChanged += Phones_CollectionChanged;
-            Emails.CollectionChanged += Emails_CollectionChanged;
         }
 
         public CompanyViewModel()
         {
             _company = new CompanyDto();
 
-            Phones = new ObservableCollection<string>();
-            Emails = new ObservableCollection<string>();
-
-            Phones.CollectionChanged += Phones_CollectionChanged;
-            Emails.CollectionChanged += Emails_CollectionChanged;
+            Phones = new ObservableCollection<StringItem>();
+            Emails = new ObservableCollection<StringItem>();
         }
 
         public CompanyDto GetDto()
         {
-            _company.Phones = _phones.ToList();
-            _company.Emails = _emails.ToList();
+            _company.Phones = _phones.Select(s => s.Item).ToList();
+            _company.Emails = _emails.Select(s => s.Item).ToList();
             return _company;
         }
     }

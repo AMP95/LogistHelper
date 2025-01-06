@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:LogistHelper"
              xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
+             xmlns:views="clr-namespace:LogistHelper.UI.Views"
              xmlns:pagesVM="clr-namespace:LogistHelper.ViewModels.Pages"
+             xmlns:viewsVM="clr-namespace:LogistHelper.ViewModels.Views"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -27,6 +29,16 @@
             <DataTemplate
                 DataType="{x:Type pagesVM:CarrierMenuViewModel}">
                 <pages:CarrierMenuPage/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type viewsVM:CarrierListViewModel}">
+                <views:CarrierListView/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type viewsVM:EditCarrierViewModel}">
+                <views:EditCarierView/>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

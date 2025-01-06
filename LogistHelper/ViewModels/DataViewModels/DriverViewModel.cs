@@ -14,7 +14,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         private TruckViewModel _truck;
         private TrailerViewModel _trailer;
         private CarrierViewModel _carrier;
-        private ObservableCollection<string> _phones;
+        private ObservableCollection<StringItem> _phones;
 
         #endregion Private
 
@@ -122,7 +122,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         }
 
 
-        public ObservableCollection<string> Phones
+        public ObservableCollection<StringItem> Phones
         {
             get => _phones;
             set => SetProperty(ref _phones, value);
@@ -145,7 +145,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             _trailer = new TrailerViewModel(_driver.Trailer);
             _carrier = new CarrierViewModel(_driver.Carrier);
 
-            Phones = new ObservableCollection<string>(route.Phones);
+            Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
         }
 
         public DriverViewModel()
@@ -156,12 +156,12 @@ namespace LogistHelper.ViewModels.DataViewModels
             Trailer = new TrailerViewModel();
             Carrier = new CarrierViewModel();
 
-            Phones = new ObservableCollection<string>();
+            Phones = new ObservableCollection<StringItem>();
         }
 
         public DriverDto GetDto()
         {
-            _driver.Phones = _phones.ToList();
+            _driver.Phones = _phones.Select(s => s.Item).ToList();
             return _driver;
         }
     }
