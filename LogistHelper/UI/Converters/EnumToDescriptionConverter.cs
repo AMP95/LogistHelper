@@ -8,6 +8,10 @@ namespace LogistHelper.UI.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (value is Enum enumVal) 
+            {
+                return enumVal.GetDescription();
+            }
             return value;
         }
 

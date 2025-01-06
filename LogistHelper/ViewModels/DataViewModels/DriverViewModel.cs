@@ -9,6 +9,7 @@ namespace LogistHelper.ViewModels.DataViewModels
     {
         #region Private
 
+        private int _number;
         private DriverDto _driver;
 
         private TruckViewModel _truck;
@@ -19,6 +20,12 @@ namespace LogistHelper.ViewModels.DataViewModels
         #endregion Private
 
         #region Public
+        
+        public int Number
+        {
+            get => _number;
+            set => SetProperty(ref _number, value);
+        }
 
         public Guid Id
         {

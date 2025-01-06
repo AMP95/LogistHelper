@@ -11,6 +11,8 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         private ContractDto _contract;
 
+        private int _listNumber;
+
         private DriverViewModel _driver;
         private RoutePointViewModel _loadingPoint;
 
@@ -19,6 +21,12 @@ namespace LogistHelper.ViewModels.DataViewModels
         #endregion Private
 
         #region Public
+
+        public int ListNumber
+        {
+            get => _listNumber;
+            set => SetProperty(ref _listNumber, value);
+        }
 
         public Guid Id
         {

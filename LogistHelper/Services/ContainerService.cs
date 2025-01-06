@@ -2,6 +2,7 @@
 using Log4NetLogger;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Pages;
+using LogistHelper.ViewModels.Views;
 using LogistHelper.ViewModels.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using Shared;
@@ -34,6 +35,9 @@ namespace LogistHelper.Services
             #endregion Pages
 
             #region Views
+
+            services.AddTransient<CarrierListViewModel, CarrierListViewModel>();
+            services.AddTransient<EditCarrierViewModel, EditCarrierViewModel>();
 
 
             #endregion Views

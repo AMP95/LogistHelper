@@ -2,6 +2,8 @@
 using DTOs;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO.Packaging;
+using Windows.Devices.Sensors;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
@@ -9,14 +11,26 @@ namespace LogistHelper.ViewModels.DataViewModels
     {
         #region Private
 
+        private int _number;
+
         protected CompanyDto _company;
 
         private ObservableCollection<StringItem> _phones;
         private ObservableCollection<StringItem> _emails;
 
+        private string _inn;
+        private string _kpp;
+
         #endregion Private
 
         #region Public
+
+        
+        public int Number 
+        {
+            get => _number;
+            set=> SetProperty(ref _number, value);
+        }
 
         public Guid Id
         {
@@ -41,13 +55,31 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Address));
             }
         }
-        public string InnKpp
+        public string Inn
         {
-            get => _company.InnKpp;
+            get => _inn;
             set
             {
-                _company.InnKpp = value;
-                OnPropertyChanged(nameof(InnKpp));
+                SetProperty(ref _inn, value);
+                _company.InnKpp = $"{Inn}";
+                if (string.IsNullOrWhiteSpace(Kpp))
+                {
+                    _company.InnKpp += $"/{Kpp}";
+                }
+            }
+        }
+
+        public string Kpp
+        {
+            get => _kpp;
+            set
+            {
+                SetProperty(ref _kpp, value);
+                _company.InnKpp = $"{Inn}";
+                if (string.IsNullOrWhiteSpace(Kpp))
+                {
+                    _company.InnKpp += $"/{Kpp}";
+                }
             }
         }
 
@@ -75,6 +107,12 @@ namespace LogistHelper.ViewModels.DataViewModels
         public CompanyViewModel(CompanyDto company)
         {
             _company = company;
+            string[] innkpp = _company.InnKpp.Split('/');
+            _inn = innkpp[0];
+            if (innkpp.Length > 1) 
+            { 
+                _kpp = innkpp[1];
+            }
 
             Phones = new ObservableCollection<StringItem>(company.Phones.Select(s => new StringItem(s)));
             Emails = new ObservableCollection<StringItem>(company.Emails.Select(s => new StringItem(s)));

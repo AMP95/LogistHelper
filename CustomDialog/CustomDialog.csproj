@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Icons\" />
+    <None Remove="Icons\error_icon.png" />
+    <None Remove="Icons\info_icon.png" />
+    <None Remove="Icons\quest_icon.png" />
+    <None Remove="Icons\success_icon.png" />
+    <None Remove="Icons\warn_icon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +21,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Shared\Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\error_icon.png" />
+    <Resource Include="Icons\info_icon.png" />
+    <Resource Include="Icons\quest_icon.png" />
+    <Resource Include="Icons\success_icon.png" />
+    <Resource Include="Icons\warn_icon.png" />
   </ItemGroup>
 
 </Project>

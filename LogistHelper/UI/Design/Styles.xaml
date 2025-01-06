@@ -1343,7 +1343,7 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Template" Value="{StaticResource TextBoxTemplate}"/>
             <Setter Property="Background" Value="{StaticResource LightBlueBrush}"/>
-            <Setter Property="Foreground" Value="{StaticResource SemiDarkBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkBrush}"/>
             <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>

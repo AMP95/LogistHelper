@@ -23,7 +23,7 @@ namespace ServerClient
 
         private async Task<RequestResult<T>> GetRequest<T>(string route)
         {
-            return await SendAsync<T>(HttpMethod.Get, $"{_url}/Get/{route}");
+            return await SendAsync<T>(HttpMethod.Get, $"{_url}/{route}");
         }
 
         public async Task<RequestResult<T>> GetId<T>(Guid id)
@@ -68,7 +68,7 @@ namespace ServerClient
             return await GetResult<bool>(result);
         }
 
-        public async Task<RequestResult<bool>> Delete<T>(int id)
+        public async Task<RequestResult<bool>> Delete<T>(Guid id)
         {
             string route = GetRoute(typeof(T));
             RequestResult<Guid> result = await SendAsync<Guid>(HttpMethod.Delete, $"{_url}/Delete/{route}/{id}");

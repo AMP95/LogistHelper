@@ -8,8 +8,15 @@ namespace LogistHelper.ViewModels.DataViewModels
     {
         protected VehicleDto _part;
 
+        private int _listNumber;
 
         #region Public
+
+        public int ListNumber
+        {
+            get => _listNumber;
+            set => SetProperty(ref _listNumber, value);
+        }
 
         public Guid Id
         {

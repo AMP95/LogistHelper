@@ -6,8 +6,13 @@
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
              xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
              xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
+             xmlns:converter="clr-namespace:LogistHelper.UI.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600">
+    <UserControl.Resources>
+        <converter:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -21,6 +26,7 @@
         </Grid.RowDefinitions>
 
         <local:NavigationBack
+            Margin="0 0 12 0"
             HorizontalAlignment="Right"
             Grid.ColumnSpan="3"
             DataContext="{Binding RelativeSource={RelativeSource AncestorType=pages:CarrierMenuPage}, Path=DataContext}"/>
@@ -37,9 +43,12 @@
             </Grid.RowDefinitions>
 
             <Grid
+                MaxWidth="600"
                 Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
+                    <ColumnDefinition
+                        Width="auto"/>
                     <ColumnDefinition
                         Width="auto"/>
                 </Grid.ColumnDefinitions>
@@ -58,11 +67,17 @@
 
                 <Button
                     Grid.Column="1"
-                    IsEnabled="{Binding ElementName=searchText, Path=(Validation.HasError)}"
-                    Height="30"
                     Content="Поиск"
-                    Style="{StaticResource NeutralButton}"
-                    Command="{Binding FindCarrierCommand}">
+                    Style="{StaticResource IconButton}"
+                    Command="{Binding SearchCommand}"
+                    IsDefault="True">
+                </Button>
+                
+                <Button
+                    Grid.Column="2"
+                    Content="Сброс"
+                    Style="{StaticResource IconButton}"
+                    Command="{Binding ResetSearchCommand}">
                 </Button>
             </Grid>
 
@@ -77,7 +92,8 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <Grid>
+                            <Grid
+                                Margin="0 0 12 0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition
                                         Width="100"/>
@@ -85,7 +101,9 @@
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
                                     <ColumnDefinition
-                                        Width="auto"/>
+                                        Width="50"/>
+                                    <ColumnDefinition
+                                        Width="50"/>
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock
@@ -112,17 +130,16 @@
                                     Text="НДС"/>
 
                                 <Button
-                                    Grid.Column="4"
+                                    Grid.Column="5"
                                     Style="{StaticResource IconButton}"
                                     HorizontalAlignment="Right"
                                     Content="Add"
-                                    Command="{Binding AddCarrierCommand}"/>
+                                    Command="{Binding AddCommand}"/>
                             </Grid>
-
-                            
 
                             <ScrollViewer
                                 Grid.Row="1"
+                                VerticalScrollBarVisibility="Visible"
                                 HorizontalScrollBarVisibility="Disabled"
                                 Style="{StaticResource CustomScroll}">
                                 <ItemsPresenter/>
@@ -139,37 +156,50 @@
                                     Width="100"/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
+                                <ColumnDefinition/>
                                 <ColumnDefinition
-                                    Width="auto"/>
+                                    Width="50"/>
+                                <ColumnDefinition
+                                    Width="50"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock
-                                Style="{StaticResource MiniText}"
+                                Style="{StaticResource DefaultText}"
                                 TextAlignment="Center"
                                 Text="{Binding Number}"/>
 
                             <TextBlock
                                 Grid.Column="1"
-                                Style="{StaticResource MiniText}"
+                                Style="{StaticResource DefaultText}"
                                 TextAlignment="Center"
                                 Text="{Binding Name}"/>
 
                             <TextBlock
                                 Grid.Column="2"
-                                Style="{StaticResource MiniText}"
-                                TextAlignment="Center"
-                                Text="{Binding InnKpp}"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center">
+                                <Run Text="{Binding Inn}"/>
+                                <Run Text="/"/>
+                                <Run Text="{Binding Kpp}"/>
+                            </TextBlock>
 
                             <TextBlock
                                 Grid.Column="3"
-                                Style="{StaticResource MiniText}"
+                                Style="{StaticResource DefaultText}"
                                 TextAlignment="Center"
-                                Text="{Binding VAT}"/>
+                                Text="{Binding Vat, Converter={StaticResource EnumToDescriptionConverter}}"/>
                             
                             <Button
                                 Grid.Column="4"
                                 Style="{StaticResource IconButton}"
                                 Content="Реда"
-                                Command="{Binding EditCerrierCommand}"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:CarrierListView}, Path=DataContext.EditCommand}"
+                                CommandParameter="{Binding Id}"/>
+
+                            <Button
+                                Grid.Column="5"
+                                Style="{StaticResource IconButton}"
+                                Content="Удал"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:CarrierListView}, Path=DataContext.DeleteCommand}"
                                 CommandParameter="{Binding Id}"/>
                         </Grid>
                     </DataTemplate>
@@ -198,6 +228,10 @@
             </Grid>
 
         </Grid>
+
+        <local:BlockView
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="3"/>
 
     </Grid>
 </UserControl>

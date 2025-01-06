@@ -38,13 +38,13 @@ namespace LogistHelper.ViewModels.Pages
         public async Task SwitchToList() 
         { 
             Content = _list;
-            await _list.Load();
+            _list.Load();
         }
 
         public async Task SwitchToEdit(Guid id) 
         {
             Content = _editCarrier;
-            await _editCarrier.Load(id);
+            _editCarrier.Load(id);
         }
 
         protected override void BackCommandExecutor()

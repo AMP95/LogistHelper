@@ -22,7 +22,9 @@ namespace LogistHelper.Models.Settings
             {
                 Settings settings = new Settings()
                 {
-
+                    ServerUri = "https://localhost:7081/api",
+                    DaDataApiKey = "00475e8fb9e3d1877e8b9e0d5d5f269c2a5a7f90",
+                    DaDataSecretKey = "a9bf357e95073eff9a20f62532fb0db1ebfa7bc3"
                 };
 
                 SaveSettings(settings);    
@@ -55,17 +57,11 @@ namespace LogistHelper.Models.Settings
         public void SaveSettings(Settings settings)
         {
             _settings = settings;
-
-            string str = JsonSerializer.Serialize<Settings>(_settings);
             try
             {
-                using (var file = File.Open(_fileName, FileMode.Truncate)) 
+                using (var file = File.OpenWrite(_fileName)) 
                 {
-                    using (StreamWriter writer = new StreamWriter(file)) 
-                    {
-                        writer.WriteLine(str);
-                        writer.Flush();
-                    }
+                    JsonSerializer.Serialize<Settings>(file, _settings);
                 }
             }
             catch (Exception ex) 

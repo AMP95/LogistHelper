@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using DTOs;
 using LogistHelper.Models.Settings;
+using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using LogistHelper.ViewModels.Pages;
 using ServerClient;
@@ -11,11 +12,11 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class CarrierListViewModel : ObservableObject
+    public class CarrierListViewModel : BlockedViewModel
     {
         #region Private
 
-        private bool _isBlock;
+        IDialog _dialog;
 
         private Settings _settings;
         private ApiClient _client;
@@ -34,12 +35,6 @@ namespace LogistHelper.ViewModels.Views
         #region Public
 
         public CarrierMenuViewModel Parent;
-
-        public bool IsBlock 
-        {
-            get => _isBlock;
-            set => SetProperty(ref _isBlock, value);
-        }
 
         public string SearchString 
         { 
@@ -74,13 +69,15 @@ namespace LogistHelper.ViewModels.Views
         public ICommand ResetSearchCommand { get; set; }
         public ICommand EditCommand { get; set; }
         public ICommand AddCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
 
         #endregion Commands
 
-        public CarrierListViewModel(ISettingsRepository<Settings> repository)
+        public CarrierListViewModel(ISettingsRepository<Settings> repository, IDialog dialog)
         {
             _settings = repository.GetSettings();
             _client = new ApiClient(_settings.ServerUri);
+            _dialog = dialog;
 
             #region CommandsInit
 
@@ -124,6 +121,14 @@ namespace LogistHelper.ViewModels.Views
                 Parent.SwitchToEdit(Guid.Empty);
             });
 
+            DeleteCommand = new RelayCommand<Guid>(async (id) =>
+            {
+                if (_dialog.ShowSure("Удаление")) 
+                {
+                    await Delete(id);   
+                }
+            });
+
 
             #endregion CommandsInit
         }
@@ -131,17 +136,19 @@ namespace LogistHelper.ViewModels.Views
         public async Task Load() 
         {
             IsBlock = true;
+            BlockText = "Загрузка";
 
             ShownCarriers?.Clear();
 
-            RequestResult<IEnumerable<CarrierDto>> result = await _client.GetRange<CarrierDto>(_startIndex, _startIndex + _count);
+            RequestResult<IEnumerable<CarrierDto>> result = await _client.GetRange<CarrierDto>(_startIndex, _count);
 
             if (result.IsSuccess) 
             {
-                ShownCarriers = new ObservableCollection<CarrierViewModel>(result.Result.Select(c => new CarrierViewModel(c)));
+                int counter = _startIndex + 1;
+                ShownCarriers = new ObservableCollection<CarrierViewModel>(result.Result.Select(c => new CarrierViewModel(c) { Number = counter++ }));
             }
 
-            IsForwardAwaliable = ShownCarriers.Count == _count;
+            IsForwardAwaliable = ShownCarriers != null && ShownCarriers.Count == _count;
             IsBackwardAwaliable = _startIndex > _count;
 
             IsBlock = false;
@@ -150,6 +157,7 @@ namespace LogistHelper.ViewModels.Views
         public async Task Search() 
         {
             IsBlock = true;
+            BlockText = "Поиск";
 
             ShownCarriers?.Clear();
 
@@ -157,7 +165,8 @@ namespace LogistHelper.ViewModels.Views
 
             if (result.IsSuccess)
             {
-                ShownCarriers = new ObservableCollection<CarrierViewModel>(result.Result.Select(c => new CarrierViewModel(c)));
+                int counter = 1;
+                ShownCarriers = new ObservableCollection<CarrierViewModel>(result.Result.Select(c => new CarrierViewModel(c) { Number = counter++ }));
             }
 
             IsForwardAwaliable = false;
@@ -165,6 +174,24 @@ namespace LogistHelper.ViewModels.Views
 
             IsBlock = false;
 
+        }
+
+        public async Task Delete(Guid id) 
+        {
+            IsBlock = true;
+            BlockText = "Удаление";
+
+            RequestResult<bool> result = await _client.Delete<CarrierDto>(id);
+
+            if (result.IsSuccess)
+            {
+                await Load();
+            }
+            else 
+            {
+                _dialog.ShowError("Не удалось удалить перевозчика. Удаление невозможно если с перевозчиком есть заключенные заявки.");
+                IsBlock = false;
+            }
         }
     }
 }

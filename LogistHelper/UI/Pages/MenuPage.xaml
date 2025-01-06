@@ -10,14 +10,14 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition />
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <views:NavigationBack
@@ -25,6 +25,7 @@
             Grid.ColumnSpan="3"/>
 
         <StackPanel
+            VerticalAlignment="Center"
             Grid.Column="1"
             Grid.Row="1">
 

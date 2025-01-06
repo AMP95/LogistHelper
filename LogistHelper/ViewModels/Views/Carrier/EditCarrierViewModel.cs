@@ -1,7 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
+using Dadata;
+using Dadata.Model;
 using DTOs;
 using LogistHelper.Models.Settings;
+using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using LogistHelper.ViewModels.Pages;
 using ServerClient;
@@ -10,11 +12,9 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class EditCarrierViewModel : ObservableObject
+    public class EditCarrierViewModel : BlockedViewModel
     {
         #region Private
-
-        private bool _isBlock;
 
         private Settings _settings;
         private ApiClient _client;
@@ -28,16 +28,38 @@ namespace LogistHelper.ViewModels.Views
 
         public CarrierMenuViewModel Parent;
 
-        public bool IsBlock
-        {
-            get => _isBlock;
-            set => SetProperty(ref _isBlock, value);
-        }
-
         public CarrierViewModel EditedCarrier
         {
             get => _editedCarrier;
             set => SetProperty(ref _editedCarrier, value);
+        }
+
+        public bool IsWithVat 
+        {
+            get => _editedCarrier?.Vat == VAT.With;
+            set 
+            { 
+                if (value && EditedCarrier != null) 
+                {
+                    EditedCarrier.Vat = VAT.With;
+                    OnPropertyChanged(nameof(IsWithVat));   
+                    OnPropertyChanged(nameof(IsWithoutVat));   
+                }
+            }
+        }
+
+        public bool IsWithoutVat 
+        {
+            get => _editedCarrier?.Vat == VAT.Without;
+            set 
+            {
+                if (value && EditedCarrier != null)
+                {
+                    EditedCarrier.Vat = VAT.Without;
+                    OnPropertyChanged(nameof(IsWithVat));
+                    OnPropertyChanged(nameof(IsWithoutVat));
+                }
+            }
         }
 
         #endregion Public
@@ -52,7 +74,8 @@ namespace LogistHelper.ViewModels.Views
         public ICommand AddEmailCommand { get; set; }
         public ICommand DeletePhoneCommand { get; set; }
         public ICommand AddPhoneCommand { get; set; }
-        public ICommand SetVatCommand { get; set; }
+
+        public ICommand SearchDataCommand { get; set; }
 
         #endregion Commands
 
@@ -113,11 +136,9 @@ namespace LogistHelper.ViewModels.Views
                 }
             });
 
-            SetVatCommand = new RelayCommand<string>((vat) => 
-            { 
-                VAT vt = (VAT)Enum.Parse(typeof(VAT), vat);
-
-                EditedCarrier.Vat = vt;
+            SearchDataCommand = new RelayCommand(async () => 
+            {
+                await Search();
             });
 
             #endregion CommandsInit
@@ -132,6 +153,7 @@ namespace LogistHelper.ViewModels.Views
             else 
             {
                 IsBlock = true;
+                BlockText = "Загрузка";
 
                 RequestResult<CarrierDto> result = await _client.GetId<CarrierDto>(id);
 
@@ -142,11 +164,14 @@ namespace LogistHelper.ViewModels.Views
 
                 IsBlock = false;
             }
+            OnPropertyChanged(nameof(IsWithVat));
+            OnPropertyChanged(nameof(IsWithoutVat));
         }
 
         public async Task Save() 
         {
             IsBlock = true;
+            BlockText = "Сохранение";
 
             RequestResult<bool> result;
 
@@ -169,6 +194,20 @@ namespace LogistHelper.ViewModels.Views
             }
 
             IsBlock = false;
+        }
+
+        public async Task Search() 
+        {
+            var api = new SuggestClientAsync(_settings.DaDataApiKey);
+            var response = await api.SuggestParty($"{EditedCarrier.Inn} {EditedCarrier.Kpp}");
+            var result = response.suggestions.FirstOrDefault();
+            if (result != null) 
+            {
+                EditedCarrier.Name = result.value;
+                EditedCarrier.Address = result.data.address.value;
+                EditedCarrier.Inn = result.data.inn;
+                EditedCarrier.Kpp = result.data.kpp;
+            }
         }
 
     }
