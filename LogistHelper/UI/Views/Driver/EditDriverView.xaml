@@ -4,23 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="600">
+             d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <StackPanel>
-            <TextBlock
+        
+        <Grid
+            MaxWidth="600">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Button
+                Style="{StaticResource IconButton}"
+                HorizontalAlignment="Right"
+                Content="Back"
+                Command="{Binding BackCommand}"/>
+
+            <StackPanel
+                Grid.Row="1">
+                
+                <TextBlock
                 Style="{StaticResource DefaultText}"
                 Text="ФИО"/>
 
-            <TextBox
-                Style="{StaticResource SubLeftTextBox}"
-                Text="{Binding SelectedDriver.Name}"/>
+                <TextBox
+                Style="{StaticResource SubLeftTextBox}">
+                <TextBox.Text>
+                    <Binding Path="EditedViewModel.Name">
+                        <Binding.ValidationRules>
+                            <rules:EmptyStringValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
 
-            <Grid>
+                <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition/>
@@ -29,17 +51,18 @@
                     Style="{StaticResource MiniText}"
                     Text="Дата рождения"/>
 
-                <TextBox
+                <DatePicker
                     Grid.Column="1"
-                    Style="{StaticResource SubLeftTextBox}"
-                    Text="{Binding SelectedDriver.BirthDate}"/>
+                    SelectedDate="{Binding EditedViewModel.BirthDate}"
+                    Style="{StaticResource CustomDatePickerStyle}"/>
+                
             </Grid>
 
-            <TextBlock
+                <TextBlock
                 Style="{StaticResource DefaultText}"
                 Text="Паспорт"/>
 
-            <Grid>
+                <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition/>
@@ -58,19 +81,61 @@
 
                 <TextBox
                     Grid.Column="1"
-                    Style="{StaticResource SubLeftTextBox}"
-                    Text="{Binding SelectedDriver.PassportSerial}"/>
+                    Style="{StaticResource SubLeftTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="EditedViewModel.PassportSerial">
+                            <Binding.ValidationRules>
+                                <rules:EmptyStringValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
 
                 <TextBlock
                     Grid.Row="1"
                     Style="{StaticResource MiniText}"
                     Text="Кем выдан"/>
 
-                <TextBox
+                <Grid
                     Grid.Row="1"
-                    Grid.Column="1"
-                    Style="{StaticResource SubLeftTextBox}"
-                    Text="{Binding SelectedDriver.PassportIssuer}"/>
+                    Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox
+                        Style="{StaticResource SubLeftTextBox}">
+                        <TextBox.Text>
+                            <Binding Path="EditedViewModel.PassportIssuer">
+                                <Binding.ValidationRules>
+                                    <rules:EmptyStringValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Style="{StaticResource MiniText}"
+                        Text="Код"/>
+
+                    <TextBox
+                        Grid.Column="2"
+                        Width="100"
+                        Style="{StaticResource SubCentralTextBox}"
+                        Text="{Binding IssuerCode}"/>
+
+                    <Button
+                        Grid.Column="3"
+                        Style="{StaticResource IconButton}"
+                        Command="{Binding SearchCommand}"
+                        IsDefault="True"/>
+                </Grid>
+
+                
 
                 <TextBlock
                     Grid.Row="2"
@@ -80,81 +145,136 @@
                 <DatePicker
                     Grid.Row="2"
                     Grid.Column="1"
-                    SelectedDate="{Binding SelectedDriver.PassportDate}"
+                    SelectedDate="{Binding EditedViewModel.PassportDate}"
                     Style="{StaticResource CustomDatePickerStyle}"/>
             </Grid>
 
-            <TextBlock
+                <TextBlock
                 Style="{StaticResource DefaultText}"
                 Text="Телефон"/>
 
-            <TextBox
-                Style="{StaticResource SubLeftTextBox}"
-                Text="{Binding SelectedDriver.Phones}"/>
+                <ItemsControl
+                ItemsSource="{Binding EditedViewModel.Phones}">
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
 
-            <TextBlock
-                Style="{StaticResource DefaultText}"
-                Text="ТС"/>
+                            <Button
+                                Style="{StaticResource IconButton}"
+                                Content="Добавить"
+                                HorizontalAlignment="Right"
+                                Command="{Binding AddPhoneCommand}"/>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+                            <ItemsPresenter
+                                Grid.Row="1"/>
+                        </Grid>
+                    </ControlTemplate>
+                </ItemsControl.Template>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox
+                                Style="{StaticResource SubLeftTextBox}">
+                                <TextBox.Text>
+                                    <Binding Path="Item">
+                                        <Binding.ValidationRules>
+                                            <rules:PhoneValidationRule/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+
+                            <Button
+                                Grid.Column="1"
+                                Style="{StaticResource IconButton}"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeletePhoneCommand}"
+                                CommandParameter="{Binding Id}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
                 <TextBlock
-                    Style="{StaticResource MiniText}"
-                    Text="Тягач"/>
+                    Style="{StaticResource DefaultText}"
+                    Text="Перевозчик"/>
 
                 <ComboBox
+                    Grid.Row="1"
                     Grid.Column="1"
                     Style="{StaticResource CustomComboBox}"
-                    ItemsSource="{Binding SelectedCarrier.Tractors}"
-                    SelectedItem="{Binding SelectedDriver.Vehicle.Tractor}">
+                    ItemsSource="{Binding Carriers}"
+                    SelectedItem="{Binding SelectedCarrier}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
-                                Style="{StaticResource DefaultText}"
-                                Text="{Binding Name}"/>
+                                Style="{StaticResource DefaultText}">
+                                <Run Text="{Binding TruckModel}"/>
+                                <Run Text="{Binding TruckNumber}"/>
+                                <Run Text="{Binding TrailerModel}"/>
+                                <Run Text="{Binding TrailerNumber}"/>
+                            </TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
+
                 <TextBlock
-                    Grid.Row="1"
-                    Style="{StaticResource MiniText}"
-                    Text="Прицеп"/>
+                    Style="{StaticResource DefaultText}"
+                    Text="ТС"/>
 
                 <ComboBox
                     Grid.Row="1"
                     Grid.Column="1"
                     Style="{StaticResource CustomComboBox}"
-                    ItemsSource="{Binding SelectedCarrier.Trailers}"
-                    SelectedItem="{Binding SelectedDriver.Vehicle.Trailer}">
+                    ItemsSource="{Binding SelectedCarrier.Vehicles}"
+                    SelectedItem="{Binding EditedViewModel.Vehicle}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock
-                                Style="{StaticResource DefaultText}"
-                                Text="{Binding Name}"/>
+                                Style="{StaticResource DefaultText}">
+                                <Run Text="{Binding TruckModel}"/>
+                                <Run Text="{Binding TruckNumber}"/>
+                                <Run Text="{Binding TrailerModel}"/>
+                                <Run Text="{Binding TrailerNumber}"/>
+                            </TextBlock>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
 
-            </Grid>
+            </StackPanel>
 
-        </StackPanel>
+            <Grid
+                Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-        <Button
-            Grid.Row="1"
-            Style="{StaticResource AcceptButton}"
-            Content="Сохранить"
-            Command="{Binding SaveDriverCommand}"/>
+            <Button
+                Style="{StaticResource AcceptButton}"
+                Content="Сохранить"
+                Command="{Binding SaveCommand}"/>
+
+            <Button
+                Grid.Column="1"
+                Style="{StaticResource CancelButton}"
+                Content="Отмена"
+                Command="{Binding CancelCommand}"/>
+        </Grid>
+
+        </Grid>
+
+        <local:BlockView/>
+
     </Grid>
+
 </UserControl>

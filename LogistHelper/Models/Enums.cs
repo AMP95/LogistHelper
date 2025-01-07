@@ -9,14 +9,7 @@ namespace LogistHelper.Models
         Menu,
         CarrierMenu,
         ClientMenu,
-    }
-
-    public enum Role 
-    {
-        [Description("Логист")]
-        Logist,
-        [Description("Помощник")]
-        Helper
+        DriverMenu,
     }
 
     #region Extend

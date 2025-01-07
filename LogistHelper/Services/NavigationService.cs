@@ -26,6 +26,7 @@ namespace LogistHelper.Services
             pages.Add(PageType.Menu, typeof(MenuPageViewModel));
             pages.Add(PageType.CarrierMenu, typeof(MenuPageViewModel<CarrierDto>));
             pages.Add(PageType.ClientMenu, typeof(MenuPageViewModel<CompanyDto>));
+            pages.Add(PageType.DriverMenu, typeof(MenuPageViewModel<DriverDto>));
         }
     }
 }

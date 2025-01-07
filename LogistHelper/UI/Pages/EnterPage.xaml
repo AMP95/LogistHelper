@@ -9,18 +9,6 @@
              xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
-
-        <ObjectDataProvider 
-                x:Key="roles"
-                MethodName="GetValues" 
-                ObjectType="{x:Type system:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="models:Role"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -49,19 +37,10 @@
                 Style="{StaticResource HeaderOneText}"
                 Text="Вход"/>
 
-            <ComboBox
-                Style="{StaticResource CustomComboBox}"
+            <TextBox
                 Grid.Row="1"
-                ItemsSource="{Binding Source={StaticResource roles}}"
-                SelectedValue="{Binding SelectedEmployee}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock
-                            Style="{StaticResource DefaultText}"
-                            Text="{Binding Converter={StaticResource EnumToDescriptionConverter}, ConverterParameter={x:Type models:Role} }"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+                Style="{StaticResource MainLeftTextBox}"
+                Text="{Binding Login}"/>
 
             <PasswordBox
                 Grid.Row="2"

@@ -10,6 +10,7 @@ namespace LogistHelper.ViewModels.Pages
     {
         public ICommand NavigateCarrierMenuCommand { get; }
         public ICommand NavigateClientMenuCommand { get; }
+        public ICommand NavigateDriverMenuCommand { get; }
 
         public MenuPageViewModel()
         {
@@ -21,6 +22,11 @@ namespace LogistHelper.ViewModels.Pages
             NavigateClientMenuCommand = new RelayCommand(() =>
             {
                 NavigationService.Navigate(PageType.ClientMenu);
+            });
+
+            NavigateDriverMenuCommand = new RelayCommand(() => 
+            {
+                NavigationService.Navigate(PageType.DriverMenu);
             });
         }
 

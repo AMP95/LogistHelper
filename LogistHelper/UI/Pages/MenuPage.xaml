@@ -38,6 +38,11 @@
                 Style="{StaticResource NeutralButton}"
                 Content="Перевозчики"
                 Command="{Binding NavigateCarrierMenuCommand}"/>
+
+            <Button
+                Style="{StaticResource NeutralButton}"
+                Content="Водители"
+                Command="{Binding NavigateDriverMenuCommand}"/>
         </StackPanel>
 
        

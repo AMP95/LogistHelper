@@ -37,6 +37,12 @@
             </DataTemplate>
 
             <DataTemplate
+                DataType="{x:Type pagesVM:DriverMenuViewModel}">
+                <pages:DataMenuPage/>
+            </DataTemplate>
+
+
+            <DataTemplate
                 DataType="{x:Type viewsVM:ClientListViewModel}">
                 <views:CompanyListView/>
             </DataTemplate>
@@ -54,6 +60,16 @@
             <DataTemplate
                 DataType="{x:Type viewsVM:EditClientViewModel}">
                 <views:EditCompanyView/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type viewsVM:EditDriverViewModel}">
+                <views:EditDriverView/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type viewsVM:DriverListViewModel}">
+                <views:DriverListView/>
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
