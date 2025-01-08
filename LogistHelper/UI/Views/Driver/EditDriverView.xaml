@@ -9,288 +9,236 @@
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
 
-    <Grid>
-        
-        <Grid
-            MaxWidth="600">
+    <StackPanel>
+
+        <TextBlock
+        Style="{StaticResource DefaultText}"
+        Text="ФИО"/>
+
+        <TextBox
+        Style="{StaticResource SubLeftTextBox}">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.Name">
+                    <Binding.ValidationRules>
+                        <rules:EmptyStringValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBlock
+            Style="{StaticResource MiniText}"
+            Text="Дата рождения"/>
+
+            <DatePicker
+            Grid.Column="1"
+            SelectedDate="{Binding EditedViewModel.BirthDate}"
+            Style="{StaticResource CustomDatePickerStyle}"/>
+
+        </Grid>
+
+        <TextBlock
+        Style="{StaticResource DefaultText}"
+        Text="Паспорт"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
-                <RowDefinition/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Button
-                Style="{StaticResource IconButton}"
-                HorizontalAlignment="Right"
-                Command="{Binding BackCommand}">
-                <Image
-                    Source="/UI/Icons/return_icon.png"/>
-            </Button>
+            <TextBlock
+                Style="{StaticResource MiniText}"
+                Text="Серия и номер"/>
 
-            <ScrollViewer
+            <TextBox
+                Grid.Column="1"
+                Style="{StaticResource SubLeftTextBox}">
+                <TextBox.Text>
+                    <Binding Path="EditedViewModel.PassportSerial">
+                        <Binding.ValidationRules>
+                            <rules:EmptyStringValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <TextBlock
                 Grid.Row="1"
-                Style="{StaticResource CustomScroll}"
-                HorizontalScrollBarVisibility="Disabled"
-                VerticalScrollBarVisibility="Auto">
-                
-                <StackPanel>
+                Style="{StaticResource MiniText}"
+                Text="Кем выдан"/>
 
-                    <TextBlock
-                        Style="{StaticResource DefaultText}"
-                        Text="ФИО"/>
+            <Grid
+                Grid.Row="1"
+                Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                </Grid.ColumnDefinitions>
 
-                    <TextBox
-                        Style="{StaticResource SubLeftTextBox}">
-                        <TextBox.Text>
-                            <Binding Path="EditedViewModel.Name">
-                                <Binding.ValidationRules>
-                                    <rules:EmptyStringValidationRule/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
+                <TextBox
+                Style="{StaticResource SubLeftTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="EditedViewModel.PassportIssuer">
+                            <Binding.ValidationRules>
+                                <rules:EmptyStringValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
 
+                <TextBlock
+                    Grid.Column="1"
+                    Style="{StaticResource MiniText}"
+                    Text="Код"/>
+
+                <controls:SearchBox
+                    Width="200"
+                    Grid.Column="2"
+                    IsDynamicSearch="False"
+                    SearchCommand="{Binding SearchIssuerCommand}"
+                    SelectedSearch="{Binding SelectedIssuer, Mode=TwoWay}"
+                    SearchList="{Binding IssuersList, Mode=TwoWay}"
+                    DisplayMemberPath="Code">
+                    <controls:SearchBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                            Style="{StaticResource DefaultText}"
+                            Text="{Binding Code}"/>
+                        </DataTemplate>
+                    </controls:SearchBox.ItemTemplate>
+                </controls:SearchBox>
+            </Grid>
+
+
+
+            <TextBlock
+                Grid.Row="2"
+                Style="{StaticResource MiniText}"
+                Text="Дата выдачи"/>
+
+            <DatePicker
+                Grid.Row="2"
+                Grid.Column="1"
+                SelectedDate="{Binding EditedViewModel.PassportDate}"
+                Style="{StaticResource CustomDatePickerStyle}"/>
+        </Grid>
+
+        <TextBlock
+            Style="{StaticResource DefaultText}"
+            Text="Телефон"/>
+
+        <ItemsControl
+            ItemsSource="{Binding EditedViewModel.Phones}">
+            <ItemsControl.Template>
+                <ControlTemplate>
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Style="{StaticResource MiniText}"
-                            Text="Дата рождения"/>
-
-                        <DatePicker
-                            Grid.Column="1"
-                            SelectedDate="{Binding EditedViewModel.BirthDate}"
-                            Style="{StaticResource CustomDatePickerStyle}"/>
-
-                    </Grid>
-
-                    <TextBlock
-                        Style="{StaticResource DefaultText}"
-                        Text="Паспорт"/>
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock
-                            Style="{StaticResource MiniText}"
-                            Text="Серия и номер"/>
+                        <Button
+                            Style="{StaticResource IconButton}"
+                            HorizontalAlignment="Right"
+                            Command="{Binding AddPhoneCommand}">
+                            <Image
+                                Source="/UI/Icons/add_icon.png"/>
+                        </Button>
 
+                        <ItemsPresenter
+                            Grid.Row="1"/>
+                    </Grid>
+                </ControlTemplate>
+            </ItemsControl.Template>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
                         <TextBox
-                            Grid.Column="1"
-                            Style="{StaticResource SubLeftTextBox}">
+                        Style="{StaticResource SubLeftTextBox}">
                             <TextBox.Text>
-                                <Binding Path="EditedViewModel.PassportSerial">
+                                <Binding Path="Item">
                                     <Binding.ValidationRules>
-                                        <rules:EmptyStringValidationRule/>
+                                        <rules:PhoneValidationRule/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
                         </TextBox>
 
-                        <TextBlock
-                            Grid.Row="1"
-                            Style="{StaticResource MiniText}"
-                            Text="Кем выдан"/>
-
-                        <Grid
-                            Grid.Row="1"
-                            Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBox
-                                Style="{StaticResource SubLeftTextBox}">
-                                <TextBox.Text>
-                                    <Binding Path="EditedViewModel.PassportIssuer">
-                                        <Binding.ValidationRules>
-                                            <rules:EmptyStringValidationRule/>
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Style="{StaticResource MiniText}"
-                                Text="Код"/>
-
-                            <controls:SearchBox
-                                Width="200"
-                                Grid.Column="2"
-                                IsDynamicSearch="False"
-                                SearchCommand="{Binding SearchIssuerCommand}"
-                                SelectedSearch="{Binding SelectedIssuer, Mode=TwoWay}"
-                                SearchList="{Binding IssuersList, Mode=TwoWay}"
-                                DisplayMemberPath="Code">
-                                <controls:SearchBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock
-                                            Style="{StaticResource DefaultText}"
-                                            Text="{Binding Code}"/>
-                                    </DataTemplate>
-                                </controls:SearchBox.ItemTemplate>
-                            </controls:SearchBox>
-                        </Grid>
-
-
-
-                        <TextBlock
-                            Grid.Row="2"
-                            Style="{StaticResource MiniText}"
-                            Text="Дата выдачи"/>
-
-                        <DatePicker
-                            Grid.Row="2"
+                        <Button
                             Grid.Column="1"
-                            SelectedDate="{Binding EditedViewModel.PassportDate}"
-                            Style="{StaticResource CustomDatePickerStyle}"/>
+                            Style="{StaticResource IconButton}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeletePhoneCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Image
+                                Source="/UI/Icons/remove_icon.png"/>
+                        </Button>
                     </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
+        <TextBlock
+            Style="{StaticResource DefaultText}"
+            Text="Перевозчик"/>
+
+        <controls:SearchBox
+            SearchCommand="{Binding SearchCarrierCommand}"
+            SearchList="{Binding Carriers, Mode=TwoWay}"
+            SelectedSearch="{Binding SelectedCarrier, Mode=TwoWay}"
+            IsDynamicSearch="True"
+            DisplayMemberPath="Name">
+            <controls:SearchBox.ItemTemplate>
+                <DataTemplate>
                     <TextBlock
-                        Style="{StaticResource DefaultText}"
-                        Text="Телефон"/>
+                    Style="{StaticResource DefaultText}"
+                    Text="{Binding Name}"/>
+                </DataTemplate>
+            </controls:SearchBox.ItemTemplate>
+        </controls:SearchBox>
 
-                    <ItemsControl
-                        ItemsSource="{Binding EditedViewModel.Phones}">
-                        <ItemsControl.Template>
-                            <ControlTemplate>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
+        <TextBlock
+            Style="{StaticResource DefaultText}"
+            Foreground="{StaticResource SemiDarkBrush}"
+            Text="ТС"/>
 
-                                    <Button
-                                        Style="{StaticResource IconButton}"
-                                        HorizontalAlignment="Right"
-                                        Command="{Binding AddPhoneCommand}">
-                                        <Image
-                                            Source="/UI/Icons/add_icon.png"/>
-                                    </Button>
-
-                                    <ItemsPresenter
-                                        Grid.Row="1"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </ItemsControl.Template>
-
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox
-                                        Style="{StaticResource SubLeftTextBox}">
-                                        <TextBox.Text>
-                                            <Binding Path="Item">
-                                                <Binding.ValidationRules>
-                                                    <rules:PhoneValidationRule/>
-                                                </Binding.ValidationRules>
-                                            </Binding>
-                                        </TextBox.Text>
-                                    </TextBox>
-
-                                    <Button
-                                        Grid.Column="1"
-                                        Style="{StaticResource IconButton}"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeletePhoneCommand}"
-                                        CommandParameter="{Binding Id}">
-                                        <Image
-                                            Source="/UI/Icons/remove_icon.png"/>
-                                    </Button>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-
+        <ComboBox
+            Grid.Row="1"
+            Grid.Column="1"
+            Style="{StaticResource CustomComboBox}"
+            ItemsSource="{Binding Vehicles}"
+            SelectedItem="{Binding EditedViewModel.Vehicle}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
                     <TextBlock
-                        Style="{StaticResource DefaultText}"
-                        Text="Перевозчик"/>
+                    Style="{StaticResource DefaultText}">
+                    <Run Text="{Binding TruckModel}"/>
+                    <Run Text="{Binding TruckNumber}"/>
+                    <Run Text="{Binding TrailerModel}"/>
+                    <Run Text="{Binding TrailerNumber}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
 
-                    <controls:SearchBox
-                        SearchCommand="{Binding SearchCarrierCommand}"
-                        SearchList="{Binding Carriers, Mode=TwoWay}"
-                        SelectedSearch="{Binding SelectedCarrier, Mode=TwoWay}"
-                        IsDynamicSearch="True"
-                        DisplayMemberPath="Name">
-                        <controls:SearchBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    Style="{StaticResource DefaultText}"
-                                    Text="{Binding Name}"/>
-                            </DataTemplate>
-                        </controls:SearchBox.ItemTemplate>
-                    </controls:SearchBox>
-
-                    <TextBlock
-                        Style="{StaticResource DefaultText}"
-                        Foreground="{StaticResource SemiDarkBrush}"
-                        Text="ТС"/>
-
-                    <ComboBox
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Style="{StaticResource CustomComboBox}"
-                        ItemsSource="{Binding Vehicles}"
-                        SelectedItem="{Binding EditedViewModel.Vehicle}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    Style="{StaticResource DefaultText}">
-                                    <Run Text="{Binding TruckModel}"/>
-                                    <Run Text="{Binding TruckNumber}"/>
-                                    <Run Text="{Binding TrailerModel}"/>
-                                    <Run Text="{Binding TrailerNumber}"/>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-
-                </StackPanel>
-            </ScrollViewer>
-
-            
-
-            <Grid
-                Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-
-            <Button
-                Style="{StaticResource AcceptButton}"
-                Content="Сохранить"
-                Command="{Binding SaveCommand}"/>
-
-            <Button
-                Grid.Column="1"
-                Style="{StaticResource CancelButton}"
-                Content="Отмена"
-                Command="{Binding CancelCommand}"/>
-        </Grid>
-
-        </Grid>
-
-        <!--<local:BlockView/>-->
-
-    </Grid>
+    </StackPanel>
 
 </UserControl>

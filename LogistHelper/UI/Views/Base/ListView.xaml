@@ -1,0 +1,123 @@
+﻿<UserControl x:Class="LogistHelper.UI.Views.ListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
+             xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:viewsVM="clr-namespace:LogistHelper.ViewModels.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <local:NavigationBack
+            HorizontalAlignment="Right"
+            Grid.ColumnSpan="3"
+            DataContext="{Binding RelativeSource={RelativeSource AncestorType=pages:DataMenuPage}, Path=DataContext}"/>
+
+        <Grid
+            Grid.Row="1"
+            Grid.Column="1"
+            MaxWidth="600">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition
+                    Width="auto"/>
+                <ColumnDefinition
+                    Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox
+                x:Name="searchText"
+                Style="{StaticResource MainCentralTextBox}">
+                <TextBox.Text>
+                    <Binding Path="SearchString" NotifyOnValidationError="True">
+                        <Binding.ValidationRules>
+                            <rules:EmptyStringValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <Button
+                Grid.Column="1"
+                ToolTip="Поиск"
+                Style="{StaticResource IconButton}"
+                Command="{Binding SearchCommand}"
+                IsDefault="True">
+                <Image
+                    Source="/UI/Icons/search_icon.png"/>
+            </Button>
+
+            <Button
+                Grid.Column="2"
+                ToolTip="Сбросить поиск"
+                Style="{StaticResource IconButton}"
+                Command="{Binding ResetSearchCommand}">
+                <Image
+                    Source="/UI/Icons/reset_icon.png"/>
+            </Button>
+        </Grid>
+
+        <ContentControl
+            Grid.Row="2"
+            Content="{Binding RelativeSource={RelativeSource AncestorType=local:ListView}, Path=DataContext}">
+            <ContentControl.Resources>
+                <DataTemplate
+                    DataType="{x:Type viewsVM:ClientListViewModel}">
+                    <local:CompanyListView/>
+                </DataTemplate>
+
+                <DataTemplate
+                    DataType="{x:Type viewsVM:CarrierListViewModel}">
+                    <local:CompanyListView/>
+                </DataTemplate>
+
+                <DataTemplate
+                    DataType="{x:Type viewsVM:DriverListViewModel}">
+                    <local:DriverListView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+
+        <Grid
+            Grid.Row="3"
+            HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button
+                ToolTip="Назад"
+                IsEnabled="{Binding IsBackwardAwaliable}"
+                Style="{StaticResource IconButton}"
+                Command="{Binding BackwardCommand}">
+                <Image
+                    Source="/UI/Icons/back_icon.png"/>
+            </Button>
+
+            <Button
+                Grid.Column="1"
+                ToolTip="Вперед"
+                IsEnabled="{Binding IsForwardAwaliable}"
+                Style="{StaticResource IconButton}"
+                Command="{Binding ForwardCommand}">
+                <Image
+                Source="/UI/Icons/forward_icon.png"/>
+            </Button>
+        </Grid>
+
+        <local:BlockView
+            Grid.RowSpan="4"/>
+
+    </Grid>
+</UserControl>

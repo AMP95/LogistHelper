@@ -8,262 +8,219 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="600">
 
-    <Grid>
-        <Grid
-            MaxWidth="800">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
+    <StackPanel>
+
+
+        <TextBlock
+        Style="{StaticResource MiniText}"
+        Text="Название"/>
+
+        <TextBox
+        Style="{StaticResource SubLeftTextBox}">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.Name">
+                    <Binding.ValidationRules>
+                        <rules:EmptyStringValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+        <TextBlock
+        Style="{StaticResource MiniText}"
+        Text="ИНН/КПП"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition
+                Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition
+                Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBox
+            Style="{StaticResource SubLeftTextBox}">
+                <TextBox.Text>
+                    <Binding Path="EditedViewModel.Inn">
+                        <Binding.ValidationRules>
+                            <rules:InnKppValidationRules/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBlock
+            Style="{StaticResource DefaultText}"
+            Grid.Column="1"
+            Text="/"/>
+
+            <TextBox
+            Grid.Column="2"
+            Style="{StaticResource SubLeftTextBox}">
+                <TextBox.Text>
+                    <Binding Path="EditedViewModel.Kpp">
+                        <Binding.ValidationRules>
+                            <rules:InnKppValidationRules/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
 
             <Button
-                Style="{StaticResource IconButton}"
-                Content="Сохранить"
-                HorizontalAlignment="Right"
-                Command="{Binding BackCommand}"/>
+            Grid.Column="3"
+            Style="{StaticResource IconButton}"
+            IsDefault="True"
+            Command="{Binding SearchDataCommand}"/>
+        </Grid>
 
-            <ScrollViewer
-                 Grid.Row="1"
-                 Style="{StaticResource CustomScroll}">
-                <StackPanel>
-                    
 
-                    <TextBlock
-                        Style="{StaticResource MiniText}"
-                        Text="Название"/>
 
-                    <TextBox
-                        Style="{StaticResource SubLeftTextBox}">
-                        <TextBox.Text>
-                            <Binding Path="EditedViewModel.Name">
-                                <Binding.ValidationRules>
-                                    <rules:EmptyStringValidationRule/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
+        <TextBlock
+        Style="{StaticResource MiniText}"
+        Text="Адрес"/>
 
-                    <TextBlock
-                        Style="{StaticResource MiniText}"
-                        Text="ИНН/КПП"/>
+        <TextBox
+        Style="{StaticResource SubLeftTextBox}">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.Address">
+                    <Binding.ValidationRules>
+                        <rules:EmptyStringValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
 
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <RadioButton
+            FlowDirection="RightToLeft"
+            Style="{StaticResource CustomRadio}"
+            Content="С НДС"
+            IsChecked="{Binding IsWithVat, Mode=TwoWay}"/>
+
+            <RadioButton
+            Grid.Column="1"
+            Style="{StaticResource CustomRadio}"
+            Content="Без НДС"
+            IsChecked="{Binding IsWithoutVat, Mode=TwoWay}"/>
+        </Grid>
+
+        <TextBlock
+        Style="{StaticResource MiniText}"
+        Text="Телефон"/>
+
+        <ItemsControl
+        ItemsSource="{Binding EditedViewModel.Phones}">
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Button
+                        Style="{StaticResource IconButton}"
+                        Content="Добавить"
+                        HorizontalAlignment="Right"
+                        Command="{Binding AddPhoneCommand}"/>
+
+                        <ItemsPresenter
+                        Grid.Row="1"/>
+                    </Grid>
+                </ControlTemplate>
+            </ItemsControl.Template>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
-                            <ColumnDefinition
-                                Width="auto"/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition
-                                Width="auto"/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        
                         <TextBox
-                            Style="{StaticResource SubLeftTextBox}">
+                        Style="{StaticResource SubLeftTextBox}">
                             <TextBox.Text>
-                                <Binding Path="EditedViewModel.Inn">
+                                <Binding Path="Item">
                                     <Binding.ValidationRules>
-                                        <rules:InnKppValidationRules/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
-                        </TextBox>
-                        <TextBlock
-                            Style="{StaticResource DefaultText}"
-                            Grid.Column="1"
-                            Text="/"/>
-
-                        <TextBox
-                            Grid.Column="2"
-                            Style="{StaticResource SubLeftTextBox}">
-                            <TextBox.Text>
-                                <Binding Path="EditedViewModel.Kpp">
-                                    <Binding.ValidationRules>
-                                        <rules:InnKppValidationRules/>
+                                        <rules:PhoneValidationRule/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
                         </TextBox>
 
                         <Button
-                            Grid.Column="3"
-                            Style="{StaticResource IconButton}"
-                            IsDefault="True"
-                            Command="{Binding SearchDataCommand}"/>
+                        Grid.Column="1"
+                        Style="{StaticResource IconButton}"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeletePhoneCommand}"
+                        CommandParameter="{Binding Id}"/>
                     </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
-                    
+        <TextBlock
+        Style="{StaticResource MiniText}"
+        Text="Email"/>
 
-                    <TextBlock
-                        Style="{StaticResource MiniText}"
-                        Text="Адрес"/>
+        <ItemsControl
+        ItemsSource="{Binding EditedViewModel.Emails}">
 
-                    <TextBox
-                        Style="{StaticResource SubLeftTextBox}">
-                        <TextBox.Text>
-                            <Binding Path="EditedViewModel.Address">
-                                <Binding.ValidationRules>
-                                    <rules:EmptyStringValidationRule/>
-                                </Binding.ValidationRules>
-                            </Binding>
-                        </TextBox.Text>
-                    </TextBox>
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
+                        <Button
+                        Style="{StaticResource IconButton}"
+                        Content="Добавить"
+                        HorizontalAlignment="Right"
+                        Command="{Binding AddEmailCommand}"/>
+
+                        <ItemsPresenter
+                        Grid.Row="1"/>
+                    </Grid>
+                </ControlTemplate>
+            </ItemsControl.Template>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
+                        <TextBox
+                            Style="{StaticResource SubLeftTextBox}">
+                            <TextBox.Text>
+                                <Binding Path="Item">
+                                    <Binding.ValidationRules>
+                                        <rules:EmailValudationRule/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
 
-                        <RadioButton
-                            FlowDirection="RightToLeft"
-                            Style="{StaticResource CustomRadio}"
-                            Content="С НДС"
-                            IsChecked="{Binding IsWithVat, Mode=TwoWay}"/>
-
-                        <RadioButton
-                            Grid.Column="1"
-                            Style="{StaticResource CustomRadio}"
-                            Content="Без НДС"
-                            IsChecked="{Binding IsWithoutVat, Mode=TwoWay}"/>
+                        <Button
+                        Grid.Column="1"
+                        Style="{StaticResource IconButton}"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeleteEmailCommand}"
+                        CommandParameter="{Binding Id}"/>
                     </Grid>
-
-                    <TextBlock
-                        Style="{StaticResource MiniText}"
-                        Text="Телефон"/>
-
-                    <ItemsControl
-                        ItemsSource="{Binding EditedViewModel.Phones}">
-                        <ItemsControl.Template>
-                            <ControlTemplate>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-
-                                    <Button
-                                        Style="{StaticResource IconButton}"
-                                        Content="Добавить"
-                                        HorizontalAlignment="Right"
-                                        Command="{Binding AddPhoneCommand}"/>
-
-                                    <ItemsPresenter
-                                        Grid.Row="1"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </ItemsControl.Template>
-
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox
-                                        Style="{StaticResource SubLeftTextBox}">
-                                        <TextBox.Text>
-                                            <Binding Path="Item">
-                                                <Binding.ValidationRules>
-                                                    <rules:PhoneValidationRule/>
-                                                </Binding.ValidationRules>
-                                            </Binding>
-                                        </TextBox.Text>
-                                    </TextBox>
-
-                                    <Button
-                                        Grid.Column="1"
-                                        Style="{StaticResource IconButton}"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeletePhoneCommand}"
-                                        CommandParameter="{Binding Id}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-
-                    <TextBlock
-                        Style="{StaticResource MiniText}"
-                        Text="Email"/>
-
-                    <ItemsControl
-                        ItemsSource="{Binding EditedViewModel.Emails}">
-
-                        <ItemsControl.Template>
-                            <ControlTemplate>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-
-                                    <Button
-                                        Style="{StaticResource IconButton}"
-                                        Content="Добавить"
-                                        HorizontalAlignment="Right"
-                                        Command="{Binding AddEmailCommand}"/>
-
-                                    <ItemsPresenter
-                                        Grid.Row="1"/>
-                                </Grid>
-                            </ControlTemplate>
-                        </ItemsControl.Template>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox
-                                            Style="{StaticResource SubLeftTextBox}">
-                                        <TextBox.Text>
-                                            <Binding Path="Item">
-                                                <Binding.ValidationRules>
-                                                    <rules:EmailValudationRule/>
-                                                </Binding.ValidationRules>
-                                            </Binding>
-                                        </TextBox.Text>
-                                    </TextBox>
-
-                                    <Button
-                                        Grid.Column="1"
-                                        Style="{StaticResource IconButton}"
-                                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeleteEmailCommand}"
-                                        CommandParameter="{Binding Id}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
 
 
 
-                </StackPanel>
-            </ScrollViewer>
+    </StackPanel>
 
-            <Grid
-                Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
 
-                <Button
-                    Style="{StaticResource AcceptButton}"
-                    Content="Сохранить"
-                    Command="{Binding SaveCommand}"/>
-
-                <Button
-                    Grid.Column="1"
-                    Style="{StaticResource CancelButton}"
-                    Content="Отмена"
-                    Command="{Binding CancelCommand}"/>
-            </Grid>
-
-        </Grid>
-
-        <!--<local:BlockView/>-->
-    </Grid>
-    
-    
 </UserControl>

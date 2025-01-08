@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="LogistHelper.UI.Views.EditView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:viewsVM="clr-namespace:LogistHelper.ViewModels.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+
+    
+    <Grid>
+
+        <Grid
+            MaxWidth="600">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+
+            <Button
+                Style="{StaticResource IconButton}"
+                HorizontalAlignment="Right"
+                Command="{Binding BackCommand}">
+                <Image
+                    Source="/UI/Icons/return_icon.png"/>
+            </Button>
+
+            <ScrollViewer
+                Grid.Row="1"
+                Style="{StaticResource CustomScroll}"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+
+                <ContentControl
+                    Content="{Binding RelativeSource={RelativeSource AncestorType=local:EditView}, Path=DataContext}">
+                    <ContentControl.Resources>
+                        <DataTemplate
+                            DataType="{x:Type viewsVM:EditCarrierViewModel}">
+                            <local:EditCompanyView/>
+                        </DataTemplate>
+
+                        <DataTemplate
+                            DataType="{x:Type viewsVM:EditClientViewModel}">
+                            <local:EditCompanyView/>
+                        </DataTemplate>
+
+                        <DataTemplate
+                            DataType="{x:Type viewsVM:EditDriverViewModel}">
+                            <local:EditDriverView/>
+                        </DataTemplate>
+                    </ContentControl.Resources>
+                </ContentControl>
+            </ScrollViewer>
+
+            <Grid
+                Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button
+                    Style="{StaticResource AcceptButton}"
+                    Content="Сохранить"
+                    Command="{Binding SaveCommand}"/>
+
+                <Button
+                    Grid.Column="1"
+                    Style="{StaticResource CancelButton}"
+                    Content="Отмена"
+                    Command="{Binding CancelCommand}"/>
+            </Grid>
+
+        </Grid>
+
+        <local:BlockView/>
+
+    </Grid>
+</UserControl>

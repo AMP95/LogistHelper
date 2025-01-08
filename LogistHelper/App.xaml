@@ -6,6 +6,7 @@
              xmlns:views="clr-namespace:LogistHelper.UI.Views"
              xmlns:pagesVM="clr-namespace:LogistHelper.ViewModels.Pages"
              xmlns:viewsVM="clr-namespace:LogistHelper.ViewModels.Views"
+             xmlns:viewsVMBase="clr-namespace:LogistHelper.ViewModels.Base"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -44,33 +45,36 @@
 
             <DataTemplate
                 DataType="{x:Type viewsVM:ClientListViewModel}">
-                <views:CompanyListView/>
+                <views:ListView/>
             </DataTemplate>
 
             <DataTemplate
                 DataType="{x:Type viewsVM:CarrierListViewModel}">
-                <views:CompanyListView/>
-            </DataTemplate>
-
-            <DataTemplate
-                DataType="{x:Type viewsVM:EditCarrierViewModel}">
-                <views:EditCompanyView/>
-            </DataTemplate>
-
-            <DataTemplate
-                DataType="{x:Type viewsVM:EditClientViewModel}">
-                <views:EditCompanyView/>
-            </DataTemplate>
-
-            <DataTemplate
-                DataType="{x:Type viewsVM:EditDriverViewModel}">
-                <views:EditDriverView/>
+                <views:ListView/>
             </DataTemplate>
 
             <DataTemplate
                 DataType="{x:Type viewsVM:DriverListViewModel}">
-                <views:DriverListView/>
+                <views:ListView/>
             </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type viewsVM:EditCarrierViewModel}">
+                <views:EditView/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type viewsVM:EditClientViewModel}">
+                <views:EditView/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type viewsVM:EditDriverViewModel}">
+                <views:EditView/>
+            </DataTemplate>
+
+            
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

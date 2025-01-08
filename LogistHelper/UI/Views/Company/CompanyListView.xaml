@@ -12,226 +12,129 @@
     <UserControl.Resources>
         <converter:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
     </UserControl.Resources>
-    
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition />
-        </Grid.RowDefinitions>
+    <ItemsControl
+    Grid.Row="1"
+    ItemsSource="{Binding List}">
+        <ItemsControl.Template>
+            <ControlTemplate>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
 
-        <local:NavigationBack
-            Margin="0 0 12 0"
-            HorizontalAlignment="Right"
-            Grid.ColumnSpan="3"
-            DataContext="{Binding RelativeSource={RelativeSource AncestorType=pages:DataMenuPage}, Path=DataContext}"/>
+                    <Grid
+                    Margin="0 0 12 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                            Width="70"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition
+                            Width="50"/>
+                            <ColumnDefinition
+                            Width="50"/>
+                        </Grid.ColumnDefinitions>
 
-        <Grid
-            Grid.Row="1"
-            Grid.ColumnSpan="3">
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="auto"/>
-                <RowDefinition/>
-                <RowDefinition
-                    Height="auto"/>
-            </Grid.RowDefinitions>
+                        <TextBlock
+                        Style="{StaticResource HeaderThreeText}"
+                        Text="№"
+                        Foreground="{StaticResource NeutralOneBrush}"/>
 
-            <Grid
-                MaxWidth="600"
-                Grid.ColumnSpan="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition
-                        Width="auto"/>
-                    <ColumnDefinition
-                        Width="auto"/>
-                </Grid.ColumnDefinitions>
+                        <TextBlock
+                        Grid.Column="1"
+                        Style="{StaticResource HeaderThreeText}"
+                        Foreground="{StaticResource NeutralOneBrush}"
+                        Text="Название"/>
 
-                <TextBox
-                    x:Name="searchText"
-                    Style="{StaticResource SubCentralTextBox}">
-                    <TextBox.Text>
-                        <Binding Path="SearchString" NotifyOnValidationError="True">
-                            <Binding.ValidationRules>
-                                <rules:EmptyStringValidationRule/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
+                        <TextBlock
+                        Grid.Column="2"
+                        Style="{StaticResource HeaderThreeText}"
+                        Foreground="{StaticResource NeutralOneBrush}"
+                        Text="ИНН/КПП"/>
 
-                <Button
+                        <TextBlock
+                        Grid.Column="3"
+                        Style="{StaticResource HeaderThreeText}"
+                        Foreground="{StaticResource NeutralOneBrush}"
+                        Text="НДС"/>
+
+                        <Button
+                        Grid.Column="5"
+                        Style="{StaticResource IconButton}"
+                        HorizontalAlignment="Right"
+                        Content="Add"
+                        Command="{Binding AddCommand}"/>
+                    </Grid>
+
+                    <ScrollViewer
+                    Grid.Row="1"
+                    VerticalScrollBarVisibility="Visible"
+                    HorizontalScrollBarVisibility="Disabled"
+                    Style="{StaticResource CustomScroll}">
+                        <ItemsPresenter/>
+                    </ScrollViewer>
+                </Grid>
+            </ControlTemplate>
+        </ItemsControl.Template>
+
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                        Width="70"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition
+                        Width="50"/>
+                        <ColumnDefinition
+                        Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                    Style="{StaticResource DefaultText}"
+                    TextAlignment="Center"
+                    Text="{Binding Counter}"/>
+
+                    <TextBlock
                     Grid.Column="1"
-                    Content="Поиск"
-                    Style="{StaticResource IconButton}"
-                    Command="{Binding SearchCommand}"
-                    IsDefault="True">
-                </Button>
-                
-                <Button
+                    Style="{StaticResource DefaultText}"
+                    TextAlignment="Center"
+                    Text="{Binding Name}"/>
+
+                    <TextBlock
                     Grid.Column="2"
-                    Content="Сброс"
+                    Style="{StaticResource DefaultText}"
+                    TextAlignment="Center">
+                    <Run Text="{Binding Inn}"/>
+                    <Run Text="/"/>
+                    <Run Text="{Binding Kpp}"/>
+                    </TextBlock>
+
+                    <TextBlock
+                    Grid.Column="3"
+                    Style="{StaticResource DefaultText}"
+                    TextAlignment="Center"
+                    Text="{Binding Vat, Converter={StaticResource EnumToDescriptionConverter}}"/>
+
+                    <Button
+                    Grid.Column="4"
                     Style="{StaticResource IconButton}"
-                    Command="{Binding ResetSearchCommand}">
-                </Button>
-            </Grid>
+                    Content="Реда"
+                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.EditCommand}"
+                    CommandParameter="{Binding Id}"/>
 
-            <ItemsControl
-                Grid.Row="1"
-                ItemsSource="{Binding List}">
-                <ItemsControl.Template>
-                    <ControlTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-
-                            <Grid
-                                Margin="0 0 12 0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition
-                                        Width="70"/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition
-                                        Width="50"/>
-                                    <ColumnDefinition
-                                        Width="50"/>
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock
-                                    Style="{StaticResource HeaderThreeText}"
-                                    Text="№"
-                                    Foreground="{StaticResource NeutralOneBrush}"/>
-
-                                <TextBlock
-                                    Grid.Column="1"
-                                    Style="{StaticResource HeaderThreeText}"
-                                    Foreground="{StaticResource NeutralOneBrush}"
-                                    Text="Название"/>
-
-                                <TextBlock
-                                    Grid.Column="2"
-                                    Style="{StaticResource HeaderThreeText}"
-                                    Foreground="{StaticResource NeutralOneBrush}"
-                                    Text="ИНН/КПП"/>
-
-                                <TextBlock
-                                    Grid.Column="3"
-                                    Style="{StaticResource HeaderThreeText}"
-                                    Foreground="{StaticResource NeutralOneBrush}"
-                                    Text="НДС"/>
-
-                                <Button
-                                    Grid.Column="5"
-                                    Style="{StaticResource IconButton}"
-                                    HorizontalAlignment="Right"
-                                    Content="Add"
-                                    Command="{Binding AddCommand}"/>
-                            </Grid>
-
-                            <ScrollViewer
-                                Grid.Row="1"
-                                VerticalScrollBarVisibility="Visible"
-                                HorizontalScrollBarVisibility="Disabled"
-                                Style="{StaticResource CustomScroll}">
-                                <ItemsPresenter/>
-                            </ScrollViewer>
-                        </Grid>
-                    </ControlTemplate>
-                </ItemsControl.Template>
-                
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
-                                    Width="70"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition
-                                    Width="50"/>
-                                <ColumnDefinition
-                                    Width="50"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
-                                Text="{Binding Counter}"/>
-
-                            <TextBlock
-                                Grid.Column="1"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
-                                Text="{Binding Name}"/>
-
-                            <TextBlock
-                                Grid.Column="2"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center">
-                                <Run Text="{Binding Inn}"/>
-                                <Run Text="/"/>
-                                <Run Text="{Binding Kpp}"/>
-                            </TextBlock>
-
-                            <TextBlock
-                                Grid.Column="3"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
-                                Text="{Binding Vat, Converter={StaticResource EnumToDescriptionConverter}}"/>
-                            
-                            <Button
-                                Grid.Column="4"
-                                Style="{StaticResource IconButton}"
-                                Content="Реда"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.EditCommand}"
-                                CommandParameter="{Binding Id}"/>
-
-                            <Button
-                                Grid.Column="5"
-                                Style="{StaticResource IconButton}"
-                                Content="Удал"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.DeleteCommand}"
-                                CommandParameter="{Binding Id}"/>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-            <Grid
-                Grid.Row="2"
-                HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button
-                    IsEnabled="{Binding IsBackwardAwaliable}"
+                    <Button
+                    Grid.Column="5"
                     Style="{StaticResource IconButton}"
-                    Command="{Binding BackwardCommand}"
-                    Content="Back"/>
-
-                <Button
-                    Grid.Column="1"
-                    IsEnabled="{Binding IsForwardAwaliable}"
-                    Style="{StaticResource IconButton}"
-                    Command="{Binding ForwardCommand}"
-                    Content="Forw"/>
-            </Grid>
-
-        </Grid>
-
-        <local:BlockView
-            Grid.RowSpan="2"
-            Grid.ColumnSpan="3"/>
-
-    </Grid>
+                    Content="Удал"
+                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.DeleteCommand}"
+                    CommandParameter="{Binding Id}"/>
+                </Grid>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
 </UserControl>

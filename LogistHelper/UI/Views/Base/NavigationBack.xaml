@@ -13,13 +13,17 @@
         </Grid.ColumnDefinitions>
         <Button
             Style="{StaticResource IconButton}"
-            Content="Назад"
-            Command="{Binding BackCommand}"/>
+            Command="{Binding BackCommand}">
+            <Image
+                Source="/UI/Icons/return_icon.png"/>
+        </Button>
 
         <Button
             Grid.Column="1"
             Style="{StaticResource IconButton}"
-            Content="Выход"
-            Command="{Binding LogOutCommand}"/>
+            Command="{Binding LogOutCommand}">
+            <Image
+                Source="/UI/Icons/logout_icon.png"/>
+        </Button>
     </Grid>
 </UserControl>
