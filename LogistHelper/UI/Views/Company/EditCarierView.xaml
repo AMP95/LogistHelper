@@ -36,7 +36,7 @@
                     <TextBox
                         Style="{StaticResource SubLeftTextBox}">
                         <TextBox.Text>
-                            <Binding Path="EditedCarrier.Name">
+                            <Binding Path="EditedViewModel.Name">
                                 <Binding.ValidationRules>
                                     <rules:EmptyStringValidationRule/>
                                 </Binding.ValidationRules>
@@ -61,7 +61,7 @@
                         <TextBox
                             Style="{StaticResource SubLeftTextBox}">
                             <TextBox.Text>
-                                <Binding Path="EditedCarrier.Inn">
+                                <Binding Path="EditedViewModel.Inn">
                                     <Binding.ValidationRules>
                                         <rules:InnKppValidationRules/>
                                     </Binding.ValidationRules>
@@ -77,7 +77,7 @@
                             Grid.Column="2"
                             Style="{StaticResource SubLeftTextBox}">
                             <TextBox.Text>
-                                <Binding Path="EditedCarrier.Kpp">
+                                <Binding Path="EditedViewModel.Kpp">
                                     <Binding.ValidationRules>
                                         <rules:InnKppValidationRules/>
                                     </Binding.ValidationRules>
@@ -101,7 +101,7 @@
                     <TextBox
                         Style="{StaticResource SubLeftTextBox}">
                         <TextBox.Text>
-                            <Binding Path="EditedCarrier.Address">
+                            <Binding Path="EditedViewModel.Address">
                                 <Binding.ValidationRules>
                                     <rules:EmptyStringValidationRule/>
                                 </Binding.ValidationRules>
@@ -133,7 +133,7 @@
                         Text="Телефон"/>
 
                     <ItemsControl
-                        ItemsSource="{Binding EditedCarrier.Phones}">
+                        ItemsSource="{Binding EditedViewModel.Phones}">
                         <ItemsControl.Template>
                             <ControlTemplate>
                                 <Grid>
@@ -187,7 +187,7 @@
                         Text="Email"/>
 
                     <ItemsControl
-                        ItemsSource="{Binding EditedCarrier.Emails}">
+                        ItemsSource="{Binding EditedViewModel.Emails}">
 
                         <ItemsControl.Template>
                             <ControlTemplate>

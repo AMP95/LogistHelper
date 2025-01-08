@@ -32,11 +32,9 @@ namespace LogistHelper.UI.CustomControls
 
                         if (search._canExecuteCommand)
                         {
-                            search.loader.IsInProcess = true;
-
                             search.SearchCommand?.Execute(search.SearchText);
 
-                            search.loader.IsInProcess = false;
+                            search.popuplist.IsOpen = true;
                         }
 
                         search._canExecuteCommand = true;
@@ -65,8 +63,6 @@ namespace LogistHelper.UI.CustomControls
                 {
                     if (d is SearchBox search)
                     {
-                        search.popuplist.IsOpen = true;
-
                         if (search.SearchList != null && search.SearchList.Any())
                         {
                             search.emptyText.Visibility = Visibility.Hidden;
@@ -143,8 +139,8 @@ namespace LogistHelper.UI.CustomControls
 
         private void searchText_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (SearchList != null && SearchList.Any()) 
-            {
+            if(SearchList != null && SearchList.Any())
+            { 
                 popuplist.IsOpen = true;
             }
         }
@@ -154,50 +150,45 @@ namespace LogistHelper.UI.CustomControls
             if (e.Key == Key.Enter) 
             {
                 popuplist.IsOpen = false;
+                SearchList = null;
             }
-            else if (e.Key == Key.Down) 
+            else if (e.Key == Key.Down && popuplist.IsOpen && SearchList != null && SearchList.Any()) 
             {
-                if (popuplist.IsOpen && SearchList != null && SearchList.Any()) 
+                if (SelectedSearch == null)
                 {
-                    if (SelectedSearch == null)
+                    SelectedSearch = SearchList.First();
+                }
+                else 
+                {
+                    int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
+
+                    if (index == SearchList.Count() - 1)
                     {
-                        SelectedSearch = SearchList.First();
+                        SelectedSearch = null;
                     }
                     else 
                     {
-                        int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
-
-                        if (index == SearchList.Count() - 1)
-                        {
-                            SelectedSearch = null;
-                        }
-                        else 
-                        {
-                            SelectedSearch = SearchList.ElementAt(index + 1);
-                        }
+                        SelectedSearch = SearchList.ElementAt(index + 1);
                     }
                 }
             }
-            else if (e.Key == Key.Up)
+            else if (e.Key == Key.Up && popuplist.IsOpen && SearchList != null && SearchList.Any())
             {
-                if (popuplist.IsOpen && SearchList != null && SearchList.Any())
+                if (SelectedSearch == null)
                 {
-                    if (SelectedSearch == null)
+                    SelectedSearch = SearchList.Last();
+                }
+                else
+                {
+                    int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
+
+                    if (index == 0)
                     {
-                        SelectedSearch = SearchList.Last();
+                        SelectedSearch = null;
                     }
                     else
                     {
-                        int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
-
-                        if (index == 0)
-                        {
-                            SelectedSearch = null;
-                        }
-                        else
-                        {
-                            SelectedSearch = SearchList.ElementAt(index - 1);
-                        }
+                        SelectedSearch = SearchList.ElementAt(index - 1);
                     }
                 }
             }
@@ -206,6 +197,7 @@ namespace LogistHelper.UI.CustomControls
         private void ListBox_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             popuplist.IsOpen = false;
+            SearchList = null;
         }
     }
 }

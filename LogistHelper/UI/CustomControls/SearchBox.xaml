@@ -12,12 +12,9 @@
             <ColumnDefinition/>
             <ColumnDefinition
                 Width="auto"/>
-            <ColumnDefinition
-                Width="auto"/>
         </Grid.ColumnDefinitions>
 
         <TextBox
-            Grid.ColumnSpan="2"
             x:Name="searchText"
             Height="40"
             PreviewMouseLeftButtonUp="searchText_MouseLeftButtonUp"
@@ -52,7 +49,6 @@
                             Foreground="{StaticResource SemiDarkBrush}"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
-                            Visibility="Hidden"
                             Text="Не найдено"/>
 
                         <ListBox
@@ -63,22 +59,16 @@
                             ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchList}"
                             SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SelectedSearch}"/>
                     </Grid>
-                    
+
                 </Border>
             </Border>
         </Popup>
 
-        <local:Loader
-            x:Name="loader"
-            Margin="5"
-            Grid.Column="1"
-            Height="{Binding ElementName=searchText, Path=ActualHeight}"/>
-
         <Button
             Grid.Column="2"
-            IsDefault="True"
             Style="{StaticResource IconButton}"
-            Command="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchCommand}">
+            Command="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchCommand}"
+            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchText}">
             <Image
                 Source="/UI/Icons/search_icon.png"/>
         </Button>
