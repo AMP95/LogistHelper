@@ -33,8 +33,6 @@ namespace LogistHelper.UI.CustomControls
             DependencyProperty.Register("SearchCommand", typeof(ICommand), typeof(SearchBox));
 
 
-
-
         public IEnumerable<object> SearchList
         {
             get { return (IEnumerable<object>)GetValue(SearchListProperty); }
@@ -48,19 +46,10 @@ namespace LogistHelper.UI.CustomControls
                     {
                         if (search.SearchList != null && search.SearchList.Any())
                         {
-                            search.listToggle.Visibility = Visibility.Visible;
-                            search.listToggle.IsChecked = true;
-                        }
-                        else
-                        {
-                            search.listToggle.Visibility = Visibility.Collapsed;
-                            search.listToggle.IsChecked = false;
+                            search.popuplist.IsOpen = true;
                         }
                     }
                 })));
-
-
-
 
         public object SelectedSearch
         {
@@ -75,7 +64,7 @@ namespace LogistHelper.UI.CustomControls
                     {
                         if (search.SelectedSearch != null)
                         {
-                            search.listToggle.IsChecked = false;
+                            search.popuplist.IsOpen = false;
 
                             Type type = search.SelectedSearch.GetType();
 
@@ -94,9 +83,6 @@ namespace LogistHelper.UI.CustomControls
                     }
                 })));
 
-
-
-
         public string DisplayMemberPath
         {
             get { return (string)GetValue(DisplayMemberPathProperty); }
@@ -105,21 +91,9 @@ namespace LogistHelper.UI.CustomControls
         public static readonly DependencyProperty DisplayMemberPathProperty =
             DependencyProperty.Register("DisplayMemberPath", typeof(string), typeof(SearchBox));
 
-
-        public DataTemplate ItemTemplate
-        {
-            get { return (DataTemplate)GetValue(ItemTemplateProperty); }
-            set { SetValue(ItemTemplateProperty, value); }
-        }
-        public static readonly DependencyProperty ItemTemplateProperty =
-            DependencyProperty.Register("ItemTemplate", typeof(DataTemplate), typeof(SearchBox));
-
-
-
-
-
-
         #endregion Depenencies
+
+
         public SearchBox()
         {
             InitializeComponent();
@@ -130,6 +104,14 @@ namespace LogistHelper.UI.CustomControls
             if (e.Key == Key.Enter) 
             {
                 SearchCommand.Execute(null);
+            }
+        }
+
+        private void searchText_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (SearchList != null && SearchList.Any()) 
+            {
+                popuplist.IsOpen = true;
             }
         }
     }

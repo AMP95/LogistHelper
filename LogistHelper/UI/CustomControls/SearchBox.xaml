@@ -11,20 +11,20 @@
             <ColumnDefinition/>
             <ColumnDefinition
                 Width="auto"/>
-            <ColumnDefinition
-                Width="auto"/>
         </Grid.ColumnDefinitions>
 
         <TextBox
             x:Name="searchText"
             Height="40"
             KeyDown="searchText_KeyDown"
+            MouseLeftButtonUp="searchText_MouseLeftButtonUp"
             Style="{StaticResource MainLeftTextBox}"
             Text="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, 
             Path=SearchText}"/>
 
         <Popup
-            StaysOpen="True"
+            x:Name="popuplist"
+            StaysOpen="False"
             IsOpen="{Binding ElementName=listToggle, Path=IsChecked}"
             Width="{Binding ElementName=searchText, Path=ActualWidth}"
             PlacementTarget="{Binding ElementName=searchText}"
@@ -43,27 +43,15 @@
                     Background="{StaticResource LightBlueBrush}">
                     <ListBox
                         Style="{StaticResource CustomListBox}"
+                        DisplayMemberPath="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=DisplayMemberPath}"
                         ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchList}"
-                        SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SelectedSearch}"
-                        ItemTemplate="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=ItemTemplate}">
-                    </ListBox>
+                        SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SelectedSearch}"/>
                 </Border>
             </Border>
         </Popup>
 
-        <ToggleButton
-            x:Name="listToggle"
-            Grid.Column="1"
-            Visibility="Collapsed"
-            ToolTip="Показать список"
-            Style="{StaticResource IconButton}"
-            Command="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchCommand}">
-            <Image
-                Source="/UI/Icons/down_icon.png"/>
-        </ToggleButton>
-
         <Button
-            Grid.Column="2"
+            Grid.Column="1"
             Style="{StaticResource IconButton}"
             Command="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchCommand}">
             <Image
