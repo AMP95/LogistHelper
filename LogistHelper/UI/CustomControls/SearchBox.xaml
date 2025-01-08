@@ -67,6 +67,7 @@
         <Button
             Grid.Column="2"
             Style="{StaticResource IconButton}"
+            PreviewMouseLeftButtonUp="Button_PreviewMouseLeftButtonUp"
             Command="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchCommand}"
             CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchText}">
             <Image

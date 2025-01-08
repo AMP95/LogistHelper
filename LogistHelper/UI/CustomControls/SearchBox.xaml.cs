@@ -23,7 +23,7 @@ namespace LogistHelper.UI.CustomControls
             DependencyProperty.Register("SearchText", typeof(string), typeof(SearchBox),
                 new FrameworkPropertyMetadata(new PropertyChangedCallback((d,e) => 
                 {
-                    if (d is SearchBox search) 
+                    if (d is SearchBox search && search.IsDynamicSearch) 
                     {
                         if (string.IsNullOrWhiteSpace(search.SearchText))
                         {
@@ -127,6 +127,16 @@ namespace LogistHelper.UI.CustomControls
 
 
 
+        public bool IsDynamicSearch
+        {
+            get { return (bool)GetValue(IsDynamicSearchProperty); }
+            set { SetValue(IsDynamicSearchProperty, value); }
+        }
+        public static readonly DependencyProperty IsDynamicSearchProperty =
+            DependencyProperty.Register("IsDynamicSearch", typeof(bool), typeof(SearchBox));
+
+
+
         #endregion Depenencies
 
         private bool _canExecuteCommand;
@@ -147,50 +157,58 @@ namespace LogistHelper.UI.CustomControls
 
         private void UserControl_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter) 
+            if (IsDynamicSearch)
             {
-                popuplist.IsOpen = false;
-                SearchList = null;
-            }
-            else if (e.Key == Key.Down && popuplist.IsOpen && SearchList != null && SearchList.Any()) 
-            {
-                if (SelectedSearch == null)
+                if (e.Key == Key.Enter)
                 {
-                    SelectedSearch = SearchList.First();
+                    popuplist.IsOpen = false;
+                    SearchList = null;
                 }
-                else 
+                else if (e.Key == Key.Down && popuplist.IsOpen && SearchList != null && SearchList.Any())
                 {
-                    int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
-
-                    if (index == SearchList.Count() - 1)
+                    if (SelectedSearch == null)
                     {
-                        SelectedSearch = null;
-                    }
-                    else 
-                    {
-                        SelectedSearch = SearchList.ElementAt(index + 1);
-                    }
-                }
-            }
-            else if (e.Key == Key.Up && popuplist.IsOpen && SearchList != null && SearchList.Any())
-            {
-                if (SelectedSearch == null)
-                {
-                    SelectedSearch = SearchList.Last();
-                }
-                else
-                {
-                    int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
-
-                    if (index == 0)
-                    {
-                        SelectedSearch = null;
+                        SelectedSearch = SearchList.First();
                     }
                     else
                     {
-                        SelectedSearch = SearchList.ElementAt(index - 1);
+                        int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
+
+                        if (index == SearchList.Count() - 1)
+                        {
+                            SelectedSearch = null;
+                        }
+                        else
+                        {
+                            SelectedSearch = SearchList.ElementAt(index + 1);
+                        }
                     }
                 }
+                else if (e.Key == Key.Up && popuplist.IsOpen && SearchList != null && SearchList.Any())
+                {
+                    if (SelectedSearch == null)
+                    {
+                        SelectedSearch = SearchList.Last();
+                    }
+                    else
+                    {
+                        int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
+
+                        if (index == 0)
+                        {
+                            SelectedSearch = null;
+                        }
+                        else
+                        {
+                            SelectedSearch = SearchList.ElementAt(index - 1);
+                        }
+                    }
+                }
+            }
+            else if(e.Key == Key.Enter)
+            {
+                SearchCommand?.Execute(SearchText);
+                popuplist.IsOpen = true;
             }
         }
 
@@ -198,6 +216,11 @@ namespace LogistHelper.UI.CustomControls
         {
             popuplist.IsOpen = false;
             SearchList = null;
+        }
+
+        private void Button_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            popuplist.IsOpen = true;
         }
     }
 }
