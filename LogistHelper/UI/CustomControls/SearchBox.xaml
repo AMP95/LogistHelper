@@ -5,27 +5,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.CustomControls"
              mc:Ignorable="d" 
+             PreviewKeyUp="UserControl_PreviewKeyUp"
              d:DesignHeight="60" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition
                 Width="auto"/>
+            <ColumnDefinition
+                Width="auto"/>
         </Grid.ColumnDefinitions>
 
         <TextBox
+            Grid.ColumnSpan="2"
             x:Name="searchText"
             Height="40"
-            KeyDown="searchText_KeyDown"
-            MouseLeftButtonUp="searchText_MouseLeftButtonUp"
+            PreviewMouseLeftButtonUp="searchText_MouseLeftButtonUp"
             Style="{StaticResource MainLeftTextBox}"
             Text="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, 
-            Path=SearchText}"/>
+            Path=SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <Popup
             x:Name="popuplist"
+            AllowsTransparency="True"
             StaysOpen="False"
-            IsOpen="{Binding ElementName=listToggle, Path=IsChecked}"
             Width="{Binding ElementName=searchText, Path=ActualWidth}"
             PlacementTarget="{Binding ElementName=searchText}"
             Placement="Bottom"
@@ -41,17 +44,39 @@
                     Padding="0 3"
                     CornerRadius="4"
                     Background="{StaticResource LightBlueBrush}">
-                    <ListBox
-                        Style="{StaticResource CustomListBox}"
-                        DisplayMemberPath="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=DisplayMemberPath}"
-                        ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchList}"
-                        SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SelectedSearch}"/>
+
+                    <Grid>
+                        <TextBlock
+                            x:Name="emptyText"
+                            Style="{StaticResource HeaderThreeText}"
+                            Foreground="{StaticResource SemiDarkBrush}"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Visibility="Hidden"
+                            Text="Не найдено"/>
+
+                        <ListBox
+                            VerticalAlignment="Center"
+                            Style="{StaticResource CustomListBox}"
+                            PreviewMouseLeftButtonUp="ListBox_PreviewMouseLeftButtonUp"
+                            ItemTemplate="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=ItemTemplate}"
+                            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchList}"
+                            SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SelectedSearch}"/>
+                    </Grid>
+                    
                 </Border>
             </Border>
         </Popup>
 
-        <Button
+        <local:Loader
+            x:Name="loader"
+            Margin="5"
             Grid.Column="1"
+            Height="{Binding ElementName=searchText, Path=ActualHeight}"/>
+
+        <Button
+            Grid.Column="2"
+            IsDefault="True"
             Style="{StaticResource IconButton}"
             Command="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchCommand}">
             <Image
