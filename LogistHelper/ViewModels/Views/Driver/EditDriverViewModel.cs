@@ -14,32 +14,65 @@ namespace LogistHelper.ViewModels.Views
     public class EditDriverViewModel : EditViewModel<DriverDto>
     {
         private DriverViewModel _driver;
-        private List<CarrierViewModel> _carriers;
-        private CarrierViewModel _selectedCarrier;
 
-        private string _issuerCode;
+        private IEnumerable<DataViewModel<VehicleDto>> _vehicles;
+
+        private IEnumerable<DataViewModel<CarrierDto>> _carriers;
+        private DataViewModel<CarrierDto> _selectedCarrier;
+
+        private IEnumerable<IssuerItem> _issuersList;
+        private IssuerItem _selectedIssuer;
+
+        private IViewModelFactory<CarrierDto> _carrierFactory;
+        private IViewModelFactory<VehicleDto> _vehicleFactory;
+
 
         #region Public
 
-        public List<CarrierViewModel> Carriers 
+        public IEnumerable<DataViewModel<CarrierDto>> Carriers 
         {
             get => _carriers;
             set => SetProperty(ref _carriers, value);
         }
 
-        public CarrierViewModel SelectedCarrier 
+        public IEnumerable<DataViewModel<VehicleDto>> Vehicles
+        {
+            get => _vehicles;
+            set => SetProperty(ref _vehicles, value);
+        }
+
+        public IEnumerable<IssuerItem> IssuersList
+        {
+            get => _issuersList;
+            set => SetProperty(ref _issuersList, value);
+        }
+
+        public IssuerItem SelectedIssuer 
+        { 
+            get => _selectedIssuer;
+            set
+            {
+                SetProperty(ref _selectedIssuer, value);
+                //if (SelectedIssuer != null)
+                //{
+                //    _driver.PassportIssuer = SelectedIssuer.Name;
+                //}
+                //else 
+                //{
+                //    _driver.PassportIssuer = string.Empty;
+                //}
+            }
+        }
+
+        public DataViewModel<CarrierDto> SelectedCarrier 
         {
             get => _selectedCarrier;
             set 
             { 
                 SetProperty(ref _selectedCarrier, value);
+                //_driver.Carrier = SelectedCarrier as CarrierViewModel;
+                //SearchVehicles();
             }
-        }
-
-        public string IssuerCode
-        {
-            get => _issuerCode;
-            set => SetProperty(ref _issuerCode, value);
         }
 
         #endregion Public
@@ -51,14 +84,20 @@ namespace LogistHelper.ViewModels.Views
         public ICommand DeletePhoneCommand { get; set; }
         public ICommand AddPhoneCommand { get; set; }
 
-        public ICommand SearchPassportIssuerCommand { get; set; }
+        public ICommand SearchIssuerCommand { get; set; }
+        public ICommand SearchCarrierCommand { get; set; }
 
         #endregion Commands
 
         public EditDriverViewModel(ISettingsRepository<Settings> repository, 
                                    IViewModelFactory<DriverDto> factory, 
+                                   IViewModelFactory<CarrierDto> carrierFactory, 
+                                   IViewModelFactory<VehicleDto> vehicleFactory, 
                                    IDialog dialog) : base(repository, factory, dialog)
         {
+            _carrierFactory = carrierFactory;
+            _vehicleFactory = vehicleFactory;
+
             #region CommandsInit
 
             AddPhoneCommand = new RelayCommand(() =>
@@ -75,9 +114,14 @@ namespace LogistHelper.ViewModels.Views
                 }
             });
 
-            SearchPassportIssuerCommand = new RelayCommand(async () =>
+            SearchIssuerCommand = new RelayCommand<string>(async (searchString) =>
             {
-                await Search();
+                await SearchIssuer(searchString);
+            });
+
+            SearchCarrierCommand = new RelayCommand<string>(async (searchString) => 
+            {
+                await SearchCarrier(searchString);
             });
 
             #endregion CommandsInit
@@ -106,16 +150,46 @@ namespace LogistHelper.ViewModels.Views
             _driver = EditedViewModel as DriverViewModel;
         }
 
-        public async Task Search()
+        public async Task SearchIssuer(string searchString)
         {
             var api = new OutwardClientAsync(_settings.DaDataApiKey);
-            var response = await api.Suggest<FmsUnit>(IssuerCode);
-            var result = response.suggestions.FirstOrDefault();
+            var response = await api.Suggest<FmsUnit>(searchString);
+            IssuersList = response.suggestions.Select(s => new IssuerItem() { Code = s.data.code, Name = s.data.name });
+        }
 
-            if (result != null) 
+        private async Task SearchCarrier(string searchString)
+        {
+            await Task.Run(async () => 
             {
-                _driver.PassportIssuer = result.value;
-            }
+                RequestResult<IEnumerable<CarrierDto>> result = await _client.Search<CarrierDto>(searchString);
+
+                SelectedCarrier = null;
+
+                if (result.IsSuccess)
+                {
+                    Carriers = result.Result.Select(c => _carrierFactory.GetViewModel(c));
+                }
+                else 
+                {
+                    Carriers = null;
+                }
+            });
+        }
+
+        private async Task SearchVehicles() 
+        {
+            await Task.Run(async () =>
+            {
+                RequestResult<IEnumerable<VehicleDto>> result = await _client.GetMainId<VehicleDto>(SelectedCarrier?.Id);
+
+                Vehicles = null;
+                _driver.Vehicle = null;
+
+                if (result.IsSuccess)
+                {
+                    Vehicles = result.Result.Select(v => _vehicleFactory.GetViewModel(v));
+                }
+            });
         }
     }
 }

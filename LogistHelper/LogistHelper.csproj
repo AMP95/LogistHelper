@@ -10,6 +10,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="UI\Icons\add_icon.png" />
+    <None Remove="UI\Icons\back_icon.png" />
+    <None Remove="UI\Icons\down_icon.png" />
+    <None Remove="UI\Icons\edit_icon.png" />
+    <None Remove="UI\Icons\forward_icon.png" />
+    <None Remove="UI\Icons\image_icon.png" />
+    <None Remove="UI\Icons\logout_icon.png" />
+    <None Remove="UI\Icons\remove_icon.png" />
+    <None Remove="UI\Icons\reset.png" />
+    <None Remove="UI\Icons\reset_icon.png" />
+    <None Remove="UI\Icons\return_icon.png" />
+    <None Remove="UI\Icons\search_icon.png" />
+    <None Remove="UI\Icons\setting_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CustomDialog\CustomDialog.csproj" />
     <ProjectReference Include="..\Log4NetLogger\Log4NetLogger.csproj" />
     <ProjectReference Include="..\ServerClient\ServerClient.csproj" />
@@ -27,6 +43,22 @@
     <Reference Include="DTOs">
       <HintPath>..\..\Exam\DTOs\bin\Debug\net9.0\DTOs.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="UI\Icons\add_icon.png" />
+    <Resource Include="UI\Icons\back_icon.png" />
+    <Resource Include="UI\Icons\down_icon.png" />
+    <Resource Include="UI\Icons\edit_icon.png" />
+    <Resource Include="UI\Icons\forward_icon.png" />
+    <Resource Include="UI\Icons\image_icon.png" />
+    <Resource Include="UI\Icons\logout_icon.png" />
+    <Resource Include="UI\Icons\remove_icon.png" />
+    <Resource Include="UI\Icons\reset.png" />
+    <Resource Include="UI\Icons\reset_icon.png" />
+    <Resource Include="UI\Icons\return_icon.png" />
+    <Resource Include="UI\Icons\search_icon.png" />
+    <Resource Include="UI\Icons\setting_icon.png" />
   </ItemGroup>
 
 </Project>

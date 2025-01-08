@@ -33,7 +33,7 @@ namespace ServerClient
             return await GetResult<T>(result);
         }
 
-        public async Task<RequestResult<IEnumerable<T>>> GetMainId<T>(Guid id)
+        public async Task<RequestResult<IEnumerable<T>>> GetMainId<T>(Guid? id)
         {
             string route = GetRoute(typeof(T));
             RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/main/{id}");

@@ -111,7 +111,6 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
                             </Grid.ColumnDefinitions>
 
                             <TextBox
@@ -130,19 +129,22 @@
                                 Style="{StaticResource MiniText}"
                                 Text="Код"/>
 
-                            <TextBox
+                            <controls:SearchBox
+                                Width="200"
                                 Grid.Column="2"
-                                Width="100"
-                                Style="{StaticResource SubCentralTextBox}"
-                                Text="{Binding IssuerCode}"/>
-
-                            <Button
-                                Grid.Column="3"
-                                Style="{StaticResource IconButton}"
-                                Command="{Binding SearchCommand}">
-                                <Image
-                                    Source="/UI/Icons/search_icon.png"/>
-                            </Button>
+                                IsDynamicSearch="False"
+                                SearchCommand="{Binding SearchIssuerCommand}"
+                                SelectedSearch="{Binding SelectedIssuer, Mode=TwoWay}"
+                                SearchList="{Binding IssuersList, Mode=TwoWay}"
+                                DisplayMemberPath="Code">
+                                <controls:SearchBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            Style="{StaticResource DefaultText}"
+                                            Text="{Binding Code}"/>
+                                    </DataTemplate>
+                                </controls:SearchBox.ItemTemplate>
+                            </controls:SearchBox>
                         </Grid>
 
 
@@ -226,8 +228,8 @@
                         SearchCommand="{Binding SearchCarrierCommand}"
                         SearchList="{Binding Carriers, Mode=TwoWay}"
                         SelectedSearch="{Binding SelectedCarrier, Mode=TwoWay}"
-                        DisplayMemberPath="Name"
-                        SearchText="{Binding SearchCarrierText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        IsDynamicSearch="True"
+                        DisplayMemberPath="Name">
                         <controls:SearchBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock

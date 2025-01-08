@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -51,136 +52,10 @@
                 Foreground="{StaticResource NeutralOneBrush}"
                 Text="{Binding BlockText}"/>
 
-            <Viewbox
-                Margin="5"
-                Grid.Column="1">
-                <Grid>
+            <controls:Loader
+                Grid.Column="1"
+                IsInProcess="{Binding IsBlock, Mode=OneWay}"/>
 
-                    <Path
-                        RenderTransformOrigin="0.5 0.5"
-                        Fill="{StaticResource NeutralTwoDarkBrush}"
-                        Stroke="{StaticResource NeutralTwoDarkBrush}">
-                        <Path.Data>
-                            <PathGeometry>
-                                <PathFigure StartPoint="200 0">
-                                    <ArcSegment Point="400 200" SweepDirection="Clockwise" Size="200 200"/>
-                                    <ArcSegment Point="370 200" SweepDirection="Clockwise" Size="15 15"/>
-                                    <ArcSegment Point="200 30"  Size="170 170"/>
-                                    <ArcSegment Point="200 0" SweepDirection="Clockwise"  Size="15 15"/>
-                                </PathFigure>
-
-                                <PathFigure StartPoint="200 400">
-                                    <ArcSegment Point="0 200" SweepDirection="Clockwise" Size="200 200"/>
-                                    <ArcSegment Point="30 200" SweepDirection="Clockwise" Size="15 15"/>
-                                    <ArcSegment Point="200 370"  Size="170 170"/>
-                                    <ArcSegment Point="200 400" SweepDirection="Clockwise" Size="15 15"/>
-                                </PathFigure>
-                            </PathGeometry>
-                        </Path.Data>
-                        
-                        <Path.RenderTransform>
-                            <TransformGroup>
-                                <RotateTransform x:Name="rotateOuter" />
-                            </TransformGroup>
-                        </Path.RenderTransform>
-
-                        <Path.Effect>
-                            <DropShadowEffect
-                                ShadowDepth="0"
-                                BlurRadius="5"
-                                Color="{StaticResource Dark}"/>
-                        </Path.Effect>
-
-                        <Path.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsBlock}" Value="True">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard x:Name="outerAnimation">
-                                                <Storyboard Storyboard.TargetProperty="(Path.RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)">
-                                                    <DoubleAnimation
-                                                        From="0"
-                                                        To="360"
-                                                        Duration="0:0:3"
-                                                        DecelerationRatio="0.2"
-                                                        RepeatBehavior="Forever"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsBlock}" Value="False">
-                                        <DataTrigger.ExitActions>
-                                            <RemoveStoryboard BeginStoryboardName="outerAnimation"/>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Path.Style>
-                    </Path>
-
-                    <Path
-                        RenderTransformOrigin="0.5 0.5"
-                        Fill="{StaticResource NeutralOneBrush}"
-                        Stroke="{StaticResource NeutralOneBrush}">
-                        <Path.Data>
-                            <PathGeometry>
-                                <PathFigure StartPoint="200 50">
-                                    <ArcSegment Point="350 200" SweepDirection="Clockwise" Size="150 150"/>
-                                    <ArcSegment Point="320 200" SweepDirection="Clockwise"  Size="15 15"/>
-                                    <ArcSegment Point="200 80" Size="120 120"/>
-                                    <ArcSegment Point="200 50" SweepDirection="Clockwise" Size="15 15"/>
-                                </PathFigure>
-
-                                <PathFigure StartPoint="200 350">
-                                    <ArcSegment Point="50 200" SweepDirection="Clockwise" Size="150 150"/>
-                                    <ArcSegment Point="80 200" SweepDirection="Clockwise" Size="15 15"/>
-                                    <ArcSegment Point="200 320" Size="120 120"/>
-                                    <ArcSegment Point="200 350" SweepDirection="Clockwise" Size="15 15"/>
-                                </PathFigure>
-                            </PathGeometry>
-                        </Path.Data>
-
-                        <Path.RenderTransform>
-                            <TransformGroup>
-                                <RotateTransform x:Name="rotateInner"/>
-                            </TransformGroup>
-                        </Path.RenderTransform>
-
-                        <Path.Effect>
-                            <DropShadowEffect
-                                ShadowDepth="0"
-                                BlurRadius="5"
-                                Color="{StaticResource Dark}"/>
-                        </Path.Effect>
-
-                        <Path.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsBlock}" Value="True">
-                                        <DataTrigger.EnterActions>
-                                            <BeginStoryboard x:Name="innerAnimation">
-                                                <Storyboard Storyboard.TargetProperty="(Path.RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)">
-                                                    <DoubleAnimation
-                                                        From="360"
-                                                        To="0"
-                                                        DecelerationRatio="0.2"
-                                                        Duration="0:0:1.5"
-                                                        RepeatBehavior="Forever"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </DataTrigger.EnterActions>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding IsBlock}" Value="False">
-                                        <DataTrigger.ExitActions>
-                                            <RemoveStoryboard BeginStoryboardName="innerAnimation"/>
-                                        </DataTrigger.ExitActions>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Path.Style>
-                    </Path>
-                </Grid>
-            </Viewbox>
         </Grid>
 
     </Grid>
