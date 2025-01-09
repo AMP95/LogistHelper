@@ -14,8 +14,8 @@
     </UserControl.Resources>
 
     <ItemsControl
-    Grid.Row="1"
-    ItemsSource="{Binding List}">
+        Grid.Row="1"
+        ItemsSource="{Binding List}">
         <ItemsControl.Template>
             <ControlTemplate>
                 <Grid>
@@ -25,7 +25,7 @@
                     </Grid.RowDefinitions>
 
                     <Grid
-                    Margin="0 0 12 0">
+                        Margin="0 0 12 0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition
                             Width="70"/>
@@ -39,41 +39,44 @@
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
-                        Style="{StaticResource HeaderThreeText}"
-                        Text="№"
-                        Foreground="{StaticResource NeutralOneBrush}"/>
+                            Style="{StaticResource HeaderThreeText}"
+                            Text="№"
+                            Foreground="{StaticResource NeutralOneBrush}"/>
 
                         <TextBlock
-                        Grid.Column="1"
-                        Style="{StaticResource HeaderThreeText}"
-                        Foreground="{StaticResource NeutralOneBrush}"
-                        Text="Название"/>
+                            Grid.Column="1"
+                            Style="{StaticResource HeaderThreeText}"
+                            Foreground="{StaticResource NeutralOneBrush}"
+                            Text="Название"/>
 
                         <TextBlock
-                        Grid.Column="2"
-                        Style="{StaticResource HeaderThreeText}"
-                        Foreground="{StaticResource NeutralOneBrush}"
-                        Text="ИНН/КПП"/>
+                            Grid.Column="2"
+                            Style="{StaticResource HeaderThreeText}"
+                            Foreground="{StaticResource NeutralOneBrush}"
+                            Text="ИНН/КПП"/>
 
                         <TextBlock
-                        Grid.Column="3"
-                        Style="{StaticResource HeaderThreeText}"
-                        Foreground="{StaticResource NeutralOneBrush}"
-                        Text="НДС"/>
+                            Grid.Column="3"
+                            Style="{StaticResource HeaderThreeText}"
+                            Foreground="{StaticResource NeutralOneBrush}"
+                            Text="НДС"/>
 
                         <Button
-                        Grid.Column="5"
-                        Style="{StaticResource IconButton}"
-                        HorizontalAlignment="Right"
-                        Content="Add"
-                        Command="{Binding AddCommand}"/>
+                            Grid.Column="5"
+                            Style="{StaticResource IconButton}"
+                            HorizontalAlignment="Right"
+                            ToolTip="Новый контрагент"
+                            Command="{Binding AddCommand}">
+                            <Image
+                                Source="/UI/Icons/add_icon.png"/>
+                        </Button>
                     </Grid>
 
                     <ScrollViewer
-                    Grid.Row="1"
-                    VerticalScrollBarVisibility="Visible"
-                    HorizontalScrollBarVisibility="Disabled"
-                    Style="{StaticResource CustomScroll}">
+                        Grid.Row="1"
+                        VerticalScrollBarVisibility="Visible"
+                        HorizontalScrollBarVisibility="Disabled"
+                        Style="{StaticResource CustomScroll}">
                         <ItemsPresenter/>
                     </ScrollViewer>
                 </Grid>
@@ -85,54 +88,60 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition
-                        Width="70"/>
+                            Width="70"/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                         <ColumnDefinition
-                        Width="50"/>
+                            Width="50"/>
                         <ColumnDefinition
-                        Width="50"/>
+                         Width="50"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock
-                    Style="{StaticResource DefaultText}"
-                    TextAlignment="Center"
-                    Text="{Binding Counter}"/>
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Counter}"/>
 
                     <TextBlock
-                    Grid.Column="1"
-                    Style="{StaticResource DefaultText}"
-                    TextAlignment="Center"
-                    Text="{Binding Name}"/>
+                        Grid.Column="1"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Name}"/>
 
                     <TextBlock
-                    Grid.Column="2"
-                    Style="{StaticResource DefaultText}"
-                    TextAlignment="Center">
-                    <Run Text="{Binding Inn}"/>
-                    <Run Text="/"/>
-                    <Run Text="{Binding Kpp}"/>
+                        Grid.Column="2"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center">
+                        <Run Text="{Binding Inn}"/>
+                        <Run Text="/"/>
+                        <Run Text="{Binding Kpp}"/>
                     </TextBlock>
 
                     <TextBlock
-                    Grid.Column="3"
-                    Style="{StaticResource DefaultText}"
-                    TextAlignment="Center"
-                    Text="{Binding Vat, Converter={StaticResource EnumToDescriptionConverter}}"/>
+                        Grid.Column="3"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Vat, Converter={StaticResource EnumToDescriptionConverter}}"/>
 
                     <Button
-                    Grid.Column="4"
-                    Style="{StaticResource IconButton}"
-                    Content="Реда"
-                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.EditCommand}"
-                    CommandParameter="{Binding Id}"/>
+                        Grid.Column="4"
+                        Style="{StaticResource IconButton}"
+                        ToolTip="Редактировать"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.EditCommand}"
+                        CommandParameter="{Binding Id}">
+                        <Image
+                            Source="/UI/Icons/edit_icon.png"/>
+                    </Button>
 
                     <Button
-                    Grid.Column="5"
-                    Style="{StaticResource IconButton}"
-                    Content="Удал"
-                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.DeleteCommand}"
-                    CommandParameter="{Binding Id}"/>
+                        Grid.Column="5"
+                        Style="{StaticResource IconButton}"
+                        ToolTip="Удалить"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.DeleteCommand}"
+                        CommandParameter="{Binding Id}">
+                        <Image
+                            Source="/UI/Icons/remove_icon.png"/>
+                    </Button>
                 </Grid>
             </DataTemplate>
         </ItemsControl.ItemTemplate>

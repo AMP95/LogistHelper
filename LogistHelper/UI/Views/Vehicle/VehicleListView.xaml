@@ -54,13 +54,16 @@
                             Style="{StaticResource HeaderThreeText}"
                             Foreground="{StaticResource NeutralOneBrush}"
                             Text="Перевозчик"/>
-        
+
                         <Button
                             Grid.Column="5"
                             Style="{StaticResource IconButton}"
                             HorizontalAlignment="Right"
-                            Content="Add"
-                            Command="{Binding AddCommand}"/>
+                            ToolTip="Новое ТС"
+                            Command="{Binding AddCommand}">
+                            <Image
+                                Source="/UI/Icons/add_icon.png"/>
+                        </Button>
                     </Grid>
         
                     <ScrollViewer
@@ -89,15 +92,15 @@
                             Width="50"/>
                     </Grid.ColumnDefinitions>
 
-                <TextBlock
-                    Style="{StaticResource DefaultText}"
-                    TextAlignment="Center"
-                    Text="{Binding Counter}"/>
+                    <TextBlock
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Counter}"/>
 
-                <TextBlock
-                    Grid.Column="1"
-                    Style="{StaticResource DefaultText}"
-                    TextAlignment="Center">
+                    <TextBlock
+                        Grid.Column="1"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center">
                         <Run Text="{Binding Vehicle.TruckModel}"/>
                         <Run Text="{Binding Vehicle.TruckNumber}"/>
                     </TextBlock>
@@ -115,20 +118,26 @@
                         Style="{StaticResource DefaultText}"
                         TextAlignment="Center"
                         Text="{Binding Carrier.Name}"/>
-    
+
                     <Button
                         Grid.Column="4"
                         Style="{StaticResource IconButton}"
-                        Content="Реда"
+                        ToolTip="Реда"
                         Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.EditCommand}"
-                        CommandParameter="{Binding Id}"/>
-    
+                        CommandParameter="{Binding Id}">
+                        <Image
+                            Source="/UI/Icons/edit_icon.png"/>
+                    </Button>
+
                     <Button
                         Grid.Column="5"
                         Style="{StaticResource IconButton}"
-                        Content="Удал"
+                        ToolTip="Удалить"
                         Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.DeleteCommand}"
-                        CommandParameter="{Binding Id}"/>
+                        CommandParameter="{Binding Id}">
+                        <Image
+                            Source="/UI/Icons/remove_icon.png"/>
+                    </Button>
                 </Grid>
             </DataTemplate>
         </ItemsControl.ItemTemplate>
