@@ -121,6 +121,66 @@
         </ControlTemplate.Triggers>
 
     </ControlTemplate>
+    
+    <ControlTemplate x:Key="PwdButtonTemplate" TargetType="{x:Type ButtonBase}">
+        <Border 
+            x:Name="border" 
+            CornerRadius="0 5 5 0"
+            Style="{StaticResource BottomBorder}">
+            
+            <Grid>
+            
+                <Border 
+                    CornerRadius="0 4 4 0"
+                    Style="{StaticResource TopBorder}"
+                    x:Name="innerBorder"/>
+            
+                <ContentPresenter 
+                    x:Name="contentPresenter" 
+                    Focusable="False" 
+                    Grid.RowSpan="2"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}" 
+                    RecognizesAccessKey="True" 
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Grid>
+            
+            
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter 
+                    Property="Opacity" 
+                    TargetName="innerBorder" 
+                    Value="0.8"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter 
+                    Property="Opacity" 
+                    TargetName="innerBorder" 
+                    Value="0"/>
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="true">
+                <Setter 
+                    Property="Background" 
+                    TargetName="border" 
+                    Value="{Binding RelativeSource={RelativeSource AncestorType=ToggleButton}, Path=Background}"/>
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="false">
+                <Setter 
+                    Property="Background" 
+                    TargetName="border" 
+                    Value="Transparent"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter 
+                    Property="Opacity" 
+                    TargetName="border" 
+                    Value="0.2"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
     <ControlTemplate x:Key="ToggleButtonNeuralTemplate" TargetType="{x:Type ToggleButton}">
         <Border 
@@ -403,32 +463,126 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-
-    <ControlTemplate x:Key="CustomPasswordBox" TargetType="{x:Type PasswordBox}">
+    
+    <ControlTemplate x:Key="ShowedPasswordBoxTemplate" TargetType="{x:Type TextBoxBase}">
         <Border 
             x:Name="border"
-            CornerRadius="5"
-            BorderThickness="{TemplateBinding BorderThickness}"
-            Background="{TemplateBinding Background}"
-            ClipToBounds="True"
-            BorderBrush="{StaticResource BorderGradient}"
-            SnapsToDevicePixels="True">
-
-            <Grid>
+            BorderThickness="1 1 0 1"
+            Style="{StaticResource BottomBorder}"
+            CornerRadius="5 0 0 5">
+            
+             <Grid>
                 <Border 
                     Style="{StaticResource TopBorder}"
                     x:Name="innerBorder"
+                    CornerRadius="4 0 0 4"
                     Opacity="0.3"/>
-
+    
                 <ScrollViewer 
                     x:Name="PART_ContentHost" 
                     Focusable="False" 
                     HorizontalScrollBarVisibility="Hidden" 
                     VerticalScrollBarVisibility="Hidden"/>
             </Grid>
-
+            
         </Border>
-
+    
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter 
+                    Property="Opacity" 
+                    TargetName="innerBorder" 
+                    Value="0.5"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter 
+                    Property="Opacity" 
+                    TargetName="innerBorder" 
+                    Value="0"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter 
+                    Property="Opacity" 
+                    TargetName="border" 
+                    Value="0.5"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <ControlTemplate x:Key="CustomPasswordBox" TargetType="{x:Type PasswordBox}">
+        <Border 
+            x:Name="border"
+            BorderThickness="1 1 0 1"
+            Background="{TemplateBinding Background}"
+            ClipToBounds="True"
+            SnapsToDevicePixels="True"
+            BorderBrush="{StaticResource BorderGradient}"
+            CornerRadius="5 0 0 5">
+            
+             <Grid>
+                <Border 
+                    Style="{StaticResource TopBorder}"
+                    x:Name="innerBorder"
+                    CornerRadius="4 0 0 4"
+                    Opacity="0.3"/>
+        
+                <ScrollViewer 
+                    x:Name="PART_ContentHost" 
+                    Focusable="False" 
+                    HorizontalScrollBarVisibility="Hidden" 
+                    VerticalScrollBarVisibility="Hidden"/>
+            </Grid>
+            
+        </Border>
+            
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter 
+                    Property="Opacity" 
+                    TargetName="innerBorder" 
+                    Value="0.5"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter 
+                    Property="Opacity" 
+                    TargetName="innerBorder" 
+                    Value="0"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter 
+                    Property="Opacity" 
+                    TargetName="border" 
+                    Value="0.5"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <ControlTemplate x:Key="MainPasswordBox" TargetType="{x:Type PasswordBox}">
+        <Border 
+            x:Name="border"
+            BorderThickness="1"
+            Background="{TemplateBinding Background}"
+            ClipToBounds="True"
+            SnapsToDevicePixels="True"
+            BorderBrush="{StaticResource BorderGradient}"
+            CornerRadius="5">
+        
+             <Grid>
+                <Border 
+                    Style="{StaticResource TopBorder}"
+                    x:Name="innerBorder"
+                    CornerRadius="4"
+                    Opacity="0.3"/>
+    
+                <ScrollViewer 
+                    x:Name="PART_ContentHost" 
+                    Focusable="False" 
+                    HorizontalScrollBarVisibility="Hidden" 
+                    VerticalScrollBarVisibility="Hidden"/>
+            </Grid>
+        
+        </Border>
+        
         <ControlTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="true">
                 <Setter 

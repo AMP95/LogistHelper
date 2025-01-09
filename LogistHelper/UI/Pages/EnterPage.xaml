@@ -7,6 +7,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:models="clr-namespace:LogistHelper.Models"
              xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
+             xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -42,9 +43,11 @@
                 Style="{StaticResource MainLeftTextBox}"
                 Text="{Binding Login}"/>
 
-            <PasswordBox
+            <controls:CustomPasswordBox 
                 Grid.Row="2"
-                Style="{StaticResource MainPasswordBox}"/>
+                ShowButtonStyle="{StaticResource ActivePwdToggle}"
+                Style="{StaticResource CustomPwdStyle}"
+                x:Name="passboxPasswordBox"/>
 
             <Button
                 Grid.Row="3"

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls">
 
     <Style x:Key="ToolBorderStyle" TargetType="{x:Type Border}" BasedOn="{StaticResource BottomBorder}">
         <Setter Property="Background" Value="{StaticResource DarkBrush}"/>
@@ -1210,7 +1211,8 @@
         <Setter Property="Template" Value="{StaticResource ToggleButtonTemplate}"/>
         <Setter Property="Background" Value="{StaticResource SemiDarkBrush}"/>
     </Style>
-
+    
+    
 
 
     <Style x:Key="NeutralTwoButton" TargetType="{x:Type ButtonBase}" BasedOn="{StaticResource AcceptButton}">
@@ -1303,6 +1305,13 @@
     <Style x:Key="ActiveNeutralOneIconToggle" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource ActiveAcceptIconToggle}">
         <Style.Setters>
             <Setter Property="Background" Value="{StaticResource NeutralOneBrush}"/>
+        </Style.Setters>
+    </Style>
+    
+    <Style x:Key="ActivePwdToggle" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource ActiveAcceptIconToggle}">
+        <Style.Setters>
+            <Setter Property="Template" Value="{StaticResource PwdButtonTemplate}"/>
+            <Setter Property="Margin" Value="0 5 5 5"/>
         </Style.Setters>
     </Style>
 
@@ -1405,9 +1414,9 @@
         </Style.Setters>
     </Style>
 
-    <Style x:Key="MainPasswordBox" TargetType="{x:Type PasswordBox}">
+    <Style x:Key="CustomPwdBox" TargetType="{x:Type PasswordBox}">
         <Style.Setters>
-            <Setter Property="Margin" Value="5 8"/>
+            <Setter Property="Margin" Value="5 5 0 5"/>
             <Setter Property="MinHeight" Value="40"/>
             <Setter Property="Padding" Value="5"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -1415,7 +1424,39 @@
             <Setter Property="Template" Value="{StaticResource CustomPasswordBox}"/>
             <Setter Property="Background" Value="{StaticResource LightBlueBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource SemiDarkBrush}"/>
+            <Setter Property="BorderThickness" Value="5"/>
             <Setter Property="FontWeight" Value="Medium"/>
+        </Style.Setters>
+    </Style>
+    
+    <Style x:Key="MainPwdBox" TargetType="{x:Type PasswordBox}">
+        <Style.Setters>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="MinHeight" Value="40"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template" Value="{StaticResource MainPasswordBox}"/>
+            <Setter Property="Background" Value="{StaticResource LightBlueBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource SemiDarkBrush}"/>
+            <Setter Property="BorderThickness" Value="5"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style.Setters>
+    </Style>
+    
+    <Style x:Key="ShowedPwdBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
+        <Style.Setters>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template" Value="{StaticResource ShowedPasswordBoxTemplate}"/>
+            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+            <Setter Property="Margin" Value="5 5 0 5"/>
+        </Style.Setters>
+    </Style>
+    
+    <Style x:Key="CustomPwdStyle" TargetType="{x:Type controls:CustomPasswordBox}">
+        <Style.Setters>
+            <Setter Property="PasswordBoxStyle" Value="{StaticResource CustomPwdBox}"/>
+            <Setter Property="ShowedPasswordBoxStyle" Value="{StaticResource ShowedPwdBox}"/>
         </Style.Setters>
     </Style>
 
