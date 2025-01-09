@@ -7,23 +7,34 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="100">
     
+    <UserControl.Resources>
+        <Storyboard
+            x:Key="rotationOne"
+            Storyboard.TargetProperty="(Path.RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)">
+            <DoubleAnimation
+                From="0"
+                To="360"
+                Duration="0:0:3"
+                DecelerationRatio="0.2"
+                RepeatBehavior="Forever"/>
+        </Storyboard>
+        
+        <Storyboard
+            x:Key="rotationTwo"
+            Storyboard.TargetProperty="(Path.RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)">
+            <DoubleAnimation
+                From="360"
+                To="0"
+                DecelerationRatio="0.2"
+                Duration="0:0:1.5"
+                RepeatBehavior="Forever"/>
+        </Storyboard>
+    </UserControl.Resources>
+    
     <Viewbox
         Margin="5"
         Grid.Column="1">
         <Grid>
-
-            <Grid.Style>
-                <Style>
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:Loader}, Path=IsInProcess, Mode=OneWay}" Value="True">
-                            <Setter Property="Grid.Visibility" Value="Visible"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:Loader}, Path=IsInProcess, Mode=OneWay}" Value="False">
-                            <Setter Property="Grid.Visibility" Value="Hidden"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
 
             <Path
                 RenderTransformOrigin="0.5 0.5"
@@ -63,24 +74,15 @@
                 <Path.Style>
                     <Style>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:Loader}, Path=IsInProcess, Mode=TwoWay}" Value="True">
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:Loader}, Path=IsActive}" Value="True">
                                 <DataTrigger.EnterActions>
-                                    <BeginStoryboard x:Name="outerAnimation">
-                                        <Storyboard Storyboard.TargetProperty="(Path.RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)">
-                                            <DoubleAnimation
-                                                From="0"
-                                                To="360"
-                                                Duration="0:0:3"
-                                                DecelerationRatio="0.2"
-                                                RepeatBehavior="Forever"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
+                                    <BeginStoryboard Name="rotateAnimation" Storyboard="{StaticResource rotationOne}"/>
                                 </DataTrigger.EnterActions>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:Loader}, Path=IsInProcess, Mode=TwoWay}" Value="False">
-                                <DataTrigger.ExitActions>
-                                    <RemoveStoryboard BeginStoryboardName="outerAnimation"/>
-                                </DataTrigger.ExitActions>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:Loader}, Path=IsActive}" Value="False">
+                                <DataTrigger.EnterActions>
+                                    <RemoveStoryboard BeginStoryboardName="rotateAnimation"/>
+                                </DataTrigger.EnterActions>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -117,32 +119,23 @@
 
                 <Path.Effect>
                     <DropShadowEffect
-                    ShadowDepth="0"
-                    BlurRadius="5"
-                    Color="{StaticResource Dark}"/>
+                        ShadowDepth="0"
+                        BlurRadius="5"
+                        Color="{StaticResource Dark}"/>
                 </Path.Effect>
 
                 <Path.Style>
                     <Style>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:Loader}, Path=IsInProcess, Mode=TwoWay}" Value="True">
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:Loader}, Path=IsActive}" Value="True">
                                 <DataTrigger.EnterActions>
-                                    <BeginStoryboard x:Name="innerAnimation">
-                                        <Storyboard Storyboard.TargetProperty="(Path.RenderTransform).(TransformGroup.Children)[0].(RotateTransform.Angle)">
-                                            <DoubleAnimation
-                                            From="360"
-                                            To="0"
-                                            DecelerationRatio="0.2"
-                                            Duration="0:0:1.5"
-                                            RepeatBehavior="Forever"/>
-                                        </Storyboard>
-                                    </BeginStoryboard>
+                                    <BeginStoryboard Name="rotateAnimation" Storyboard="{StaticResource rotationTwo}"/>
                                 </DataTrigger.EnterActions>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:Loader}, Path=IsInProcess, Mode=TwoWay}" Value="False">
-                                <DataTrigger.ExitActions>
-                                    <RemoveStoryboard BeginStoryboardName="innerAnimation"/>
-                                </DataTrigger.ExitActions>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:Loader}, Path=IsActive}" Value="False">
+                                <DataTrigger.EnterActions>
+                                    <RemoveStoryboard BeginStoryboardName="rotateAnimation"/>
+                                </DataTrigger.EnterActions>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

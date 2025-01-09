@@ -54,7 +54,7 @@
 
             <controls:Loader
                 Grid.Column="1"
-                IsInProcess="{Binding IsBlock, Mode=OneWay}"/>
+                IsActive="{Binding IsBlock, Mode=OneWay}"/>
 
         </Grid>
 

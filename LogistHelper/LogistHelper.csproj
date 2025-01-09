@@ -41,7 +41,7 @@
 
   <ItemGroup>
     <Reference Include="DTOs">
-      <HintPath>..\..\Exam\DTOs\bin\Debug\net9.0\DTOs.dll</HintPath>
+      <HintPath>..\..\ExamServer\Exam\bin\Debug\net9.0\DTOs.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -8,13 +8,13 @@ namespace LogistHelper.UI.CustomControls
     /// </summary>
     public partial class Loader : UserControl
     {
-        public bool IsInProcess
+        public bool IsActive
         {
-            get { return (bool)GetValue(IsInProcessProperty); }
-            set { SetValue(IsInProcessProperty, value); }
+            get { return (bool)GetValue(IsActiveProperty); }
+            set { SetValue(IsActiveProperty, value); }
         }
-        public static readonly DependencyProperty IsInProcessProperty =
-            DependencyProperty.Register("IsInProcess", typeof(bool), typeof(Loader));
+        public static readonly DependencyProperty IsActiveProperty =
+            DependencyProperty.Register("IsActive", typeof(bool), typeof(Loader));
 
 
         public Loader()
