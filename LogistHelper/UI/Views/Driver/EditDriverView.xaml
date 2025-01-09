@@ -124,7 +124,6 @@
             </Grid>
 
 
-
             <TextBlock
                 Grid.Row="2"
                 Style="{StaticResource MiniText}"
