@@ -4,9 +4,139 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
+             xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="450">
+             d:DesignHeight="450" d:DesignWidth="600">
     <Grid>
-            
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock
+            Grid.ColumnSpan="4"
+            Style="{StaticResource DefaultText}"
+            Foreground="{StaticResource SemiDarkBrush}"
+            Text="Тягач"/>
+        
+        <TextBlock
+            Grid.Row="1"
+            Style="{StaticResource MiniText}"
+            Text="Марка"/>
+        
+        <TextBox
+            Grid.Row="1"
+            Grid.Column="1"
+            Style="{StaticResource SubLeftTextBox}">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.TruckModel">
+                    <Binding.ValidationRules>
+                        <rules:EmptyStringValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="2"
+            Style="{StaticResource MiniText}"
+            Text="Номер"/>
+        
+        <TextBox
+            Grid.Row="1"
+            Grid.Column="3"
+            Style="{StaticResource SubLeftTextBox}">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.TruckNumber">
+                    <Binding.ValidationRules>
+                        <rules:EmptyStringValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        
+        <TextBlock
+            Grid.Row="2"
+            Grid.ColumnSpan="4"
+            Style="{StaticResource DefaultText}"
+            Foreground="{StaticResource SemiDarkBrush}"
+            Text="Прицеп"/>
+        
+        <TextBlock
+            Grid.Row="3"
+            Style="{StaticResource MiniText}"
+            Text="Марка"/>
+        
+        <TextBox
+            Grid.Row="3"
+            Grid.Column="1"
+            Style="{StaticResource SubLeftTextBox}">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.TrailerModel">
+                    <Binding.ValidationRules>
+                        <rules:EmptyStringValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="2"
+            Style="{StaticResource MiniText}"
+            Text="Номер"/>
+        
+        <TextBox
+            Grid.Row="3"
+            Grid.Column="3"
+            Style="{StaticResource SubLeftTextBox}">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.TrailerNumber">
+                    <Binding.ValidationRules>
+                        <rules:EmptyStringValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        
+        <TextBlock
+            Grid.Row="4"
+            Grid.ColumnSpan="4"
+            Style="{StaticResource DefaultText}"
+            Foreground="{StaticResource SemiDarkBrush}"
+            Text="Перевозчик"/>
+        
+        <controls:SearchBox
+            Grid.Row="5"
+            Grid.ColumnSpan="4"
+            SearchCommand="{Binding SearchCarrierCommand}"
+            SearchList="{Binding Carriers, Mode=TwoWay}"
+            SelectedSearch="{Binding SelectedCarrier, Mode=TwoWay}"
+            IsDynamicSearch="True"
+            DisplayMemberPath="Name">
+            <controls:SearchBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Style="{StaticResource DefaultText}"
+                        Text="{Binding Name}"/>
+                </DataTemplate>
+            </controls:SearchBox.ItemTemplate>
+        </controls:SearchBox>
+
     </Grid>
 </UserControl>

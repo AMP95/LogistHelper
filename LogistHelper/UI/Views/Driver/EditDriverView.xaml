@@ -38,7 +38,7 @@
             <DatePicker
             Grid.Column="1"
             SelectedDate="{Binding EditedViewModel.BirthDate}"
-            Style="{StaticResource CustomDatePickerStyle}"/>
+            Style="{StaticResource CustomDatePicker}"/>
 
         </Grid>
 
@@ -134,7 +134,7 @@
                 Grid.Row="2"
                 Grid.Column="1"
                 SelectedDate="{Binding EditedViewModel.PassportDate}"
-                Style="{StaticResource CustomDatePickerStyle}"/>
+                Style="{StaticResource CustomDatePicker}"/>
         </Grid>
 
         <TextBlock
