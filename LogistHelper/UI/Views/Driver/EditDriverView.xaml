@@ -127,7 +127,7 @@
             <DatePicker
                 Grid.Row="2"
                 Grid.Column="1"
-                SelectedDate="{Binding EditedViewModel.PassportDate}"
+                SelectedDate="{Binding EditedViewModel.PassportDateOfIssue}"
                 Style="{StaticResource CustomDatePicker}"/>
         </Grid>
 
@@ -167,7 +167,7 @@
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBox
-                        Style="{StaticResource SubLeftTextBox}">
+                            Style="{StaticResource SubLeftTextBox}">
                             <TextBox.Text>
                                 <Binding Path="Item">
                                     <Binding.ValidationRules>

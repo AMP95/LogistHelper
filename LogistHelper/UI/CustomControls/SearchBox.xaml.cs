@@ -112,6 +112,8 @@ namespace LogistHelper.UI.CustomControls
                     {
                         search._canExecuteCommand = false;
 
+                        search.searchList.SelectedItem = search.SelectedSearch;
+
                         if (search.SelectedSearch != null)
                         {
                             Type type = search.SelectedSearch.GetType();
@@ -246,6 +248,17 @@ namespace LogistHelper.UI.CustomControls
         private void Button_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             popuplist.IsOpen = true;
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ListBox list) 
+            {
+                if (list.SelectedItem != null) 
+                { 
+                    SelectedSearch = list.SelectedItem;
+                }
+            }
         }
     }
 }

@@ -75,12 +75,13 @@
                             Text="Не найдено"/>
 
                         <ListBox
+                            x:Name="searchList"
                             VerticalAlignment="Center"
                             Style="{StaticResource CustomListBox}"
+                            SelectionChanged="ListBox_SelectionChanged"
                             PreviewMouseLeftButtonUp="ListBox_PreviewMouseLeftButtonUp"
                             ItemTemplate="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=ItemTemplate}"
-                            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchList}"
-                            SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SelectedSearch}"/>
+                            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchList}"/>
                     </Grid>
 
                 </Border>
