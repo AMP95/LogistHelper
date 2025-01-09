@@ -220,7 +220,7 @@
             Grid.Column="1"
             Style="{StaticResource CustomComboBox}"
             ItemsSource="{Binding Vehicles}"
-            SelectedItem="{Binding EditedViewModel.Vehicle}">
+            SelectedIndex="{Binding SelectedVehicleIndex, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock

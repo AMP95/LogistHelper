@@ -117,6 +117,7 @@ namespace LogistHelper.ViewModels.Base
             EditCommand = new RelayCommand<Guid>((id) =>
             {
                 Parent.SwitchToEdit(id);
+                Clear();
             });
 
             AddCommand = new RelayCommand(() =>
@@ -134,6 +135,11 @@ namespace LogistHelper.ViewModels.Base
 
 
             #endregion CommandsInit
+        }
+
+        public virtual void Clear()
+        {
+            List = null;
         }
 
         public virtual async Task Load()

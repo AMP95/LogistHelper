@@ -15,7 +15,8 @@ namespace LogistHelper.ViewModels.Views
     {
         private DriverViewModel _driver;
 
-        private IEnumerable<DataViewModel<VehicleDto>> _vehicles;
+        private List<DataViewModel<VehicleDto>> _vehicles;
+        private int _selectedIndex;
 
         private IEnumerable<DataViewModel<CarrierDto>> _carriers;
         private DataViewModel<CarrierDto> _selectedCarrier;
@@ -35,10 +36,30 @@ namespace LogistHelper.ViewModels.Views
             set => SetProperty(ref _carriers, value);
         }
 
-        public IEnumerable<DataViewModel<VehicleDto>> Vehicles
+        public List<DataViewModel<VehicleDto>> Vehicles
         {
             get => _vehicles;
             set => SetProperty(ref _vehicles, value);
+        }
+
+        public int SelectedVehicleIndex
+        {
+            get => _selectedIndex;
+            set
+            {
+                SetProperty(ref _selectedIndex, value);
+                if (_driver != null) 
+                {
+                    if (value >= 0)
+                    {
+                        _driver.Vehicle = Vehicles.ElementAt(value) as VehicleViewModel;
+                    }
+                    else 
+                    {
+                        _driver.Vehicle = null;
+                    }
+                }
+            }
         }
 
         public IEnumerable<IssuerItem> IssuersList
@@ -138,6 +159,13 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
+        public override void Clear()
+        {
+            base.Clear();
+            SelectedCarrier = null;
+            SelectedVehicleIndex = -1;
+        }
+
         public async Task SearchIssuer(string searchString)
         {
             var api = new OutwardClientAsync(_settings.DaDataApiKey);
@@ -174,11 +202,8 @@ namespace LogistHelper.ViewModels.Views
 
                 if (result.IsSuccess)
                 {
-                    Vehicles = result.Result.Select(v => _vehicleFactory.GetViewModel(v));
-                    if (_driver.Vehicle.Carrier.Id != SelectedCarrier.Id) 
-                    {
-                        _driver.Vehicle = null;
-                    }
+                    Vehicles = result.Result.Select(v => _vehicleFactory.GetViewModel(v)).ToList();
+                    SelectedVehicleIndex = Vehicles.IndexOf(Vehicles.FirstOrDefault(v => v.Id == _driver.Vehicle?.Id));
                 }
             });
         }

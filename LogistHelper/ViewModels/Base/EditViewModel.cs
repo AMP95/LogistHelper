@@ -67,10 +67,16 @@ namespace LogistHelper.ViewModels.Base
             BackCommand = new RelayCommand(() =>
             {
                 Parent.SwitchToList();
+                Clear();
             });
 
 
             #endregion CommanstInit
+        }
+
+        public virtual void Clear() 
+        {
+            EditedViewModel = null;
         }
 
         public virtual async Task Load(Guid id) 
