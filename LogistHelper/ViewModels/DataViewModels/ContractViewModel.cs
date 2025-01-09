@@ -165,24 +165,25 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         public ContractViewModel(ContractDto dto, int counter) : base(dto, counter)
         {
-            _driver = new DriverViewModel(_dto.Driver);
-            _loadingPoint = new RoutePointViewModel(_dto.LoadPoint);
-            UnloadPoints = new ObservableCollection<RoutePointViewModel>(_dto.UnloadPoints.Select(p => new RoutePointViewModel(p)));
+            if (dto != null) 
+            {
+                _driver = new DriverViewModel(dto.Driver);
+                _loadingPoint = new RoutePointViewModel(dto.LoadPoint);
+
+                if (dto.UnloadPoints != null)
+                {
+                    UnloadPoints = new ObservableCollection<RoutePointViewModel>(dto.UnloadPoints.Select(p => new RoutePointViewModel(p)));
+                }
+                else 
+                {
+                    UnloadPoints = new ObservableCollection<RoutePointViewModel>();
+                }
+            }
         }
 
-        public ContractViewModel(ContractDto dto) : this (dto, 0)
-        {
-            _driver = new DriverViewModel(dto.Driver);
-            _loadingPoint = new RoutePointViewModel(dto.LoadPoint);
-            UnloadPoints = new ObservableCollection<RoutePointViewModel>(dto.UnloadPoints.Select(p => new RoutePointViewModel(p)));
-        }
+        public ContractViewModel(ContractDto dto) : this(dto, 0) { }
 
-        public ContractViewModel()
-        {
-            Driver = new DriverViewModel();
-            LoadPoint = new RoutePointViewModel();
-            UnloadPoints = new ObservableCollection<RoutePointViewModel>();
-        }
+        public ContractViewModel() : base() { }
 
         public override ContractDto GetDto()
         {
@@ -191,6 +192,15 @@ namespace LogistHelper.ViewModels.DataViewModels
             _dto.Vehicle = _dto.Driver.Vehicle;
 
             return base.GetDto();
+        }
+
+        protected override void DefaultInit()
+        {
+            _dto = new ContractDto();
+
+            Driver = new DriverViewModel();
+            LoadPoint = new RoutePointViewModel();
+            UnloadPoints = new ObservableCollection<RoutePointViewModel>();
         }
     }
 

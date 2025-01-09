@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace LogistHelper.ViewModels.Base
 {
-    public class DataViewModel<TDto> : ObservableObject where TDto : IDto, IDataErrorInfo
+    public abstract class DataViewModel<TDto> : ObservableObject where TDto : IDto, IDataErrorInfo
     {
         private int _counter;
 
@@ -29,24 +29,32 @@ namespace LogistHelper.ViewModels.Base
 
         #endregion Validation
 
-        public DataViewModel(TDto dto)
-        {
-            _dto = dto;
-        }
         public DataViewModel(TDto dto, int counter)
         {
-            _dto = dto;
+            if (dto == null)
+            {
+                DefaultInit();
+            }
+            else 
+            { 
+                _dto = dto;
+            }
             Counter = counter;
         }
+
+        public DataViewModel(TDto dto) : this(dto, 0) { }
+        
         public DataViewModel()
         {
-            
+            DefaultInit();
         }
 
         public virtual TDto GetDto()
         {
             return _dto;
         }
+
+        protected abstract void DefaultInit();
     }
 
     public interface IViewModelFactory<TDto> where TDto : IDto 

@@ -5,6 +5,8 @@ namespace LogistHelper.ViewModels.DataViewModels
 {
     public class VehicleViewModel : DataViewModel<VehicleDto>
     {
+        private CarrierViewModel _carrier;
+
         #region Public
 
         public string TruckModel
@@ -47,13 +49,40 @@ namespace LogistHelper.ViewModels.DataViewModels
             }
         }
 
+        public CarrierViewModel Carrier
+        {
+            get => _carrier;
+            set
+            {
+                SetProperty(ref _carrier, value);
+                if (value != null)
+                {
+                    _dto.Carrier = Carrier.GetDto();
+                }
+                else
+                {
+                    _dto.Carrier = null;
+                }
+            }
+        }
+
         #endregion Public
 
-        public VehicleViewModel(VehicleDto dto) : base(dto) { }
-        public VehicleViewModel(VehicleDto dto, int counter) : base(dto, counter) { }
-        public VehicleViewModel()
+        public VehicleViewModel(VehicleDto dto, int counter) : base(dto, counter) 
+        {
+            if (dto != null)
+            {
+                _carrier = new CarrierViewModel(dto.Carrier);
+            }
+        }
+        public VehicleViewModel(VehicleDto dto) : this(dto, 0) { }
+
+        public VehicleViewModel() : base() { }
+
+        protected override void DefaultInit()
         {
             _dto = new VehicleDto();
+            Carrier = new CarrierViewModel();
         }
     }
 

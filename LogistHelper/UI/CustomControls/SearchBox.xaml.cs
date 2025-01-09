@@ -205,7 +205,7 @@ namespace LogistHelper.UI.CustomControls
                 {
                     int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
 
-                    if (index == SearchList.Count() - 1)
+                    if (index >= SearchList.Count() - 1)
                     {
                         SelectedSearch = null;
                     }
@@ -225,7 +225,7 @@ namespace LogistHelper.UI.CustomControls
                 {
                     int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
 
-                    if (index == 0)
+                    if (index <= 0)
                     {
                         SelectedSearch = null;
                     }

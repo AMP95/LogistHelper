@@ -140,7 +140,7 @@
                         Grid.Column="5"
                         ToolTip="Редактировать"
                         Style="{StaticResource IconButton}"
-                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.EditCommand}"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:DriverListView}, Path=DataContext.EditCommand}"
                         CommandParameter="{Binding Id}">
                         <Image
                             Source="/UI/Icons/edit_icon.png"/>
@@ -150,7 +150,7 @@
                         Grid.Column="6"
                         ToolTip="Удалить"
                         Style="{StaticResource IconButton}"
-                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.DeleteCommand}"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:DriverListView}, Path=DataContext.DeleteCommand}"
                         CommandParameter="{Binding Id}">
                         <Image
                             Source="/UI/Icons/remove_icon.png"/>

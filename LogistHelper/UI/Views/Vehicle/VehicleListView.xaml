@@ -101,16 +101,16 @@
                         Grid.Column="1"
                         Style="{StaticResource DefaultText}"
                         TextAlignment="Center">
-                        <Run Text="{Binding Vehicle.TruckModel}"/>
-                        <Run Text="{Binding Vehicle.TruckNumber}"/>
+                        <Run Text="{Binding TruckModel}"/>
+                        <Run Text="{Binding TruckNumber}"/>
                     </TextBlock>
     
                     <TextBlock
                         Grid.Column="2"
                         Style="{StaticResource DefaultText}"
                         TextAlignment="Center">
-                        <Run Text="{Binding Vehicle.TrailerModel}"/>
-                        <Run Text="{Binding Vehicle.TrailerNumber}"/>
+                        <Run Text="{Binding TrailerModel}"/>
+                        <Run Text="{Binding TrailerNumber}"/>
                     </TextBlock>
     
                     <TextBlock
@@ -122,8 +122,8 @@
                     <Button
                         Grid.Column="4"
                         Style="{StaticResource IconButton}"
-                        ToolTip="Реда"
-                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.EditCommand}"
+                        ToolTip="Редактировать"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:VehicleListView}, Path=DataContext.EditCommand}"
                         CommandParameter="{Binding Id}">
                         <Image
                             Source="/UI/Icons/edit_icon.png"/>
@@ -133,7 +133,7 @@
                         Grid.Column="5"
                         Style="{StaticResource IconButton}"
                         ToolTip="Удалить"
-                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext.DeleteCommand}"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:VehicleListView}, Path=DataContext.DeleteCommand}"
                         CommandParameter="{Binding Id}">
                         <Image
                             Source="/UI/Icons/remove_icon.png"/>

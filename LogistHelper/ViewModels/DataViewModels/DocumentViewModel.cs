@@ -87,8 +87,10 @@ namespace LogistHelper.ViewModels.DataViewModels
 
 
         public DocumentViewModel(DocumentDto document, int counter) : base(document, counter) { }
-        public DocumentViewModel(DocumentDto document) : base(document) { }
-        public DocumentViewModel()
+        public DocumentViewModel(DocumentDto document) : this(document, 0) { }
+        public DocumentViewModel() : base() { }
+
+        protected override void DefaultInit()
         {
             _dto = new DocumentDto();
         }

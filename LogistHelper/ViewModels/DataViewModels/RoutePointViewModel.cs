@@ -1,8 +1,6 @@
 ﻿using DTOs;
-using DTOs.Dtos;
 using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
@@ -62,24 +60,26 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         public RoutePointViewModel(RoutePointDto route, int counter) : base(route, counter)
         {
-            Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
+            if (route != null)
+            {
+                Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
+            }
         }
 
         public RoutePointViewModel(RoutePointDto route) : this(route, 0) { }
 
-        public RoutePointViewModel()
-        {
-            _dto = new RoutePointDto()
-            {
-                Phones = new List<string>()
-            };
-            Phones = new ObservableCollection<StringItem>();
-        }
+        public RoutePointViewModel() : base() { }
 
         public override RoutePointDto GetDto() 
         {
             _dto.Phones = _phones.Select(s => s.Item).ToList();
             return base.GetDto();  
+        }
+
+        protected override void DefaultInit()
+        {
+            _dto = new RoutePointDto();
+            Phones = new ObservableCollection<StringItem>();
         }
     }
 

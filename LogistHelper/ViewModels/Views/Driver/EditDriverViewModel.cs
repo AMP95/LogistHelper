@@ -131,8 +131,11 @@ namespace LogistHelper.ViewModels.Views
         {
             await base.Load(id);
 
-            _driver = EditedViewModel as DriverViewModel;
-            SelectedCarrier = _driver.Carrier;
+            if (EditedViewModel != null)
+            {
+                _driver = EditedViewModel as DriverViewModel;
+                SelectedCarrier = _driver.Carrier;
+            }
         }
 
         public async Task SearchIssuer(string searchString)

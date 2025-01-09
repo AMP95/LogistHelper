@@ -36,7 +36,7 @@ namespace LogistHelper.ViewModels.Views
             set
             {
                 SetProperty(ref _selectedCarrier, value);
-                //_vehicle.Carrier = SelectedCarrier as CarrierViewModel;
+                _vehicle.Carrier = SelectedCarrier as CarrierViewModel;
             }
         }
 
@@ -53,6 +53,8 @@ namespace LogistHelper.ViewModels.Views
                                     IDialog dialog) : base(repository, factory, dialog)
         {
 
+            _carrierFactory = carrierFactory;
+
             #region CommandsInit
 
             SearchCarrierCommand = new RelayCommand<string>(async (searchString) =>
@@ -61,6 +63,12 @@ namespace LogistHelper.ViewModels.Views
             });
 
             #endregion CommandsInit
+        }
+
+        public override async Task Load(Guid id)
+        {
+            await base.Load(id);
+            _vehicle = EditedViewModel as VehicleViewModel;
         }
 
         private async Task SearchCarrier(string searchString)

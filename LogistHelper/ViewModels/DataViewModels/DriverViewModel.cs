@@ -106,17 +106,33 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         public DriverViewModel(DriverDto dto, int counter) : base(dto, counter)
         {
-            _vehicle = new VehicleViewModel(dto.Vehicle);
-            _carrier = new CarrierViewModel(dto.Carrier);
+            if (dto != null)
+            {
+                _vehicle = new VehicleViewModel(dto.Vehicle);
+                _carrier = new CarrierViewModel(dto.Carrier);
 
-            Phones = new ObservableCollection<StringItem>(dto.Phones.Select(s => new StringItem(s)));
+                if (dto.Phones != null)
+                {
+                    Phones = new ObservableCollection<StringItem>(dto.Phones.Select(s => new StringItem(s)));
+                }
+                else 
+                {
+                    Phones = new ObservableCollection<StringItem>();
+                }
+            }
         }
 
-        public DriverViewModel(DriverDto dto) : this(dto, 0)
+        public DriverViewModel(DriverDto dto) : this(dto, 0) { }
+
+        public DriverViewModel() :base() { }
+
+        public override DriverDto GetDto()
         {
+            _dto.Phones = _phones.Select(s => s.Item).ToList();
+            return base.GetDto();
         }
 
-        public DriverViewModel()
+        protected override void DefaultInit()
         {
             _dto = new DriverDto()
             {
@@ -128,12 +144,6 @@ namespace LogistHelper.ViewModels.DataViewModels
             Carrier = new CarrierViewModel();
 
             Phones = new ObservableCollection<StringItem>();
-        }
-
-        public override DriverDto GetDto()
-        {
-            _dto.Phones = _phones.Select(s => s.Item).ToList();
-            return base.GetDto();
         }
     }
 

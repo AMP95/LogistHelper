@@ -63,7 +63,7 @@
             <TextBox.Text>
                 <Binding Path="EditedViewModel.TruckNumber">
                     <Binding.ValidationRules>
-                        <rules:EmptyStringValidationRule/>
+                        <rules:TruckNumberValidationRule/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
@@ -106,7 +106,7 @@
             <TextBox.Text>
                 <Binding Path="EditedViewModel.TrailerNumber">
                     <Binding.ValidationRules>
-                        <rules:EmptyStringValidationRule/>
+                        <rules:TrailerNumberValidationRule/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
