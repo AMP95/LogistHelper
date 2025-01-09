@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using DTOs;
+using Newtonsoft.Json;
 using System.Net.Http.Json;
-using DTOs;
 
 namespace ServerClient
 {
