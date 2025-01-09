@@ -15,6 +15,7 @@
     <None Remove="UI\Icons\down_icon.png" />
     <None Remove="UI\Icons\edit_icon.png" />
     <None Remove="UI\Icons\forward_icon.png" />
+    <None Remove="UI\Icons\hide_icon.png" />
     <None Remove="UI\Icons\image_icon.png" />
     <None Remove="UI\Icons\logout_icon.png" />
     <None Remove="UI\Icons\remove_icon.png" />
@@ -23,6 +24,7 @@
     <None Remove="UI\Icons\return_icon.png" />
     <None Remove="UI\Icons\search_icon.png" />
     <None Remove="UI\Icons\setting_icon.png" />
+    <None Remove="UI\Icons\show_icon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +53,7 @@
     <Resource Include="UI\Icons\down_icon.png" />
     <Resource Include="UI\Icons\edit_icon.png" />
     <Resource Include="UI\Icons\forward_icon.png" />
+    <Resource Include="UI\Icons\hide_icon.png" />
     <Resource Include="UI\Icons\image_icon.png" />
     <Resource Include="UI\Icons\logout_icon.png" />
     <Resource Include="UI\Icons\remove_icon.png" />
@@ -59,6 +62,7 @@
     <Resource Include="UI\Icons\return_icon.png" />
     <Resource Include="UI\Icons\search_icon.png" />
     <Resource Include="UI\Icons\setting_icon.png" />
+    <Resource Include="UI\Icons\show_icon.png" />
   </ItemGroup>
 
 </Project>

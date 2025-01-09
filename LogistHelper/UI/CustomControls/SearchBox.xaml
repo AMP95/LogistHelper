@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
              mc:Ignorable="d" 
              PreviewKeyUp="UserControl_PreviewKeyUp"
              d:DesignHeight="60" d:DesignWidth="300">
@@ -18,9 +19,19 @@
             x:Name="searchText"
             Height="40"
             PreviewMouseLeftButtonUp="searchText_MouseLeftButtonUp"
-            Style="{StaticResource MainLeftTextBox}"
-            Text="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, 
-            Path=SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            Style="{StaticResource MainLeftTextBox}">
+            <TextBox.Text>
+                <Binding Path="SearchText" 
+                         RelativeSource="{RelativeSource AncestorType=local:SearchBox}" 
+                         UpdateSourceTrigger="PropertyChanged" 
+                         NotifyOnValidationError="True"
+                         Mode="TwoWay">
+                    <Binding.ValidationRules>
+                        <rules:EmptyStringValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
 
         <Popup
             x:Name="popuplist"
@@ -66,12 +77,27 @@
 
         <Button
             Grid.Column="2"
-            Style="{StaticResource IconButton}"
             PreviewMouseLeftButtonUp="Button_PreviewMouseLeftButtonUp"
             Command="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchCommand}"
             CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchText}">
             <Image
                 Source="/UI/Icons/search_icon.png"/>
+            
+            <Button.Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
+                    <Setter Property="Button.IsEnabled" Value="False"/>
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName= searchText, Path=(Validation.HasError)}" Value="True"/>
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Button.IsEnabled" Value="False"/>
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
     </Grid>
 </UserControl>
