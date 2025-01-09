@@ -50,6 +50,11 @@
                             DataType="{x:Type viewsVM:EditDriverViewModel}">
                             <local:EditDriverView/>
                         </DataTemplate>
+                        
+                        <DataTemplate
+                            DataType="{x:Type viewsVM:EditVehicleViewModel}">
+                            <local:EditVehicleView/>
+                        </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
             </ScrollViewer>

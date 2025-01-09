@@ -1,9 +1,43 @@
-﻿using DTOs;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using DTOs;
 using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
+    public class CompanyItem  : ObservableObject
+    {
+        private string _name;
+        private string _inn;
+        private string _kpp;
+        private string _address;
+
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
+        public string Inn
+        {
+            get => _inn;
+            set => SetProperty(ref _inn, value);
+        }
+
+        public string Kpp
+        {
+            get => _kpp;
+            set => SetProperty(ref _kpp, value);
+        }
+
+        public string Address 
+        { 
+            get => _address;
+            set => SetProperty(ref _address, value);
+        }
+
+    }
+
     public class CompanyViewModel<T> : DataViewModel<T> where T : CompanyDto
     {
         #region Private

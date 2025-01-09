@@ -10,6 +10,7 @@ namespace LogistHelper.Models
         CarrierMenu,
         ClientMenu,
         DriverMenu,
+        VehicleMenu,
     }
 
     #region Extend

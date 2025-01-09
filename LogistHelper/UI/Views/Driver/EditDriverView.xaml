@@ -32,19 +32,19 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBlock
-            Style="{StaticResource MiniText}"
-            Text="Дата рождения"/>
+                Style="{StaticResource MiniText}"
+                Text="Дата рождения"/>
 
             <DatePicker
-            Grid.Column="1"
-            SelectedDate="{Binding EditedViewModel.BirthDate}"
-            Style="{StaticResource CustomDatePicker}"/>
+                Grid.Column="1"
+                SelectedDate="{Binding EditedViewModel.BirthDate}"
+                Style="{StaticResource CustomDatePicker}"/>
 
         </Grid>
 
         <TextBlock
-        Style="{StaticResource DefaultText}"
-        Text="Паспорт"/>
+            Style="{StaticResource DefaultText}"
+            Text="Паспорт"/>
 
         <Grid>
             <Grid.ColumnDefinitions>
@@ -86,7 +86,6 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
                 </Grid.ColumnDefinitions>
 
                 <TextBox
@@ -100,13 +99,9 @@
                     </TextBox.Text>
                 </TextBox>
 
-                <TextBlock
-                    Grid.Column="1"
-                    Style="{StaticResource MiniText}"
-                    Text="Код"/>
-
                 <controls:SearchBox
-                    Width="200"
+                    Width="250"
+                    WatermarkText="Код подразделения"
                     Grid.Column="2"
                     IsDynamicSearch="False"
                     SearchCommand="{Binding SearchIssuerCommand}"
@@ -200,6 +195,7 @@
             Text="Перевозчик"/>
 
         <controls:SearchBox
+            WatermarkText="Название или ФИО"
             SearchCommand="{Binding SearchCarrierCommand}"
             SearchList="{Binding Carriers, Mode=TwoWay}"
             SelectedSearch="{Binding SelectedCarrier, Mode=TwoWay}"

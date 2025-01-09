@@ -30,7 +30,6 @@
         <TextBlock
             Grid.ColumnSpan="4"
             Style="{StaticResource DefaultText}"
-            Foreground="{StaticResource SemiDarkBrush}"
             Text="Тягач"/>
         
         <TextBlock
@@ -74,7 +73,6 @@
             Grid.Row="2"
             Grid.ColumnSpan="4"
             Style="{StaticResource DefaultText}"
-            Foreground="{StaticResource SemiDarkBrush}"
             Text="Прицеп"/>
         
         <TextBlock
@@ -118,7 +116,6 @@
             Grid.Row="4"
             Grid.ColumnSpan="4"
             Style="{StaticResource DefaultText}"
-            Foreground="{StaticResource SemiDarkBrush}"
             Text="Перевозчик"/>
         
         <controls:SearchBox

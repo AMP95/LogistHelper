@@ -13,6 +13,43 @@ namespace LogistHelper.ViewModels.Views
     {
         private CompanyViewModel<T> _company;
 
+        private IEnumerable<CompanyItem> _companiesList;
+        private CompanyItem _selectedCompany;
+
+        #region Public
+
+        public IEnumerable<CompanyItem> CompaniesList 
+        {
+            get => _companiesList;
+            set => SetProperty(ref _companiesList, value);
+        }
+
+        public CompanyItem SelectedCompany
+        {
+            get => _selectedCompany;
+            set
+            {
+                SetProperty(ref _selectedCompany, value);
+                if (SelectedCompany != null)
+                {
+                    _company.Name = value.Name;
+                    _company.Inn = value.Inn;
+                    _company.Kpp = value.Kpp;
+                    _company.Address = value.Address;
+                }
+                else 
+                {
+                    _company.Name = string.Empty;
+                    _company.Inn = string.Empty;
+                    _company.Kpp = string.Empty;
+                    _company.Address = string.Empty;
+                }
+            }
+        }
+
+
+        #endregion Public
+
         #region Commands
 
         public ICommand DeleteEmailCommand { get; set; }
@@ -20,7 +57,7 @@ namespace LogistHelper.ViewModels.Views
         public ICommand DeletePhoneCommand { get; set; }
         public ICommand AddPhoneCommand { get; set; }
 
-        public ICommand SearchDataCommand { get; set; }
+        public ICommand SearchCompanyCommand { get; set; }
 
         #endregion Commands
 
@@ -58,9 +95,9 @@ namespace LogistHelper.ViewModels.Views
                 }
             });
 
-            SearchDataCommand = new RelayCommand(async () =>
+            SearchCompanyCommand = new RelayCommand<string>(async (searchString) =>
             {
-                await Search();
+                await Search(searchString);
             });
 
             #endregion CommandsInit
@@ -72,18 +109,11 @@ namespace LogistHelper.ViewModels.Views
             _company = EditedViewModel as CompanyViewModel<T>;
         }
 
-        public async Task Search()
+        public async Task Search(string searchString)
         {
             var api = new SuggestClientAsync(_settings.DaDataApiKey);
-            var response = await api.SuggestParty($"{_company.Inn} {_company.Kpp}");
-            var result = response.suggestions.FirstOrDefault();
-            if (result != null)
-            {
-                _company.Name = result.value;
-                _company.Address = result.data.address.value;
-                _company.Inn = result.data.inn;
-                _company.Kpp = result.data.kpp;
-            }
+            var response = await api.SuggestParty(searchString);
+            CompaniesList = response.suggestions.Select(s => new CompanyItem() { Name = s.value, Inn = s.data.inn, Kpp = s.data.kpp, Address = s.data.address.value });
         }
     }
 

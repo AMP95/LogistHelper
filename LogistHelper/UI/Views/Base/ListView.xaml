@@ -86,6 +86,11 @@
                     DataType="{x:Type viewsVM:DriverListViewModel}">
                     <local:DriverListView/>
                 </DataTemplate>
+                
+                <DataTemplate
+                    DataType="{x:Type viewsVM:VehicleListViewModel}">
+                    <local:VehicleListView/>
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
 

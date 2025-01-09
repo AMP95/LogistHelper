@@ -53,14 +53,14 @@ namespace LogistHelper.ViewModels.Views
             set
             {
                 SetProperty(ref _selectedIssuer, value);
-                //if (SelectedIssuer != null)
-                //{
-                //    _driver.PassportIssuer = SelectedIssuer.Name;
-                //}
-                //else 
-                //{
-                //    _driver.PassportIssuer = string.Empty;
-                //}
+                if (SelectedIssuer != null)
+                {
+                    _driver.PassportIssuer = SelectedIssuer.Name;
+                }
+                else
+                {
+                    _driver.PassportIssuer = string.Empty;
+                }
             }
         }
 
@@ -70,8 +70,8 @@ namespace LogistHelper.ViewModels.Views
             set 
             { 
                 SetProperty(ref _selectedCarrier, value);
-                //_driver.Carrier = SelectedCarrier as CarrierViewModel;
-                //SearchVehicles();
+                _driver.Carrier = SelectedCarrier as CarrierViewModel;
+                SearchVehicles();
             }
         }
 
@@ -129,25 +129,10 @@ namespace LogistHelper.ViewModels.Views
 
         public override async Task Load(Guid id)
         {
-            //if (id == Guid.Empty)
-            //{
-            //    EditedViewModel = _factory.GetViewModel();
-            //}
-            //else
-            //{
-            //    IsBlock = true;
-            //    BlockText = "Загрузка";
+            await base.Load(id);
 
-            //    RequestResult<T> result = await _client.GetId<T>(id);
-
-            //    if (result.IsSuccess)
-            //    {
-            //        EditedViewModel = _factory.GetViewModel(result.Result);
-            //    }
-
-            //    IsBlock = false;
-            //}
             _driver = EditedViewModel as DriverViewModel;
+            SelectedCarrier = _driver.Carrier;
         }
 
         public async Task SearchIssuer(string searchString)

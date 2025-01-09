@@ -14,6 +14,16 @@
             <ColumnDefinition
                 Width="auto"/>
         </Grid.ColumnDefinitions>
+        
+        <TextBlock
+            x:Name="watermarkText"
+            TextWrapping="NoWrap"
+            Foreground="{StaticResource SemiDarkBrush}"
+            Style="{StaticResource DefaultText}"
+            Margin="12 0"
+            IsEnabled="False"
+            Focusable="False"
+            Text="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=WatermarkText}"/>
 
         <TextBox
             x:Name="searchText"
@@ -32,6 +42,8 @@
                 </Binding>
             </TextBox.Text>
         </TextBox>
+
+        
 
         <Popup
             x:Name="popuplist"
@@ -77,27 +89,12 @@
 
         <Button
             Grid.Column="2"
+            Style="{StaticResource IconButton}"
             PreviewMouseLeftButtonUp="Button_PreviewMouseLeftButtonUp"
             Command="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchCommand}"
             CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=SearchText}">
             <Image
                 Source="/UI/Icons/search_icon.png"/>
-            
-            <Button.Style>
-                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
-                    <Setter Property="Button.IsEnabled" Value="False"/>
-                    <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding ElementName= searchText, Path=(Validation.HasError)}" Value="True"/>
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>
-                                <Setter Property="Button.IsEnabled" Value="False"/>
-                            </MultiDataTrigger.Setters>
-                        </MultiDataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
         </Button>
     </Grid>
 </UserControl>

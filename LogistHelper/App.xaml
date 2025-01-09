@@ -41,6 +41,11 @@
                 DataType="{x:Type pagesVM:DriverMenuViewModel}">
                 <pages:DataMenuPage/>
             </DataTemplate>
+            
+            <DataTemplate
+                DataType="{x:Type pagesVM:VehicleMenuViewModel}">
+                <pages:DataMenuPage/>
+            </DataTemplate>
 
 
             <DataTemplate
@@ -57,6 +62,13 @@
                 DataType="{x:Type viewsVM:DriverListViewModel}">
                 <views:ListView/>
             </DataTemplate>
+            
+            <DataTemplate
+                DataType="{x:Type viewsVM:VehicleListViewModel}">
+                <views:ListView/>
+            </DataTemplate>
+            
+            
 
             <DataTemplate
                 DataType="{x:Type viewsVM:EditCarrierViewModel}">
@@ -70,6 +82,11 @@
 
             <DataTemplate
                 DataType="{x:Type viewsVM:EditDriverViewModel}">
+                <views:EditView/>
+            </DataTemplate>
+            
+            <DataTemplate
+                DataType="{x:Type viewsVM:EditVehicleViewModel}">
                 <views:EditView/>
             </DataTemplate>
 

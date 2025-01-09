@@ -23,23 +23,48 @@ namespace LogistHelper.UI.CustomControls
             DependencyProperty.Register("SearchText", typeof(string), typeof(SearchBox),
                 new FrameworkPropertyMetadata(new PropertyChangedCallback((d,e) => 
                 {
-                    if (d is SearchBox search && search.IsDynamicSearch) 
+                    if (d is SearchBox search) 
                     {
                         if (string.IsNullOrWhiteSpace(search.SearchText))
                         {
-                            search._canExecuteCommand = false;
+                            search.watermarkText.Visibility = Visibility.Visible;
                         }
-
-                        if (search._canExecuteCommand)
+                        else 
                         {
-                            search.SearchCommand?.Execute(search.SearchText);
-
-                            search.popuplist.IsOpen = true;
+                            search.watermarkText.Visibility = Visibility.Hidden;
                         }
 
-                        search._canExecuteCommand = true;
+                        if (search.IsDynamicSearch)
+                        {
+                            if (string.IsNullOrWhiteSpace(search.SearchText))
+                            {
+                                search._canExecuteCommand = false;
+                            }
+
+                            if (search._canExecuteCommand)
+                            {
+                                search.SearchCommand?.Execute(search.SearchText);
+
+                                search.popuplist.IsOpen = true;
+                            }
+
+                            search._canExecuteCommand = true;
+                        }
                     }
                 })));
+
+
+
+        public string WatermarkText
+        {
+            get { return (string)GetValue(WatermarkTextProperty); }
+            set { SetValue(WatermarkTextProperty, value); }
+        }
+
+        public static readonly DependencyProperty WatermarkTextProperty =
+            DependencyProperty.Register("WatermarkText", typeof(string), typeof(SearchBox));
+
+
 
 
         public ICommand SearchCommand

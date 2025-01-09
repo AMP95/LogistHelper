@@ -118,7 +118,11 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         public DriverViewModel()
         {
-            _dto = new DriverDto();
+            _dto = new DriverDto()
+            {
+                BirthDate = DateTime.Now,
+                PassportDateOfIssue = DateTime.Now,
+            };
 
             Vehicle = new VehicleViewModel();
             Carrier = new CarrierViewModel();
@@ -137,17 +141,17 @@ namespace LogistHelper.ViewModels.DataViewModels
     {
         public DataViewModel<DriverDto> GetViewModel(DriverDto dto, int number)
         {
-            return new DataViewModel<DriverDto>(dto, number);
+            return new DriverViewModel(dto, number);
         }
 
         public DataViewModel<DriverDto> GetViewModel(DriverDto dto)
         {
-            return new DataViewModel<DriverDto>(dto);
+            return new DriverViewModel(dto);
         }
 
         public DataViewModel<DriverDto> GetViewModel()
         {
-            return new DataViewModel<DriverDto>();
+            return new DriverViewModel();
         }
     }
 }

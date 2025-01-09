@@ -43,6 +43,11 @@
                 Style="{StaticResource NeutralButton}"
                 Content="Водители"
                 Command="{Binding NavigateDriverMenuCommand}"/>
+            
+            <Button
+                Style="{StaticResource NeutralButton}"
+                Content="ТС"
+                Command="{Binding NavigateVehicleMenuCommand}"/>
         </StackPanel>
 
        
