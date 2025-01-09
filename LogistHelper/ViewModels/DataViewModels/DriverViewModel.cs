@@ -69,7 +69,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 SetProperty(ref _vehicle, value);
                 if (value != null)
                 {
-                    _dto.Vehicle = Vehicle.GetDto();
+                    _dto.Vehicle = _vehicle.GetDto();
                 }
                 else
                 {

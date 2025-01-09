@@ -224,11 +224,11 @@
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock
-                    Style="{StaticResource DefaultText}">
-                    <Run Text="{Binding TruckModel}"/>
-                    <Run Text="{Binding TruckNumber}"/>
-                    <Run Text="{Binding TrailerModel}"/>
-                    <Run Text="{Binding TrailerNumber}"/>
+                        Style="{StaticResource DefaultText}">
+                        <Run Text="{Binding TruckModel}"/>
+                        <Run Text="{Binding TruckNumber}"/>
+                        <Run Text="{Binding TrailerModel}"/>
+                        <Run Text="{Binding TrailerNumber}"/>
                     </TextBlock>
                 </DataTemplate>
             </ComboBox.ItemTemplate>

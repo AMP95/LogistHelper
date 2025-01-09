@@ -171,11 +171,14 @@ namespace LogistHelper.ViewModels.Views
                 RequestResult<IEnumerable<VehicleDto>> result = await _client.GetMainId<VehicleDto>(SelectedCarrier?.Id);
 
                 Vehicles = null;
-                _driver.Vehicle = null;
 
                 if (result.IsSuccess)
                 {
                     Vehicles = result.Result.Select(v => _vehicleFactory.GetViewModel(v));
+                    if (_driver.Vehicle.Carrier.Id != SelectedCarrier.Id) 
+                    {
+                        _driver.Vehicle = null;
+                    }
                 }
             });
         }
