@@ -18,7 +18,6 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(TruckModel));
             }
         }
-
         public string TruckNumber
         {
             get => _dto.TruckNumber;

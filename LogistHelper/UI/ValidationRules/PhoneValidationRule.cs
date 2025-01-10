@@ -1,5 +1,4 @@
-﻿using DTOs;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Controls;
 
 namespace LogistHelper.UI.ValidationRules
@@ -14,15 +13,7 @@ namespace LogistHelper.UI.ValidationRules
             }
             else 
             {
-                string error = ModelsValidator.IsPhoneValid(value.ToString());
-                if (string.IsNullOrWhiteSpace(error))
-                {
-                    return ValidationResult.ValidResult;
-                }
-                else 
-                { 
-                    return new ValidationResult(false, error);
-                }
+                return ValidationResult.ValidResult;
             }
         }
     }

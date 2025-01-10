@@ -6,8 +6,14 @@
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
              xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
              xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <converters:TruckNumberConverter x:Key="TruckNumberConverter"/>
+        <converters:TrailerNumberConverter x:Key="TrailerNumberConverter"/>
+    </UserControl.Resources>
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -64,11 +70,14 @@
         <TextBox
             Grid.Row="1"
             Grid.Column="3"
+            TextChanged="TextBox_TextChanged"
             Style="{StaticResource SubLeftTextBox}">
             <TextBox.Text>
-                <Binding Path="EditedViewModel.TruckNumber">
+                <Binding Path="EditedViewModel.TruckNumber" 
+                         Converter="{StaticResource TruckNumberConverter}" 
+                         UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <rules:TruckNumberValidationRule/>
+                        <rules:VehicleNumberValidationRule ValidLength="9"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
@@ -84,7 +93,7 @@
             Grid.Row="3"
             Style="{StaticResource MiniText}"
             Text="Марка"/>
-        
+
         <controls:SearchBox
             Grid.Row="3"
             Grid.Column="1"
@@ -102,20 +111,7 @@
                 </DataTemplate>
             </controls:SearchBox.ItemTemplate>
         </controls:SearchBox>
-        
-        <!--<TextBox
-            Grid.Row="3"
-            Grid.Column="1"
-            Style="{StaticResource SubLeftTextBox}">
-            <TextBox.Text>
-                <Binding Path="EditedViewModel.TrailerModel">
-                    <Binding.ValidationRules>
-                        <rules:EmptyStringValidationRule/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>-->
-        
+
         <TextBlock
             Grid.Row="3"
             Grid.Column="2"
@@ -125,11 +121,14 @@
         <TextBox
             Grid.Row="3"
             Grid.Column="3"
+            TextChanged="TextBox_TextChanged"
             Style="{StaticResource SubLeftTextBox}">
             <TextBox.Text>
-                <Binding Path="EditedViewModel.TrailerNumber">
+                <Binding Path="EditedViewModel.TrailerNumber" 
+                         Converter="{StaticResource TrailerNumberConverter}" 
+                         UpdateSourceTrigger="PropertyChanged">
                     <Binding.ValidationRules>
-                        <rules:TrailerNumberValidationRule/>
+                        <rules:VehicleNumberValidationRule ValidLength="8"/>
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>

@@ -3,8 +3,9 @@ using System.Windows.Controls;
 
 namespace LogistHelper.UI.ValidationRules
 {
-    internal class InnKppValidationRules : ValidationRule
+    internal class VehicleNumberValidationRule : ValidationRule
     {
+        public int ValidLength { get; set; }
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             if (value == null)
@@ -13,6 +14,12 @@ namespace LogistHelper.UI.ValidationRules
             }
             else
             {
+                var val = value.ToString().ToUpper().Where(c => Char.IsLetterOrDigit(c));
+
+                if (val.Take(ValidLength).Any(c => !"АВЕКМНОРСУX0123456789".Contains(c))) 
+                {
+                    return new ValidationResult(false, "Допустимы только буквы кириллицей и цифры");
+                }
                 return ValidationResult.ValidResult;
             }
         }
