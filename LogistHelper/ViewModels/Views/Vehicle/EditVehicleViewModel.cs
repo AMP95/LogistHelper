@@ -69,6 +69,7 @@ namespace LogistHelper.ViewModels.Views
         {
             await base.Load(id);
             _vehicle = EditedViewModel as VehicleViewModel;
+            SelectedCarrier = _vehicle.Carrier;
         }
 
         private async Task SearchCarrier(string searchString)
