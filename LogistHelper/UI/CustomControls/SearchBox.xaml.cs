@@ -54,7 +54,6 @@ namespace LogistHelper.UI.CustomControls
                 })));
 
 
-
         public string WatermarkText
         {
             get { return (string)GetValue(WatermarkTextProperty); }
@@ -63,9 +62,6 @@ namespace LogistHelper.UI.CustomControls
 
         public static readonly DependencyProperty WatermarkTextProperty =
             DependencyProperty.Register("WatermarkText", typeof(string), typeof(SearchBox));
-
-
-
 
         public ICommand SearchCommand
         {
@@ -99,6 +95,8 @@ namespace LogistHelper.UI.CustomControls
                     }
                 })));
 
+
+
         public object SelectedSearch
         {
             get { return (object)GetValue(SelectedSearchProperty); }
@@ -111,8 +109,6 @@ namespace LogistHelper.UI.CustomControls
                     if (d is SearchBox search)
                     {
                         search._canExecuteCommand = false;
-
-                        search.searchList.SelectedItem = search.SelectedSearch;
 
                         if (search.SelectedSearch != null)
                         {
@@ -133,6 +129,8 @@ namespace LogistHelper.UI.CustomControls
                     }
                 })));
 
+
+
         public string DisplayMemberPath
         {
             get { return (string)GetValue(DisplayMemberPathProperty); }
@@ -150,8 +148,6 @@ namespace LogistHelper.UI.CustomControls
         }
         public static readonly DependencyProperty ItemTemplateProperty =
             DependencyProperty.Register("ItemTemplate", typeof(DataTemplate), typeof(SearchBox));
-
-
 
 
         public bool IsDynamicSearch
@@ -189,7 +185,6 @@ namespace LogistHelper.UI.CustomControls
                 if (popuplist.IsOpen)
                 {
                     popuplist.IsOpen = false;
-                    SearchList = null;
                 }
                 else
                 {
@@ -199,66 +194,51 @@ namespace LogistHelper.UI.CustomControls
             }
             else if (e.Key == Key.Down && popuplist.IsOpen && SearchList != null && SearchList.Any())
             {
-                if (SelectedSearch == null)
+                if (searchList.SelectedIndex == -1)
                 {
-                    SelectedSearch = SearchList.First();
+                    searchList.SelectedIndex = 0;
                 }
-                else
+                else if (searchList.SelectedIndex == SearchList.Count() - 1)
                 {
-                    int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
-
-                    if (index >= SearchList.Count() - 1)
-                    {
-                        SelectedSearch = null;
-                    }
-                    else
-                    {
-                        SelectedSearch = SearchList.ElementAt(index + 1);
-                    }
+                    searchList.SelectedIndex = - 1;
+                }
+                else 
+                {
+                    searchList.SelectedIndex = searchList.SelectedIndex + 1;
                 }
             }
             else if (e.Key == Key.Up && popuplist.IsOpen && SearchList != null && SearchList.Any())
             {
-                if (SelectedSearch == null)
+                if (searchList.SelectedIndex == -1)
                 {
-                    SelectedSearch = SearchList.Last();
+                    searchList.SelectedIndex = SearchList.Count() - 1;
+                }
+                else if (searchList.SelectedIndex == 0)
+                {
+                    searchList.SelectedIndex = -1;
                 }
                 else
                 {
-                    int index = Array.IndexOf(SearchList.ToArray(), SelectedSearch);
-
-                    if (index <= 0)
-                    {
-                        SelectedSearch = null;
-                    }
-                    else
-                    {
-                        SelectedSearch = SearchList.ElementAt(index - 1);
-                    }
+                    searchList.SelectedIndex = searchList.SelectedIndex - 1;
                 }
             }
         }
 
-        private void ListBox_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            popuplist.IsOpen = false;
-            SearchList = null;
-        }
 
         private void Button_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             popuplist.IsOpen = true;
         }
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void popuplist_Closed(object sender, EventArgs e)
         {
-            if (sender is ListBox list) 
-            {
-                if (list.SelectedItem != null) 
-                { 
-                    SelectedSearch = list.SelectedItem;
-                }
-            }
+            SelectedSearch = searchList.SelectedItem;
+            SearchList = null;
+        }
+
+        private void searchList_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            popuplist.IsOpen=false;
         }
     }
 }
