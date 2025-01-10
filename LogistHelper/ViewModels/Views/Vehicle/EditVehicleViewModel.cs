@@ -1,6 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Dadata;
-using Dadata.Model;
 using DTOs;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
@@ -48,7 +46,18 @@ namespace LogistHelper.ViewModels.Views
         public StringItem SelectedTruckBrand
         {
             get => _selectedTruckBrand;
-            set => SetProperty(ref _selectedTruckBrand, value);
+            set
+            {
+                SetProperty(ref _selectedTruckBrand, value);
+                if (SelectedTruckBrand != null)
+                {
+                    _vehicle.TruckModel = SelectedTruckBrand.Item;
+                }
+                else
+                {
+                    _vehicle.TruckModel = null;
+                }
+            }
         }
 
         public string SearchTrailerString
@@ -65,7 +74,18 @@ namespace LogistHelper.ViewModels.Views
         public StringItem SelectedTrailerBrand
         {
             get => _selectedTrailerBrand;
-            set => SetProperty(ref _selectedTrailerBrand, value);
+            set
+            {
+                SetProperty(ref _selectedTrailerBrand, value);
+                if (SelectedTrailerBrand != null)
+                {
+                    _vehicle.TrailerModel = SelectedTrailerBrand.Item;
+                }
+                else 
+                {
+                    _vehicle.TrailerModel = null;
+                }
+            }
         }
 
         public IEnumerable<DataViewModel<CarrierDto>> Carriers
@@ -128,6 +148,8 @@ namespace LogistHelper.ViewModels.Views
             await base.Load(id);
             _vehicle = EditedViewModel as VehicleViewModel;
             SelectedCarrier = _vehicle.Carrier;
+            SelectedTruckBrand = new StringItem(_vehicle.TruckModel);
+            SelectedTrailerBrand = new StringItem(_vehicle.TrailerModel);
         }
 
         public override Task Save()
@@ -162,14 +184,20 @@ namespace LogistHelper.ViewModels.Views
             });
         }
 
-        private async Task SearchTruckBrand(string? searchString)
+        private async Task SearchTruckBrand(string searchString)
         {
-            
+            await Task.Run(() => 
+            {
+                TruckBrands = _settings.TruckModels.Where(m => m.SearchInputs.Contains(searchString.ToLower())).Select(s => new StringItem(s.Standart));
+            });
         }
 
-        private async Task SearchTrailerBrand(string? searchString)
+        private async Task SearchTrailerBrand(string searchString)
         {
-            
+            await Task.Run(() =>
+            {
+                TrailerBrands = _settings.TrailerModels.Where(m => m.SearchInputs.Contains(searchString.ToLower())).Select(s => new StringItem(s.Standart));
+            });
         }
     }
 }

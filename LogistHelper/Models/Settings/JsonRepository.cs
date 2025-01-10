@@ -95,6 +95,22 @@ namespace LogistHelper.Models.Settings
                         new CarModelSearch() { Standart = "Western Star", SearchInputs = "western star,westernstar,dtcnthy cnfh,dtcnthycnfh,вестерн стар,вестернстар,цуыеукт ыефк,цуыеуктыефк" },
                         new CarModelSearch() { Standart = "Workhorse", SearchInputs = "workhorse,worhorse,djhr[jhc,djh[jhc,воркхорс,ворхорс,цщклрщкыу,цщкрщкыу" },
                         new CarModelSearch() { Standart = "Wuling", SearchInputs = "wuling,wiuling,wuiling,dekbyu,dbekbyu,debkbyu,вулинг,виулинг,вуилиг,цгдштп,цшгдштп,цгшдштп" },
+                    },
+                    TrailerModels = new List<CarModelSearch>() 
+                    {
+                        new CarModelSearch() { Standart = "Тонар", SearchInputs = "тонар,njyfh" },
+                        new CarModelSearch() { Standart = "НЕФАЗ", SearchInputs = "нефаз,ytafp" },
+                        new CarModelSearch() { Standart = "МЗКТ", SearchInputs = "мзкт,мктз,vprn,vrnp" },
+                        new CarModelSearch() { Standart = "НЕФАЗ", SearchInputs = "нефаз,ytafp" },
+                        new CarModelSearch() { Standart = "KOEGEL", SearchInputs = "koegel,kogel,rjutkm,когель,лщупул,лщпуд" },
+                        new CarModelSearch() { Standart = "KRONE", SearchInputs = "krone,rhjyt,кроне,krone" },
+                        new CarModelSearch() { Standart = "SCHMITZ", SearchInputs = "schmitz,schmits,ivbnw,ivbw,шмитс,шмиц,ысрьшея,ысрьшеы" },
+                        new CarModelSearch() { Standart = "ТРЕЙЛЕР", SearchInputs = "трейлер,nhtqkth" },
+                        new CarModelSearch() { Standart = "BODEX", SearchInputs = "bodex,,jltrc,бодекс,ищвуч" },
+                        new CarModelSearch() { Standart = "FOTON", SearchInputs = "foton,фотон,ащещт,ajnjy" },
+                        new CarModelSearch() { Standart = "MEGA", SearchInputs = "mega,vtuf,мега,ьупф" },
+                        new CarModelSearch() { Standart = "SPITZER", SearchInputs = "spitzer,cgbnwth,cgbncth,cgbnpth,спитсер,спитзер,спицер,ызшеяук" },
+                        new CarModelSearch() { Standart = "WIELTON", SearchInputs = "wieltom,welton,dtknjy,велтон,цшудещт,цудещт" }
                     }
                 };
 

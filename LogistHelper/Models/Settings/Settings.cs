@@ -7,5 +7,6 @@
         public string DaDataSecretKey { get; set; }
 
         public List<CarModelSearch> TruckModels { get; set; }
+        public List<CarModelSearch> TrailerModels { get; set; }
     }
 }

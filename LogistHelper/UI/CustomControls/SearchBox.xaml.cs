@@ -25,6 +25,8 @@ namespace LogistHelper.UI.CustomControls
                 {
                     if (d is SearchBox search) 
                     {
+                           
+
                         if (string.IsNullOrWhiteSpace(search.SearchText))
                         {
                             search.watermarkText.Visibility = Visibility.Visible;
@@ -126,6 +128,8 @@ namespace LogistHelper.UI.CustomControls
                                 search.SearchText = search.SelectedSearch.ToString();
                             }
                         }
+
+                        search.searchText.CaretIndex = search.SearchText.Length;
                     }
                 })));
 
