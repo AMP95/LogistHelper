@@ -19,7 +19,7 @@ namespace LogistHelper.UI.CustomControls
                     {
                         if (water.TextBox != null)
                         {
-                            water.TextBox.TextChanged += TextBox_TextChanged;
+                            water.TextBox.TextChanged += water.TextBox_TextChanged;
 
                             water.inputGrid.Children.Add(water.TextBox);
 
@@ -29,13 +29,26 @@ namespace LogistHelper.UI.CustomControls
                     }
                 })));
 
-        private static void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (sender is TextBox box) 
             { 
                 box.CaretIndex = box.Text.Length;
+
+                if (box.Text.Length > 0) 
+                { 
+                    watermark.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    watermark.Visibility = Visibility.Visible;
+                }
             }
         }
+
+
+
+
 
         public string Watermark
         {
