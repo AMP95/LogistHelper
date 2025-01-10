@@ -131,6 +131,17 @@ namespace LogistHelper.UI.CustomControls
 
 
 
+        public bool IsButtonVisible
+        {
+            get { return (bool)GetValue(IsButtonVisibleProperty); }
+            set { SetValue(IsButtonVisibleProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsButtonVisibleProperty =
+            DependencyProperty.Register("IsButtonVisible", typeof(bool), typeof(SearchBox));
+
+
+
         public string DisplayMemberPath
         {
             get { return (string)GetValue(DisplayMemberPathProperty); }

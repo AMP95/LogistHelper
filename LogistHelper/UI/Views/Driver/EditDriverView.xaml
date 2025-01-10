@@ -103,6 +103,7 @@
                     Width="250"
                     WatermarkText="Код подразделения"
                     Grid.Column="2"
+                    IsButtonVisible="True"
                     IsDynamicSearch="False"
                     SearchCommand="{Binding SearchIssuerCommand}"
                     SelectedSearch="{Binding SelectedIssuer, Mode=TwoWay}"

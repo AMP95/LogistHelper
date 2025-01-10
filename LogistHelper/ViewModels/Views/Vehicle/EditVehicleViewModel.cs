@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using Dadata;
+using Dadata.Model;
 using DTOs;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
@@ -20,9 +22,51 @@ namespace LogistHelper.ViewModels.Views
 
         private IViewModelFactory<CarrierDto> _carrierFactory;
 
+        private string _searchTruckBrand;
+        private IEnumerable<StringItem> _truckBrands;
+        private IEnumerable<StringItem> _trailerBrands;
+
+        private string _searchTrailerBrand;
+        private StringItem _selectedTruckBrand;
+        private StringItem _selectedTrailerBrand;
+
         #endregion Private
 
         #region Public
+
+        public string SearchTruckString 
+        {
+            get => _searchTruckBrand;
+            set => SetProperty(ref _searchTruckBrand, value);
+        }
+        public IEnumerable<StringItem> TruckBrands 
+        {
+            get => _truckBrands;
+            set => SetProperty(ref _truckBrands, value);
+        }
+
+        public StringItem SelectedTruckBrand
+        {
+            get => _selectedTruckBrand;
+            set => SetProperty(ref _selectedTruckBrand, value);
+        }
+
+        public string SearchTrailerString
+        {
+            get => _searchTrailerBrand;
+            set => SetProperty(ref _searchTrailerBrand, value);
+        }
+        public IEnumerable<StringItem> TrailerBrands
+        {
+            get => _trailerBrands;
+            set => SetProperty(ref _trailerBrands, value);
+        }
+
+        public StringItem SelectedTrailerBrand
+        {
+            get => _selectedTrailerBrand;
+            set => SetProperty(ref _selectedTrailerBrand, value);
+        }
 
         public IEnumerable<DataViewModel<CarrierDto>> Carriers
         {
@@ -45,6 +89,8 @@ namespace LogistHelper.ViewModels.Views
         #region Commands
 
         public ICommand SearchCarrierCommand { get; set; }
+        public ICommand SearchTruckBrandCommand { get; set; }
+        public ICommand SearchTrailerBrandCommand { get; set; }
 
         #endregion Commands
         public EditVehicleViewModel(ISettingsRepository<Settings> repository, 
@@ -62,14 +108,39 @@ namespace LogistHelper.ViewModels.Views
                 await SearchCarrier(searchString);
             });
 
+            SearchTruckBrandCommand = new RelayCommand<string>(async (searchString) =>
+            {
+                await SearchTruckBrand(searchString);
+            });
+
+            SearchTrailerBrandCommand = new RelayCommand<string>(async (searchString) =>
+            {
+                await SearchTrailerBrand(searchString);
+            });
+
             #endregion CommandsInit
         }
+
+        
 
         public override async Task Load(Guid id)
         {
             await base.Load(id);
             _vehicle = EditedViewModel as VehicleViewModel;
             SelectedCarrier = _vehicle.Carrier;
+        }
+
+        public override Task Save()
+        {
+            if (SelectedTruckBrand == null) 
+            {
+                _vehicle.TruckModel = SearchTruckString;
+            }
+            if (SelectedTrailerBrand == null) 
+            { 
+                _vehicle.TrailerModel = SearchTrailerString;
+            }
+            return base.Save();
         }
 
         private async Task SearchCarrier(string searchString)
@@ -89,6 +160,16 @@ namespace LogistHelper.ViewModels.Views
                     Carriers = null;
                 }
             });
+        }
+
+        private async Task SearchTruckBrand(string? searchString)
+        {
+            
+        }
+
+        private async Task SearchTrailerBrand(string? searchString)
+        {
+            
         }
     }
 }

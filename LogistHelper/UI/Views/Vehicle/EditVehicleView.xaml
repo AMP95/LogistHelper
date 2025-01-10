@@ -36,20 +36,25 @@
             Grid.Row="1"
             Style="{StaticResource MiniText}"
             Text="Марка"/>
-        
-        <TextBox
+
+        <controls:SearchBox
             Grid.Row="1"
             Grid.Column="1"
-            Style="{StaticResource SubLeftTextBox}">
-            <TextBox.Text>
-                <Binding Path="EditedViewModel.TruckModel">
-                    <Binding.ValidationRules>
-                        <rules:EmptyStringValidationRule/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
-        
+            SearchText="{Binding SearchTruckString, Mode=OneWayToSource}"
+            SearchCommand="{Binding SearchTruckBrandCommand}"
+            SearchList="{Binding TruckBrands, Mode=TwoWay}"
+            SelectedSearch="{Binding SelectedTruckBrand, Mode=TwoWay}"
+            IsDynamicSearch="True"
+            DisplayMemberPath="Item">
+            <controls:SearchBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Style="{StaticResource DefaultText}"
+                        Text="{Binding Item}"/>
+                </DataTemplate>
+            </controls:SearchBox.ItemTemplate>
+        </controls:SearchBox>
+
         <TextBlock
             Grid.Row="1"
             Grid.Column="2"
@@ -80,7 +85,25 @@
             Style="{StaticResource MiniText}"
             Text="Марка"/>
         
-        <TextBox
+        <controls:SearchBox
+            Grid.Row="3"
+            Grid.Column="1"
+            SearchText="{Binding SearchTrailerString, Mode=OneWayToSource}"
+            SearchCommand="{Binding SearchTrailerBrandCommand}"
+            SearchList="{Binding TrailerBrands, Mode=TwoWay}"
+            SelectedSearch="{Binding SelectedTrailerBrand, Mode=TwoWay}"
+            IsDynamicSearch="True"
+            DisplayMemberPath="Item">
+            <controls:SearchBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Style="{StaticResource DefaultText}"
+                        Text="{Binding Item}"/>
+                </DataTemplate>
+            </controls:SearchBox.ItemTemplate>
+        </controls:SearchBox>
+        
+        <!--<TextBox
             Grid.Row="3"
             Grid.Column="1"
             Style="{StaticResource SubLeftTextBox}">
@@ -91,7 +114,7 @@
                     </Binding.ValidationRules>
                 </Binding>
             </TextBox.Text>
-        </TextBox>
+        </TextBox>-->
         
         <TextBlock
             Grid.Row="3"

@@ -1,0 +1,68 @@
+МАЗ
+БелАЗ
+БАЗ
+ГАЗ
+ЗиЛ
+УралАЗ
+КАМАЗ
+Краз
+УАЗ
+Sollers, Соллерс, солерс
+DAF, Даф
+Dongfeng, Донфэнг
+ERF, ERF
+FAW, FAW
+Ford, Форд
+Fiat, Фиат
+FOTON, ФОТОН
+Freightliner, Фрейтлайнер
+Howo, Хово
+Hyundai, Хендэ,Хёндэ,Хенде,Хёнде,Хендай,Хёндай
+International,  Интернэшнл, интернационал
+Isuzu, Исудзу,исузу
+Iveco, Ивеко
+Kenworth, Кенворт
+KIA, КИА, кия
+LDV, LDV
+MAN, MAN
+Mazda, Мазда
+Mercedes-Benz, Мерседес
+Mack, Мак
+Peugeot, Пежо, пижо
+Peterbilt, Петербилт, питербилд, питербилт, петербилд
+Renault, Рено
+Scania, Скания, сканиа
+Sterling, Стерлинг
+SISU, Сизу, сису
+SAIC, сайк, саик
+Tesla, тесла
+Tata, тата
+Tatra, Татра
+Toyota, Тоёта, тойота
+Volkswagen, Фольксваген
+Volvo, Волво, вольво
+Nissan, Нисcан, нисан
+Agrale, аграл,аргал
+Shacman, сакман, шакман
+SITRAK, ситрак, сиртак
+BAW, бав,бау
+BharatBenz, барат бенц, бхарат бенц
+Beifang Benchi, бифанг бенчи
+Chevrolet, шевроле, шивроле, шеврале, шиврале
+Citroën, ситроен, sitroen, citroen
+САМС, камк
+Changan, чанган, шанган
+Chery, Чери
+CIMC, кимк
+Dayun, Даюн
+JAC, Джак
+JMC,
+Hino,Хино
+Hongyan,Хонгян, хонган
+Great Wall,
+Gonow,гонау
+Lifan,Лифан
+Naveco,навеко
+Western Star,
+Workhorse,воркхорс
+Wuling,вулинг

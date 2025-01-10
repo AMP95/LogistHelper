@@ -13,6 +13,7 @@
 
         <controls:SearchBox
             WatermarkText="ОГРН, ИНН, название или ФИО"
+            IsButtonVisible="True"
             IsDynamicSearch="False"
             SearchCommand="{Binding SearchCompanyCommand}"
             SearchList="{Binding CompaniesList, Mode=TwoWay}"
