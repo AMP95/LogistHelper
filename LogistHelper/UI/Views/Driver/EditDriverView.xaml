@@ -6,8 +6,13 @@
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
              xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
              xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <converters:PhoneConverter x:Key="PhoneConverter"/>
+    </UserControl.Resources>
 
     <StackPanel>
 
@@ -167,16 +172,23 @@
                             <ColumnDefinition/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox
-                            Style="{StaticResource SubLeftTextBox}">
-                            <TextBox.Text>
-                                <Binding Path="Item">
-                                    <Binding.ValidationRules>
-                                        <rules:PhoneValidationRule/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
-                        </TextBox>
+                        <controls:WatermarkTextbox
+                            Watermark="+7(000)000-00-00">
+                            <controls:WatermarkTextbox.TextBox>
+                                <TextBox
+                                    Style="{StaticResource SubLeftTextBox}">
+                                    <TextBox.Text>
+                                        <Binding Path="Item" 
+                                                 UpdateSourceTrigger="PropertyChanged" 
+                                                 Converter="{StaticResource PhoneConverter}">
+                                            <Binding.ValidationRules>
+                                                <rules:PhoneValidationRule/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </controls:WatermarkTextbox.TextBox>
+                        </controls:WatermarkTextbox>
 
                         <Button
                             Grid.Column="1"

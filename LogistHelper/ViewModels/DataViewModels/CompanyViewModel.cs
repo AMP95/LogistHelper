@@ -131,7 +131,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 }
                 else 
                 {
-                    Phones = new ObservableCollection<StringItem>();
+                    Phones = new ObservableCollection<StringItem>() { new StringItem() };
                 }
 
                 if (dto.Emails != null)
@@ -140,7 +140,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 }
                 else
                 {
-                    Emails = new ObservableCollection<StringItem>();
+                    Emails = new ObservableCollection<StringItem>() { new StringItem() };
                 }
             }
         }
@@ -168,8 +168,8 @@ namespace LogistHelper.ViewModels.DataViewModels
         protected override void DefaultInit()
         {
             _dto = new CompanyDto();
-            Phones = new ObservableCollection<StringItem>();
-            Emails = new ObservableCollection<StringItem>();
+            Phones = new ObservableCollection<StringItem>() { new StringItem() };
+            Emails = new ObservableCollection<StringItem>() { new StringItem() };
         }
     }
 
@@ -191,8 +191,8 @@ namespace LogistHelper.ViewModels.DataViewModels
         protected override void DefaultInit()
         {
             _dto = new CarrierDto();
-            Phones = new ObservableCollection<StringItem>();
-            Emails = new ObservableCollection<StringItem>();
+            Phones = new ObservableCollection<StringItem>() { new StringItem() };
+            Emails = new ObservableCollection<StringItem>() { new StringItem() };
         }
     }
 

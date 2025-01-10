@@ -71,11 +71,7 @@
             <TextBox
                 Style="{StaticResource SubLeftTextBox}">
                 <TextBox.Text>
-                    <Binding Path="EditedViewModel.Inn">
-                        <Binding.ValidationRules>
-                            <rules:InnKppValidationRules/>
-                        </Binding.ValidationRules>
-                    </Binding>
+                    <Binding Path="EditedViewModel.Inn"/>
                 </TextBox.Text>
             </TextBox>
             
@@ -88,11 +84,7 @@
                 Grid.Column="2"
                 Style="{StaticResource SubLeftTextBox}">
                 <TextBox.Text>
-                    <Binding Path="EditedViewModel.Kpp">
-                        <Binding.ValidationRules>
-                            <rules:InnKppValidationRules/>
-                        </Binding.ValidationRules>
-                    </Binding>
+                    <Binding Path="EditedViewModel.Kpp"/>
                 </TextBox.Text>
             </TextBox>
         </Grid>
@@ -235,16 +227,22 @@
                             <ColumnDefinition/>
                             <ColumnDefinition Width="auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox
-                            Style="{StaticResource SubLeftTextBox}">
-                            <TextBox.Text>
-                                <Binding Path="Item">
-                                    <Binding.ValidationRules>
-                                        <rules:EmailValudationRule/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </TextBox.Text>
-                        </TextBox>
+
+                        <controls:WatermarkTextbox
+                            Watermark="user@mail.ru">
+                            <controls:WatermarkTextbox.TextBox>
+                                <TextBox
+                                    Style="{StaticResource SubLeftTextBox}">
+                                    <TextBox.Text>
+                                        <Binding Path="Item">
+                                            <Binding.ValidationRules>
+                                                <rules:EmailValudationRule/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </controls:WatermarkTextbox.TextBox>
+                        </controls:WatermarkTextbox>
 
                         <Button
                             Grid.Column="1"

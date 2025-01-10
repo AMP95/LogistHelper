@@ -117,7 +117,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 }
                 else 
                 {
-                    Phones = new ObservableCollection<StringItem>();
+                    Phones = new ObservableCollection<StringItem>() { new StringItem() };
                 }
             }
         }
@@ -143,7 +143,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             Vehicle = new VehicleViewModel();
             Carrier = new CarrierViewModel();
 
-            Phones = new ObservableCollection<StringItem>();
+            Phones = new ObservableCollection<StringItem>() { new StringItem() };
         }
     }
 
