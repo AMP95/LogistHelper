@@ -11,13 +11,5 @@ namespace LogistHelper.UI.Views
         {
             InitializeComponent();
         }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (sender is TextBox text) 
-            { 
-                text.CaretIndex = text.Text.Length;
-            }
-        }
     }
 }

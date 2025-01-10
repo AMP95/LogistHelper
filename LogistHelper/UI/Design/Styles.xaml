@@ -1078,11 +1078,12 @@
             <Setter Property="MinHeight" Value="40"/>
             <Setter Property="Padding" Value="5"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Template" Value="{StaticResource TextBoxTemplate}"/>
             <Setter Property="Background" Value="{StaticResource LightBlueBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource DarkBrush}"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="Validation.ErrorTemplate">
                 <Setter.Value>
@@ -1121,8 +1122,7 @@
     </Style>
 
     <Style x:Key="MainLeftTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Left"/>
     </Style>
 
     <Style x:Key="SubCentralTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
@@ -1132,8 +1132,7 @@
     </Style>
 
     <Style x:Key="SubLeftTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource SubCentralTextBox}">
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextAlignment" Value="Left"/>
     </Style>
 
     <Style x:Key="NumericTextBox" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">

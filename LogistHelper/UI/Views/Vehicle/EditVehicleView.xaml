@@ -32,8 +32,9 @@
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        <TextBlock
+
+
+            <TextBlock
             Grid.ColumnSpan="4"
             Style="{StaticResource DefaultText}"
             Text="Тягач"/>
@@ -67,21 +68,25 @@
             Style="{StaticResource MiniText}"
             Text="Номер"/>
         
-        <TextBox
+        <controls:WatermarkTextbox
             Grid.Row="1"
             Grid.Column="3"
-            TextChanged="TextBox_TextChanged"
-            Style="{StaticResource SubLeftTextBox}">
-            <TextBox.Text>
-                <Binding Path="EditedViewModel.TruckNumber" 
-                         Converter="{StaticResource TruckNumberConverter}" 
-                         UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <rules:VehicleNumberValidationRule ValidLength="9"/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
+            Watermark="А 000 АА/00">
+            <controls:WatermarkTextbox.TextBox>
+                <TextBox
+                    Style="{StaticResource SubLeftTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="EditedViewModel.TruckNumber" 
+                                 Converter="{StaticResource TrailerNumberConverter}" 
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <rules:VehicleNumberValidationRule ValidLength="9"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </controls:WatermarkTextbox.TextBox>
+        </controls:WatermarkTextbox>
         
         <TextBlock
             Grid.Row="2"
@@ -118,21 +123,25 @@
             Style="{StaticResource MiniText}"
             Text="Номер"/>
         
-        <TextBox
+        <controls:WatermarkTextbox
             Grid.Row="3"
             Grid.Column="3"
-            TextChanged="TextBox_TextChanged"
-            Style="{StaticResource SubLeftTextBox}">
-            <TextBox.Text>
-                <Binding Path="EditedViewModel.TrailerNumber" 
-                         Converter="{StaticResource TrailerNumberConverter}" 
-                         UpdateSourceTrigger="PropertyChanged">
-                    <Binding.ValidationRules>
-                        <rules:VehicleNumberValidationRule ValidLength="8"/>
-                    </Binding.ValidationRules>
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
+            Watermark="АА 0000/00">
+            <controls:WatermarkTextbox.TextBox>
+                <TextBox
+                    Style="{StaticResource SubLeftTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="EditedViewModel.TrailerNumber" 
+                                 Converter="{StaticResource TrailerNumberConverter}" 
+                                 UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <rules:VehicleNumberValidationRule ValidLength="8"/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </controls:WatermarkTextbox.TextBox>
+        </controls:WatermarkTextbox>
         
         <TextBlock
             Grid.Row="4"
