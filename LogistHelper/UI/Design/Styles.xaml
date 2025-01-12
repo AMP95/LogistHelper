@@ -453,10 +453,11 @@
     </Setter>
 </Style>
                     
-        <Style x:Key="CustomCalendar" TargetType="{x:Type Calendar}">
+        <Style x:Key="CustomCalendarSingleRange" TargetType="{x:Type Calendar}">
             <Setter Property="Foreground" Value="{StaticResource DarkBrush}"/>
             <Setter Property="Background" Value="{StaticResource SemiDarkBrush}"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderGradient}"/>
+            <Setter Property="SelectionMode" Value="SingleRange"/>
             <Setter Property="CalendarButtonStyle" Value="{StaticResource  CustomCalendarButton}"/>
             <Setter Property="CalendarItemStyle" Value="{StaticResource CustomCalendarItem}"/>
             <Setter Property="CalendarDayButtonStyle" Value="{StaticResource CustomCalendarDayButton}"/>
@@ -478,8 +479,12 @@
                 </Setter.Value>
             </Setter>
         </Style>
-                    
-        <Style x:Key="CustomDatePickerTextBox" TargetType="{x:Type DatePickerTextBox}">
+
+        <Style x:Key="CustomCalendarSingleDate" TargetType="{x:Type Calendar}" BasedOn="{StaticResource CustomCalendarSingleRange}">
+            <Setter Property="SelectionMode" Value="SingleDate"/>
+        </Style>
+
+    <Style x:Key="CustomDatePickerTextBox" TargetType="{x:Type DatePickerTextBox}">
             <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
             <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
             <Setter Property="TextAlignment" Value="Center"/>
@@ -556,7 +561,7 @@
             <Setter Property="SelectedDateFormat" Value="Short"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="CalendarStyle" Value="{StaticResource CustomCalendar}"/>
+            <Setter Property="CalendarStyle" Value="{StaticResource CustomCalendarSingleDate}"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Template">

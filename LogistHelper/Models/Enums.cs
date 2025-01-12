@@ -14,6 +14,22 @@ namespace LogistHelper.Models
         VehicleMenu,
     }
 
+    public enum ContractSearchProperty 
+    {
+        [Description("Дата")]
+        Date,
+        [Description("Маршрут")]
+        Route,
+        [Description("Статус")]
+        Status,
+        [Description("Заказчик")]
+        Client,
+        [Description("Перевозчик")]
+        Carrier,
+        [Description("Водитель")]
+        Driver
+    }
+
     #region Extend
 
     public static class EnumExtensions

@@ -16,7 +16,7 @@ namespace LogistHelper.ViewModels.Base
         protected IDialog _dialog;
         protected ApiClient _client;
 
-        private IViewModelFactory<T> _factory;
+        protected IViewModelFactory<T> _factory;
 
         protected int _startIndex = 0;
         protected int _count = 20;

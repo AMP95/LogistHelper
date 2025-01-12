@@ -151,6 +151,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 {
                     _dto.LoadPoint = null;
                 }
+                OnPropertyChanged(nameof(Route));
             }
         }
 
@@ -158,7 +159,28 @@ namespace LogistHelper.ViewModels.DataViewModels
         public ObservableCollection<RoutePointViewModel> UnloadPoints
         {
             get => _unloadingPoints;
-            set => SetProperty(ref _unloadingPoints, value);
+            set
+            {
+                SetProperty(ref _unloadingPoints, value);
+                OnPropertyChanged(nameof(Route));
+            }
+        }
+
+        public string Route 
+        {
+            get 
+            { 
+                string result = LoadPoint?.Route;
+
+                var unique = UnloadPoints.DistinctBy(p => p.Route);
+
+                foreach (RoutePointViewModel point in unique) 
+                {
+                    result += $" - {point.Route}";
+                }
+
+                return result;
+            }
         }
 
         #endregion Public

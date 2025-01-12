@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="LogistHelper.UI.CustomControls.CustomDatePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="60" d:DesignWidth="250">
+    <UserControl.Resources>
+        <converters:DateConverter x:Key="DateConverter"/>
+    </UserControl.Resources>
+    
+    <Grid>
+        
+        <local:WatermarkTextbox
+            x:Name="textInput"
+            Watermark="01.01.1991 - 01.12.1991">
+            <local:WatermarkTextbox.TextBox>
+                <TextBox
+                    PreviewMouseLeftButtonUp="WatermarkTextbox_PreviewMouseLeftButtonUp"
+                    Style="{StaticResource MainCentralTextBox}">
+                    <TextBox.Text>
+                        <Binding 
+                            Path="DateRangeString" 
+                            Converter="{StaticResource DateConverter}" 
+                            UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <rules:DateValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </local:WatermarkTextbox.TextBox>
+        </local:WatermarkTextbox>
+
+        <Popup
+            x:Name="calendarPopup"
+            AllowsTransparency="True"
+            StaysOpen="False"
+            Width="{Binding ElementName=textInput, Path=ActualWidth}"
+            PlacementTarget="{Binding ElementName=textInput}"
+            Placement="Bottom"
+            VerticalOffset="3">
+            <Border
+                 Background="{StaticResource LightBrush}"
+                 BorderBrush="{StaticResource BorderGradient}" 
+                 CornerRadius="5"
+                 Margin="0 3"
+                 BorderThickness="2">
+                <Border
+                    Padding="0 3"
+                    CornerRadius="4"
+                    Background="{StaticResource LightBlueBrush}">
+
+                    <Calendar
+                        HorizontalAlignment="Center"
+                        BorderThickness="0"
+                        Style="{StaticResource CustomCalendarSingleRange}"
+                        SelectedDatesChanged="Calendar_SelectedDatesChanged"/>
+
+                </Border>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>
