@@ -23,7 +23,12 @@
             </DataTemplate>
 
             <DataTemplate
-                DataType="{x:Type pagesVM:MenuPageViewModel}">
+                DataType="{x:Type pagesVM:MainMenuPageViewModel}">
+                <pages:MenuPage/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type pagesVM:DatabaseMenuPageViewModel}">
                 <pages:MenuPage/>
             </DataTemplate>
 

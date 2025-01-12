@@ -5,51 +5,33 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Pages"
              xmlns:views="clr-namespace:LogistHelper.UI.Views"
+             xmlns:pagesVM="clr-namespace:LogistHelper.ViewModels.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="1.5*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition />
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <views:NavigationBack
-            HorizontalAlignment="Right"
-            Grid.ColumnSpan="3"/>
+            HorizontalAlignment="Right"/>
 
-        <StackPanel
-            VerticalAlignment="Center"
-            Grid.Column="1"
-            Grid.Row="1">
+        <ContentControl
+            Grid.Row="1"
+            Content="{Binding RelativeSource={RelativeSource AncestorType=local:MenuPage}, Path=DataContext}">
+            <ContentControl.Resources>
+                <DataTemplate
+                    DataType="{x:Type pagesVM:MainMenuPageViewModel}">
+                    <views:MainMenuView/>
+                </DataTemplate>
 
-            <Button
-                Style="{StaticResource NeutralButton}"
-                Content="Клиенты"
-                Command="{Binding NavigateClientMenuCommand}"/>
-
-            <Button
-                Style="{StaticResource NeutralButton}"
-                Content="Перевозчики"
-                Command="{Binding NavigateCarrierMenuCommand}"/>
-
-            <Button
-                Style="{StaticResource NeutralButton}"
-                Content="Водители"
-                Command="{Binding NavigateDriverMenuCommand}"/>
-            
-            <Button
-                Style="{StaticResource NeutralButton}"
-                Content="ТС"
-                Command="{Binding NavigateVehicleMenuCommand}"/>
-        </StackPanel>
-
-       
+                <DataTemplate
+                    DataType="{x:Type pagesVM:DatabaseMenuPageViewModel}">
+                    <views:DatabaseMenuView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </UserControl>

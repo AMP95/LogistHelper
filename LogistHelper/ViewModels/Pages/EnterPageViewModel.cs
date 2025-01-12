@@ -16,7 +16,7 @@ namespace LogistHelper.ViewModels.Pages
 
             EnterCommand = new RelayCommand(() => 
             {
-                NavigationService.Navigate(PageType.Menu);
+                NavigationService.Navigate(PageType.MainMenu);
             });
 
             #endregion CommandsInit

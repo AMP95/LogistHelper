@@ -6,16 +6,18 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Pages
 {
-    public class MenuPageViewModel : BasePageViewModel
+    public class DatabaseMenuPageViewModel : BasePageViewModel
     {
         public ICommand NavigateCarrierMenuCommand { get; }
         public ICommand NavigateClientMenuCommand { get; }
         public ICommand NavigateDriverMenuCommand { get; }
         public ICommand NavigateVehicleMenuCommand { get; }
+        public ICommand NavigateRoutesMenuCommand { get; }
 
-        public MenuPageViewModel()
+        public DatabaseMenuPageViewModel()
         {
-            NavigateCarrierMenuCommand = new RelayCommand(() => 
+
+            NavigateCarrierMenuCommand = new RelayCommand(() =>
             {
                 NavigationService.Navigate(PageType.CarrierMenu);
             });
@@ -25,7 +27,7 @@ namespace LogistHelper.ViewModels.Pages
                 NavigationService.Navigate(PageType.ClientMenu);
             });
 
-            NavigateDriverMenuCommand = new RelayCommand(() => 
+            NavigateDriverMenuCommand = new RelayCommand(() =>
             {
                 NavigationService.Navigate(PageType.DriverMenu);
             });
@@ -35,10 +37,9 @@ namespace LogistHelper.ViewModels.Pages
                 NavigationService.Navigate(PageType.VehicleMenu);
             });
         }
-
         protected override void BackCommandExecutor()
         {
-            NavigationService.Navigate(PageType.Enter);
+            NavigationService.Navigate(PageType.MainMenu);
         }
     }
 }

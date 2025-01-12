@@ -32,7 +32,8 @@ namespace LogistHelper.Services
             #region Pages
 
             services.AddTransient<EnterPageViewModel, EnterPageViewModel>();
-            services.AddTransient<MenuPageViewModel, MenuPageViewModel>();
+            services.AddTransient<MainMenuPageViewModel, MainMenuPageViewModel>();
+            services.AddTransient<DatabaseMenuPageViewModel, DatabaseMenuPageViewModel>();
 
             services.AddTransient<MenuPageViewModel<CarrierDto>, CarrierMenuPageViewModel>();
             services.AddTransient<MenuPageViewModel<CompanyDto>, ClientMenuPageViewModel>();

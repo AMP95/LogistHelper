@@ -949,6 +949,8 @@
         <Setter Property="Background" Value="{StaticResource NeutralTwoDarkBrush}"/>
     </Style>
 
+    
+
 
 
     <Style x:Key="TransparentToggleButton" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource AcceptButton}">
@@ -983,37 +985,23 @@
 
     <Style x:Key="MenuButton" TargetType="{x:Type ButtonBase}">
         <Style.Setters>
-            <Setter Property="Background" Value="{StaticResource NeutralTwoDarkBrush}"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Template" Value="{StaticResource ButtonTemplate}"/>
-            <Setter Property="Margin" Value="50"/>
-            <Setter Property="MinWidth" Value="250"/>
+            <Setter Property="Margin" Value="25"/>
+            <Setter Property="MinWidth" Value="200"/>
             <Setter Property="MinHeight" Value="150"/>
-            <Setter Property="ContentTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <TextBlock
-                            Style="{StaticResource DefaultText}"
-                            Foreground="{StaticResource DarkBrush}"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            TextAlignment="Center"
-                            FontSize="22"
-                            Text="{Binding}"/>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
         </Style.Setters>
     </Style>
 
     <Style x:Key="IconButton" TargetType="{x:Type ButtonBase}">
         <Style.Setters>
             <Setter Property="Template" Value="{StaticResource ButtonTemplate}"/>
+            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Margin" Value="5"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Width" Value="40"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="Transparent"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style.Setters>

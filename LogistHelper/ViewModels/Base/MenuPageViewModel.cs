@@ -43,7 +43,7 @@ namespace LogistHelper.ViewModels.Base
 
         protected override void BackCommandExecutor()
         {
-            NavigationService.Navigate(Models.PageType.Menu);
+            NavigationService.Navigate(Models.PageType.MainMenu);
         }
     }
 }

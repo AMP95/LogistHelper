@@ -6,7 +6,8 @@ namespace LogistHelper.Models
     public enum PageType 
     { 
         Enter,
-        Menu,
+        MainMenu,
+        DatabaseMenu,
         CarrierMenu,
         ClientMenu,
         DriverMenu,
