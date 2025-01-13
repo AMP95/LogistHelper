@@ -66,19 +66,20 @@
                 Width="200"
                 Grid.Column="2">
 
-                <DatePicker
-                    Visibility="Hidden"
-                    CalendarStyle="{StaticResource CustomCalendarSingleRange}">
-                    <DatePicker.Style>
-                        <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource CustomDatePicker}">
+                <controls:CustomDatePicker
+                    StartDate="{Binding StartDate}"
+                    EndDate="{Binding EndDate}"
+                    Visibility="Hidden">
+                    <controls:CustomDatePicker.Style>
+                        <Style>
                             <Style.Triggers>
                                 <DataTrigger
                                     Binding="{Binding SelectedSearchProperty}" Value="{x:Static models:ContractSearchProperty.Date}">
-                                    <Setter Property="DatePicker.Visibility" Value="Visible"/>
+                                    <Setter Property="controls:CustomDatePicker.Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </DatePicker.Style>
+                    </controls:CustomDatePicker.Style>
 
                     <behaviours:Interaction.Triggers>
                         <behaviours:EventTrigger EventName="SelectedDateChanged">
@@ -87,9 +88,10 @@
                                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DatePicker}, Path=Calendar.se}"/>
                         </behaviours:EventTrigger>
                     </behaviours:Interaction.Triggers>
-                </DatePicker>
+                </controls:CustomDatePicker>
 
                 <TextBox
+                    Text="{Binding TextSearchString}"
                     Visibility="Hidden">
                     <TextBox.Style>
                         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
@@ -106,6 +108,7 @@
                 <ComboBox
                     Visibility="Hidden"
                     ItemsSource="{Binding Source={StaticResource status}}"
+                    SelectedItem="{Binding SelectedStatus}"
                     Height="40">
                     <ComboBox.Style>
                         <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource CustomComboBox}">
@@ -121,6 +124,8 @@
 
                 <controls:SearchBox
                     Visibility="Hidden"
+                    SearchList="{Binding SearchResults}"
+                    SelectedSearch="{Binding SelectedSearch}"
                     IsDynamicSearch="True">
                     <controls:SearchBox.Style>
                         <Style>
@@ -128,7 +133,7 @@
                                 <DataTrigger
                                     Binding="{Binding SelectedSearchProperty}" Value="{x:Static models:ContractSearchProperty.Client}">
                                     <Setter Property="controls:SearchBox.Visibility" Value="Visible"/>
-                                    <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SsearchClientCommand}"/>
+                                    <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SearchClientCommand}"/>
                                 </DataTrigger>
                                 <DataTrigger
                                     Binding="{Binding SelectedSearchProperty}" Value="{x:Static models:ContractSearchProperty.Carrier}">
@@ -151,6 +156,7 @@
                 Grid.Column="3"
                 Height="40"
                 Style="{StaticResource NeutralButton}"
+                Command="{Binding FiltrateCommand}"
                 Content="Применить"/>
         </Grid>
         

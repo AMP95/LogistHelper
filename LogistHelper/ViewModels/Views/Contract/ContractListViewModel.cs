@@ -3,9 +3,12 @@ using DTOs;
 using LogistHelper.Models;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
+using LogistHelper.ViewModels.DataViewModels;
 using ServerClient;
 using Shared;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Metrics;
+using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
 {
@@ -19,16 +22,38 @@ namespace LogistHelper.ViewModels.Views
         private ContractStatus _selectedStatus;
         private DateTime _startDate;
         private DateTime _endDate;
+        private ObservableCollection<StringItem> _searchResults;
+        private StringItem _selectedSearch;
 
         #endregion Private
 
 
         #region Public
 
+        public ObservableCollection<StringItem> SearchResults 
+        { 
+            get => _searchResults;
+            set => SetProperty(ref _searchResults, value);
+        }
+
+        public StringItem SelectedSearch 
+        {
+            get => _selectedSearch;
+            set 
+            { 
+                SetProperty(ref _selectedSearch, value);
+                TextSearchString = SelectedSearch?.Item;
+            }
+        }
+
         public ContractSearchProperty SelectedSearchProperty 
         {
             get => _selectedSearchProperty;
-            set => SetProperty(ref _selectedSearchProperty, value);
+            set
+            {
+                SetProperty(ref _selectedSearchProperty, value);
+                TextSearchString = string.Empty;
+            }
         }
 
         public string TextSearchString 
@@ -57,8 +82,21 @@ namespace LogistHelper.ViewModels.Views
 
         #endregion Public
 
+        #region Commands
+
+        public ICommand SearchClientCommand { get; }
+        public ICommand SearchCarrierCommand { get; }
+        public ICommand SearchDriverCommand { get; }
+        public ICommand FiltrateCommand { get; }
+
+        #endregion Commands
+
         public ContractListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<ContractDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
+            DateTime now = DateTime.Now;
+            StartDate = new DateTime(now.Year, now.Month, 1);
+            EndDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
+
             #region CommandsInit
 
             BackwardCommand = new RelayCommand(async () =>
@@ -110,6 +148,20 @@ namespace LogistHelper.ViewModels.Views
                 }
             });
 
+            SearchClientCommand = new RelayCommand<string>(async (searchString) => 
+            {
+                await SearchCarrier(searchString);
+            });
+
+            SearchCarrierCommand = new RelayCommand<string>(async (searchString) =>
+            {
+                await SearchClient(searchString);
+            });
+
+            SearchDriverCommand = new RelayCommand<string>(async (searchString) =>
+            {
+                await SearchDriver(searchString);
+            });
 
             #endregion CommandsInit
         }
@@ -121,18 +173,66 @@ namespace LogistHelper.ViewModels.Views
 
             List?.Clear();
 
+            _startIndex = (int)StartDate.ToOADate();
+            _count = (int)EndDate.ToOADate();
+
             RequestResult<IEnumerable<ContractDto>> result = await _client.GetRange<ContractDto>(_startIndex, _count);
 
             if (result.IsSuccess)
             {
-                int counter = _startIndex + 1;
+                int counter = 0;
                 List = new ObservableCollection<DataViewModel<ContractDto>>(result.Result.Select(c => _factory.GetViewModel(c, counter++)));
             }
 
-            IsForwardAwaliable = List != null && List.Count == _count;
-            IsBackwardAwaliable = _startIndex > _count;
+            IsForwardAwaliable = StartDate.Month != DateTime.Now.Month && StartDate.Year != DateTime.Now.Year;
+            IsBackwardAwaliable = List.Any();
 
             IsBlock = false;
+        }
+
+        private async Task SearchCarrier(string searchString)
+        {
+            await Task.Run(async () =>
+            {
+                RequestResult<IEnumerable<CarrierDto>> result = await _client.Search<CarrierDto>(searchString);
+
+                SearchResults = null;
+
+                if (result.IsSuccess)
+                {
+                    SearchResults = new ObservableCollection<StringItem>(result.Result.Select(v => new StringItem(v.Name)));
+                }
+            });
+        }
+
+        private async Task SearchClient(string searchString)
+        {
+            await Task.Run(async () =>
+            {
+                RequestResult<IEnumerable<CompanyDto>> result = await _client.Search<CompanyDto>(searchString);
+
+                SearchResults = null;
+
+                if (result.IsSuccess)
+                {
+                    SearchResults = new ObservableCollection<StringItem>(result.Result.Select(v => new StringItem(v.Name)));
+                }
+            });
+        }
+
+        private async Task SearchDriver(string searchString)
+        {
+            await Task.Run(async () =>
+            {
+                RequestResult<IEnumerable<DriverDto>> result = await _client.Search<DriverDto>(searchString);
+
+                SearchResults = null;
+
+                if (result.IsSuccess)
+                {
+                    SearchResults = new ObservableCollection<StringItem>(result.Result.Select(v => new StringItem(v.Name)));
+                }
+            });
         }
     }
 }
