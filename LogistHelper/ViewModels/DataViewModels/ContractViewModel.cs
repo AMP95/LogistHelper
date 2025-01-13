@@ -1,6 +1,9 @@
-﻿using DTOs;
+﻿using CommunityToolkit.Mvvm.Input;
+using Dadata.Model;
+using DTOs;
 using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
@@ -9,10 +12,9 @@ namespace LogistHelper.ViewModels.DataViewModels
         #region Private
 
         private DriverViewModel _driver;
-        private ClientViewModel _client;
         private RoutePointViewModel _loadingPoint;
 
-        private ObservableCollection<RoutePointViewModel> _unloadingPoints;
+        private ObservableCollection<ListItem<RoutePointViewModel>> _unloadingPoints;
 
         #endregion Private
 
@@ -148,23 +150,6 @@ namespace LogistHelper.ViewModels.DataViewModels
             get => _driver?.Carrier;
         }
 
-        public ClientViewModel Client
-        {
-            get => _client;
-            set 
-            { 
-                SetProperty(ref _client, value);
-                if (Client != null)
-                {
-                    _dto.Client = _client.GetDto();
-                }
-                else 
-                {
-                    _dto.Client = null;
-                }
-            }
-        }
-
         public RoutePointViewModel LoadPoint
         {
             get => _loadingPoint;
@@ -184,7 +169,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         }
 
 
-        public ObservableCollection<RoutePointViewModel> UnloadPoints
+        public ObservableCollection<ListItem<RoutePointViewModel>> UnloadPoints
         {
             get => _unloadingPoints;
             set
@@ -200,11 +185,11 @@ namespace LogistHelper.ViewModels.DataViewModels
             { 
                 string result = LoadPoint?.Route;
 
-                var unique = UnloadPoints.DistinctBy(p => p.Route);
+                var unique = UnloadPoints.DistinctBy(p => p.Item.Route);
 
-                foreach (RoutePointViewModel point in unique) 
+                foreach (ListItem<RoutePointViewModel> point in unique) 
                 {
-                    result += $" - {point.Route}";
+                    result += $" - {point.Item.Route}";
                 }
 
                 return result;
@@ -213,23 +198,39 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         #endregion Public
 
+        public ICommand AddUnloadCommand { get; }
+        public ICommand DeleteUnloadCommand { get; }
+
         public ContractViewModel(ContractDto dto, int counter) : base(dto, counter)
         {
             if (dto != null) 
             {
-                _client = new ClientViewModel(_dto.Client);
                 _driver = new DriverViewModel(dto.Driver);
                 _loadingPoint = new RoutePointViewModel(dto.LoadPoint);
 
                 if (dto.UnloadPoints != null)
                 {
-                    UnloadPoints = new ObservableCollection<RoutePointViewModel>(dto.UnloadPoints.Select(p => new RoutePointViewModel(p)));
+                    UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>(dto.UnloadPoints.Select(p => new ListItem<RoutePointViewModel>() { Item = new RoutePointViewModel(p)}));
                 }
                 else 
                 {
-                    UnloadPoints = new ObservableCollection<RoutePointViewModel>();
+                    UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>();
                 }
             }
+
+            AddUnloadCommand = new RelayCommand(() => 
+            {
+                UnloadPoints.Add(new ListItem<RoutePointViewModel>() { Item = new RoutePointViewModel() });
+            });
+
+            DeleteUnloadCommand = new RelayCommand<Guid>((id) => 
+            {
+                ListItem<RoutePointViewModel> item = UnloadPoints.FirstOrDefault(e => e.Id == id);
+                if (item != null)
+                {
+                    UnloadPoints.Remove(item);
+                }
+            });
         }
 
         public ContractViewModel(ContractDto dto) : this(dto, 0) { }
@@ -238,7 +239,7 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         public override ContractDto GetDto()
         {
-            _dto.UnloadPoints = UnloadPoints.Select(p => p.GetDto()).ToList();
+            _dto.UnloadPoints = UnloadPoints.Select(p => p.Item.GetDto()).ToList();
             _dto.Carrier = _dto.Driver.Carrier;
             _dto.Vehicle = _dto.Driver.Vehicle;
 
@@ -250,9 +251,8 @@ namespace LogistHelper.ViewModels.DataViewModels
             _dto = new ContractDto();
 
             Driver = new DriverViewModel();
-            Client = new ClientViewModel();
             LoadPoint = new RoutePointViewModel();
-            UnloadPoints = new ObservableCollection<RoutePointViewModel>();
+            UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>();
         }
     }
 

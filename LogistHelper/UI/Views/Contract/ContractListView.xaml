@@ -144,11 +144,6 @@
                             <Style>
                                 <Style.Triggers>
                                     <DataTrigger
-                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Client}">
-                                        <Setter Property="controls:SearchBox.Visibility" Value="Visible"/>
-                                        <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SearchClientCommand}"/>
-                                    </DataTrigger>
-                                    <DataTrigger
                                         Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Carrier}">
                                         <Setter Property="controls:SearchBox.Visibility" Value="Visible"/>
                                         <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SearchCarrierCommand}"/>

@@ -4,9 +4,290 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:dtos="clr-namespace:DTOs;assembly=DTOs"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             d:DesignHeight="1500" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <ObjectDataProvider 
+            x:Key="payCond" 
+            MethodName="GetValues"
+            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dtos:RecievingType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider 
+            x:Key="payPrior" 
+            MethodName="GetValues"
+            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dtos:PaymentPriority"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    
+    <StackPanel>
+        
+        <TextBlock
+            Style="{StaticResource HeaderTwoText}">
+            <Run Text="Заявка-договор №"/>
+            <Run Text="{Binding EditedViewModel.Number}"/>
+            <Run Text="от"/>
+            <Run Text="{Binding EditedViewModel.CreationDate}"/>
+        </TextBlock>
+
+        <TextBlock
+            Style="{StaticResource HeaderThreeText}"
+            Text="Груз"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition
+                    Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Style="{StaticResource DefaultText}"
+                Text="Вес, т"/>
+
+            <TextBox
+                Grid.Column="1"
+                Style="{StaticResource SubCentralTextBox}">
+                <TextBox.Text>
+                    <Binding Path="EditedViewModel.Weight">
+                        <Binding.ValidationRules>
+                            <rules:NumberValidationRule Min="0"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <TextBlock
+                Grid.Column="2"
+                Style="{StaticResource DefaultText}"
+                Text="Объем, м3"/>
+
+            <TextBox
+                Grid.Column="3"
+                Style="{StaticResource SubCentralTextBox}">
+                <TextBox.Text>
+                    <Binding Path="EditedViewModel.Volume">
+                        <Binding.ValidationRules>
+                            <rules:NumberValidationRule Min="0"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+        </Grid>
+
+        <TextBlock
+            Style="{StaticResource HeaderThreeText}"
+            Text="Загрузка"/>
+
+        <local:RoutePointView
+            DataContext="{Binding LoadPoint}"/>
+
+        <TextBlock
+            Style="{StaticResource HeaderThreeText}"
+            Text="Выгрузка"/>
+
+        <ItemsControl
+            ItemsSource="{Binding UnloadPoints}">
+
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Button
+                            ToolTip="Добавить выгрузку"
+                            Style="{StaticResource IconButton}"
+                            HorizontalAlignment="Right"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditContractView}, Path=DataContext.EditedViewModel.AddUnloadCommand}">
+                            <Image
+                                Source="/UI/Icons/add_icon.png"/>
+                        </Button>
+
+                        <ItemsPresenter
+                            Grid.Row="1"/>
+                    </Grid>
+                </ControlTemplate>
+            </ItemsControl.Template>
             
-    </Grid>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition
+                                Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <local:RoutePointView
+                            DataContext="{Binding Item}"/>
+
+                        <Button
+                            Grid.Column="1"
+                            Style="{StaticResource IconButton}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditContractView}, Path=DataContext.EditedViewModel.DeleteUnloadCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Image
+                                Source="/UI/Icons/remove_icon.png"/>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
+        <TextBlock
+            Style="{StaticResource HeaderThreeText}"
+            Text="Исполнитель"/>
+
+        <TextBlock
+            Style="{StaticResource DefaultText}">
+            <Run Text="Перевозчик: "/>
+            <Run Text="{Binding EditedViewModel.Carrier.Name}"/>
+            <Run Text="{Binding EditedViewModel.Carrier.Vat}"/>
+        </TextBlock>
+
+        <controls:SearchBox
+            WatermarkText="Водитель"
+            IsDynamicSearch="True"
+            IsButtonVisible="False"
+            SearchList="{Binding Drivers}"
+            DisplayMemberPath="Name"
+            SelectedSearch="{Binding EditedViewModel.Driver}"/>
+
+        <TextBlock
+            Style="{StaticResource DefaultText}"
+            Text="ТС:"/>
+
+        <ComboBox
+            Grid.Row="1"
+            Grid.Column="1"
+            Style="{StaticResource CustomComboBox}"
+            ItemsSource="{Binding Vehicles}"
+            SelectedIndex="{Binding SelectedVehicleIndex, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Style="{StaticResource DefaultText}">
+                        <Run Text="{Binding TruckModel}"/>
+                        <Run Text="{Binding TruckNumber}"/>
+                        <Run Text="{Binding TrailerModel}"/>
+                        <Run Text="{Binding TrailerNumber}"/>
+                    </TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <TextBlock
+            Style="{StaticResource HeaderThreeText}"
+            Text="Оплата перевозчику"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition
+                    Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Style="{StaticResource DefaultText}"
+                Text="Оплата, руб:"/>
+
+            <TextBox
+                Grid.Column="1"
+                Style="{StaticResource MainCentralTextBox}">
+                <TextBox.Text>
+                    <Binding Path="EditedViewModel.Payment">
+                        <Binding.ValidationRules>
+                            <rules:NumberValidationRule Min="0" IsRequired="True"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <TextBlock
+                Grid.Row="1"
+                Style="{StaticResource DefaultText}"
+                Text="Предоплата, руб:"/>
+
+            <TextBox
+                Grid.Row="1"
+                Grid.Column="1"
+                Style="{StaticResource SubCentralTextBox}">
+                <TextBox.Text>
+                    <Binding Path="EditedViewModel.Prepayment">
+                        <Binding.ValidationRules>
+                            <rules:NumberValidationRule Min="0" IsRequired="False"/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <TextBlock
+                Grid.Column="2"
+                Style="{StaticResource DefaultText}"
+                Text="Условия оплаты:"/>
+
+            <ComboBox
+                Grid.Column="3"
+                Height="40"
+                ItemsSource="{Binding Source={StaticResource payCond}}"
+                SelectedItem="{Binding EditedViewModel.PaymentCondition}"
+                Style="{StaticResource CustomComboBox}"/>
+
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="2"
+                Style="{StaticResource DefaultText}"
+                Text="Срок оплаты:"/>
+
+            <ComboBox
+                Grid.Row="1"
+                Grid.Column="3"
+                Height="40"
+                ItemsSource="{Binding Source={StaticResource payPrior}}"
+                SelectedItem="{Binding EditedViewModel.PayPriority}"
+                Style="{StaticResource CustomComboBox}"/>
+
+        </Grid>
+
+        <TextBlock
+            Style="{StaticResource HeaderThreeText}"
+            Text="Оплата заказчика, руб"/>
+
+        <TextBox
+            Grid.Column="1"
+            Style="{StaticResource MainCentralTextBox}">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.ClientPayment">
+                    <Binding.ValidationRules>
+                        <rules:NumberValidationRule Min="0" IsRequired="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+
+    </StackPanel>
 </UserControl>

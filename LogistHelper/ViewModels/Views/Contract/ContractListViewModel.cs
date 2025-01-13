@@ -122,14 +122,9 @@ namespace LogistHelper.ViewModels.Views
                 (Parent as ContractMenuViewModel).SwitchToDocument(id);
             });
 
-            SearchClientCommand = new RelayCommand<string>(async (searchString) => 
-            {
-                await SearchCarrier(searchString);
-            });
-
             SearchCarrierCommand = new RelayCommand<string>(async (searchString) =>
             {
-                await SearchClient(searchString);
+                await SearchCarrier(searchString);
             });
 
             SearchDriverCommand = new RelayCommand<string>(async (searchString) =>
@@ -180,21 +175,6 @@ namespace LogistHelper.ViewModels.Views
             await Task.Run(async () =>
             {
                 RequestResult<IEnumerable<CarrierDto>> result = await _client.Search<CarrierDto>(searchString);
-
-                SearchResults = null;
-
-                if (result.IsSuccess)
-                {
-                    SearchResults = new ObservableCollection<StringItem>(result.Result.Select(v => new StringItem(v.Name)));
-                }
-            });
-        }
-
-        private async Task SearchClient(string searchString)
-        {
-            await Task.Run(async () =>
-            {
-                RequestResult<IEnumerable<CompanyDto>> result = await _client.Search<CompanyDto>(searchString);
 
                 SearchResults = null;
 

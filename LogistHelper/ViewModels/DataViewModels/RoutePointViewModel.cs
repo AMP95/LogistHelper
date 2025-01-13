@@ -1,6 +1,9 @@
-﻿using DTOs;
+﻿using CommunityToolkit.Mvvm.Input;
+using DTOs;
 using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
@@ -14,6 +17,16 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         #region Public
 
+        public string Company
+        {
+            get => _dto.Company;
+            set
+            {
+                _dto.Company = value;
+                OnPropertyChanged(nameof(Company));
+            }
+        }
+
         public string Route 
         {
             get => _dto.Route;
@@ -23,6 +36,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Route));
             }
         }
+
         public string Address
         {
             get => _dto.Address;
@@ -32,6 +46,29 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Address));
             }
         }
+
+        public DateTime Date
+        {
+            get => _dto.DateAndTime;
+            set
+            {
+                DateTime time = DateTime.ParseExact(Time, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault);
+                _dto.DateAndTime = new DateTime(value.Year, value.Month, value.Day, time.Hour, time.Minute, 0);
+                OnPropertyChanged(nameof(Date));
+            }
+        }
+
+        public string Time
+        {
+            get => _dto.DateAndTime.ToString("HH:mm");
+            set
+            {
+                DateTime time = DateTime.ParseExact(value, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault);
+                _dto.DateAndTime = new DateTime(Date.Year, Date.Month, Date.Day, time.Hour, time.Minute, 0);
+                OnPropertyChanged(nameof(Time));
+            }
+        }
+
         public LoadingSide Side
         {
             get => _dto.Side;
@@ -58,17 +95,49 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         #endregion Public
 
+        public ICommand AddPhoneCommand { get; }
+        public ICommand DeletePhoneCommand { get; }
+
         public RoutePointViewModel(RoutePointDto route, int counter) : base(route, counter)
         {
             if (route != null)
             {
                 Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
             }
+
+            AddPhoneCommand = new RelayCommand(() => 
+            {
+                Phones.Add(new StringItem());
+            });
+
+            DeletePhoneCommand = new RelayCommand<Guid>((id) => 
+            {
+                StringItem item = Phones.FirstOrDefault(e => e.Id == id);
+                if (item != null)
+                {
+                    Phones.Remove(item);
+                }
+            });
         }
 
         public RoutePointViewModel(RoutePointDto route) : this(route, 0) { }
 
-        public RoutePointViewModel() : base() { }
+        public RoutePointViewModel() : base() 
+        {
+            AddPhoneCommand = new RelayCommand(() =>
+            {
+                Phones.Add(new StringItem());
+            });
+
+            DeletePhoneCommand = new RelayCommand<Guid>((id) =>
+            {
+                StringItem item = Phones.FirstOrDefault(e => e.Id == id);
+                if (item != null)
+                {
+                    Phones.Remove(item);
+                }
+            });
+        }
 
         public override RoutePointDto GetDto() 
         {
@@ -79,7 +148,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         protected override void DefaultInit()
         {
             _dto = new RoutePointDto();
-            Phones = new ObservableCollection<StringItem>();
+            Phones = new ObservableCollection<StringItem>() { new StringItem() };
         }
     }
 

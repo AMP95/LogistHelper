@@ -1,0 +1,204 @@
+﻿<UserControl x:Class="LogistHelper.UI.Views.RoutePointView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
+             xmlns:dtos="clr-namespace:DTOs;assembly=DTOs"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="450">
+
+    <UserControl.Resources>
+        <converters:TimeConverter x:Key="TimeConverter"/>
+        <converters:PhoneConverter x:Key="PhoneConverter"/>
+
+        <ObjectDataProvider 
+            x:Key="loadSide" 
+            MethodName="GetValues"
+            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dtos:LoadingSide"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+    </UserControl.Resources>
+
+    <StackPanel>
+        
+        <controls:WatermarkTextbox>
+            <controls:WatermarkTextbox.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Type}" Value="{x:Static dtos:LoadPointType.Upload}">
+                            <Setter Property="controls:WatermarkTextbox.Watermark" Value="Грузоотправитель"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Type}" Value="{x:Static dtos:LoadPointType.Download}">
+                            <Setter Property="controls:WatermarkTextbox.Watermark" Value="Грузополучатель"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:WatermarkTextbox.Style>
+            <controls:WatermarkTextbox.TextBox>
+                <TextBox
+                    Style="{StaticResource MainLeftTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="Company">
+                            <Binding.ValidationRules>
+                                <rules:EmptyStringValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </controls:WatermarkTextbox.TextBox>
+        </controls:WatermarkTextbox>
+
+        <controls:WatermarkTextbox>
+
+            <controls:WatermarkTextbox.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Type}" Value="{x:Static dtos:LoadPointType.Upload}">
+                            <Setter Property="controls:WatermarkTextbox.Watermark" Value="Адрес погрузки"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Type}" Value="{x:Static dtos:LoadPointType.Download}">
+                            <Setter Property="controls:WatermarkTextbox.Watermark" Value="Адрес выгрузки"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:WatermarkTextbox.Style>
+
+            <controls:WatermarkTextbox.TextBox>
+                <TextBox
+                    Style="{StaticResource SubLeftTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="Address">
+                            <Binding.ValidationRules>
+                                <rules:EmptyStringValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </controls:WatermarkTextbox.TextBox>
+        </controls:WatermarkTextbox>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="auto"/>
+                <ColumnDefinition/>
+                <ColumnDefinition
+                    Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Style="{StaticResource DefaultText}"
+                Text="Дата"/>
+
+            <DatePicker
+                Grid.Column="1"
+                SelectedDate="{Binding DateAndTime}"
+                Style="{StaticResource CustomDatePicker}"/>
+
+            <TextBlock
+                Grid.Column="2"
+                Style="{StaticResource DefaultText}"
+                Text="Время"/>
+
+            <controls:WatermarkTextbox
+                Grid.Column="3"
+                Watermark="12:00">
+
+                <controls:WatermarkTextbox.TextBox>
+                    <TextBox
+                        Style="{StaticResource SubLeftTextBox}">
+                        <TextBox.Text>
+                            <Binding Path="Time" Converter="{StaticResource TimeConverter}">
+                                <Binding.ValidationRules>
+                                    <rules:TimeValidationRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                </controls:WatermarkTextbox.TextBox>
+            </controls:WatermarkTextbox>
+
+        </Grid>
+
+        <ComboBox
+            Style="{StaticResource CustomComboBox}"
+            ItemsSource="{Binding Source={StaticResource loadSide}}"
+            SelectedItem="{Binding Side}"/>
+
+        <TextBlock
+            Style="{StaticResource DefaultText}"
+            Text="Контакты"/>
+
+        <ItemsControl
+            ItemsSource="{Binding Phones}">
+            <ItemsControl.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Button
+                            Style="{StaticResource IconButton}"
+                            HorizontalAlignment="Right"
+                            Command="{Binding AddPhoneCommand}">
+                            <Image
+                                Source="/UI/Icons/add_icon.png"/>
+                        </Button>
+
+                        <ItemsPresenter
+                            Grid.Row="1"/>
+                    </Grid>
+                </ControlTemplate>
+            </ItemsControl.Template>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:WatermarkTextbox
+                            Watermark="+7(000)000-00-00">
+                            <controls:WatermarkTextbox.TextBox>
+                                <TextBox
+                                    Style="{StaticResource SubLeftTextBox}">
+                                    <TextBox.Text>
+                                        <Binding Path="Item" 
+                                            UpdateSourceTrigger="PropertyChanged" 
+                                            Converter="{StaticResource PhoneConverter}">
+                                            <Binding.ValidationRules>
+                                                <rules:PhoneValidationRule/>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                            </controls:WatermarkTextbox.TextBox>
+                        </controls:WatermarkTextbox>
+
+                        <Button
+                            Grid.Column="1"
+                            Style="{StaticResource IconButton}"
+                            Command="{Binding DeletePhoneCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Image
+                                Source="/UI/Icons/remove_icon.png"/>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+    </StackPanel>
+</UserControl>
