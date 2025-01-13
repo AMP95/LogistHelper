@@ -1,13 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
-using LogistHelper.Models;
 using LogistHelper.Models.Settings;
+using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
+using LogistHelper.ViewModels.Pages;
 using ServerClient;
 using Shared;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Metrics;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
@@ -16,7 +16,7 @@ namespace LogistHelper.ViewModels.Views
     {
         #region Private
 
-        private ContractSearchProperty _selectedSearchProperty;
+        private ContractFilterProperty _selectedSearchProperty;
 
         private string _textSearchString;
         private ContractStatus _selectedStatus;
@@ -46,7 +46,7 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
-        public ContractSearchProperty SelectedSearchProperty 
+        public ContractFilterProperty SelectedSearchProperty 
         {
             get => _selectedSearchProperty;
             set
@@ -84,6 +84,7 @@ namespace LogistHelper.ViewModels.Views
 
         #region Commands
 
+        public ICommand AddDocumentCommand { get; set; }
         public ICommand SearchClientCommand { get; }
         public ICommand SearchCarrierCommand { get; }
         public ICommand SearchDriverCommand { get; }
@@ -97,55 +98,28 @@ namespace LogistHelper.ViewModels.Views
             StartDate = new DateTime(now.Year, now.Month, 1);
             EndDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
 
+            IsBackwardAwaliable = false;
+            IsForwardAwaliable = false;
+
             #region CommandsInit
-
-            BackwardCommand = new RelayCommand(async () =>
-            {
-                if (IsBackwardAwaliable)
-                {
-                    _startIndex -= _count;
-                    await Load();
-                }
-            });
-
-            ForwardCommand = new RelayCommand(async () =>
-            {
-                if (IsForwardAwaliable)
-                {
-                    _startIndex += _count;
-                    await Load();
-                }
-            });
-
-            SearchCommand = new RelayCommand(async () =>
-            {
-                await Search();
-            });
-
 
             ResetSearchCommand = new RelayCommand(async () =>
             {
-                SearchString = string.Empty;
+                DateTime now = DateTime.Now;
+                StartDate = new DateTime(now.Year, now.Month, 1);
+                EndDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
+                SelectedSearchProperty = ContractFilterProperty.Date;
                 await Load();
             });
 
-            EditCommand = new RelayCommand<Guid>((id) =>
-            {
-                Parent.SwitchToEdit(id);
-                Clear();
+            AddCommand = new RelayCommand(() => 
+            { 
+                NavigationService.Navigate(Models.PageType.NewContract);
             });
 
-            AddCommand = new RelayCommand(() =>
+            AddDocumentCommand = new RelayCommand<Guid>((id) => 
             {
-                Parent.SwitchToEdit(Guid.Empty);
-            });
-
-            DeleteCommand = new RelayCommand<Guid>(async (id) =>
-            {
-                if (_dialog.ShowSure("Удаление"))
-                {
-                    await Delete(id);
-                }
+                (Parent as ContractMenuViewModel).SwitchToDocument(id);
             });
 
             SearchClientCommand = new RelayCommand<string>(async (searchString) => 
@@ -163,6 +137,11 @@ namespace LogistHelper.ViewModels.Views
                 await SearchDriver(searchString);
             });
 
+            FiltrateCommand = new RelayCommand(async () => 
+            {
+                await Load();
+            });
+
             #endregion CommandsInit
         }
 
@@ -173,19 +152,25 @@ namespace LogistHelper.ViewModels.Views
 
             List?.Clear();
 
-            _startIndex = (int)StartDate.ToOADate();
-            _count = (int)EndDate.ToOADate();
+            object[] param = null;
 
-            RequestResult<IEnumerable<ContractDto>> result = await _client.GetRange<ContractDto>(_startIndex, _count);
+            switch (SelectedSearchProperty) 
+            { 
+                case ContractFilterProperty.Date: param = new object[] { StartDate, EndDate }; ; break;
+                case ContractFilterProperty.Status: param = new object[] { SelectedStatus }; ; break;
+                default:
+                    param = new object[] { TextSearchString };
+                    ;break;
+
+            }
+
+            RequestResult<IEnumerable<ContractDto>> result = await _client.GetFilter(SelectedSearchProperty, param);
 
             if (result.IsSuccess)
             {
                 int counter = 0;
                 List = new ObservableCollection<DataViewModel<ContractDto>>(result.Result.Select(c => _factory.GetViewModel(c, counter++)));
             }
-
-            IsForwardAwaliable = StartDate.Month != DateTime.Now.Month && StartDate.Year != DateTime.Now.Year;
-            IsBackwardAwaliable = List.Any();
 
             IsBlock = false;
         }

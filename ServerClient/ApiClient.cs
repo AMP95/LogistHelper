@@ -1,5 +1,6 @@
 ﻿using DTOs;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net.Http.Json;
 
 namespace ServerClient
@@ -45,6 +46,13 @@ namespace ServerClient
             string route = GetRoute(typeof(T));
             RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/range/{start}/{end}");
             return await GetResult<IEnumerable<T>>(result);
+        }
+
+        public async Task<RequestResult<IEnumerable<ContractDto>>> GetFilter(ContractFilterProperty property, params object[] parameters)
+        {
+            string route = GetRoute(typeof(ContractDto));
+            RequestResult<Guid> result = await SendAsync<Guid>(HttpMethod.Post, $"{_url}/Get/{route}/{property.ToString()}", JsonConvert.SerializeObject(new { param = parameters }));
+            return await GetResult<IEnumerable<ContractDto>>(result);
         }
 
         public async Task<RequestResult<IEnumerable<T>>> Search<T>(string name)

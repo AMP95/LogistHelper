@@ -12,23 +12,9 @@ namespace LogistHelper.Models
         ClientMenu,
         DriverMenu,
         VehicleMenu,
+        NewContract,
     }
 
-    public enum ContractSearchProperty 
-    {
-        [Description("Дата")]
-        Date,
-        [Description("Маршрут")]
-        Route,
-        [Description("Статус")]
-        Status,
-        [Description("Заказчик")]
-        Client,
-        [Description("Перевозчик")]
-        Carrier,
-        [Description("Водитель")]
-        Driver
-    }
 
     #region Extend
 

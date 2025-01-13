@@ -52,6 +52,13 @@
                 <pages:DataMenuPage/>
             </DataTemplate>
 
+            <DataTemplate
+                DataType="{x:Type pagesVM:ContractMenuViewModel}">
+                <pages:DataMenuPage/>
+            </DataTemplate>
+
+
+
 
             <DataTemplate
                 DataType="{x:Type viewsVM:ClientListViewModel}">
@@ -72,8 +79,13 @@
                 DataType="{x:Type viewsVM:VehicleListViewModel}">
                 <views:ListView/>
             </DataTemplate>
-            
-            
+
+            <DataTemplate
+                DataType="{x:Type viewsVM:ContractListViewModel}">
+                <views:ContractListView/>
+            </DataTemplate>
+
+
 
             <DataTemplate
                 DataType="{x:Type viewsVM:EditCarrierViewModel}">
@@ -95,8 +107,13 @@
                 <views:EditView/>
             </DataTemplate>
 
-            
-            
+            <DataTemplate
+                DataType="{x:Type viewsVM:EditContractViewModel}">
+                <views:EditView/>
+            </DataTemplate>
+
+
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

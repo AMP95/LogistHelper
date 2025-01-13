@@ -9,6 +9,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
              xmlns:behaviours="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -17,7 +18,7 @@
             MethodName="GetValues"
             ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="models:ContractSearchProperty"/>
+                <x:Type TypeName="dtos:ContractFilterProperty"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         
@@ -32,162 +33,301 @@
     </UserControl.Resources>
 
     <Grid>
+
         <Grid.RowDefinitions>
-            <RowDefinition
-                Height="auto"/>
-            <RowDefinition/>
-            <RowDefinition
-                Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid>
+        <local:NavigationBack
+            HorizontalAlignment="Right"
+            DataContext="{Binding RelativeSource={RelativeSource AncestorType=pages:DataMenuPage}, Path=DataContext}"/>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <TextBlock
-                Foreground="{StaticResource NeutralOneBrush}"
-                Style="{StaticResource HeaderTwoText}"
-                Text="Фильтр:"/>
+        <Grid
+            Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition
+                    Height="auto"/>
+            </Grid.RowDefinitions>
 
-            <ComboBox
-                Grid.Column="1"
-                Height="40"
-                Width="200"
-                ItemsSource="{Binding Source={StaticResource searchProp}}"
-                SelectedItem="{Binding SelectedSearchProperty}"
-                Style="{StaticResource CustomComboBox}"/>
+            <Grid>
 
-            <Grid
-                Width="200"
-                Grid.Column="2">
-
-                <controls:CustomDatePicker
-                    StartDate="{Binding StartDate}"
-                    EndDate="{Binding EndDate}"
-                    Visibility="Hidden">
-                    <controls:CustomDatePicker.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding SelectedSearchProperty}" Value="{x:Static models:ContractSearchProperty.Date}">
-                                    <Setter Property="controls:CustomDatePicker.Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:CustomDatePicker.Style>
-
-                    <behaviours:Interaction.Triggers>
-                        <behaviours:EventTrigger EventName="SelectedDateChanged">
-                            <behaviours:InvokeCommandAction
-                                Command="{Binding SelectRangeCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DatePicker}, Path=Calendar.se}"/>
-                        </behaviours:EventTrigger>
-                    </behaviours:Interaction.Triggers>
-                </controls:CustomDatePicker>
-
-                <TextBox
-                    Text="{Binding TextSearchString}"
-                    Visibility="Hidden">
-                    <TextBox.Style>
-                        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
-                            <Style.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding SelectedSearchProperty}" Value="{x:Static models:ContractSearchProperty.Route}">
-                                    <Setter Property="TextBox.Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Foreground="{StaticResource NeutralOneBrush}"
+                    Style="{StaticResource HeaderTwoText}"
+                    Text="Фильтр:"/>
 
                 <ComboBox
-                    Visibility="Hidden"
-                    ItemsSource="{Binding Source={StaticResource status}}"
-                    SelectedItem="{Binding SelectedStatus}"
-                    Height="40">
-                    <ComboBox.Style>
-                        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource CustomComboBox}">
-                            <Style.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding SelectedSearchProperty}" Value="{x:Static models:ContractSearchProperty.Status}">
-                                    <Setter Property="ComboBox.Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ComboBox.Style>
-                </ComboBox>
+                    Grid.Column="1"
+                    Height="40"
+                    Width="200"
+                    ItemsSource="{Binding Source={StaticResource searchProp}}"
+                    SelectedItem="{Binding SelectedSearchProperty}"
+                    Style="{StaticResource CustomComboBox}"/>
 
-                <controls:SearchBox
-                    Visibility="Hidden"
-                    SearchList="{Binding SearchResults}"
-                    SelectedSearch="{Binding SelectedSearch}"
-                    IsDynamicSearch="True">
-                    <controls:SearchBox.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding SelectedSearchProperty}" Value="{x:Static models:ContractSearchProperty.Client}">
-                                    <Setter Property="controls:SearchBox.Visibility" Value="Visible"/>
-                                    <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SearchClientCommand}"/>
-                                </DataTrigger>
-                                <DataTrigger
-                                    Binding="{Binding SelectedSearchProperty}" Value="{x:Static models:ContractSearchProperty.Carrier}">
-                                    <Setter Property="controls:SearchBox.Visibility" Value="Visible"/>
-                                    <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SearchCarrierCommand}"/>
-                                </DataTrigger>
-                                <DataTrigger
-                                    Binding="{Binding SelectedSearchProperty}" Value="{x:Static models:ContractSearchProperty.Driver}">
-                                    <Setter Property="controls:SearchBox.Visibility" Value="Visible"/>
-                                    <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SearchDriverCommand}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </controls:SearchBox.Style>
-                </controls:SearchBox>
+                <Grid
+                    Width="200"
+                    Grid.Column="2">
 
+                    <controls:CustomDatePicker
+                        StartDate="{Binding StartDate}"
+                        EndDate="{Binding EndDate}"
+                        Visibility="Hidden">
+                        <controls:CustomDatePicker.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static  dtos:ContractFilterProperty.Date}">
+                                        <Setter Property="controls:CustomDatePicker.Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </controls:CustomDatePicker.Style>
+
+                        <behaviours:Interaction.Triggers>
+                            <behaviours:EventTrigger EventName="SelectedDateChanged">
+                                <behaviours:InvokeCommandAction
+                                     Command="{Binding SelectRangeCommand}"
+                                     CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DatePicker}, Path=Calendar.se}"/>
+                            </behaviours:EventTrigger>
+                        </behaviours:Interaction.Triggers>
+                    </controls:CustomDatePicker>
+
+                    <TextBox
+                        Text="{Binding TextSearchString}"
+                        Visibility="Hidden">
+                        <TextBox.Style>
+                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
+                                <Style.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Route}">
+                                        <Setter Property="TextBox.Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+
+                    <ComboBox
+                        Visibility="Hidden"
+                        ItemsSource="{Binding Source={StaticResource status}}"
+                        SelectedItem="{Binding SelectedStatus}"
+                        Height="40">
+                        <ComboBox.Style>
+                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource CustomComboBox}">
+                                <Style.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Status}">
+                                        <Setter Property="ComboBox.Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ComboBox.Style>
+                    </ComboBox>
+
+                    <controls:SearchBox
+                        Visibility="Hidden"
+                        SearchList="{Binding SearchResults}"
+                        SelectedSearch="{Binding SelectedSearch}"
+                        IsDynamicSearch="True">
+                        <controls:SearchBox.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger
+                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Client}">
+                                        <Setter Property="controls:SearchBox.Visibility" Value="Visible"/>
+                                        <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SearchClientCommand}"/>
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Carrier}">
+                                        <Setter Property="controls:SearchBox.Visibility" Value="Visible"/>
+                                        <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SearchCarrierCommand}"/>
+                                    </DataTrigger>
+                                    <DataTrigger
+                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Driver}">
+                                        <Setter Property="controls:SearchBox.Visibility" Value="Visible"/>
+                                        <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SearchDriverCommand}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </controls:SearchBox.Style>
+                    </controls:SearchBox>
+
+                </Grid>
+
+                <Button
+                    Grid.Column="3"
+                    Height="40"
+                    Style="{StaticResource NeutralButton}"
+                    Command="{Binding FiltrateCommand}"
+                    Content="Применить"/>
             </Grid>
 
-            <Button
-                Grid.Column="3"
-                Height="40"
-                Style="{StaticResource NeutralButton}"
-                Command="{Binding FiltrateCommand}"
-                Content="Применить"/>
-        </Grid>
-        
-        <ItemsControl
-            Grid.Row="1"
-            ItemsSource="{Binding List}">
-            
-            <ItemsControl.Template>
-            <ControlTemplate>
+            <ItemsControl
+                Grid.Row="1"
+                ItemsSource="{Binding List}">
 
-                <ScrollViewer
-                        Grid.Row="1"
-                        VerticalScrollBarVisibility="Visible"
-                        HorizontalScrollBarVisibility="Visible"
-                        Style="{StaticResource CustomScroll}">
-                    
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
+                <ItemsControl.Template>
+                    <ControlTemplate>
 
-                        <Grid
-                            Margin="0 0 12 0">
+                        <ScrollViewer
+                            Grid.Row="1"
+                            VerticalScrollBarVisibility="Visible"
+                            HorizontalScrollBarVisibility="Visible"
+                            Style="{StaticResource CustomScroll}">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <Grid
+                                    Margin="0 0 12 0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition
+                                            Width="100"/>
+                                        <ColumnDefinition
+                                            Width="100"/>
+                                        <ColumnDefinition
+                                            Width="100"/>
+                                        <ColumnDefinition
+                                            Width="100"/>
+                                        <ColumnDefinition
+                                             Width="100"/>
+                                        <ColumnDefinition
+                                            Width="100"/>
+                                        <ColumnDefinition
+                                            Width="200"/>
+                                        <ColumnDefinition
+                                            Width="250"/>
+                                        <ColumnDefinition
+                                            Width="250"/>
+                                        <ColumnDefinition
+                                            Width="250"/>
+                                        <ColumnDefinition
+                                            Width="250"/>
+                                        <ColumnDefinition
+                                            Width="120"/>
+                                        <ColumnDefinition
+                                            Width="120"/>
+                                        <ColumnDefinition
+                                            Width="120"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button
+                                        Style="{StaticResource IconButton}"
+                                        ToolTip="Новая заявка"
+                                        Command="{Binding AddCommand}">
+                                        <Image
+                                            Source="/UI/Icons/add_icon.png/"/>
+                                    </Button>
+
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="Статус"/>
+
+                                    <TextBlock
+                                         Grid.Column="2"
+                                         Style="{StaticResource HeaderThreeText}"
+                                         Foreground="{StaticResource NeutralOneBrush}"
+                                         Text="НДС"/>
+
+                                    <TextBlock
+                                        Grid.Column="3"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="Логист"/>
+
+                                    <TextBlock
+                                        Grid.Column="4"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="Номер"/>
+
+                                    <TextBlock
+                                        Grid.Column="5"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="Дата"/>
+
+                                    <TextBlock
+                                        Grid.Column="6"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="Маршрут"/>
+
+                                    <TextBlock
+                                        Grid.Column="7"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="Заказчик"/>
+
+                                    <TextBlock
+                                        Grid.Column="8"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="Перевозчик"/>
+
+                                    <TextBlock
+                                        Grid.Column="9"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="Водитель"/>
+
+                                    <TextBlock
+                                        Grid.Column="10"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="ТС"/>
+
+                                    <TextBlock
+                                        Grid.Column="11"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="Оплата перевозчику"/>
+
+                                    <TextBlock
+                                        Grid.Column="12"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="Предоплата перевозчику"/>
+
+                                    <TextBlock
+                                        Grid.Column="13"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Foreground="{StaticResource NeutralOneBrush}"
+                                        Text="Оплата заказчика"/>
+
+                                </Grid>
+
+                                <ItemsPresenter
+                                    Grid.Row="1"/>
+                            </Grid>
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition
-                                    Width="50"/>
-                                <ColumnDefinition
-                                    Width="50"/>
-                                <ColumnDefinition
                                     Width="100"/>
+                                <ColumnDefinition
+                                    Width="50"/>
                                 <ColumnDefinition
                                     Width="100"/>
                                 <ColumnDefinition
@@ -214,207 +354,166 @@
                                     Width="120"/>
                             </Grid.ColumnDefinitions>
 
-                            <Button
-                                Style="{StaticResource IconButton}"
-                                ToolTip="Редактировать">
-                                <Image
-                                    Source="/UI/Icons/edit_icon.png/"/>
-                            </Button>
+                            <StackPanel
+                                Orientation="Horizontal">
 
-                            <TextBlock
-                                Grid.Column="1"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Статус"/>
+                                <Button
+                                    ToolTip="Редактировать"
+                                    Style="{StaticResource IconButton}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.EditCommand}"
+                                    CommandParameter="{Binding Id}">
+                                    <Image
+                                        Source="/UI/Icons/edit_icon.png"/>
+                                </Button>
+
+                                <Button
+                                    ToolTip="Добавить документы"
+                                    Style="{StaticResource IconButton}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.AddDocumentCommand}"
+                                    CommandParameter="{Binding Id}">
+                                    <Image
+                                        Source="/UI/Icons/addoc_icon.png"/>
+                                </Button>
+
+                            </StackPanel>
+
+                            <Grid
+                                Grid.Column="1">
+                                <Image>
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Created}">
+                                                    <Setter Property="Image.Source" Value="/UI/Icons/new_icon.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.DocumentsRecieved}">
+                                                    <Setter Property="Image.Source" Value="/UI/Icons/recieve_icon.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.DocumentSended}">
+                                                    <Setter Property="Image.Source" Value="/UI/Icons/send_icon.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Closed}">
+                                                    <Setter Property="Image.Source" Value="/UI/Icons/done_icon.png"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Failed}">
+                                                    <Setter Property="Image.Source" Value="/UI/Icons/fail_icon.png"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+
+                                <Button
+                                    ToolTip="Срыв"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.AddDocumentCommand}"
+                                    CommandParameter="{Binding Id}">
+                                    <Button.Style>
+                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
+                                            <Setter Property="Button.Visibility" Value="Hidden"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Created}">
+                                                    <Setter Property="Button.Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </Grid>
 
                             <TextBlock
                                 Grid.Column="2"
-                                Style="{StaticResource HeaderThreeText}"
-                                Text="№"
-                                Foreground="{StaticResource NeutralOneBrush}"/>
+                                TextAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultText}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Vat}" Value="{x:Static dtos:VAT.With}">
+                                                <Setter Property="TextBlock.Text" Value="НДС"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
 
                             <TextBlock
                                 Grid.Column="3"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="НДС"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center"
+                                Text="ЛГСТ"/>
 
                             <TextBlock
                                 Grid.Column="4"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Логист"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center"
+                                Text="{Binding Number}"/>
 
                             <TextBlock
                                 Grid.Column="5"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Номер"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center"
+                                Text="{Binding CreationDate}"/>
 
                             <TextBlock
                                 Grid.Column="6"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Дата"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center"
+                                Text="{Binding Route}"/>
 
                             <TextBlock
                                 Grid.Column="7"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Маршрут"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center"
+                                Text="{Binding Client.Name}"/>
 
                             <TextBlock
                                 Grid.Column="8"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Заказчик"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center"
+                                Text="{Binding Carrier.Name}"/>
 
                             <TextBlock
                                 Grid.Column="9"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Перевозчик"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center"
+                                Text="{Binding Driver.Name}"/>
 
                             <TextBlock
                                 Grid.Column="10"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Водитель"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center">
+                                <Run Text="{Binding Vehicle.TruckModel}"/>
+                                <Run Text="{Binding Vehicle.TruckNumber}"/>
+                                <Run Text=","/>
+                                <Run Text="{Binding Vehicle.TrailerNumber}"/>
+                            </TextBlock>
 
                             <TextBlock
                                 Grid.Column="11"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="ТС"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center"
+                                Text="{Binding Payment}"/>
 
                             <TextBlock
                                 Grid.Column="12"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Оплата перевозчику"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center"
+                                Text="{Binding Prepayment}"/>
 
                             <TextBlock
                                 Grid.Column="13"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Предоплата перевозчику"/>
-
-                            <TextBlock
-                                Grid.Column="14"
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Оплата заказчика"/>
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center"
+                                Text="{Binding ClientPayment}"/>
 
                         </Grid>
-                        
-                        <ItemsPresenter
-                            Grid.Row="1"/>
-                </Grid>
-                    </ScrollViewer>
-            </ControlTemplate>
-        </ItemsControl.Template>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
 
-            <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition
-                            Width="50"/>
-                        <ColumnDefinition
-                            Width="50"/>
-                        <ColumnDefinition
-                            Width="100"/>
-                        <ColumnDefinition
-                            Width="100"/>
-                        <ColumnDefinition
-                            Width="100"/>
-                        <ColumnDefinition
-                            Width="100"/>
-                        <ColumnDefinition
-                            Width="100"/>
-                        <ColumnDefinition
-                            Width="200"/>
-                        <ColumnDefinition
-                            Width="250"/>
-                        <ColumnDefinition
-                            Width="250"/>
-                        <ColumnDefinition
-                            Width="250"/>
-                        <ColumnDefinition
-                            Width="250"/>
-                        <ColumnDefinition
-                            Width="120"/>
-                        <ColumnDefinition
-                            Width="120"/>
-                        <ColumnDefinition
-                            Width="120"/>
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock
-                        Style="{StaticResource DefaultText}"
-                        TextAlignment="Center"
-                        Text="{Binding Counter}"/>
-
-                    <TextBlock
-                        Grid.Column="1"
-                        Style="{StaticResource DefaultText}"
-                        TextAlignment="Center"
-                        Text="{Binding Name}"/>
-
-                    <TextBlock
-                        Grid.Column="2"
-                        Style="{StaticResource DefaultText}"
-                        TextAlignment="Center">
-                        <Run Text="{Binding Vehicle.TruckModel}"/>
-                        <Run Text="{Binding Vehicle.TruckNumber}"/>
-                    </TextBlock>
-
-                    <TextBlock
-                        Grid.Column="3"
-                        Style="{StaticResource DefaultText}"
-                        TextAlignment="Center">
-                        <Run Text="{Binding Vehicle.TrailerModel}"/>
-                        <Run Text="{Binding Vehicle.TrailerNumber}"/>
-                    </TextBlock>
-
-                    <TextBlock
-                        Grid.Column="4"
-                        Style="{StaticResource DefaultText}"
-                        TextAlignment="Center"
-                        Text="{Binding Carrier.Name}"/>
-
-                    <Button
-                        Grid.Column="5"
-                        ToolTip="Редактировать"
-                        Style="{StaticResource IconButton}"
-                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:DriverListView}, Path=DataContext.EditCommand}"
-                        CommandParameter="{Binding Id}">
-                        <Image
-                        Source="/UI/Icons/edit_icon.png"/>
-                    </Button>
-
-                    <Button
-                        Grid.Column="6"
-                        ToolTip="Удалить"
-                        Style="{StaticResource IconButton}"
-                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:DriverListView}, Path=DataContext.DeleteCommand}"
-                        CommandParameter="{Binding Id}">
-                        <Image
-                        Source="/UI/Icons/remove_icon.png"/>
-                    </Button>
-                </Grid>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-            
-        </ItemsControl>
-
-        <Grid
-            Grid.Row="2">
-            <TextBlock
-                HorizontalAlignment="Left"
-                Foreground="{StaticResource NeutralOneBrush}"
-                Style="{StaticResource HeaderTwoText}"
-                Text="Итог:"/>
+            </ItemsControl>
         </Grid>
+
+        <local:BlockView
+            Grid.RowSpan="2"/>
+
     </Grid>
+
 </UserControl>

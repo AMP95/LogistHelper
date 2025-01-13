@@ -9,6 +9,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         #region Private
 
         private DriverViewModel _driver;
+        private ClientViewModel _client;
         private RoutePointViewModel _loadingPoint;
 
         private ObservableCollection<RoutePointViewModel> _unloadingPoints;
@@ -70,6 +71,16 @@ namespace LogistHelper.ViewModels.DataViewModels
             {
                 _dto.Payment = value;
                 OnPropertyChanged(nameof(Payment));
+            }
+        }
+
+        public float ClientPayment
+        {
+            get => _dto.ClientPayment;
+            set
+            {
+                _dto.ClientPayment = value;
+                OnPropertyChanged(nameof(ClientPayment));
             }
         }
 
@@ -137,6 +148,23 @@ namespace LogistHelper.ViewModels.DataViewModels
             get => _driver?.Carrier;
         }
 
+        public ClientViewModel Client
+        {
+            get => _client;
+            set 
+            { 
+                SetProperty(ref _client, value);
+                if (Client != null)
+                {
+                    _dto.Client = _client.GetDto();
+                }
+                else 
+                {
+                    _dto.Client = null;
+                }
+            }
+        }
+
         public RoutePointViewModel LoadPoint
         {
             get => _loadingPoint;
@@ -189,6 +217,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             if (dto != null) 
             {
+                _client = new ClientViewModel(_dto.Client);
                 _driver = new DriverViewModel(dto.Driver);
                 _loadingPoint = new RoutePointViewModel(dto.LoadPoint);
 
@@ -221,6 +250,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             _dto = new ContractDto();
 
             Driver = new DriverViewModel();
+            Client = new ClientViewModel();
             LoadPoint = new RoutePointViewModel();
             UnloadPoints = new ObservableCollection<RoutePointViewModel>();
         }
