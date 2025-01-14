@@ -15,6 +15,7 @@ namespace LogistHelper.Services
     public static class ContainerService
     {
         public static MainWindowViewModel MainWindowViewModel => Services.GetService<MainWindowViewModel>();
+        public static ISettingsRepository<Settings> SettingsRepository => Services.GetService<ISettingsRepository<Settings>>();
         public static ILogger Logger => Services.GetService<ILogger>();
 
         public static IServiceProvider Services { get; private set; }

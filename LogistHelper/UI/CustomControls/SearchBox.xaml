@@ -27,7 +27,6 @@
 
         <TextBox
             x:Name="searchText"
-            Height="40"
             PreviewMouseLeftButtonUp="searchText_MouseLeftButtonUp"
             Style="{StaticResource MainLeftTextBox}">
             <TextBox.Text>
@@ -78,6 +77,7 @@
                         <ListBox
                             x:Name="searchList"
                             VerticalAlignment="Center"
+                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                             PreviewMouseLeftButtonUp="searchList_PreviewMouseLeftButtonUp"
                             Style="{StaticResource CustomListBox}"
                             ItemTemplate="{Binding RelativeSource={RelativeSource AncestorType=local:SearchBox}, Path=ItemTemplate}"

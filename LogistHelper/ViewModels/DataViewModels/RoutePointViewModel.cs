@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
+using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -7,11 +8,15 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
+   
+
     public class RoutePointViewModel : DataViewModel<RoutePointDto>
     {
         #region Private
 
         private ObservableCollection<StringItem> _phones;
+        private IEnumerable<GeoSuggestResult> _searchResult;
+        private GeoSuggestResult _selectedAddress;
 
         #endregion Private
 
@@ -78,6 +83,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Side));
             }
         }
+
         public LoadPointType Type
         {
             get => _dto.Type;
@@ -87,42 +93,60 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Type));
             }
         }
+
         public ObservableCollection<StringItem> Phones
         {
             get => _phones;
             set => SetProperty(ref _phones, value);
         }
 
+        public IEnumerable<GeoSuggestResult> SearchResult 
+        {
+            get => _searchResult;
+            set => SetProperty(ref _searchResult, value);
+        }
+
+        public GeoSuggestResult SelectedAddress
+        {
+            get => _selectedAddress;
+            set 
+            { 
+                SetProperty(ref _selectedAddress, value);
+                if (value != null)
+                {
+                    Route = SelectedAddress.Location;
+                    Address = SelectedAddress.FullAddress;
+                }
+                else 
+                {
+                    Route = string.Empty;
+                    Address = string.Empty;
+                }
+            }
+        }
+
         #endregion Public
 
-        public ICommand AddPhoneCommand { get; }
-        public ICommand DeletePhoneCommand { get; }
+        public ICommand AddPhoneCommand { get; private set; }
+        public ICommand DeletePhoneCommand { get; private set; }
+        public ICommand SearchAddressesCommand { get; private set; }
 
         public RoutePointViewModel(RoutePointDto route, int counter) : base(route, counter)
         {
             if (route != null)
             {
                 Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
+                SelectedAddress = new GeoSuggestResult() { Location = Route, FullAddress = Address };
             }
 
-            AddPhoneCommand = new RelayCommand(() => 
-            {
-                Phones.Add(new StringItem());
-            });
-
-            DeletePhoneCommand = new RelayCommand<Guid>((id) => 
-            {
-                StringItem item = Phones.FirstOrDefault(e => e.Id == id);
-                if (item != null)
-                {
-                    Phones.Remove(item);
-                }
-            });
+            InitCommands();
         }
 
         public RoutePointViewModel(RoutePointDto route) : this(route, 0) { }
 
-        public RoutePointViewModel() : base() 
+        public RoutePointViewModel() : base() { }
+
+        private void InitCommands() 
         {
             AddPhoneCommand = new RelayCommand(() =>
             {
@@ -137,7 +161,13 @@ namespace LogistHelper.ViewModels.DataViewModels
                     Phones.Remove(item);
                 }
             });
+
+            SearchAddressesCommand = new RelayCommand<string>(async (searchString) =>
+            {
+                SearchResult = await GeoSuggestService.GetSuggestions(searchString);
+            });
         }
+        
 
         public override RoutePointDto GetDto() 
         {
@@ -148,7 +178,10 @@ namespace LogistHelper.ViewModels.DataViewModels
         protected override void DefaultInit()
         {
             _dto = new RoutePointDto();
+
             Phones = new ObservableCollection<StringItem>() { new StringItem() };
+
+            InitCommands();
         }
     }
 

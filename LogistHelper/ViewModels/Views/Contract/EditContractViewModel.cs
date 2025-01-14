@@ -38,7 +38,14 @@ namespace LogistHelper.ViewModels.Views
             set 
             {
                 SetProperty(ref _selectedDriver, value);
-                LoadDriverData(value.Id);
+                if (value != null)
+                {
+                    LoadDriverData(value.Id);
+                }
+                else 
+                { 
+                    LoadDriverData(Guid.Empty);
+                }
             }
         }
 
@@ -164,6 +171,14 @@ namespace LogistHelper.ViewModels.Views
 
         private async Task LoadDriverData(Guid id)
         {
+            if (id == Guid.Empty) 
+            {
+                _contract.Driver = null;
+                Vehicles = null;
+                SelectedVehicleIndex = -1;
+                return;
+            }
+
             await Task.Run(async () =>
             {
                 RequestResult<DriverDto> result = await _client.GetId<DriverDto>(id);

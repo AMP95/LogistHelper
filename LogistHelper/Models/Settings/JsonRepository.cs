@@ -25,6 +25,7 @@ namespace LogistHelper.Models.Settings
                     ServerUri = "https://localhost:7081/api",
                     DaDataApiKey = "00475e8fb9e3d1877e8b9e0d5d5f269c2a5a7f90",
                     DaDataSecretKey = "a9bf357e95073eff9a20f62532fb0db1ebfa7bc3",
+                    YandexGeoSuggestApiKey = "e9a264f5-e0d3-4b7b-aaf6-aed58083b36c",
                     TruckModels = new List<CarModelSearch>() 
                     { 
                         new CarModelSearch() { Standart = "МАЗ", SearchInputs = "маз,мас,maz" },

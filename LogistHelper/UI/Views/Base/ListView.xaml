@@ -38,6 +38,7 @@
 
             <TextBox
                 x:Name="searchText"
+                PreviewKeyUp="searchText_PreviewKeyUp"
                 Style="{StaticResource MainCentralTextBox}">
                 <TextBox.Text>
                     <Binding Path="SearchString" NotifyOnValidationError="True">
@@ -49,11 +50,11 @@
             </TextBox>
 
             <Button
+                x:Name="searchButton"
                 Grid.Column="1"
                 ToolTip="Поиск"
                 Style="{StaticResource IconButton}"
-                Command="{Binding SearchCommand}"
-                IsDefault="True">
+                Command="{Binding SearchCommand}">
                 <Image
                     Source="/UI/Icons/search_icon.png"/>
             </Button>

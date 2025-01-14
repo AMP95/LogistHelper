@@ -57,34 +57,36 @@
             </controls:WatermarkTextbox.TextBox>
         </controls:WatermarkTextbox>
 
-        <controls:WatermarkTextbox>
-
-            <controls:WatermarkTextbox.Style>
+        <controls:SearchBox
+            IsDynamicSearch="False"
+            IsButtonVisible="True"
+            SearchCommand="{Binding SearchAddressesCommand}"
+            SearchList="{Binding SearchResult, Mode=TwoWay}"
+            SelectedSearch="{Binding SelectedAddress, Mode=TwoWay}"
+            DisplayMemberPath="FullAddress">
+            <controls:SearchBox.Style>
                 <Style>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Type}" Value="{x:Static dtos:LoadPointType.Upload}">
-                            <Setter Property="controls:WatermarkTextbox.Watermark" Value="Адрес погрузки"/>
+                            <Setter Property="controls:SearchBox.WatermarkText" Value="Адрес погрузки"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Type}" Value="{x:Static dtos:LoadPointType.Download}">
-                            <Setter Property="controls:WatermarkTextbox.Watermark" Value="Адрес выгрузки"/>
+                            <Setter Property="controls:SearchBox.WatermarkText" Value="Адрес выгрузки"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </controls:WatermarkTextbox.Style>
+            </controls:SearchBox.Style>
 
-            <controls:WatermarkTextbox.TextBox>
-                <TextBox
-                    Style="{StaticResource SubLeftTextBox}">
-                    <TextBox.Text>
-                        <Binding Path="Address">
-                            <Binding.ValidationRules>
-                                <rules:EmptyStringValidationRule/>
-                            </Binding.ValidationRules>
-                        </Binding>
-                    </TextBox.Text>
-                </TextBox>
-            </controls:WatermarkTextbox.TextBox>
-        </controls:WatermarkTextbox>
+            <controls:SearchBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        TextWrapping="Wrap"
+                        Style="{StaticResource DefaultText}"
+                        Text="{Binding FullAddress}"/>
+                </DataTemplate>
+            </controls:SearchBox.ItemTemplate>
+
+        </controls:SearchBox>
 
         <Grid>
             <Grid.ColumnDefinitions>

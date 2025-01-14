@@ -68,7 +68,15 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
+
+                <Button
+                    Grid.Column="1"
+                    Background="{StaticResource AcceptDarkBrush}"
+                    Style="{StaticResource AcceptButton}"
+                    Content="Сохранить и закрыть"
+                    Command="{Binding SaveAndCloseCommand}"/>
 
                 <Button
                     Style="{StaticResource AcceptButton}"
@@ -76,7 +84,7 @@
                     Command="{Binding SaveCommand}"/>
 
                 <Button
-                    Grid.Column="1"
+                    Grid.Column="2"
                     Style="{StaticResource CancelButton}"
                     Content="Отмена"
                     Command="{Binding CancelCommand}"/>

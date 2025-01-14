@@ -179,14 +179,6 @@ namespace LogistHelper.ViewModels.DataViewModels
             set
             {
                 SetProperty(ref _loadingPoint, value);
-                if (_loadingPoint != null)
-                {
-                    _dto.LoadPoint = LoadPoint.GetDto();
-                }
-                else 
-                {
-                    _dto.LoadPoint = null;
-                }
                 OnPropertyChanged(nameof(Route));
             }
         }
@@ -277,6 +269,7 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         public override ContractDto GetDto()
         {
+            _dto.LoadPoint = LoadPoint.GetDto();
             _dto.UnloadPoints = UnloadPoints.Select(p => p.Item.GetDto()).ToList();
             _dto.Carrier = _dto.Driver.Carrier;
             _dto.Vehicle = _dto.Driver.Vehicle;

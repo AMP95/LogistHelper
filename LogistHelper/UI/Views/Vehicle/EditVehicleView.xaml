@@ -77,7 +77,7 @@
                     Style="{StaticResource SubLeftTextBox}">
                     <TextBox.Text>
                         <Binding Path="EditedViewModel.TruckNumber" 
-                                 Converter="{StaticResource TrailerNumberConverter}" 
+                                 Converter="{StaticResource TruckNumberConverter}" 
                                  UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
                                 <rules:VehicleNumberValidationRule ValidLength="9"/>

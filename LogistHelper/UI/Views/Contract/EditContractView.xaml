@@ -51,7 +51,7 @@
             <Run Text="Заявка-договор №"/>
             <Run Text="{Binding EditedViewModel.Number}"/>
             <Run Text="от"/>
-            <Run Text="{Binding EditedViewModel.CreationDate}"/>
+            <Run Text="{Binding EditedViewModel.CreationDate, StringFormat='dd.MM.yyyy'}"/>
         </TextBlock>
 
         <StackPanel

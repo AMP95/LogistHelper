@@ -31,6 +31,7 @@ namespace LogistHelper.ViewModels.Base
         #region Commands
 
         public ICommand SaveCommand { get; set; }
+        public ICommand SaveAndCloseCommand { get; set; }
         public ICommand CancelCommand { get; set; }
         public ICommand BackCommand { get; set; }
 
@@ -53,6 +54,14 @@ namespace LogistHelper.ViewModels.Base
                 if (_dialog.ShowSure("Сохранить изменения"))
                 {
                     await Save();
+                }
+            });
+
+            SaveAndCloseCommand = new RelayCommand(async() => 
+            {
+                if (_dialog.ShowSure("Сохранить изменения"))
+                {
+                    await SaveAndClose();
                 }
             });
 
@@ -101,11 +110,8 @@ namespace LogistHelper.ViewModels.Base
             }
         }
 
-        public virtual async Task Save() 
+        private async Task<bool> SaveEntity() 
         {
-            IsBlock = true;
-            BlockText = "Сохранение";
-
             RequestResult<bool> result;
 
             if (EditedViewModel.Id == Guid.Empty)
@@ -116,10 +122,40 @@ namespace LogistHelper.ViewModels.Base
             {
                 result = await _client.Update(EditedViewModel.GetDto());
             }
+            return result.IsSuccess;
+        }
 
-            if (result.IsSuccess)
+        public virtual async Task Save() 
+        {
+            IsBlock = true;
+            BlockText = "Сохранение";
+
+            if (await SaveEntity())
             {
                 _dialog.ShowSuccess("Сохранение");
+
+                if (EditedViewModel.Id == Guid.Empty) 
+                {
+                    Load(Guid.Empty);
+                }
+            }
+            else
+            {
+                _dialog.ShowError("Не удалось сохранить изменения", "Сохранение");
+            }
+
+            IsBlock = false;
+        }
+
+        public virtual async Task SaveAndClose()
+        {
+            IsBlock = true;
+            BlockText = "Сохранение";
+
+            if (await SaveEntity())
+            {
+                _dialog.ShowSuccess("Сохранение");
+                Parent.SwitchToList();
             }
             else
             {
