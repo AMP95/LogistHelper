@@ -93,7 +93,7 @@
 
         <Button
             Style="{StaticResource MenuButton}"
-            Command="{Binding NavigateVehicleMenuCommand}">
+            Command="{Binding NavigateRoutesMenuCommand}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>

@@ -10,9 +10,13 @@
              xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
              xmlns:behaviours="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
+
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+
         <ObjectDataProvider 
             x:Key="searchProp" 
             MethodName="GetValues"
@@ -73,7 +77,15 @@
                     Width="200"
                     ItemsSource="{Binding Source={StaticResource searchProp}}"
                     SelectedItem="{Binding SelectedSearchProperty}"
-                    Style="{StaticResource CustomComboBox}"/>
+                    Style="{StaticResource CustomComboBox}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Style="{StaticResource DefaultText}"
+                                Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
                 <Grid
                     Width="200"
@@ -81,10 +93,10 @@
 
                     <controls:CustomDatePicker
                         StartDate="{Binding StartDate}"
-                        EndDate="{Binding EndDate}"
-                        Visibility="Hidden">
+                        EndDate="{Binding EndDate}">
                         <controls:CustomDatePicker.Style>
                             <Style>
+                                <Setter Property="controls:CustomDatePicker.Visibility" Value="Hidden"/>
                                 <Style.Triggers>
                                     <DataTrigger
                                         Binding="{Binding SelectedSearchProperty}" Value="{x:Static  dtos:ContractFilterProperty.Date}">
@@ -104,10 +116,10 @@
                     </controls:CustomDatePicker>
 
                     <TextBox
-                        Text="{Binding TextSearchString}"
-                        Visibility="Hidden">
+                        Text="{Binding TextSearchString}">
                         <TextBox.Style>
                             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
+                                <Setter Property="TextBox.Visibility" Value="Hidden"/>
                                 <Style.Triggers>
                                     <DataTrigger
                                         Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Route}">
@@ -119,12 +131,12 @@
                     </TextBox>
 
                     <ComboBox
-                        Visibility="Hidden"
                         ItemsSource="{Binding Source={StaticResource status}}"
                         SelectedItem="{Binding SelectedStatus}"
                         Height="40">
                         <ComboBox.Style>
                             <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource CustomComboBox}">
+                                <Setter Property="ComboBox.Visibility" Value="Hidden"/>
                                 <Style.Triggers>
                                     <DataTrigger
                                         Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Status}">
@@ -133,15 +145,24 @@
                                 </Style.Triggers>
                             </Style>
                         </ComboBox.Style>
+
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Style="{StaticResource DefaultText}"
+                                    Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
                     </ComboBox>
 
                     <controls:SearchBox
-                        Visibility="Hidden"
                         SearchList="{Binding SearchResults}"
                         SelectedSearch="{Binding SelectedSearch}"
+                        DisplayMemberPath="Name"
                         IsDynamicSearch="True">
                         <controls:SearchBox.Style>
                             <Style>
+                                <Setter Property="controls:SearchBox.Visibility" Value="Hidden"/>
                                 <Style.Triggers>
                                     <DataTrigger
                                         Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Carrier}">
@@ -225,7 +246,7 @@
                                         ToolTip="Новая заявка"
                                         Command="{Binding AddCommand}">
                                         <Image
-                                            Source="/UI/Icons/add_icon.png/"/>
+                                            Source="/UI/Icons/add_icon.png"/>
                                     </Button>
 
                                     <TextBlock

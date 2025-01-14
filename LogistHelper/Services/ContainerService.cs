@@ -39,6 +39,8 @@ namespace LogistHelper.Services
             services.AddTransient<MenuPageViewModel<CompanyDto>, ClientMenuPageViewModel>();
             services.AddTransient<MenuPageViewModel<DriverDto>, DriverMenuViewModel>();
             services.AddTransient<MenuPageViewModel<VehicleDto>, VehicleMenuViewModel>();
+            services.AddTransient<MenuPageViewModel<ContractDto>, ContractMenuViewModel>();
+            services.AddTransient<SecondContractMenuViewModel, SecondContractMenuViewModel>();
 
             #endregion Pages
 
@@ -48,11 +50,14 @@ namespace LogistHelper.Services
             services.AddTransient<ListViewModel<CompanyDto>, ClientListViewModel>();
             services.AddTransient<ListViewModel<DriverDto>, DriverListViewModel>();
             services.AddTransient<ListViewModel<VehicleDto>, VehicleListViewModel>();
+            services.AddTransient<ListViewModel<ContractDto>, ContractListViewModel>();
+            services.AddTransient<AddContractDocumentViewModel, AddContractDocumentViewModel>();
 
             services.AddTransient<EditViewModel<CarrierDto>, EditCarrierViewModel>();
             services.AddTransient<EditViewModel<CompanyDto>, EditClientViewModel>();
             services.AddTransient<EditViewModel<DriverDto>, EditDriverViewModel>();
             services.AddTransient<EditViewModel<VehicleDto>, EditVehicleViewModel>();
+            services.AddTransient<EditViewModel<ContractDto>, EditContractViewModel>();
 
             #endregion Views
 

@@ -56,6 +56,11 @@
                 DataType="{x:Type pagesVM:ContractMenuViewModel}">
                 <pages:DataMenuPage/>
             </DataTemplate>
+            
+            <DataTemplate
+                DataType="{x:Type pagesVM:SecondContractMenuViewModel}">
+                <pages:DataMenuPage/>
+            </DataTemplate>
 
 
 

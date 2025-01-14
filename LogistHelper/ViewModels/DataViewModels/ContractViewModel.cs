@@ -12,6 +12,9 @@ namespace LogistHelper.ViewModels.DataViewModels
         #region Private
 
         private DriverViewModel _driver;
+        private VehicleViewModel _vehicle;
+        private CarrierViewModel _carrier;
+
         private RoutePointViewModel _loadingPoint;
 
         private ObservableCollection<ListItem<RoutePointViewModel>> _unloadingPoints;
@@ -124,30 +127,50 @@ namespace LogistHelper.ViewModels.DataViewModels
                 if (value != null)
                 {
                     _dto.Driver = Driver.GetDto();
+                    Carrier = Driver.Carrier;
+                    Vehicle = Driver.Vehicle;
                 }
                 else
                 {
                     _dto.Driver = null;
+                    Carrier = null;
+                    Vehicle = null;
                 }
             }
         }
 
         public VehicleViewModel Vehicle
         {
-            get => _driver?.Vehicle;
+            get => _vehicle;
             set
             {
-                if (_driver != null)
+                SetProperty(ref _vehicle, value);
+                if (value != null)
                 {
-                    _driver.Vehicle = value;
-                    OnPropertyChanged(nameof(Vehicle));
+                    _dto.Vehicle = Vehicle.GetDto();
+                }
+                else
+                {
+                    _dto.Vehicle = null;
                 }
             }
         }
 
         public CarrierViewModel Carrier
         {
-            get => _driver?.Carrier;
+            get => _carrier;
+            set
+            {
+                SetProperty(ref _carrier, value);
+                if (value != null)
+                {
+                    _dto.Carrier = Carrier.GetDto();
+                }
+                else
+                {
+                    _dto.Carrier = null;
+                }
+            }
         }
 
         public RoutePointViewModel LoadPoint
@@ -220,7 +243,7 @@ namespace LogistHelper.ViewModels.DataViewModels
 
             AddUnloadCommand = new RelayCommand(() => 
             {
-                UnloadPoints.Add(new ListItem<RoutePointViewModel>() { Item = new RoutePointViewModel() });
+                UnloadPoints.Add(new ListItem<RoutePointViewModel>() { Item = new RoutePointViewModel() { Type = LoadPointType.Download } });
             });
 
             DeleteUnloadCommand = new RelayCommand<Guid>((id) => 
@@ -235,7 +258,22 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         public ContractViewModel(ContractDto dto) : this(dto, 0) { }
 
-        public ContractViewModel() : base() { }
+        public ContractViewModel() : base() 
+        {
+            AddUnloadCommand = new RelayCommand(() =>
+            {
+                UnloadPoints.Add(new ListItem<RoutePointViewModel>() { Item = new RoutePointViewModel() { Type = LoadPointType.Download } });
+            });
+
+            DeleteUnloadCommand = new RelayCommand<Guid>((id) =>
+            {
+                ListItem<RoutePointViewModel> item = UnloadPoints.FirstOrDefault(e => e.Id == id);
+                if (item != null)
+                {
+                    UnloadPoints.Remove(item);
+                }
+            });
+        }
 
         public override ContractDto GetDto()
         {

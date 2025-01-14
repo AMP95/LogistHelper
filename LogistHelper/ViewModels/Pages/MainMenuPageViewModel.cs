@@ -19,12 +19,12 @@ namespace LogistHelper.ViewModels.Pages
         {
             NewContractCommand = new RelayCommand(() => 
             {
-                
+                NavigationService.Navigate(PageType.NewContract);
             });
 
             NavigateContractsMenuCommand = new RelayCommand(() =>
             {
-                
+                NavigationService.Navigate(PageType.ContractMenu);
             });
 
             NavigateBillsMenuCommand = new RelayCommand(() => 

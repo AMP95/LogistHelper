@@ -92,8 +92,12 @@ namespace LogistHelper.ViewModels.Views
 
         #endregion Commands
 
-        public ContractListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<ContractDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public ContractListViewModel(ISettingsRepository<Settings> repository, 
+                                     IViewModelFactory<ContractDto> factory, 
+                                     IDialog dialog) : base(repository, factory, dialog)
         {
+            SelectedSearchProperty = ContractFilterProperty.Date;
+
             DateTime now = DateTime.Now;
             StartDate = new DateTime(now.Year, now.Month, 1);
             EndDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
@@ -110,11 +114,6 @@ namespace LogistHelper.ViewModels.Views
                 EndDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
                 SelectedSearchProperty = ContractFilterProperty.Date;
                 await Load();
-            });
-
-            AddCommand = new RelayCommand(() => 
-            { 
-                NavigationService.Navigate(Models.PageType.NewContract);
             });
 
             AddDocumentCommand = new RelayCommand<Guid>((id) => 

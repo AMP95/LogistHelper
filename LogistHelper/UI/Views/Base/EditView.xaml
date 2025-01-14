@@ -11,8 +11,7 @@
     
     <Grid>
 
-        <Grid
-            MaxWidth="600">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition/>
@@ -54,6 +53,11 @@
                         <DataTemplate
                             DataType="{x:Type viewsVM:EditVehicleViewModel}">
                             <local:EditVehicleView/>
+                        </DataTemplate>
+                        
+                        <DataTemplate
+                            DataType="{x:Type viewsVM:EditContractViewModel}">
+                            <local:EditContractView/>
                         </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>

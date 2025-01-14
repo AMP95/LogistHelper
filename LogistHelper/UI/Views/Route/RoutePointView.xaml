@@ -15,6 +15,7 @@
     <UserControl.Resources>
         <converters:TimeConverter x:Key="TimeConverter"/>
         <converters:PhoneConverter x:Key="PhoneConverter"/>
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
 
         <ObjectDataProvider 
             x:Key="loadSide" 
@@ -132,7 +133,15 @@
         <ComboBox
             Style="{StaticResource CustomComboBox}"
             ItemsSource="{Binding Source={StaticResource loadSide}}"
-            SelectedItem="{Binding Side}"/>
+            SelectedItem="{Binding Side}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Style="{StaticResource DefaultText}"
+                        Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
 
         <TextBlock
             Style="{StaticResource DefaultText}"
@@ -190,7 +199,7 @@
                         <Button
                             Grid.Column="1"
                             Style="{StaticResource IconButton}"
-                            Command="{Binding DeletePhoneCommand}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:RoutePointView}, Path=DataContext.DeletePhoneCommand}"
                             CommandParameter="{Binding Id}">
                             <Image
                                 Source="/UI/Icons/remove_icon.png"/>

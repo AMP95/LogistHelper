@@ -12,6 +12,7 @@ namespace LogistHelper.Models
         ClientMenu,
         DriverMenu,
         VehicleMenu,
+        ContractMenu,
         NewContract,
     }
 

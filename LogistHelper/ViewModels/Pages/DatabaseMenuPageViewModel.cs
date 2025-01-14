@@ -36,6 +36,8 @@ namespace LogistHelper.ViewModels.Pages
             {
                 NavigationService.Navigate(PageType.VehicleMenu);
             });
+
+            NavigateRoutesMenuCommand = new RelayCommand(() => { });
         }
         protected override void BackCommandExecutor()
         {

@@ -19,4 +19,17 @@ namespace LogistHelper.ViewModels.Pages
             _addDocument.Load(id);
         }
     }
+
+    public class SecondContractMenuViewModel : ContractMenuViewModel
+    {
+        private AddContractDocumentViewModel _addDocument;
+        public SecondContractMenuViewModel(ListViewModel<ContractDto> list, EditViewModel<ContractDto> edit, AddContractDocumentViewModel document) : base(list, edit, document)
+        {
+        }
+
+        protected async override Task  Init()
+        {
+            SwitchToEdit(Guid.Empty);
+        }
+    }
 }

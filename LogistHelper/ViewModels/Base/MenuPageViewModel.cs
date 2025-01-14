@@ -23,9 +23,14 @@ namespace LogistHelper.ViewModels.Base
             _list = list;
             _edit = edit;
 
-            list.Parent = this;
+            _list.Parent = this;
             _edit.Parent = this;
 
+            Init();
+        }
+
+        protected virtual async Task Init() 
+        {
             SwitchToList();
         }
 

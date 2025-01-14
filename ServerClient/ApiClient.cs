@@ -51,7 +51,7 @@ namespace ServerClient
         public async Task<RequestResult<IEnumerable<ContractDto>>> GetFilter(ContractFilterProperty property, params object[] parameters)
         {
             string route = GetRoute(typeof(ContractDto));
-            RequestResult<Guid> result = await SendAsync<Guid>(HttpMethod.Post, $"{_url}/Get/{route}/{property.ToString()}", JsonConvert.SerializeObject(new { param = parameters }));
+            RequestResult<Guid> result = await SendAsync<Guid>(HttpMethod.Post, $"{_url}/Get/{route}/filter/{property.ToString()}", JsonConvert.SerializeObject(new { param = parameters }));
             return await GetResult<IEnumerable<ContractDto>>(result);
         }
 

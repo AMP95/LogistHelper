@@ -2,6 +2,7 @@
 using LogistHelper.Models;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.Pages;
+using LogistHelper.ViewModels.Views;
 using System.Windows.Controls;
 
 namespace LogistHelper.Services
@@ -29,6 +30,8 @@ namespace LogistHelper.Services
             pages.Add(PageType.ClientMenu, typeof(MenuPageViewModel<CompanyDto>));
             pages.Add(PageType.DriverMenu, typeof(MenuPageViewModel<DriverDto>));
             pages.Add(PageType.VehicleMenu, typeof(MenuPageViewModel<VehicleDto>));
+            pages.Add(PageType.ContractMenu, typeof(MenuPageViewModel<ContractDto>));
+            pages.Add(PageType.NewContract, typeof(SecondContractMenuViewModel));
         }
     }
 }
