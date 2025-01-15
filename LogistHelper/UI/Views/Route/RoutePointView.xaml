@@ -104,7 +104,7 @@
 
             <DatePicker
                 Grid.Column="1"
-                SelectedDate="{Binding DateAndTime}"
+                SelectedDate="{Binding Date}"
                 Style="{StaticResource CustomDatePicker}"/>
 
             <TextBlock

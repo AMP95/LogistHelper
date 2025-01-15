@@ -129,18 +129,10 @@ namespace LogistHelper.ViewModels.DataViewModels
                 {
                     Phones = new ObservableCollection<StringItem>(dto.Phones.Select(s => new StringItem(s)));
                 }
-                else 
-                {
-                    Phones = new ObservableCollection<StringItem>() { new StringItem() };
-                }
 
                 if (dto.Emails != null)
                 {
                     Emails = new ObservableCollection<StringItem>(dto.Emails.Select(s => new StringItem(s)));
-                }
-                else
-                {
-                    Emails = new ObservableCollection<StringItem>() { new StringItem() };
                 }
             }
         }

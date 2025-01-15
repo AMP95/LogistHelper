@@ -135,7 +135,10 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             if (route != null)
             {
-                Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
+                if (Phones != null)
+                {
+                    Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
+                }
                 SelectedAddress = new GeoSuggestResult() { Location = Route, FullAddress = Address };
             }
 

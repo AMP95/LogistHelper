@@ -86,6 +86,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             {
                 _dto.ClientPayment = value;
                 OnPropertyChanged(nameof(ClientPayment));
+                OnPropertyChanged(nameof(Profit));
             }
         }
 
@@ -96,6 +97,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             {
                 _dto.Prepayment = value;
                 OnPropertyChanged(nameof(Prepayment));
+                OnPropertyChanged(nameof(Profit));
             }
         }
         public RecievingType PaymentCondition
@@ -211,6 +213,11 @@ namespace LogistHelper.ViewModels.DataViewModels
             }
         }
 
+        public float Profit 
+        {
+            get => ClientPayment - Payment;
+        }
+
         #endregion Public
 
         public ICommand AddUnloadCommand { get; }
@@ -221,11 +228,16 @@ namespace LogistHelper.ViewModels.DataViewModels
             if (dto != null) 
             {
                 _driver = new DriverViewModel(dto.Driver);
+                _vehicle = new VehicleViewModel(dto.Vehicle);
+                _carrier = new CarrierViewModel(dto.Carrier);
                 _loadingPoint = new RoutePointViewModel(dto.LoadPoint);
 
                 if (dto.UnloadPoints != null)
                 {
-                    UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>(dto.UnloadPoints.Select(p => new ListItem<RoutePointViewModel>() { Item = new RoutePointViewModel(p)}));
+                    UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>(dto.UnloadPoints.Select(p => new ListItem<RoutePointViewModel>() 
+                    { 
+                        Item = new RoutePointViewModel(p)
+                    }));
                 }
                 else 
                 {
