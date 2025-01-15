@@ -140,7 +140,7 @@ namespace LogistHelper.ViewModels.Base
 
         public virtual void Clear()
         {
-            List = null;
+            List?.Clear();
         }
 
         public virtual async Task Load()
@@ -199,7 +199,7 @@ namespace LogistHelper.ViewModels.Base
             }
             else
             {
-                _dialog.ShowError("Не удалось удалить перевозчика. Удаление невозможно если с перевозчиком есть заключенные заявки.");
+                _dialog.ShowError("Не удалось удалить объект.");
                 IsBlock = false;
             }
         }
