@@ -207,5 +207,45 @@ namespace LogistHelper.ViewModels.Views
                 }
             });
         }
+
+        public override bool CheckSave()
+        {
+            if (string.IsNullOrWhiteSpace(_driver.Name)) 
+            {
+                _dialog.ShowError("Необходимо указать имя");
+                return false;
+            }
+            if (_driver.BirthDate == DateTime.MinValue)
+            {
+                _dialog.ShowError("Необходимо указать дату рождения");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(_driver.PassportSerial))
+            {
+                _dialog.ShowError("Необходимо указать серию и номер паспорта");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(_driver.PassportIssuer))
+            {
+                _dialog.ShowError("Необходимо указать орган выдачи паспорта");
+                return false;
+            }
+            if (_driver.PassportDateOfIssue == DateTime.MinValue)
+            {
+                _dialog.ShowError("Необходимо указать дату выдачи паспорта");
+                return false;
+            }
+            if (!_driver.Phones.Any())
+            {
+                _dialog.ShowError("Необходимо указать телефон для связи");
+                return false;
+            }
+            if (_driver.Phones.Any(p => string.IsNullOrWhiteSpace(p.Item))) 
+            {
+                _dialog.ShowError("Необходимо заполнить все номера");
+                return false;
+            }
+            return true;
+        }
     }
 }

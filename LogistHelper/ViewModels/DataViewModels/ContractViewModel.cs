@@ -241,7 +241,10 @@ namespace LogistHelper.ViewModels.DataViewModels
                 }
                 else 
                 {
-                    UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>();
+                    UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>()
+                    {
+                        new ListItem<RoutePointViewModel>(new RoutePointViewModel(){ Type = LoadPointType.Download })
+                    };
                 }
             }
 

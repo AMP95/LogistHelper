@@ -2,9 +2,11 @@
 using Dadata;
 using DTOs;
 using LogistHelper.Models.Settings;
+using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Shared;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
@@ -114,6 +116,46 @@ namespace LogistHelper.ViewModels.Views
             var api = new SuggestClientAsync(_settings.DaDataApiKey);
             var response = await api.SuggestParty(searchString);
             CompaniesList = response.suggestions.Select(s => new CompanyItem() { Name = s.value, Inn = s.data.inn, Kpp = s.data.kpp, Address = s.data.address.value });
+        }
+
+        public override bool CheckSave()
+        {
+            if (string.IsNullOrWhiteSpace(_company.Name)) 
+            {
+                _dialog.ShowError("Необходимо указать название организации");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(_company.Address))
+            {
+                _dialog.ShowError("Необходимо указать адрес организации");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(_company.Inn))
+            {
+                _dialog.ShowError("Необходимо указать ИНН организации");
+                return false;
+            }
+            if (!_company.Phones.Any()) 
+            {
+                _dialog.ShowError("Необходимо указать номер телефона для связи");
+                return false;
+            }
+            if (_company.Phones.Any(p=> !RegexService.CheckPhone(p.Item)))
+            {
+                _dialog.ShowError("Необходимо верно указать все номера телефонов");
+                return false;
+            }
+            if (!_company.Emails.Any()) 
+            {
+                _dialog.ShowError("Необходимо указать электронный адрес");
+                return false;
+            }
+            if (_company.Phones.Any(p => !RegexService.CheckEmail(p.Item)))
+            {
+                _dialog.ShowError("Необходимо верно указать все электронные адреса");
+                return false;
+            }
+            return true;
         }
     }
 

@@ -199,5 +199,30 @@ namespace LogistHelper.ViewModels.Views
                 TrailerBrands = _settings.TrailerModels.Where(m => m.SearchInputs.Contains(searchString.ToLower())).Select(s => new StringItem(s.Standart));
             });
         }
+
+        public override bool CheckSave()
+        {
+            if (string.IsNullOrWhiteSpace(_vehicle.TruckModel)) 
+            {
+                _dialog.ShowError("Необходимо указать модель тягача");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(_vehicle.TruckNumber))
+            {
+                _dialog.ShowError("Необходимо указать номер тягача");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(_vehicle.TrailerModel))
+            {
+                _dialog.ShowError("Необходимо указать модель прицепа");
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(_vehicle.TrailerNumber))
+            {
+                _dialog.ShowError("Необходимо указать номер прицепа");
+                return false;
+            }
+            return true;
+        }
     }
 }

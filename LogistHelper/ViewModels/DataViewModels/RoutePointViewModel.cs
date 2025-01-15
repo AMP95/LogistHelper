@@ -3,6 +3,7 @@ using DTOs;
 using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Windows.Input;
 
@@ -185,6 +186,27 @@ namespace LogistHelper.ViewModels.DataViewModels
             Phones = new ObservableCollection<StringItem>() { new StringItem() };
 
             InitCommands();
+        }
+
+        public bool CheckValidation() 
+        {
+            if (string.IsNullOrWhiteSpace(Route))
+            {
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(Company))
+            {
+                return false;
+            }
+            if (!Phones.Any() || Phones.Any(p => string.IsNullOrWhiteSpace(p.Item)))
+            {
+                return false;
+            }
+            if (Date == DateTime.MinValue) 
+            {
+                return false;
+            }
+            return true;
         }
     }
 

@@ -51,7 +51,7 @@ namespace LogistHelper.ViewModels.Base
 
             SaveCommand = new RelayCommand(async () =>
             {
-                if (_dialog.ShowSure("Сохранить изменения"))
+                if (CheckSave() && _dialog.ShowSure("Сохранить изменения"))
                 {
                     await Save();
                 }
@@ -59,7 +59,7 @@ namespace LogistHelper.ViewModels.Base
 
             SaveAndCloseCommand = new RelayCommand(async() => 
             {
-                if (_dialog.ShowSure("Сохранить изменения"))
+                if (CheckSave() && _dialog.ShowSure("Сохранить изменения"))
                 {
                     await SaveAndClose();
                 }
@@ -123,6 +123,11 @@ namespace LogistHelper.ViewModels.Base
                 result = await _client.Update(EditedViewModel.GetDto());
             }
             return result.IsSuccess;
+        }
+
+        public virtual bool CheckSave() 
+        {
+            return true;
         }
 
         public virtual async Task Save() 

@@ -162,7 +162,7 @@ namespace LogistHelper.ViewModels.Views
 
             if (result.IsSuccess)
             {
-                int counter = 0;
+                int counter = 1;
                 List = new ObservableCollection<DataViewModel<ContractDto>>(result.Result.Select(c => _factory.GetViewModel(c, counter++)));
             }
 

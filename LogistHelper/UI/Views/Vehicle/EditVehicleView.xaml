@@ -14,7 +14,9 @@
         <converters:TruckNumberConverter x:Key="TruckNumberConverter"/>
         <converters:TrailerNumberConverter x:Key="TrailerNumberConverter"/>
     </UserControl.Resources>
-    <Grid>
+    
+    <Grid
+        MaxWidth="600">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>

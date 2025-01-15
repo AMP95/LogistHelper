@@ -5,8 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
              xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <converters:EvenNumberToBoolConverter x:Key="EvenNumberToBoolConverter"/>
+    </UserControl.Resources>
+    
     <ItemsControl
         Grid.Row="1"
         ItemsSource="{Binding List}">
@@ -91,6 +97,16 @@
                         <ColumnDefinition
                             Width="50"/>
                     </Grid.ColumnDefinitions>
+                    
+                    <Grid.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="True">
+                                    <Setter Property="Grid.Background" Value="{StaticResource LightBlueBrush}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
 
                     <TextBlock
                         Style="{StaticResource DefaultText}"

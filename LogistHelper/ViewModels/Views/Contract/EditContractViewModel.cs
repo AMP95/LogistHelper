@@ -107,6 +107,7 @@ namespace LogistHelper.ViewModels.Views
             {
                 EditedViewModel = _factory.GetViewModel();
                 _contract = EditedViewModel as ContractViewModel;
+
                 _contract.CreationDate = DateTime.Now;
                 _contract.Number = (short)(AppSettings.Default.lastContractNumer + 1);
 
@@ -131,6 +132,41 @@ namespace LogistHelper.ViewModels.Views
 
                 IsBlock = false;
             }
+        }
+
+        public override bool CheckSave()
+        {
+            if (_contract.Volume <= 0 || _contract.Weight <= 0)
+            {
+                _dialog.ShowError("Необходимо указать вес и объем груза", "Сохранение");
+                return false;
+            }
+            if (_contract.Payment <= 0)
+            {
+                _dialog.ShowError("Необходимо указать стоимость услуг перевозчика", "Сохранение");
+                return false;
+            }
+            if (_contract.Driver == null)
+            {
+                _dialog.ShowError("Необходимо выбрать водителя", "Сохранение");
+                return false;
+            }
+            if (_contract.Vehicle == null) 
+            {
+                _dialog.ShowError("Необходимо выбрать транспортное средство", "Сохранение");
+                return false;
+            }
+            if (!_contract.LoadPoint.CheckValidation()) 
+            {
+                _dialog.ShowError("Необходимо полностью заполнить данные погрузки", "Сохранение");
+                return false;
+            }
+            if (_contract.UnloadPoints.Any(p => !p.Item.CheckValidation())) 
+            {
+                _dialog.ShowError("Необходимо полностью заполнить данные выгрузки", "Сохранение");
+                return false;
+            }
+            return true;
         }
 
         public override async Task Save()

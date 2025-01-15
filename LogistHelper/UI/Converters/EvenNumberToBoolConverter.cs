@@ -15,7 +15,7 @@ namespace LogistHelper.UI.Converters
             {
                 if (int.TryParse(value.ToString(), out int number)) 
                 {
-                    return number % 2 == 0;
+                    return number % 2 == 1;
                 }
                 return false;
             }

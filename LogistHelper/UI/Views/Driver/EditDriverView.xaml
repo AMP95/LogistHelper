@@ -14,7 +14,8 @@
         <converters:PhoneConverter x:Key="PhoneConverter"/>
     </UserControl.Resources>
 
-    <StackPanel>
+    <StackPanel
+        MaxWidth="600">
 
         <TextBlock
         Style="{StaticResource DefaultText}"
