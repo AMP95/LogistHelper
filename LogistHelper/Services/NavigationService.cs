@@ -2,7 +2,6 @@
 using LogistHelper.Models;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.Pages;
-using LogistHelper.ViewModels.Views;
 using System.Windows.Controls;
 
 namespace LogistHelper.Services

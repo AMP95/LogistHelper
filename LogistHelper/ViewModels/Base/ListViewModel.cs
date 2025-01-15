@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs.Dtos;
 using LogistHelper.Models.Settings;
+using LogistHelper.ViewModels.Base.Interfaces;
 using ServerClient;
 using Shared;
 using System.Collections.ObjectModel;
@@ -8,7 +9,7 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Base
 {
-    public class ListViewModel<T> : BlockedViewModel where T : IDto
+    public class ListViewModel<T> : BlockedViewModel, IMainListView<T> where T : IDto
     {
         #region Private
 
@@ -31,7 +32,7 @@ namespace LogistHelper.ViewModels.Base
 
         #region Public
 
-        public MenuPageViewModel<T> Parent;
+        public IMainMenuPage<T> Parent { get; set; }
 
         public string SearchString
         {

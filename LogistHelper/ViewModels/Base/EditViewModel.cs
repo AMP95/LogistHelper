@@ -1,13 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs.Dtos;
 using LogistHelper.Models.Settings;
+using LogistHelper.ViewModels.Base.Interfaces;
 using ServerClient;
 using Shared;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Base
 {
-    public class EditViewModel<T> : BlockedViewModel where T : IDto
+    public class EditViewModel<T> : BlockedViewModel, IMainEditView<T> where T : IDto
     {
         #region Private
 
@@ -20,7 +21,7 @@ namespace LogistHelper.ViewModels.Base
 
         #endregion Private
 
-        public MenuPageViewModel<T> Parent { get; set; }
+        public IMainMenuPage<T> Parent { get; set; }
 
         public DataViewModel<T> EditedViewModel 
         { 

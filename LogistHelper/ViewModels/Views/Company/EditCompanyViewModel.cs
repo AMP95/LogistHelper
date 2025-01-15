@@ -6,7 +6,6 @@ using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Shared;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views

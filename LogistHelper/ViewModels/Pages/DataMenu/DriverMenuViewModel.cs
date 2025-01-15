@@ -1,12 +1,13 @@
 ﻿using DTOs;
 using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
+using LogistHelper.ViewModels.Base.Interfaces;
 
 namespace LogistHelper.ViewModels.Pages
 {
     public class DriverMenuViewModel : MenuPageViewModel<DriverDto>
     {
-        public DriverMenuViewModel(ListViewModel<DriverDto> list, EditViewModel<DriverDto> edit) : base(list, edit)
+        public DriverMenuViewModel(IMainListView<DriverDto> list, IMainEditView<DriverDto> edit) : base(list, edit)
         {
         }
         protected override void BackCommandExecutor()

@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
 using LogistHelper.Models.Settings;
-using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using LogistHelper.ViewModels.Pages;
@@ -118,7 +117,7 @@ namespace LogistHelper.ViewModels.Views
 
             AddDocumentCommand = new RelayCommand<Guid>((id) => 
             {
-                (Parent as ContractMenuViewModel).SwitchToDocument(id);
+                (Parent as ISubMenuPage<DocumentDto>)?.SwitchToSubList(id);
             });
 
             SearchCarrierCommand = new RelayCommand<string>(async (searchString) =>

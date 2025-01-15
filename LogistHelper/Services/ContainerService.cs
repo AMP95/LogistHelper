@@ -3,6 +3,7 @@ using DTOs;
 using Log4NetLogger;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
+using LogistHelper.ViewModels.Base.Interfaces;
 using LogistHelper.ViewModels.DataViewModels;
 using LogistHelper.ViewModels.Pages;
 using LogistHelper.ViewModels.Views;
@@ -47,18 +48,19 @@ namespace LogistHelper.Services
 
             #region Views
 
-            services.AddTransient<ListViewModel<CarrierDto>, CarrierListViewModel>();
-            services.AddTransient<ListViewModel<CompanyDto>, ClientListViewModel>();
-            services.AddTransient<ListViewModel<DriverDto>, DriverListViewModel>();
-            services.AddTransient<ListViewModel<VehicleDto>, VehicleListViewModel>();
-            services.AddTransient<ListViewModel<ContractDto>, ContractListViewModel>();
-            services.AddTransient<AddContractDocumentViewModel, AddContractDocumentViewModel>();
+            services.AddTransient<IMainListView<CarrierDto>, CarrierListViewModel>();
+            services.AddTransient<IMainListView<CompanyDto>, ClientListViewModel>();
+            services.AddTransient<IMainListView<DriverDto>, DriverListViewModel>();
+            services.AddTransient<IMainListView<VehicleDto>, VehicleListViewModel>();
+            services.AddTransient<IMainListView<ContractDto>, ContractListViewModel>();
+            services.AddTransient<ISubListView<DocumentDto>, DocumentListViewModel>();
 
-            services.AddTransient<EditViewModel<CarrierDto>, EditCarrierViewModel>();
-            services.AddTransient<EditViewModel<CompanyDto>, EditClientViewModel>();
-            services.AddTransient<EditViewModel<DriverDto>, EditDriverViewModel>();
-            services.AddTransient<EditViewModel<VehicleDto>, EditVehicleViewModel>();
-            services.AddTransient<EditViewModel<ContractDto>, EditContractViewModel>();
+            services.AddTransient<IMainEditView<CarrierDto>, EditCarrierViewModel>();
+            services.AddTransient<IMainEditView<CompanyDto>, EditClientViewModel>();
+            services.AddTransient<IMainEditView<DriverDto>, EditDriverViewModel>();
+            services.AddTransient<IMainEditView<VehicleDto>, EditVehicleViewModel>();
+            services.AddTransient<IMainEditView<ContractDto>, EditContractViewModel>();
+            services.AddTransient<ISubEditView<DocumentDto>, EditDocumentViewModel>();
 
             #endregion Views
 
