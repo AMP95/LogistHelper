@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <WrapPanel
-        MaxWidth="800"
+        MaxWidth="600"
         VerticalAlignment="Center"
         HorizontalAlignment="Center">
 
@@ -91,25 +91,6 @@
             </Grid>
         </Button>
 
-        <Button
-            Style="{StaticResource MenuButton}"
-            Command="{Binding NavigateRoutesMenuCommand}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition
-                        Height="auto"/>
-                </Grid.RowDefinitions>
-
-                <Image
-                    Source="/UI/Icons/route_icon.png"
-                    Height="100"/>
-                <TextBlock
-                    Grid.Row="1"
-                    Style="{StaticResource HeaderTwoText}"
-                    Text="Маршруты"/>
-            </Grid>
-        </Button>
     </WrapPanel>
 
 </UserControl>

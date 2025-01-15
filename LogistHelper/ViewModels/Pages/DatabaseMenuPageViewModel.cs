@@ -12,7 +12,6 @@ namespace LogistHelper.ViewModels.Pages
         public ICommand NavigateClientMenuCommand { get; }
         public ICommand NavigateDriverMenuCommand { get; }
         public ICommand NavigateVehicleMenuCommand { get; }
-        public ICommand NavigateRoutesMenuCommand { get; }
 
         public DatabaseMenuPageViewModel()
         {
@@ -36,8 +35,6 @@ namespace LogistHelper.ViewModels.Pages
             {
                 NavigationService.Navigate(PageType.VehicleMenu);
             });
-
-            NavigateRoutesMenuCommand = new RelayCommand(() => { });
         }
         protected override void BackCommandExecutor()
         {
