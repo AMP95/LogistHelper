@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Dadata.Model;
 using DTOs;
 using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
@@ -14,6 +13,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         private DriverViewModel _driver;
         private VehicleViewModel _vehicle;
         private CarrierViewModel _carrier;
+        private ClientViewModel _client;
 
         private RoutePointViewModel _loadingPoint;
 
@@ -32,6 +32,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Number));
             }
         }
+
         public DateTime CreationDate
         {
             get => _dto.CreationDate;
@@ -41,6 +42,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(CreationDate));
             }
         }
+
         public ContractStatus Status
         {
             get => _dto.Status;
@@ -50,6 +52,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Status));
             }
         }
+
         public float Volume
         {
             get => _dto.Volume;
@@ -59,6 +62,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Volume));
             }
         }
+
         public float Weight
         {
             get => _dto.Weight;
@@ -175,6 +179,23 @@ namespace LogistHelper.ViewModels.DataViewModels
             }
         }
 
+        public ClientViewModel Client
+        {
+            get => _client;
+            set
+            {
+                SetProperty(ref _client, value);
+                if (value != null)
+                {
+                    _dto.Client = Client.GetDto();
+                }
+                else
+                {
+                    _dto.Client = null;
+                }
+            }
+        }
+
         public RoutePointViewModel LoadPoint
         {
             get => _loadingPoint;
@@ -184,7 +205,6 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Route));
             }
         }
-
 
         public ObservableCollection<ListItem<RoutePointViewModel>> UnloadPoints
         {
@@ -230,6 +250,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 _driver = new DriverViewModel(dto.Driver);
                 _vehicle = new VehicleViewModel(dto.Vehicle);
                 _carrier = new CarrierViewModel(dto.Carrier);
+                _client = new ClientViewModel(dto.Client);
                 _loadingPoint = new RoutePointViewModel(dto.LoadPoint);
 
                 if (dto.UnloadPoints != null)
@@ -286,8 +307,9 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             _dto.LoadPoint = LoadPoint.GetDto();
             _dto.UnloadPoints = UnloadPoints.Select(p => p.Item.GetDto()).ToList();
-            _dto.Carrier = _dto.Driver.Carrier;
-            _dto.Vehicle = _dto.Driver.Vehicle;
+            _dto.Carrier = Carrier.GetDto();
+            _dto.Client  = Client.GetDto();
+            _dto.Vehicle = Vehicle.GetDto();
 
             return base.GetDto();
         }
@@ -296,6 +318,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             _dto = new ContractDto();
 
+            Client = new ClientViewModel();
             Driver = new DriverViewModel();
             LoadPoint = new RoutePointViewModel();
             UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>();

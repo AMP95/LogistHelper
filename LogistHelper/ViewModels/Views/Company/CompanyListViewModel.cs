@@ -5,9 +5,9 @@ using Shared;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class ClientListViewModel : ListViewModel<CompanyDto>
+    public class ClientListViewModel : ListViewModel<ClientDto>
     {
-        public ClientListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<CompanyDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public ClientListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<ClientDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
         }
     }

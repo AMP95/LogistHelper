@@ -38,7 +38,7 @@ namespace LogistHelper.Services
             services.AddTransient<DatabaseMenuPageViewModel, DatabaseMenuPageViewModel>();
 
             services.AddTransient<MenuPageViewModel<CarrierDto>, CarrierMenuPageViewModel>();
-            services.AddTransient<MenuPageViewModel<CompanyDto>, ClientMenuPageViewModel>();
+            services.AddTransient<MenuPageViewModel<ClientDto>, ClientMenuPageViewModel>();
             services.AddTransient<MenuPageViewModel<DriverDto>, DriverMenuViewModel>();
             services.AddTransient<MenuPageViewModel<VehicleDto>, VehicleMenuViewModel>();
             services.AddTransient<MenuPageViewModel<ContractDto>, ContractMenuViewModel>();
@@ -49,14 +49,14 @@ namespace LogistHelper.Services
             #region Views
 
             services.AddTransient<IMainListView<CarrierDto>, CarrierListViewModel>();
-            services.AddTransient<IMainListView<CompanyDto>, ClientListViewModel>();
+            services.AddTransient<IMainListView<ClientDto>, ClientListViewModel>();
             services.AddTransient<IMainListView<DriverDto>, DriverListViewModel>();
             services.AddTransient<IMainListView<VehicleDto>, VehicleListViewModel>();
             services.AddTransient<IMainListView<ContractDto>, ContractListViewModel>();
             services.AddTransient<ISubListView<DocumentDto>, DocumentListViewModel>();
 
             services.AddTransient<IMainEditView<CarrierDto>, EditCarrierViewModel>();
-            services.AddTransient<IMainEditView<CompanyDto>, EditClientViewModel>();
+            services.AddTransient<IMainEditView<ClientDto>, EditClientViewModel>();
             services.AddTransient<IMainEditView<DriverDto>, EditDriverViewModel>();
             services.AddTransient<IMainEditView<VehicleDto>, EditVehicleViewModel>();
             services.AddTransient<IMainEditView<ContractDto>, EditContractViewModel>();
@@ -66,7 +66,7 @@ namespace LogistHelper.Services
 
             #region Factories
 
-            services.AddSingleton<IViewModelFactory<CompanyDto>, ClientViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<ClientDto>, ClientViewModelFactory>();
             services.AddSingleton<IViewModelFactory<CarrierDto>, CarrierViewModelFactory>();
             services.AddSingleton<IViewModelFactory<DriverDto>, DriverViewModelFactory>();
             services.AddSingleton<IViewModelFactory<VehicleDto>, VehicleViewModelFactory>();

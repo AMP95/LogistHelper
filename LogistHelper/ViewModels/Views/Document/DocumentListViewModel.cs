@@ -56,13 +56,13 @@ namespace LogistHelper.ViewModels.Views
 
             EditCommand = new RelayCommand<Guid>((id) =>
             {
-                SubParent.SwitchToSubEdit(id);
+                SubParent.SwitchToSubEdit(id, MainId);
                 Clear();
             });
 
             AddCommand = new RelayCommand(() =>
             {
-                SubParent.SwitchToSubEdit(Guid.Empty);
+                SubParent.SwitchToSubEdit(Guid.Empty, MainId);
                 Clear();
             });
 

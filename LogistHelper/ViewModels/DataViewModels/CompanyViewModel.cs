@@ -151,15 +151,15 @@ namespace LogistHelper.ViewModels.DataViewModels
 
     }
 
-    public class ClientViewModel : CompanyViewModel<CompanyDto> 
+    public class ClientViewModel : CompanyViewModel<ClientDto> 
     {
         public ClientViewModel() : base() { }
-        public ClientViewModel(CompanyDto dto) : this(dto, 0) { }
-        public ClientViewModel(CompanyDto dto, int number) : base(dto, number) { }
+        public ClientViewModel(ClientDto dto) : this(dto, 0) { }
+        public ClientViewModel(ClientDto dto, int number) : base(dto, number) { }
 
         protected override void DefaultInit()
         {
-            _dto = new CompanyDto();
+            _dto = new ClientDto();
             Phones = new ObservableCollection<StringItem>() { new StringItem() };
             Emails = new ObservableCollection<StringItem>() { new StringItem() };
         }
@@ -188,19 +188,19 @@ namespace LogistHelper.ViewModels.DataViewModels
         }
     }
 
-    public class ClientViewModelFactory : IViewModelFactory<CompanyDto>
+    public class ClientViewModelFactory : IViewModelFactory<ClientDto>
     {
-        public DataViewModel<CompanyDto> GetViewModel(CompanyDto dto, int number)
+        public DataViewModel<ClientDto> GetViewModel(ClientDto dto, int number)
         {
             return new ClientViewModel(dto,  number);
         }
 
-        public DataViewModel<CompanyDto> GetViewModel(CompanyDto dto)
+        public DataViewModel<ClientDto> GetViewModel(ClientDto dto)
         {
             return new ClientViewModel(dto);
         }
 
-        public DataViewModel<CompanyDto> GetViewModel()
+        public DataViewModel<ClientDto> GetViewModel()
         {
             return new ClientViewModel();
         }

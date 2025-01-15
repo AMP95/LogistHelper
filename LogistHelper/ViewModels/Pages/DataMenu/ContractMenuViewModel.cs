@@ -27,7 +27,7 @@ namespace LogistHelper.ViewModels.Pages
             throw new NotImplementedException();
         }
 
-        public Task SwitchToSubEdit(Guid id)
+        public Task SwitchToSubEdit(Guid id, Guid mainId)
         {
             throw new NotImplementedException();
         }

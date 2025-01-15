@@ -12,6 +12,6 @@ namespace LogistHelper.ViewModels.Base.Interfaces
     public interface ISubEditView<T> where T : IDto
     {
         ISubMenuPage<T> SubParent { get; set; }
-        Task Load(Guid subId);
+        Task Load(Guid subId, Guid mainId);
     }
 }

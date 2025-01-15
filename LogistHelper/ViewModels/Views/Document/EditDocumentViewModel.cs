@@ -16,5 +16,9 @@ namespace LogistHelper.ViewModels.Views
         {
         }
 
+        public Task Load(Guid subId, Guid mainId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

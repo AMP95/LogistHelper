@@ -5,7 +5,7 @@ namespace LogistHelper.ViewModels.Base
     public interface ISubMenuPage<T> where T : IDto 
     {
         Task SwitchToSubList(Guid mainId);
-        Task SwitchToSubEdit(Guid id);
+        Task SwitchToSubEdit(Guid id, Guid mainId);
         Task SwitchToMainList();
     }
 }

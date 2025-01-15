@@ -158,9 +158,9 @@ namespace LogistHelper.ViewModels.Views
         }
     }
 
-    public class EditClientViewModel : EditCompanyViewModel<CompanyDto>
+    public class EditClientViewModel : EditCompanyViewModel<ClientDto>
     {
-        public EditClientViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<CompanyDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public EditClientViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<ClientDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
         }
     }

@@ -1,6 +1,5 @@
 ﻿using DTOs;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Net.Http.Json;
 
 namespace ServerClient
@@ -92,10 +91,11 @@ namespace ServerClient
                 case nameof(VehicleDto): return "vehicle";
                 case nameof(DriverDto): return "driver";
                 case nameof(CarrierDto): return "carrier";
-                case nameof(CompanyDto): return "company";
+                case nameof(ClientDto): return "client";
                 case nameof(RoutePointDto): return "route";
                 case nameof(ContractDto): return "contract";
                 case nameof(DocumentDto): return "document";
+                case nameof(PaymentDto): return "payment";
                 default: return string.Empty;
             }
         }
