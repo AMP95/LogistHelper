@@ -135,7 +135,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             if (route != null)
             {
-                if (Phones != null)
+                if (route.Phones != null)
                 {
                     Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
                 }
