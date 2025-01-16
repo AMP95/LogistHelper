@@ -7,11 +7,13 @@
              xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
              xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
              xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
+             xmlns:viewVM="clr-namespace:LogistHelper.ViewModels.Views"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="600">
 
     <UserControl.Resources>
         <converters:PhoneConverter x:Key="PhoneConverter"/>
+        <converters:ViewModelToTypeConverter x:Key="ViewModelToTypeConverter"/>
     </UserControl.Resources>
 
     <StackPanel
@@ -112,6 +114,19 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            
+            <Grid.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext, 
+                                     Converter={StaticResource ViewModelToTypeConverter}}" 
+                                     Value="{x:Type viewVM:EditClientViewModel}">
+                            <Setter Property="Grid.Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            
 
             <RadioButton
                 FlowDirection="RightToLeft"
