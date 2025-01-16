@@ -509,13 +509,13 @@
                                 <TextBlock
                                     Style="{StaticResource DefaultText}"
                                     TextAlignment="Center"
-                                    Text="{Binding Payment}"/>
+                                    Text="{Binding Payment, StringFormat='n0'}"/>
 
                                 <TextBlock
                                     Grid.Row="1"
                                     TextAlignment="Center">
                                     <Run Text="п/п"/>
-                                    <Run Text="{Binding Prepayment}"/>
+                                    <Run Text="{Binding Prepayment, StringFormat='n0'}"/>
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultText}">
                                             <Style.Triggers>
@@ -532,13 +532,13 @@
                                 Grid.Column="11"
                                 Style="{StaticResource DefaultText}"
                                 TextAlignment="Center"
-                                Text="{Binding ClientPayment}"/>
+                                Text="{Binding ClientPayment, StringFormat='n0'}"/>
 
                             <TextBlock
                                 Grid.Column="12"
                                 Style="{StaticResource DefaultText}"
                                 TextAlignment="Center"
-                                Text="{Binding Profit}"/>
+                                Text="{Binding Profit, StringFormat='n0'}"/>
 
                         </Grid>
                     </DataTemplate>

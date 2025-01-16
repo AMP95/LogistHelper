@@ -18,8 +18,9 @@
         MaxWidth="600">
 
         <TextBlock
-        Style="{StaticResource DefaultText}"
-        Text="ФИО"/>
+            Style="{StaticResource DefaultText}"
+            Foreground="{StaticResource NeutralOneBrush}"
+            Text="ФИО"/>
 
         <TextBox
         Style="{StaticResource SubLeftTextBox}">
@@ -50,6 +51,7 @@
 
         <TextBlock
             Style="{StaticResource DefaultText}"
+            Foreground="{StaticResource NeutralOneBrush}"
             Text="Паспорт"/>
 
         <Grid>
@@ -138,9 +140,7 @@
                 Style="{StaticResource CustomDatePicker}"/>
         </Grid>
 
-        <TextBlock
-            Style="{StaticResource DefaultText}"
-            Text="Телефон"/>
+        
 
         <ItemsControl
             ItemsSource="{Binding EditedViewModel.Phones}">
@@ -151,6 +151,11 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Foreground="{StaticResource NeutralOneBrush}"
+                            Style="{StaticResource DefaultText}"
+                            Text="Телефон"/>
 
                         <Button
                             Style="{StaticResource IconButton}"
@@ -206,6 +211,7 @@
 
         <TextBlock
             Style="{StaticResource DefaultText}"
+            Foreground="{StaticResource NeutralOneBrush}"
             Text="Перевозчик"/>
 
         <controls:SearchBox
@@ -226,7 +232,7 @@
 
         <TextBlock
             Style="{StaticResource DefaultText}"
-            Foreground="{StaticResource SemiDarkBrush}"
+            Foreground="{StaticResource NeutralOneBrush}"
             Text="ТС"/>
 
         <ComboBox

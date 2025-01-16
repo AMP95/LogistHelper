@@ -6,7 +6,6 @@ using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Shared;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
@@ -109,6 +108,14 @@ namespace LogistHelper.ViewModels.Views
         {
             await base.Load(id);
             _company = EditedViewModel as CompanyViewModel<T>;
+            _selectedCompany = new CompanyItem()
+            {
+                Name = _company.Name,
+                Address = _company.Address,
+                Inn = _company.Inn,
+                Kpp = _company.Kpp
+            };
+            OnPropertyChanged(nameof(SelectedCompany));
         }
 
         public async Task Search(string searchString)
