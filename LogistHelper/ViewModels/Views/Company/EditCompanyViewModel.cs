@@ -6,11 +6,12 @@ using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Shared;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class EditCompanyViewModel<T> : EditViewModel<T> where T : CompanyDto
+    public class EditCompanyViewModel<T> : MainEditViewModel<T> where T : CompanyDto
     {
         private CompanyViewModel<T> _company;
 
@@ -158,9 +159,9 @@ namespace LogistHelper.ViewModels.Views
         }
     }
 
-    public class EditClientViewModel : EditCompanyViewModel<ClientDto>
+    public class EditClientViewModel : EditCompanyViewModel<CompanyDto>
     {
-        public EditClientViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<ClientDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public EditClientViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<CompanyDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
         }
     }

@@ -5,14 +5,14 @@ using Shared;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class ClientListViewModel : ListViewModel<ClientDto>
+    public class ClientListViewModel : MainListViewModel<CompanyDto>
     {
-        public ClientListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<ClientDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public ClientListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<CompanyDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
         }
     }
 
-    public class CarrierListViewModel : ListViewModel<CarrierDto>
+    public class CarrierListViewModel : MainListViewModel<CarrierDto>
     {
         public CarrierListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<CarrierDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {

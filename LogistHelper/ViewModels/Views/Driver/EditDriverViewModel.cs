@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class EditDriverViewModel : EditViewModel<DriverDto>
+    public class EditDriverViewModel : MainEditViewModel<DriverDto>
     {
         private DriverViewModel _driver;
 

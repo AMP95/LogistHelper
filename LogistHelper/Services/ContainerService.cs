@@ -3,9 +3,9 @@ using DTOs;
 using Log4NetLogger;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
-using LogistHelper.ViewModels.Base.Interfaces;
 using LogistHelper.ViewModels.DataViewModels;
 using LogistHelper.ViewModels.Pages;
+using LogistHelper.ViewModels.Pages.DataMenu;
 using LogistHelper.ViewModels.Views;
 using LogistHelper.ViewModels.Windows;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,31 +36,36 @@ namespace LogistHelper.Services
             services.AddTransient<EnterPageViewModel, EnterPageViewModel>();
             services.AddTransient<MainMenuPageViewModel, MainMenuPageViewModel>();
             services.AddTransient<DatabaseMenuPageViewModel, DatabaseMenuPageViewModel>();
-
-            services.AddTransient<MenuPageViewModel<CarrierDto>, CarrierMenuPageViewModel>();
-            services.AddTransient<MenuPageViewModel<ClientDto>, ClientMenuPageViewModel>();
-            services.AddTransient<MenuPageViewModel<DriverDto>, DriverMenuViewModel>();
-            services.AddTransient<MenuPageViewModel<VehicleDto>, VehicleMenuViewModel>();
-            services.AddTransient<MenuPageViewModel<ContractDto>, ContractMenuViewModel>();
             services.AddTransient<SecondContractMenuViewModel, SecondContractMenuViewModel>();
+            services.AddTransient<CountractSubMenuViewModel, CountractSubMenuViewModel>();
+
+            services.AddTransient<MainMenuPageViewModel<CarrierDto>, CarrierMenuPageViewModel>();
+            services.AddTransient<MainMenuPageViewModel<CompanyDto>, ClientMenuPageViewModel>();
+            services.AddTransient<MainMenuPageViewModel<DriverDto>, DriverMenuViewModel>();
+            services.AddTransient<MainMenuPageViewModel<VehicleDto>, VehicleMenuViewModel>();
+            services.AddTransient<MainMenuPageViewModel<ContractDto>, ContractMenuViewModel>();
+            services.AddTransient<SubMenuPageViewModel<DocumentDto>, DocumentMenuViewModel>();
+            services.AddTransient<SubMenuPageViewModel<PaymentDto>, PaymentMenuViewModel>();
 
             #endregion Pages
 
             #region Views
 
-            services.AddTransient<IMainListView<CarrierDto>, CarrierListViewModel>();
-            services.AddTransient<IMainListView<ClientDto>, ClientListViewModel>();
-            services.AddTransient<IMainListView<DriverDto>, DriverListViewModel>();
-            services.AddTransient<IMainListView<VehicleDto>, VehicleListViewModel>();
-            services.AddTransient<IMainListView<ContractDto>, ContractListViewModel>();
-            services.AddTransient<ISubListView<DocumentDto>, DocumentListViewModel>();
+            services.AddTransient<MainListViewModel<CarrierDto>, CarrierListViewModel>();
+            services.AddTransient<MainListViewModel<CompanyDto>, ClientListViewModel>();
+            services.AddTransient<MainListViewModel<DriverDto>, DriverListViewModel>();
+            services.AddTransient<MainListViewModel<VehicleDto>, VehicleListViewModel>();
+            services.AddTransient<MainListViewModel<ContractDto>, ContractListViewModel>();
+            services.AddTransient<SubListViewModel<DocumentDto>, DocumentListViewModel>();
+            services.AddTransient<SubListViewModel<PaymentDto>, PaymentListViewModel>();
 
-            services.AddTransient<IMainEditView<CarrierDto>, EditCarrierViewModel>();
-            services.AddTransient<IMainEditView<ClientDto>, EditClientViewModel>();
-            services.AddTransient<IMainEditView<DriverDto>, EditDriverViewModel>();
-            services.AddTransient<IMainEditView<VehicleDto>, EditVehicleViewModel>();
-            services.AddTransient<IMainEditView<ContractDto>, EditContractViewModel>();
-            services.AddTransient<ISubEditView<DocumentDto>, EditDocumentViewModel>();
+            services.AddTransient<MainEditViewModel<CarrierDto>, EditCarrierViewModel>();
+            services.AddTransient<MainEditViewModel<CompanyDto>, EditClientViewModel>();
+            services.AddTransient<MainEditViewModel<DriverDto>, EditDriverViewModel>();
+            services.AddTransient<MainEditViewModel<VehicleDto>, EditVehicleViewModel>();
+            services.AddTransient<MainEditViewModel<ContractDto>, EditContractViewModel>();
+            services.AddTransient<SubEditViewModel<DocumentDto>, EditDocumentViewModel>();
+            services.AddTransient<SubEditViewModel<PaymentDto>, EditPaymentViewModel>();
 
             #endregion Views
 
@@ -71,6 +76,7 @@ namespace LogistHelper.Services
             services.AddSingleton<IViewModelFactory<DriverDto>, DriverViewModelFactory>();
             services.AddSingleton<IViewModelFactory<VehicleDto>, VehicleViewModelFactory>();
             services.AddSingleton<IViewModelFactory<DocumentDto>, DocumentViewModelFactory>();
+            services.AddSingleton<IViewModelFactory<PaymentDto>, PaymentViewModelFactory>();
             services.AddSingleton<IViewModelFactory<RoutePointDto>, RouteViewModelFactory>();
             services.AddSingleton<IViewModelFactory<ContractDto>, ContractViewModelFactory>();
 

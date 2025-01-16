@@ -1,49 +1,38 @@
 ﻿using DTOs;
 using LogistHelper.ViewModels.Base;
-using LogistHelper.ViewModels.Base.Interfaces;
+using LogistHelper.ViewModels.Pages.DataMenu;
 
 namespace LogistHelper.ViewModels.Pages
 {
-    public class ContractMenuViewModel : MenuPageViewModel<ContractDto>, ISubMenuPage<DocumentDto>
+    public class ContractMenuViewModel : MainMenuPageViewModel<ContractDto>, ISubParent
     {
-
-        private ISubListView<DocumentDto> _documentlist;
-        private ISubEditView<DocumentDto> _documentedit;
+        private CountractSubMenuViewModel _sub;
 
         public ContractMenuViewModel(IMainListView<ContractDto> list,
                                      IMainEditView<ContractDto> edit,
-                                     ISubListView<DocumentDto> documentlist,
-                                     ISubEditView<DocumentDto> documentedit) : base(list, edit)
+                                     CountractSubMenuViewModel sub) : base(list, edit)
         {
-            _documentlist = documentlist;
-            _documentlist.SubParent = this;
-
-            _documentedit = documentedit;
-            _documentedit.SubParent = this;
+            _sub = sub;
+            _sub.MainParent = this;
         }
 
-        public Task SwitchToMainList()
+        public async Task SwitchToMain()
         {
-            throw new NotImplementedException();
+            await SwitchToList();
         }
 
-        public Task SwitchToSubEdit(Guid id, Guid mainId)
+        public Task SwitchToSub(Guid mainid)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task SwitchToSubList(Guid mainId)
-        {
-            throw new NotImplementedException();
+            Content = _sub;
+            return Task.CompletedTask;
         }
     }
 
     public class SecondContractMenuViewModel : ContractMenuViewModel
     {
         public SecondContractMenuViewModel(IMainListView<ContractDto> list,
-                                           IMainEditView<ContractDto> edit, 
-                                           ISubListView<DocumentDto> documentlist,
-                                           ISubEditView<DocumentDto> documentedit) : base(list, edit, documentlist, documentedit)
+                                           IMainEditView<ContractDto> edit,
+                                           CountractSubMenuViewModel sub) : base(list, edit, sub)
         {
 
         }

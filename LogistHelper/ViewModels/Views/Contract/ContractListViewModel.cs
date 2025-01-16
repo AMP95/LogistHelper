@@ -3,7 +3,6 @@ using DTOs;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
-using LogistHelper.ViewModels.Pages;
 using ServerClient;
 using Shared;
 using System.Collections.ObjectModel;
@@ -11,7 +10,7 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class ContractListViewModel : ListViewModel<ContractDto>
+    public class ContractListViewModel : MainListViewModel<ContractDto>
     {
         #region Private
 
@@ -117,7 +116,7 @@ namespace LogistHelper.ViewModels.Views
 
             AddDocumentCommand = new RelayCommand<Guid>((id) => 
             {
-                (Parent as ISubMenuPage<DocumentDto>)?.SwitchToSubList(id);
+                (MainParent as ISubParent).SwitchToSub(id);
             });
 
             SearchCarrierCommand = new RelayCommand<string>(async (searchString) =>

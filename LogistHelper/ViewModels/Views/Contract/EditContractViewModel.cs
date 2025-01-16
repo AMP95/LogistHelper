@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
 {
-    class EditContractViewModel : EditViewModel<ContractDto>
+    class EditContractViewModel : MainEditViewModel<ContractDto>
     {
         #region Private
 

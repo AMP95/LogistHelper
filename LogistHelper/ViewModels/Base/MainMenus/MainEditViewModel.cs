@@ -1,14 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs.Dtos;
 using LogistHelper.Models.Settings;
-using LogistHelper.ViewModels.Base.Interfaces;
 using ServerClient;
 using Shared;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Base
 {
-    public class EditViewModel<T> : BlockedViewModel, IMainEditView<T> where T : IDto
+    public class MainEditViewModel<T> : BlockedViewModel, IMainEditView<T> where T : IDto
     {
         #region Private
 
@@ -21,7 +20,7 @@ namespace LogistHelper.ViewModels.Base
 
         #endregion Private
 
-        public IMainMenuPage<T> Parent { get; set; }
+        public IMainMenuPage<T> MainParent { get; set; }
 
         public DataViewModel<T> EditedViewModel 
         { 
@@ -38,9 +37,9 @@ namespace LogistHelper.ViewModels.Base
 
         #endregion Commands
 
-        public EditViewModel(ISettingsRepository<Settings> repository, 
-                             IViewModelFactory<T> factory, 
-                             IDialog dialog)
+        public MainEditViewModel(ISettingsRepository<Settings> repository, 
+                                 IViewModelFactory<T> factory, 
+                                 IDialog dialog)
         {
             _settings = repository.GetSettings();
             _dialog = dialog;
@@ -76,7 +75,7 @@ namespace LogistHelper.ViewModels.Base
 
             BackCommand = new RelayCommand(() =>
             {
-                Parent.SwitchToList();
+                MainParent.SwitchToList();
                 Clear();
             });
 
@@ -111,7 +110,7 @@ namespace LogistHelper.ViewModels.Base
             }
         }
 
-        private async Task<bool> SaveEntity() 
+        protected async Task<bool> SaveEntity() 
         {
             RequestResult<bool> result;
 
@@ -161,7 +160,7 @@ namespace LogistHelper.ViewModels.Base
             if (await SaveEntity())
             {
                 _dialog.ShowSuccess("Сохранение");
-                Parent.SwitchToList();
+                MainParent.SwitchToList();
             }
             else
             {

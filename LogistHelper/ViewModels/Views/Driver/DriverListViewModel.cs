@@ -5,7 +5,7 @@ using Shared;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class DriverListViewModel : ListViewModel<DriverDto>
+    public class DriverListViewModel : MainListViewModel<DriverDto>
     {
         public DriverListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<DriverDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {

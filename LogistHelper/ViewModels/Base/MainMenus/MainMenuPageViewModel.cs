@@ -1,11 +1,10 @@
 ﻿using DTOs.Dtos;
 using LogistHelper.Services;
-using LogistHelper.ViewModels.Base.Interfaces;
 
 namespace LogistHelper.ViewModels.Base
 {
 
-    public class MenuPageViewModel<T> : BasePageViewModel, IMainMenuPage<T> where T : IDto
+    public class MainMenuPageViewModel<T> : BasePageViewModel, IMainMenuPage<T> where T : IDto
     {
         private object _content;
 
@@ -18,14 +17,14 @@ namespace LogistHelper.ViewModels.Base
             set => SetProperty(ref _content, value);
         }
 
-        public MenuPageViewModel(IMainListView<T> list,
+        public MainMenuPageViewModel(IMainListView<T> list,
                                  IMainEditView<T> edit)
         {
             _list = list;
             _edit = edit;
 
-            _list.Parent = this;
-            _edit.Parent = this;
+            _list.MainParent = this;
+            _edit.MainParent = this;
 
             Init();
         }

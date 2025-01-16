@@ -1,16 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using DTOs;
+using DTOs.Dtos;
 using LogistHelper.Models.Settings;
-using LogistHelper.ViewModels.Base;
-using LogistHelper.ViewModels.Base.Interfaces;
 using ServerClient;
 using Shared;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
-namespace LogistHelper.ViewModels.Views
+namespace LogistHelper.ViewModels.Base
 {
-    class DocumentListViewModel : BlockedViewModel,  ISubListView<DocumentDto>
+    public class SubListViewModel<T> : BlockedViewModel, ISubListView<T> where T : IDto
     {
         #region Private
 
@@ -18,15 +16,19 @@ namespace LogistHelper.ViewModels.Views
         protected IDialog _dialog;
         protected ApiClient _client;
 
-        protected IViewModelFactory<DocumentDto> _factory;
-        private ObservableCollection<DataViewModel<DocumentDto>> _list;
+        protected IViewModelFactory<T> _factory;
+
+        private ObservableCollection<DataViewModel<T>> _list;
 
         #endregion Private
 
         #region Public
-        public ISubMenuPage<DocumentDto> SubParent { get; set; }
+
+        public ISubMenuPage<T> SubParent { get; set; }
+
         public Guid MainId { get; set; }
-        public ObservableCollection<DataViewModel<DocumentDto>> List
+
+        public ObservableCollection<DataViewModel<T>> List
         {
             get => _list;
             set => SetProperty(ref _list, value);
@@ -40,30 +42,28 @@ namespace LogistHelper.ViewModels.Views
         public ICommand AddCommand { get; set; }
         public ICommand DeleteCommand { get; set; }
 
-
         #endregion Commands
 
-        public DocumentListViewModel(ISettingsRepository<Settings> repository, 
-                                     IViewModelFactory<DocumentDto> factory, 
-                                     IDialog dialog)
+        public SubListViewModel(ISettingsRepository<Settings> repository,
+                                IViewModelFactory<T> factory,
+                                IDialog dialog)
         {
             _settings = repository.GetSettings();
             _dialog = dialog;
             _factory = factory;
             _client = new ApiClient(_settings.ServerUri);
 
-            #region CommandsInit
+            #region CommandInit
 
             EditCommand = new RelayCommand<Guid>((id) =>
             {
-                SubParent.SwitchToSubEdit(id, MainId);
+                SubParent?.SwitchToEdit(id, MainId);
                 Clear();
             });
 
             AddCommand = new RelayCommand(() =>
             {
-                SubParent.SwitchToSubEdit(Guid.Empty, MainId);
-                Clear();
+                SubParent?.SwitchToEdit(Guid.Empty, MainId);
             });
 
             DeleteCommand = new RelayCommand<Guid>(async (id) =>
@@ -74,45 +74,47 @@ namespace LogistHelper.ViewModels.Views
                 }
             });
 
-            #endregion CommandsInit
-        }
+            #endregion CommandInit
 
-        public void Clear()
+        }
+        public virtual void Clear()
         {
             List?.Clear();
         }
 
-        public async Task Load(Guid id)
+
+        public virtual async Task Load(Guid mainId)
         {
-            if (id == Guid.Empty) 
-            {
+            if (MainId == Guid.Empty) 
+            { 
                 return;
             }
 
-            MainId = id;
+            MainId = mainId;
 
             IsBlock = true;
             BlockText = "Загрузка";
 
             List?.Clear();
 
-            RequestResult<IEnumerable<DocumentDto>> result = await _client.GetMainId<DocumentDto>(MainId);
+            RequestResult<IEnumerable<T>> result = await _client.GetMainId<T>(MainId);
 
             if (result.IsSuccess)
             {
                 int counter = 0;
-                List = new ObservableCollection<DataViewModel<DocumentDto>>(result.Result.Select(c => _factory.GetViewModel(c, counter++)));
+                List = new ObservableCollection<DataViewModel<T>>(result.Result.Select(c => _factory.GetViewModel(c, counter++)));
             }
+
 
             IsBlock = false;
         }
 
-        public async Task Delete(Guid id)
+        public virtual async Task Delete(Guid id)
         {
             IsBlock = true;
             BlockText = "Удаление";
 
-            RequestResult<bool> result = await _client.Delete<DocumentDto>(id);
+            RequestResult<bool> result = await _client.Delete<T>(id);
 
             if (result.IsSuccess)
             {
@@ -120,7 +122,7 @@ namespace LogistHelper.ViewModels.Views
             }
             else
             {
-                _dialog.ShowError("Не удалось удалить документ.");
+                _dialog.ShowError("Не удалось удалить объект.");
                 IsBlock = false;
             }
         }

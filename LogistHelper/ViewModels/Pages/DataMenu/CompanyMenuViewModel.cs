@@ -1,13 +1,12 @@
 ﻿using DTOs;
 using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
-using LogistHelper.ViewModels.Base.Interfaces;
 
 namespace LogistHelper.ViewModels.Pages
 {
-    public class ClientMenuPageViewModel : MenuPageViewModel<ClientDto>
+    public class ClientMenuPageViewModel : MainMenuPageViewModel<CompanyDto>
     {
-        public ClientMenuPageViewModel(IMainListView<ClientDto> list, IMainEditView<ClientDto> edit) : base(list, edit)
+        public ClientMenuPageViewModel(MainListViewModel<CompanyDto> list, MainEditViewModel<CompanyDto> edit) : base(list, edit)
         {
         }
 
@@ -17,9 +16,9 @@ namespace LogistHelper.ViewModels.Pages
         }
     }
 
-    public class CarrierMenuPageViewModel : MenuPageViewModel<CarrierDto>
+    public class CarrierMenuPageViewModel : MainMenuPageViewModel<CarrierDto>
     {
-        public CarrierMenuPageViewModel(IMainListView<CarrierDto> list, IMainEditView<CarrierDto> edit) : base(list, edit)
+        public CarrierMenuPageViewModel(MainListViewModel<CarrierDto> list, MainEditViewModel<CarrierDto> edit) : base(list, edit)
         {
         }
         protected override void BackCommandExecutor()

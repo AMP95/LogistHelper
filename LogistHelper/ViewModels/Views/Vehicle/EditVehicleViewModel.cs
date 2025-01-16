@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class EditVehicleViewModel : EditViewModel<VehicleDto>
+    public class EditVehicleViewModel : MainEditViewModel<VehicleDto>
     {
         #region Private
 

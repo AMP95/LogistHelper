@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs.Dtos;
 using LogistHelper.Models.Settings;
-using LogistHelper.ViewModels.Base.Interfaces;
 using ServerClient;
 using Shared;
 using System.Collections.ObjectModel;
@@ -9,7 +8,7 @@ using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Base
 {
-    public class ListViewModel<T> : BlockedViewModel, IMainListView<T> where T : IDto
+    public class MainListViewModel<T> : BlockedViewModel, IMainListView<T> where T : IDto
     {
         #region Private
 
@@ -32,7 +31,7 @@ namespace LogistHelper.ViewModels.Base
 
         #region Public
 
-        public IMainMenuPage<T> Parent { get; set; }
+        public IMainMenuPage<T> MainParent { get; set; }
 
         public string SearchString
         {
@@ -74,9 +73,9 @@ namespace LogistHelper.ViewModels.Base
 
         #endregion Commands
 
-        public ListViewModel(ISettingsRepository<Settings> repository,
-                             IViewModelFactory<T> factory, 
-                             IDialog dialog)
+        public MainListViewModel(ISettingsRepository<Settings> repository,
+                                 IViewModelFactory<T> factory, 
+                                 IDialog dialog)
         {
             _settings = repository.GetSettings();
             _dialog = dialog;
@@ -117,13 +116,13 @@ namespace LogistHelper.ViewModels.Base
 
             EditCommand = new RelayCommand<Guid>((id) =>
             {
-                Parent.SwitchToEdit(id);
+                MainParent?.SwitchToEdit(id);
                 Clear();
             });
 
             AddCommand = new RelayCommand(() =>
             {
-                Parent.SwitchToEdit(Guid.Empty);
+                MainParent?.SwitchToEdit(Guid.Empty);
             });
 
             DeleteCommand = new RelayCommand<Guid>(async (id) =>
