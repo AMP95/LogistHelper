@@ -59,6 +59,16 @@
                             DataType="{x:Type viewsVM:EditContractViewModel}">
                             <local:EditContractView/>
                         </DataTemplate>
+                        
+                        <DataTemplate
+                            DataType="{x:Type viewsVM:EditDocumentViewModel}">
+                            <local:EditDocumentView/>
+                        </DataTemplate>
+                        
+                        <DataTemplate
+                            DataType="{x:Type viewsVM:EditPaymentViewModel}">
+                            <local:EditPaymentView/>
+                        </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
             </ScrollViewer>

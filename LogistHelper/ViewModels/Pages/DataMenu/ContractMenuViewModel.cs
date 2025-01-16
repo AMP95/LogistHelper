@@ -1,6 +1,5 @@
 ﻿using DTOs;
 using LogistHelper.ViewModels.Base;
-using LogistHelper.ViewModels.Pages.DataMenu;
 
 namespace LogistHelper.ViewModels.Pages
 {

@@ -1,7 +1,7 @@
 ﻿using DTOs;
 using LogistHelper.ViewModels.Base;
 
-namespace LogistHelper.ViewModels.Pages.DataMenu
+namespace LogistHelper.ViewModels.Pages
 {
     public class PaymentMenuViewModel : SubMenuPageViewModel<PaymentDto>
     {

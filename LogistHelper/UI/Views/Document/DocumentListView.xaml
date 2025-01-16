@@ -45,16 +45,8 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </UserControl.Resources>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition />
-        </Grid.RowDefinitions>
 
-        <local:NavigationBack
-            HorizontalAlignment="Right"
-            DataContext="{Binding RelativeSource={RelativeSource AncestorType=pages:DataMenuPage}, Path=DataContext}"/>
+    <Grid>
 
         <ItemsControl
             Grid.Row="1"
@@ -402,8 +394,6 @@
 
         </ItemsControl>
 
-
-        <!--<local:BlockView
-            Grid.RowSpan="2"/>-->
+        <!--<local:BlockView/>-->
     </Grid>
 </UserControl>
