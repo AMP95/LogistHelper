@@ -39,7 +39,7 @@ namespace LogistHelper.Services
             services.AddTransient<CountractSubMenuViewModel, CountractSubMenuViewModel>();
 
             services.AddTransient<IMainMenuPage<CarrierDto>, CarrierMenuPageViewModel>();
-            services.AddTransient<IMainMenuPage<CompanyDto>, ClientMenuPageViewModel>();
+            services.AddTransient<IMainMenuPage<ClientDto>, ClientMenuPageViewModel>();
             services.AddTransient<IMainMenuPage<DriverDto>, DriverMenuViewModel>();
             services.AddTransient<IMainMenuPage<VehicleDto>, VehicleMenuViewModel>();
             services.AddTransient<IMainMenuPage<ContractDto>, ContractMenuViewModel>();
@@ -51,7 +51,7 @@ namespace LogistHelper.Services
             #region Views
 
             services.AddTransient<IMainListView<CarrierDto>, CarrierListViewModel>();
-            services.AddTransient<IMainListView<CompanyDto>, ClientListViewModel>();
+            services.AddTransient<IMainListView<ClientDto>, ClientListViewModel>();
             services.AddTransient<IMainListView<DriverDto>, DriverListViewModel>();
             services.AddTransient<IMainListView<VehicleDto>, VehicleListViewModel>();
             services.AddTransient<IMainListView<ContractDto>, ContractListViewModel>();
@@ -59,7 +59,7 @@ namespace LogistHelper.Services
             services.AddTransient<ISubListView<PaymentDto>, PaymentListViewModel>();
 
             services.AddTransient<IMainEditView<CarrierDto>, EditCarrierViewModel>();
-            services.AddTransient<IMainEditView<CompanyDto>, EditClientViewModel>();
+            services.AddTransient<IMainEditView<ClientDto>, EditClientViewModel>();
             services.AddTransient<IMainEditView<DriverDto>, EditDriverViewModel>();
             services.AddTransient<IMainEditView<VehicleDto>, EditVehicleViewModel>();
             services.AddTransient<IMainEditView<ContractDto>, EditContractViewModel>();
