@@ -38,33 +38,33 @@ namespace LogistHelper.Services
             services.AddTransient<SecondContractMenuViewModel, SecondContractMenuViewModel>();
             services.AddTransient<CountractSubMenuViewModel, CountractSubMenuViewModel>();
 
-            services.AddTransient<MainMenuPageViewModel<CarrierDto>, CarrierMenuPageViewModel>();
-            services.AddTransient<MainMenuPageViewModel<CompanyDto>, ClientMenuPageViewModel>();
-            services.AddTransient<MainMenuPageViewModel<DriverDto>, DriverMenuViewModel>();
-            services.AddTransient<MainMenuPageViewModel<VehicleDto>, VehicleMenuViewModel>();
-            services.AddTransient<MainMenuPageViewModel<ContractDto>, ContractMenuViewModel>();
-            services.AddTransient<SubMenuPageViewModel<DocumentDto>, DocumentMenuViewModel>();
-            services.AddTransient<SubMenuPageViewModel<PaymentDto>, PaymentMenuViewModel>();
+            services.AddTransient<IMainMenuPage<CarrierDto>, CarrierMenuPageViewModel>();
+            services.AddTransient<IMainMenuPage<CompanyDto>, ClientMenuPageViewModel>();
+            services.AddTransient<IMainMenuPage<DriverDto>, DriverMenuViewModel>();
+            services.AddTransient<IMainMenuPage<VehicleDto>, VehicleMenuViewModel>();
+            services.AddTransient<IMainMenuPage<ContractDto>, ContractMenuViewModel>();
+            services.AddTransient<ISubMenuPage<DocumentDto>, DocumentMenuViewModel>();
+            services.AddTransient<ISubMenuPage<PaymentDto>, PaymentMenuViewModel>();
 
             #endregion Pages
 
             #region Views
 
-            services.AddTransient<MainListViewModel<CarrierDto>, CarrierListViewModel>();
-            services.AddTransient<MainListViewModel<CompanyDto>, ClientListViewModel>();
-            services.AddTransient<MainListViewModel<DriverDto>, DriverListViewModel>();
-            services.AddTransient<MainListViewModel<VehicleDto>, VehicleListViewModel>();
-            services.AddTransient<MainListViewModel<ContractDto>, ContractListViewModel>();
-            services.AddTransient<SubListViewModel<DocumentDto>, DocumentListViewModel>();
-            services.AddTransient<SubListViewModel<PaymentDto>, PaymentListViewModel>();
+            services.AddTransient<IMainListView<CarrierDto>, CarrierListViewModel>();
+            services.AddTransient<IMainListView<CompanyDto>, ClientListViewModel>();
+            services.AddTransient<IMainListView<DriverDto>, DriverListViewModel>();
+            services.AddTransient<IMainListView<VehicleDto>, VehicleListViewModel>();
+            services.AddTransient<IMainListView<ContractDto>, ContractListViewModel>();
+            services.AddTransient<ISubListView<DocumentDto>, DocumentListViewModel>();
+            services.AddTransient<ISubListView<PaymentDto>, PaymentListViewModel>();
 
-            services.AddTransient<MainEditViewModel<CarrierDto>, EditCarrierViewModel>();
-            services.AddTransient<MainEditViewModel<CompanyDto>, EditClientViewModel>();
-            services.AddTransient<MainEditViewModel<DriverDto>, EditDriverViewModel>();
-            services.AddTransient<MainEditViewModel<VehicleDto>, EditVehicleViewModel>();
-            services.AddTransient<MainEditViewModel<ContractDto>, EditContractViewModel>();
-            services.AddTransient<SubEditViewModel<DocumentDto>, EditDocumentViewModel>();
-            services.AddTransient<SubEditViewModel<PaymentDto>, EditPaymentViewModel>();
+            services.AddTransient<IMainEditView<CarrierDto>, EditCarrierViewModel>();
+            services.AddTransient<IMainEditView<CompanyDto>, EditClientViewModel>();
+            services.AddTransient<IMainEditView<DriverDto>, EditDriverViewModel>();
+            services.AddTransient<IMainEditView<VehicleDto>, EditVehicleViewModel>();
+            services.AddTransient<IMainEditView<ContractDto>, EditContractViewModel>();
+            services.AddTransient<ISubEditView<DocumentDto>, EditDocumentViewModel>();
+            services.AddTransient<ISubEditView<PaymentDto>, EditPaymentViewModel>();
 
             #endregion Views
 

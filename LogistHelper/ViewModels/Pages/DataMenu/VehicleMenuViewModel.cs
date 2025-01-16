@@ -6,7 +6,7 @@ namespace LogistHelper.ViewModels.Pages
 {
     public class VehicleMenuViewModel : MainMenuPageViewModel<VehicleDto>
     {
-        public VehicleMenuViewModel(MainListViewModel<VehicleDto> list, MainEditViewModel<VehicleDto> edit) : base(list, edit)
+        public VehicleMenuViewModel(IMainListView<VehicleDto> list, IMainEditView<VehicleDto> edit) : base(list, edit)
         {
         }
         protected override void BackCommandExecutor()

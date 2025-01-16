@@ -26,11 +26,11 @@ namespace LogistHelper.Services
             pages.Add(PageType.Enter, typeof(EnterPageViewModel));
             pages.Add(PageType.MainMenu, typeof(MainMenuPageViewModel));
             pages.Add(PageType.DatabaseMenu, typeof(DatabaseMenuPageViewModel));
-            pages.Add(PageType.CarrierMenu, typeof(MainMenuPageViewModel<CarrierDto>));
-            pages.Add(PageType.ClientMenu, typeof(MainMenuPageViewModel<CompanyDto>));
-            pages.Add(PageType.DriverMenu, typeof(MainMenuPageViewModel<DriverDto>));
-            pages.Add(PageType.VehicleMenu, typeof(MainMenuPageViewModel<VehicleDto>));
-            pages.Add(PageType.ContractMenu, typeof(MainMenuPageViewModel<ContractDto>));
+            pages.Add(PageType.CarrierMenu, typeof(IMainMenuPage<CarrierDto>));
+            pages.Add(PageType.ClientMenu, typeof(IMainMenuPage<ClientDto>));
+            pages.Add(PageType.DriverMenu, typeof(IMainMenuPage<DriverDto>));
+            pages.Add(PageType.VehicleMenu, typeof(IMainMenuPage<VehicleDto>));
+            pages.Add(PageType.ContractMenu, typeof(IMainMenuPage<ContractDto>));
             pages.Add(PageType.NewContract, typeof(SecondContractMenuViewModel));
         }
     }
