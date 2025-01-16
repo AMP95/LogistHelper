@@ -255,5 +255,13 @@ namespace LogistHelper.UI.CustomControls
         {
             popuplist.IsOpen=false;
         }
+
+        private void searchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (sender is ListBox listbox) 
+            { 
+                listbox.ScrollIntoView(searchList.SelectedItem);
+            }
+        }
     }
 }
