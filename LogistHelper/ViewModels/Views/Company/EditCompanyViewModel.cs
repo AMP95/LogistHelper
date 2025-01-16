@@ -150,7 +150,7 @@ namespace LogistHelper.ViewModels.Views
                 _dialog.ShowError("Необходимо указать электронный адрес");
                 return false;
             }
-            if (_company.Phones.Any(p => !RegexService.CheckEmail(p.Item)))
+            if (_company.Emails.Any(p => !RegexService.CheckEmail(p.Item)))
             {
                 _dialog.ShowError("Необходимо верно указать все электронные адреса");
                 return false;

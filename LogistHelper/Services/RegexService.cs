@@ -4,7 +4,7 @@ namespace LogistHelper.Services
 {
     public static class RegexService
     {
-        private static Regex _phone = new Regex("^\\+([1-9]{1})([0-9]*)((-[0-9]{3}){2})((-[0-9]{2}){2})$");
+        private static Regex _phone = new Regex("^\\+7\\([0-9]{3}\\)[0-9]{3}(-[0-9]{2}){2}$");
         private static Regex _mail = new Regex("^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$");
         private static Regex _truck = new Regex("^[A-Z][ ]([0-9]{3})[ ]([A-Z]{2})\\/([0-9]{2,3})$");
         private static Regex _trailer = new Regex("^[A-Z]{2}[ ]([0-9]{4})\\/([0-9]{2})$");
