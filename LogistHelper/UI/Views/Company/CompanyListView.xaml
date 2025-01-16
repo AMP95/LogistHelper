@@ -7,16 +7,36 @@
              xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
              xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
              xmlns:converter="clr-namespace:LogistHelper.UI.Converters"
+             xmlns:viewVM="clr-namespace:LogistHelper.ViewModels.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600">
     <UserControl.Resources>
         <converter:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
         <converter:EvenNumberToBoolConverter x:Key="EvenNumberToBoolConverter"/>
+        <converter:ViewModelToTypeConverter x:Key="ViewModelToTypeConverter"/>
     </UserControl.Resources>
 
     <ItemsControl
         Grid.Row="1"
         ItemsSource="{Binding List}">
+        
+        <ItemsControl.Style>
+            <Style>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext, 
+                                 Converter={StaticResource ViewModelToTypeConverter}}" 
+                                 Value="{x:Type viewVM:ClientListViewModel}">
+                        <Setter Property="ItemsControl.MaxWidth" Value="900"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext, 
+                                 Converter={StaticResource ViewModelToTypeConverter}}" 
+                                 Value="{x:Type viewVM:CarrierListViewModel}">
+                        <Setter Property="ItemsControl.MaxWidth" Value="1200"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ItemsControl.Style>
+        
         <ItemsControl.Template>
             <ControlTemplate>
                 <Grid>
@@ -29,14 +49,26 @@
                         Margin="0 0 12 0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition
-                            Width="70"/>
+                                Width="70"/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition>
+                                <ColumnDefinition.Style>
+                                    <Style>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext, 
+                                                         Converter={StaticResource ViewModelToTypeConverter}}" 
+                                                         Value="{x:Type viewVM:ClientListViewModel}">
+                                                <Setter Property="ColumnDefinition.Width" Value="0"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ColumnDefinition.Style>
+                            </ColumnDefinition>
                             <ColumnDefinition
-                            Width="50"/>
+                                Width="50"/>
                             <ColumnDefinition
-                            Width="50"/>
+                                Width="50"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock
@@ -92,7 +124,19 @@
                             Width="70"/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition>
+                            <ColumnDefinition.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext, 
+                                                     Converter={StaticResource ViewModelToTypeConverter}}" 
+                                                     Value="{x:Type viewVM:ClientListViewModel}">
+                                            <Setter Property="ColumnDefinition.Width" Value="0"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ColumnDefinition.Style>
+                        </ColumnDefinition>
                         <ColumnDefinition
                             Width="50"/>
                         <ColumnDefinition
