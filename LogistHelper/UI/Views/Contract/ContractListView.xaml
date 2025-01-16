@@ -200,7 +200,7 @@
                         <ScrollViewer
                             Grid.Row="1"
                             VerticalScrollBarVisibility="Visible"
-                            HorizontalScrollBarVisibility="Visible"
+                            HorizontalScrollBarVisibility="Auto"
                             Style="{StaticResource CustomScroll}">
 
                             <Grid>
@@ -208,9 +208,10 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
+                                
+                                
 
-                                <Grid
-                                    Margin="0 0 12 0">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition
                                             Width="100"/>
@@ -226,12 +227,9 @@
                                             Width="100"/>
                                         <ColumnDefinition
                                             Width="200"/>
-                                        <ColumnDefinition
-                                            Width="300"/>
-                                        <ColumnDefinition
-                                            Width="300"/>
-                                        <ColumnDefinition
-                                            Width="300"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
                                         <ColumnDefinition
                                             Width="120"/>
                                         <ColumnDefinition
@@ -322,9 +320,13 @@
 
                                 </Grid>
 
+                            
+
                                 <ItemsPresenter
                                     Grid.Row="1"/>
-                            </Grid>
+
+                            
+                        </Grid>
                         </ScrollViewer>
                     </ControlTemplate>
                 </ItemsControl.Template>
@@ -347,12 +349,9 @@
                                     Width="100"/>
                                 <ColumnDefinition
                                     Width="200"/>
-                                <ColumnDefinition
-                                    Width="300"/>
-                                <ColumnDefinition
-                                    Width="300"/>
-                                <ColumnDefinition
-                                    Width="300"/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
                                 <ColumnDefinition
                                     Width="120"/>
                                 <ColumnDefinition

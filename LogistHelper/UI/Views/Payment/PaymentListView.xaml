@@ -21,18 +21,25 @@
 
     <Grid>
 
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Style="{StaticResource HeaderTwoText}"
+            Text="Оплаты"/>
+
         <ItemsControl
+            MaxWidth="1200"
             Grid.Row="1"
             ItemsSource="{Binding List}">
     
             <ItemsControl.Template>
                 <ControlTemplate>
     
-                    <ScrollViewer
-                        Grid.Row="1"
-                        VerticalScrollBarVisibility="Visible"
-                        HorizontalScrollBarVisibility="Auto"
-                        Style="{StaticResource CustomScroll}">
+                    
     
                         <Grid>
                             <Grid.RowDefinitions>
@@ -44,13 +51,10 @@
                                 Margin="0 0 12 0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition
-                                        Width="70"/>
-                                    <ColumnDefinition
-                                        Width="150"/>
-                                    <ColumnDefinition
-                                        Width="150"/>
-                                    <ColumnDefinition
                                         Width="100"/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                     <ColumnDefinition
                                         Width="50"/>
                                     <ColumnDefinition
@@ -91,11 +95,19 @@
                                 </Button>
     
                             </Grid>
-    
+
+                        <ScrollViewer
+                            Grid.Row="1"
+                            VerticalScrollBarVisibility="Visible"
+                            HorizontalScrollBarVisibility="Disabled"
+                            Style="{StaticResource CustomScroll}">
+
                             <ItemsPresenter
-                        Grid.Row="1"/>
-                        </Grid>
-                    </ScrollViewer>
+                                Grid.Row="1"/>
+
+                        </ScrollViewer>
+                    </Grid>
+                    
                 </ControlTemplate>
             </ItemsControl.Template>
     
@@ -104,19 +116,26 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition
-                                Width="70"/>
+                                    Width="100"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
                             <ColumnDefinition
-                                Width="150"/>
+                                    Width="50"/>
                             <ColumnDefinition
-                                Width="150"/>
-                            <ColumnDefinition
-                                Width="100"/>
-                            <ColumnDefinition
-                                Width="50"/>
-                            <ColumnDefinition
-                                Width="50"/>
+                                    Width="50"/>
                         </Grid.ColumnDefinitions>
-                        
+
+                        <Grid.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="True">
+                                        <Setter Property="Grid.Background" Value="{StaticResource LightBlueBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
                         <TextBlock
                             Style="{StaticResource DefaultText}"
                             TextAlignment="Center"
@@ -141,13 +160,13 @@
                             Grid.Column="3"
                             Style="{StaticResource DefaultText}"
                             TextAlignment="Center"
-                            Text="{Binding Summ}"/>
+                            Text="{Binding Summ, StringFormat=n0}"/>
     
                         <Button
                             Grid.Column="4"
                             ToolTip="Редактировать"
                             Style="{StaticResource IconButton}"
-                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:DocumentListView}, Path=DataContext.EditCommand}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:PaymentListView}, Path=DataContext.EditCommand}"
                             CommandParameter="{Binding Id}">
                             <Image
                                 Source="/UI/Icons/edit_icon.png"/>
@@ -157,7 +176,7 @@
                             Grid.Column="5"
                             ToolTip="Удалить"
                             Style="{StaticResource IconButton}"
-                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:DocumentListView}, Path=DataContext.DeleteCommand}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:PaymentListView}, Path=DataContext.DeleteCommand}"
                             CommandParameter="{Binding Id}">
                             <Image
                                 Source="/UI/Icons/remove_icon.png"/>
@@ -168,6 +187,7 @@
     
         </ItemsControl>
     
-        <local:BlockView/>
+        <local:BlockView
+            Grid.RowSpan="2"/>
     </Grid>
 </UserControl>

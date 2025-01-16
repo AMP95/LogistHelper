@@ -28,8 +28,19 @@
         </ObjectDataProvider>
 
     </UserControl.Resources>
-    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Style="{StaticResource HeaderTwoText}"
+            Text="Оплата"/>
+
+        <Grid
+            Grid.Row="1"
+        MaxWidth="600">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -143,5 +154,6 @@
             Grid.Row="4"
             Grid.Column="1"
             SelectedDate="{Binding EditedViewModel.RecievingDate}"/>
+    </Grid>
     </Grid>
 </UserControl>

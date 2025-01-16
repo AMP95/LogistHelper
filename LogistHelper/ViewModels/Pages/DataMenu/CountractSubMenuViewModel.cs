@@ -29,6 +29,12 @@ namespace LogistHelper.ViewModels.Pages
             PaymentSub = paymentSub;
         }
 
+        public void Load(Guid mainId) 
+        {
+            DocumentSub.SwitchToList(mainId);
+            PaymentSub.SwitchToList(mainId);
+        }
+
         protected override void BackCommandExecutor()
         {
             MainParent.SwitchToMain();
