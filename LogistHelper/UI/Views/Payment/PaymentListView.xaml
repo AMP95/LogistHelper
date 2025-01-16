@@ -4,9 +4,170 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:dtos="clr-namespace:DTOs;assembly=DTOs"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
+             xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="600">
+    
+    <UserControl.Resources>
+
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+        <converters:EvenNumberToBoolConverter x:Key="EvenNumberToBoolConverter"/>
+
+    </UserControl.Resources>
+
     <Grid>
-            
+
+        <ItemsControl
+            Grid.Row="1"
+            ItemsSource="{Binding List}">
+    
+            <ItemsControl.Template>
+                <ControlTemplate>
+    
+                    <ScrollViewer
+                        Grid.Row="1"
+                        VerticalScrollBarVisibility="Visible"
+                        HorizontalScrollBarVisibility="Auto"
+                        Style="{StaticResource CustomScroll}">
+    
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+    
+                            <Grid
+                                Margin="0 0 12 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition
+                                        Width="70"/>
+                                    <ColumnDefinition
+                                        Width="150"/>
+                                    <ColumnDefinition
+                                        Width="150"/>
+                                    <ColumnDefinition
+                                        Width="100"/>
+                                    <ColumnDefinition
+                                        Width="50"/>
+                                    <ColumnDefinition
+                                        Width="50"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Foreground="{StaticResource NeutralOneBrush}"
+                                    Text="№"/>
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Foreground="{StaticResource NeutralOneBrush}"
+                                    Text="Номер и дата"/>
+    
+                                <TextBlock
+                                    Grid.Column="2"
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Foreground="{StaticResource NeutralOneBrush}"
+                                    Text="Направление"/>
+
+                                
+                                <TextBlock
+                                    Grid.Column="3"
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Foreground="{StaticResource NeutralOneBrush}"
+                                    Text="Сумма, руб"/>
+    
+                                <Button
+                                    Grid.Column="5"
+                                    Style="{StaticResource IconButton}"
+                                    ToolTip="Добавить документ"
+                                    Command="{Binding AddCommand}">
+                                    <Image
+                                        Source="/UI/Icons/add_icon.png"/>
+                                </Button>
+    
+                            </Grid>
+    
+                            <ItemsPresenter
+                        Grid.Row="1"/>
+                        </Grid>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+    
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="70"/>
+                            <ColumnDefinition
+                                Width="150"/>
+                            <ColumnDefinition
+                                Width="150"/>
+                            <ColumnDefinition
+                                Width="100"/>
+                            <ColumnDefinition
+                                Width="50"/>
+                            <ColumnDefinition
+                                Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <TextBlock
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center"
+                            Text="{Binding Counter}"/>
+                        
+                        <TextBlock
+                            Grid.Column="1"
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center">
+                            <Run Text="{Binding Number}"/>
+                            <Run Text="от"/>
+                            <Run Text="{Binding CreationDate, StringFormat='dd.MM.yyyy'}"/>
+                        </TextBlock>
+                        
+                        <TextBlock
+                            Grid.Column="2"
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center"
+                            Text="{Binding Direction, Converter={StaticResource EnumToDescriptionConverter}}"/>
+
+                        <TextBlock
+                            Grid.Column="3"
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center"
+                            Text="{Binding Summ}"/>
+    
+                        <Button
+                            Grid.Column="4"
+                            ToolTip="Редактировать"
+                            Style="{StaticResource IconButton}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:DocumentListView}, Path=DataContext.EditCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Image
+                                Source="/UI/Icons/edit_icon.png"/>
+                        </Button>
+    
+                        <Button
+                            Grid.Column="5"
+                            ToolTip="Удалить"
+                            Style="{StaticResource IconButton}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:DocumentListView}, Path=DataContext.DeleteCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Image
+                                Source="/UI/Icons/remove_icon.png"/>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+    
+        </ItemsControl>
+    
+        <local:BlockView/>
     </Grid>
 </UserControl>

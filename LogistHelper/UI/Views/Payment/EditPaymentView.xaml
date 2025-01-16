@@ -4,9 +4,144 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:dtos="clr-namespace:DTOs;assembly=DTOs"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
+             xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="600">
+    
+    <UserControl.Resources>
+
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+        <converters:EvenNumberToBoolConverter x:Key="EvenNumberToBoolConverter"/>
+
+        <ObjectDataProvider 
+            x:Key="docDirect" 
+            MethodName="GetValues"
+            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dtos:DocumentDirection"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+    </UserControl.Resources>
+    
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+    
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+    
+        
+        <TextBlock
+            Style="{StaticResource DefaultText}"
+            Text="Номер:"
+            Grid.Row="1"/>
+    
+        <TextBox
+            Grid.Row="1"
+            Grid.Column="1"
+            Style="{StaticResource MainCentralTextBox}">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.Number">
+                    <Binding.ValidationRules>
+                        <rules:EmptyStringValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        
+        <TextBlock
+            Style="{StaticResource DefaultText}"
+            Text="от"
+            Grid.Row="1"
+            Grid.Column="2"/>
+    
+        <DatePicker
+            Style="{StaticResource CustomDatePicker}"
+            Grid.Row="1"
+            Grid.Column="3"
+            SelectedDate="{Binding EditedViewModel.CreationDate}"/>
+
+        <TextBlock
+            x:Name="summTextBlock"
+            Grid.Row="2"
+            Style="{StaticResource DefaultText}"
+            Text="Сумма, руб:"/>
+
+        <TextBox
+            Style="{StaticResource SubCentralTextBox}"
+            Grid.Row="2"
+            Grid.Column="1">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.Summ" StringFormat="{}{0:n1}">
+                    <Binding.ValidationRules>
+                        <rules:NumberValidationRule Min="0" IsRequired="True"/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        
+        <TextBlock
+            Grid.Row="3"
+            Style="{StaticResource DefaultText}"
+            Text="Направление:"/>
+
+        <ComboBox
+            Grid.Row="3"
+            Style="{StaticResource CustomComboBox}"
+            Grid.Column="1"
+            ItemsSource="{Binding Source={StaticResource docDirect}}"
+            SelectedItem="{Binding EditedViewModel.Direction}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Style="{StaticResource DefaultText}"
+                        Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        
+        <TextBlock
+            x:Name="recDateText"
+            Style="{StaticResource DefaultText}"
+            Grid.Row="4">
+            <Run Text="Дата "/>
+            <Run>
+                <Run.Style>
+                    <Style>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding EditedViewModel.Direction}" Value="{x:Static dtos:DocumentDirection.Income}">
+                                <Setter Property="Run.Text" Value="получения"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding EditedViewModel.Direction}" Value="{x:Static dtos:DocumentDirection.Outcome}">
+                                <Setter Property="Run.Text" Value="отправки"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Run.Style>
+            </Run>
+        </TextBlock>
+
+        <DatePicker
+            Style="{StaticResource CustomDatePicker}"
+            Grid.Row="4"
+            Grid.Column="1"
+            SelectedDate="{Binding EditedViewModel.RecievingDate}"/>
     </Grid>
 </UserControl>

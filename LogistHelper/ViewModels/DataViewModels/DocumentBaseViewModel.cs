@@ -14,7 +14,6 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Number));
             }
         }
-
         public DateTime CreationDate
         {
             get => _dto.CreationDate;
@@ -24,7 +23,6 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(CreationDate));
             }
         }
-
         public DocumentDirection Direction
         {
             get => _dto.Direction;
@@ -34,7 +32,6 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Direction));
             }
         }
-
         public float Summ
         {
             get => _dto.Summ;
@@ -44,7 +41,6 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Summ));
             }
         }
-
         public Guid ContractId
         {
             get => _dto.ContractId;
@@ -73,7 +69,6 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(RecievingDate));
             }
         }
-
         public RecievingType RecieveType
         {
             get => _dto.RecieveType;
@@ -83,8 +78,6 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(RecieveType));
             }
         }
-
-
         public DocumentType Type
         {
             get => _dto.Type;
@@ -94,7 +87,6 @@ namespace LogistHelper.ViewModels.DataViewModels
                 OnPropertyChanged(nameof(Type));
             }
         }
-
         public DocumentViewModel(DocumentDto document, int counter) : base(document, counter) { }
         public DocumentViewModel(DocumentDto document) : this(document, 0) { }
         public DocumentViewModel() : base() { }

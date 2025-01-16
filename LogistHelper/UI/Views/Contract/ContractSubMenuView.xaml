@@ -11,15 +11,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
 
         <local:NavigationBack
-            Grid.Column="1"
             HorizontalAlignment="Right"/>
 
         <pages:DataMenuPage
@@ -27,8 +23,7 @@
             DataContext="{Binding DocumentSub}"/>
         
         <pages:DataMenuPage
-            Grid.Row="1"
-            Grid.Column="1"
+            Grid.Row="2"
             DataContext="{Binding PaymentSub}"/>
     </Grid>
 </UserControl>
