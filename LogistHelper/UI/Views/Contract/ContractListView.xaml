@@ -8,7 +8,6 @@
              xmlns:dtos="clr-namespace:DTOs;assembly=DTOs"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
-             xmlns:behaviours="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
              xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              mc:Ignorable="d" 
@@ -19,15 +18,6 @@
         <converters:EvenNumberToBoolConverter x:Key="EvenNumberToBoolConverter"/>
 
         <ObjectDataProvider 
-            x:Key="searchProp" 
-            MethodName="GetValues"
-            ObjectType="{x:Type system:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="dtos:ContractFilterProperty"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-        
-        <ObjectDataProvider 
              x:Key="status" 
              MethodName="GetValues"
              ObjectType="{x:Type system:Enum}">
@@ -37,160 +27,7 @@
         </ObjectDataProvider>
     </UserControl.Resources>
 
-    <Grid>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition />
-        </Grid.RowDefinitions>
-
-        <local:NavigationBack
-            HorizontalAlignment="Right"
-            DataContext="{Binding RelativeSource={RelativeSource AncestorType=pages:DataMenuPage}, Path=DataContext}"/>
-
-        <Grid
-            Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="auto"/>
-                <RowDefinition/>
-                <RowDefinition
-                    Height="auto"/>
-            </Grid.RowDefinitions>
-
-            <Grid>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <TextBlock
-                    Foreground="{StaticResource NeutralOneBrush}"
-                    Style="{StaticResource HeaderTwoText}"
-                    Text="Фильтр:"/>
-
-                <ComboBox
-                    Grid.Column="1"
-                    Height="40"
-                    Width="200"
-                    ItemsSource="{Binding Source={StaticResource searchProp}}"
-                    SelectedItem="{Binding SelectedSearchProperty}"
-                    Style="{StaticResource CustomComboBox}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock
-                                Style="{StaticResource DefaultText}"
-                                Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-
-                <Grid
-                    Width="200"
-                    Grid.Column="2">
-
-                    <controls:CustomDatePicker
-                        StartDate="{Binding StartDate}"
-                        EndDate="{Binding EndDate}">
-                        <controls:CustomDatePicker.Style>
-                            <Style>
-                                <Setter Property="controls:CustomDatePicker.Visibility" Value="Hidden"/>
-                                <Style.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static  dtos:ContractFilterProperty.Date}">
-                                        <Setter Property="controls:CustomDatePicker.Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </controls:CustomDatePicker.Style>
-
-                        <behaviours:Interaction.Triggers>
-                            <behaviours:EventTrigger EventName="SelectedDateChanged">
-                                <behaviours:InvokeCommandAction
-                                     Command="{Binding SelectRangeCommand}"
-                                     CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DatePicker}, Path=Calendar.se}"/>
-                            </behaviours:EventTrigger>
-                        </behaviours:Interaction.Triggers>
-                    </controls:CustomDatePicker>
-
-                    <TextBox
-                        Text="{Binding TextSearchString}">
-                        <TextBox.Style>
-                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MainCentralTextBox}">
-                                <Setter Property="TextBox.Visibility" Value="Hidden"/>
-                                <Style.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Route}">
-                                        <Setter Property="TextBox.Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-
-                    <ComboBox
-                        ItemsSource="{Binding Source={StaticResource status}}"
-                        SelectedItem="{Binding SelectedStatus}"
-                        Height="40">
-                        <ComboBox.Style>
-                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource CustomComboBox}">
-                                <Setter Property="ComboBox.Visibility" Value="Hidden"/>
-                                <Style.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Status}">
-                                        <Setter Property="ComboBox.Visibility" Value="Visible"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ComboBox.Style>
-
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock
-                                    Style="{StaticResource DefaultText}"
-                                    Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-
-                    <controls:SearchBox
-                        SearchList="{Binding SearchResults}"
-                        SelectedSearch="{Binding SelectedSearch}"
-                        DisplayMemberPath="Name"
-                        IsDynamicSearch="True">
-                        <controls:SearchBox.Style>
-                            <Style>
-                                <Setter Property="controls:SearchBox.Visibility" Value="Hidden"/>
-                                <Style.Triggers>
-                                    <DataTrigger
-                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Carrier}">
-                                        <Setter Property="controls:SearchBox.Visibility" Value="Visible"/>
-                                        <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SearchCarrierCommand}"/>
-                                    </DataTrigger>
-                                    <DataTrigger
-                                        Binding="{Binding SelectedSearchProperty}" Value="{x:Static dtos:ContractFilterProperty.Driver}">
-                                        <Setter Property="controls:SearchBox.Visibility" Value="Visible"/>
-                                        <Setter Property="controls:SearchBox.SearchCommand" Value="{Binding SearchDriverCommand}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </controls:SearchBox.Style>
-                    </controls:SearchBox>
-
-                </Grid>
-
-                <Button
-                    Grid.Column="3"
-                    Height="40"
-                    Style="{StaticResource NeutralButton}"
-                    Command="{Binding FiltrateCommand}"
-                    Content="Применить"/>
-            </Grid>
-
-            <ItemsControl
+    <ItemsControl
                 Grid.Row="1"
                 ItemsSource="{Binding List}">
 
@@ -208,8 +45,8 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                
-                                
+
+
 
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -311,7 +148,7 @@
                                         Style="{StaticResource HeaderThreeText}"
                                         Foreground="{StaticResource NeutralOneBrush}"
                                         Text="Приход"/>
-                                    
+
                                     <TextBlock
                                         Grid.Column="12"
                                         Style="{StaticResource HeaderThreeText}"
@@ -320,13 +157,13 @@
 
                                 </Grid>
 
-                            
+
 
                                 <ItemsPresenter
                                     Grid.Row="1"/>
 
-                            
-                        </Grid>
+
+                            </Grid>
                         </ScrollViewer>
                     </ControlTemplate>
                 </ItemsControl.Template>
@@ -504,7 +341,7 @@
                                     <RowDefinition />
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                
+
                                 <TextBlock
                                     Style="{StaticResource DefaultText}"
                                     TextAlignment="Center"
@@ -526,7 +363,7 @@
                                     </TextBlock.Style>
                                 </TextBlock>
                             </Grid>
-                            
+
                             <TextBlock
                                 Grid.Column="11"
                                 Style="{StaticResource DefaultText}"
@@ -544,11 +381,5 @@
                 </ItemsControl.ItemTemplate>
 
             </ItemsControl>
-        </Grid>
-
-        <local:BlockView
-            Grid.RowSpan="2"/>
-
-    </Grid>
 
 </UserControl>

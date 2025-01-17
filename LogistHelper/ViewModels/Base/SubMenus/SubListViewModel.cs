@@ -20,6 +20,8 @@ namespace LogistHelper.ViewModels.Base
 
         private ObservableCollection<DataViewModel<T>> _list;
 
+        protected string _mainPropertyName;
+
         #endregion Private
 
         #region Public
@@ -97,7 +99,7 @@ namespace LogistHelper.ViewModels.Base
 
             List?.Clear();
 
-            RequestResult<IEnumerable<T>> result = await _client.GetMainId<T>(MainId);
+            RequestResult<IEnumerable<T>> result = await _client.GetFiltered<T>(_mainPropertyName, mainId.ToString());
 
             if (result.IsSuccess)
             {

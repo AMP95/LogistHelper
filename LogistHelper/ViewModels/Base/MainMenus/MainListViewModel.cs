@@ -27,17 +27,13 @@ namespace LogistHelper.ViewModels.Base
         private string _searchString;
         private ObservableCollection<DataViewModel<T>> _list;
 
+        private Dictionary<string, string> _searchFirters;
+        private KeyValuePair<string, string> _selectedFilter;
         #endregion Private
 
         #region Public
 
         public IMainMenuPage<T> MainParent { get; set; }
-
-        public string SearchString
-        {
-            get => _searchString;
-            set => SetProperty(ref _searchString, value);
-        }
 
         public bool IsForwardAwaliable
         {
@@ -57,6 +53,18 @@ namespace LogistHelper.ViewModels.Base
             set => SetProperty(ref _list, value);
         }
 
+        public Dictionary<string, string> SearchFirters
+        {
+            get => _searchFirters;
+            set => SetProperty(ref _searchFirters, value);
+        }
+
+        public virtual KeyValuePair<string, string> SelectedFilter 
+        {
+            get => _selectedFilter;
+            set => SetProperty(ref _selectedFilter, value);
+        }
+
         #endregion Public
 
         #region Commands
@@ -64,8 +72,8 @@ namespace LogistHelper.ViewModels.Base
         public ICommand BackwardCommand { get; set; }
         public ICommand ForwardCommand { get; set; }
 
-        public ICommand SearchCommand { get; set; }
-        public ICommand ResetSearchCommand { get; set; }
+        public ICommand FilterCommand { get; set; }
+        public ICommand ResetFilterCommand { get; set; }
 
         public ICommand EditCommand { get; set; }
         public ICommand AddCommand { get; set; }
@@ -102,15 +110,14 @@ namespace LogistHelper.ViewModels.Base
                 }
             });
 
-            SearchCommand = new RelayCommand(async () =>
+            FilterCommand = new RelayCommand(async () =>
             {
-                await Search();
+                await FilterCommandExecutor();
             });
 
 
-            ResetSearchCommand = new RelayCommand(async () =>
+            ResetFilterCommand = new RelayCommand(async () =>
             {
-                SearchString = string.Empty;
                 await Load();
             });
 
@@ -136,6 +143,8 @@ namespace LogistHelper.ViewModels.Base
 
             #endregion CommandsInit
         }
+
+        protected virtual Task FilterCommandExecutor() { return Task.CompletedTask; }
 
         public virtual void Clear()
         {
@@ -163,14 +172,14 @@ namespace LogistHelper.ViewModels.Base
             IsBlock = false;
         }
 
-        public virtual async Task Search()
+        public virtual async Task Filter(string proerty, params string[] param) 
         {
             IsBlock = true;
             BlockText = "Поиск";
 
             List?.Clear();
 
-            RequestResult<IEnumerable<T>> result = await _client.Search<T>(SearchString);
+            RequestResult<IEnumerable<T>> result = await _client.GetFiltered<T>(proerty, param);
 
             if (result.IsSuccess)
             {
@@ -182,7 +191,6 @@ namespace LogistHelper.ViewModels.Base
             IsBackwardAwaliable = false;
 
             IsBlock = false;
-
         }
 
         public virtual async Task Delete(Guid id)

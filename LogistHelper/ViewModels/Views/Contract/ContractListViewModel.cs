@@ -2,10 +2,7 @@
 using DTOs;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
-using LogistHelper.ViewModels.DataViewModels;
-using ServerClient;
 using Shared;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
@@ -14,50 +11,20 @@ namespace LogistHelper.ViewModels.Views
     {
         #region Private
 
-        private ContractFilterProperty _selectedSearchProperty;
-
-        private string _textSearchString;
+        private string _searchString;
         private ContractStatus _selectedStatus;
         private DateTime _startDate;
         private DateTime _endDate;
-        private ObservableCollection<StringItem> _searchResults;
-        private StringItem _selectedSearch;
 
         #endregion Private
 
 
         #region Public
 
-        public ObservableCollection<StringItem> SearchResults 
-        { 
-            get => _searchResults;
-            set => SetProperty(ref _searchResults, value);
-        }
-
-        public StringItem SelectedSearch 
+        public string SearchString 
         {
-            get => _selectedSearch;
-            set 
-            { 
-                SetProperty(ref _selectedSearch, value);
-                TextSearchString = SelectedSearch?.Item;
-            }
-        }
-
-        public ContractFilterProperty SelectedSearchProperty 
-        {
-            get => _selectedSearchProperty;
-            set
-            {
-                SetProperty(ref _selectedSearchProperty, value);
-                TextSearchString = string.Empty;
-            }
-        }
-
-        public string TextSearchString 
-        {
-            get => _textSearchString;
-            set => SetProperty(ref _textSearchString, value);
+            get => _searchString;
+            set => SetProperty(ref _searchString, value);
         }
 
         public ContractStatus SelectedStatus
@@ -78,15 +45,26 @@ namespace LogistHelper.ViewModels.Views
             set => SetProperty(ref _endDate, value);
         }
 
+        public override KeyValuePair<string, string> SelectedFilter 
+        { 
+            get => base.SelectedFilter;
+            set 
+            { 
+                base.SelectedFilter = value;
+
+                SearchString = string.Empty;
+
+                DateTime now = DateTime.Now;
+                StartDate = new DateTime(now.Year, now.Month, 1);
+                EndDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
+            }
+        }
+
         #endregion Public
 
         #region Commands
 
         public ICommand AddDocumentCommand { get; set; }
-        public ICommand SearchClientCommand { get; }
-        public ICommand SearchCarrierCommand { get; }
-        public ICommand SearchDriverCommand { get; }
-        public ICommand FiltrateCommand { get; }
 
         #endregion Commands
 
@@ -94,23 +72,30 @@ namespace LogistHelper.ViewModels.Views
                                      IViewModelFactory<ContractDto> factory, 
                                      IDialog dialog) : base(repository, factory, dialog)
         {
-            SelectedSearchProperty = ContractFilterProperty.Date;
-
-            DateTime now = DateTime.Now;
-            StartDate = new DateTime(now.Year, now.Month, 1);
-            EndDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
-
             IsBackwardAwaliable = false;
             IsForwardAwaliable = false;
 
+            SearchFirters = new Dictionary<string, string>()
+            {
+                {  nameof(ContractDto.CreationDate), "Дата создания" },
+                {  nameof(ContractDto.Number), "Номер" },
+                {  nameof(ContractDto.Status), "Статус" },
+                {  nameof(ContractDto.Client),"Заказчик" },
+                {  nameof(ContractDto.Carrier),"Перевочик" },
+                {  nameof(ContractDto.Driver), "Водитель" },
+                {  nameof(ContractDto.Vehicle),"ТС" },
+                {  nameof(ContractDto.LoadPoint), "Загрузка" },
+                {  nameof(ContractDto.UnloadPoints), "Выгрузка" },
+            };
+
+            SelectedFilter = SearchFirters.FirstOrDefault(p => p.Key == nameof(ContractDto.CreationDate));
+
             #region CommandsInit
 
-            ResetSearchCommand = new RelayCommand(async () =>
+            ResetFilterCommand = new RelayCommand(async () =>
             {
-                DateTime now = DateTime.Now;
-                StartDate = new DateTime(now.Year, now.Month, 1);
-                EndDate = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
-                SelectedSearchProperty = ContractFilterProperty.Date;
+                SelectedFilter = SearchFirters.FirstOrDefault(p => p.Key == nameof(ContractDto.CreationDate));
+
                 await Load();
             });
 
@@ -119,22 +104,23 @@ namespace LogistHelper.ViewModels.Views
                 (MainParent as ISubParent).SwitchToSub(id);
             });
 
-            SearchCarrierCommand = new RelayCommand<string>(async (searchString) =>
-            {
-                await SearchCarrier(searchString);
-            });
-
-            SearchDriverCommand = new RelayCommand<string>(async (searchString) =>
-            {
-                await SearchDriver(searchString);
-            });
-
-            FiltrateCommand = new RelayCommand(async () => 
-            {
-                await Load();
-            });
-
             #endregion CommandsInit
+        }
+
+        protected override async Task FilterCommandExecutor()
+        {
+            if (SelectedFilter.Key == nameof(ContractDto.CreationDate))
+            {
+                await Filter(SelectedFilter.Key, StartDate.ToString(), EndDate.ToString());
+            }
+            else if (SelectedFilter.Key == nameof(ContractDto.Status))
+            {
+                await Filter(SelectedFilter.Key, SelectedStatus.ToString());
+            }
+            else 
+            {
+                await Filter(SelectedFilter.Key, SearchString);
+            }
         }
 
         public override async Task Load()
@@ -142,59 +128,9 @@ namespace LogistHelper.ViewModels.Views
             IsBlock = true;
             BlockText = "Загрузка";
 
-            List?.Clear();
-
-            object[] param = null;
-
-            switch (SelectedSearchProperty) 
-            { 
-                case ContractFilterProperty.Date: param = new object[] { StartDate, EndDate }; ; break;
-                case ContractFilterProperty.Status: param = new object[] { SelectedStatus }; ; break;
-                default:
-                    param = new object[] { TextSearchString };
-                    ;break;
-
-            }
-
-            RequestResult<IEnumerable<ContractDto>> result = await _client.GetFilter(SelectedSearchProperty, param);
-
-            if (result.IsSuccess)
-            {
-                int counter = 1;
-                List = new ObservableCollection<DataViewModel<ContractDto>>(result.Result.Select(c => _factory.GetViewModel(c, counter++)));
-            }
+            await FilterCommandExecutor();
 
             IsBlock = false;
-        }
-
-        private async Task SearchCarrier(string searchString)
-        {
-            await Task.Run(async () =>
-            {
-                RequestResult<IEnumerable<CarrierDto>> result = await _client.Search<CarrierDto>(searchString);
-
-                SearchResults = null;
-
-                if (result.IsSuccess)
-                {
-                    SearchResults = new ObservableCollection<StringItem>(result.Result.Select(v => new StringItem(v.Name)));
-                }
-            });
-        }
-
-        private async Task SearchDriver(string searchString)
-        {
-            await Task.Run(async () =>
-            {
-                RequestResult<IEnumerable<DriverDto>> result = await _client.Search<DriverDto>(searchString);
-
-                SearchResults = null;
-
-                if (result.IsSuccess)
-                {
-                    SearchResults = new ObservableCollection<StringItem>(result.Result.Select(v => new StringItem(v.Name)));
-                }
-            });
         }
     }
 }

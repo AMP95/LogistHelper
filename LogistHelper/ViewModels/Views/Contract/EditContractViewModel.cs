@@ -162,7 +162,7 @@ namespace LogistHelper.ViewModels.Views
                     _selectedDriver = _contract.Driver;
                     OnPropertyChanged(nameof(SelectedDriver));
 
-                    var vehResult = await _client.GetMainId<VehicleDto>(_contract.Carrier.Id);
+                    var vehResult = await _client.GetFiltered<VehicleDto>("CarrierId", _contract.Carrier.Id.ToString());
 
                     if (vehResult.IsSuccess)
                     {
@@ -284,7 +284,7 @@ namespace LogistHelper.ViewModels.Views
         {
             await Task.Run(async () =>
             {
-                RequestResult<IEnumerable<DriverDto>> result = await _client.Search<DriverDto>(searchString);
+                RequestResult<IEnumerable<DriverDto>> result = await _client.GetFiltered<DriverDto>(nameof(DriverDto.Name), searchString);
 
                 if (result.IsSuccess)
                 {
@@ -301,7 +301,7 @@ namespace LogistHelper.ViewModels.Views
         {
             await Task.Run(async () =>
             {
-                RequestResult<IEnumerable<ClientDto>> result = await _client.Search<ClientDto>(searchString);
+                RequestResult<IEnumerable<ClientDto>> result = await _client.GetFiltered<ClientDto>(nameof(ClientDto.Name), searchString);
 
                 if (result.IsSuccess)
                 {
