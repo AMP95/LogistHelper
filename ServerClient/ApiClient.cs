@@ -16,6 +16,7 @@ namespace ServerClient
         private string _url;
         private string _token;
 
+       
         public ApiClient(string url)
         {
             _url = url;
@@ -26,6 +27,7 @@ namespace ServerClient
             return await SendAsync<T>(HttpMethod.Get, $"{_url}/{route}");
         }
 
+
         public async Task<RequestResult<T>> GetId<T>(Guid id)
         {
             string route = GetRoute(typeof(T));
@@ -33,10 +35,19 @@ namespace ServerClient
             return await GetResult<T>(result);
         }
 
-        public async Task<RequestResult<IEnumerable<T>>> GetMainId<T>(Guid? id)
+        /* https://localhost:7081/api/Get/contract/filter/Date?param=01.01.2024&param=01.01.2025 */
+        public async Task<RequestResult<IEnumerable<T>>> GetFiltered<T>(string propertyName, params string[] param)
         {
             string route = GetRoute(typeof(T));
-            RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/main/{id}");
+
+            string uri = $"Get/{route}/filter/{propertyName}";
+
+            if (param.Any()) 
+            { 
+                uri += "?param=" + string.Join("&param=", param);
+            }
+
+            RequestResult<Guid> result = await GetRequest<Guid>(uri);
             return await GetResult<IEnumerable<T>>(result);
         }
 
@@ -44,20 +55,6 @@ namespace ServerClient
         {
             string route = GetRoute(typeof(T));
             RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/range/{start}/{end}");
-            return await GetResult<IEnumerable<T>>(result);
-        }
-
-        public async Task<RequestResult<IEnumerable<ContractDto>>> GetFilter(ContractFilterProperty property, params object[] parameters)
-        {
-            string route = GetRoute(typeof(ContractDto));
-            RequestResult<Guid> result = await SendAsync<Guid>(HttpMethod.Post, $"{_url}/Get/{route}/filter/{property.ToString()}", JsonConvert.SerializeObject(new { param = parameters }));
-            return await GetResult<IEnumerable<ContractDto>>(result);
-        }
-
-        public async Task<RequestResult<IEnumerable<T>>> Search<T>(string name)
-        {
-            string route = GetRoute(typeof(T));
-            RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/search/{name}");
             return await GetResult<IEnumerable<T>>(result);
         }
 
@@ -72,6 +69,13 @@ namespace ServerClient
         {
             string route = GetRoute(typeof(T));
             RequestResult<Guid> result = await SendAsync<Guid>(HttpMethod.Put, $"{_url}/Update/{route}", JsonConvert.SerializeObject(value));
+            return await GetResult<bool>(result);
+        }
+
+        public async Task<RequestResult<bool>> UpdateContractStatus(Guid contractId, ContractStatus status)
+        {
+            string route = GetRoute(typeof(ContractDto));
+            RequestResult<Guid> result = await SendAsync<Guid>(HttpMethod.Put, $"{_url}/Update/{route}/status/{contractId}/{status.ToString()}");
             return await GetResult<bool>(result);
         }
 
@@ -99,6 +103,7 @@ namespace ServerClient
                 default: return string.Empty;
             }
         }
+
 
         private async Task<RequestResult<T>> SendAsync<T>(HttpMethod method, string route, string jObject = null)
         {
@@ -150,6 +155,7 @@ namespace ServerClient
             }
             return result;
         }
+
 
         private async Task<RequestResult<T>> GetResult<T>(RequestResult<Guid> guidResult)
         {
