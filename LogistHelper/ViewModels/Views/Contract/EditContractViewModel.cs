@@ -180,6 +180,11 @@ namespace LogistHelper.ViewModels.Views
 
         public override bool CheckSave()
         {
+            if (_contract.Status == ContractStatus.Failed) 
+            {
+                _dialog.ShowError("Нельзя сохранить данные сорваной заявки", "Сохранение");
+                return false;
+            }
             if (_contract.Volume <= 0 || _contract.Weight <= 0)
             {
                 _dialog.ShowError("Необходимо указать вес и объем груза", "Сохранение");

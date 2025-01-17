@@ -46,6 +46,16 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
+        <Grid.Style>
+            <Style>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding EditedViewModel.Status}" Value="{x:Static dtos:ContractStatus.Failed}">
+                        <Setter Property="Grid.IsEnabled" Value="False"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+
         <TextBlock
             Grid.ColumnSpan="3"
             Style="{StaticResource HeaderTwoText}">

@@ -28,27 +28,27 @@
     </UserControl.Resources>
 
     <ItemsControl
-                Grid.Row="1"
-                ItemsSource="{Binding List}">
+        Grid.Row="1"
+        ItemsSource="{Binding List}">
 
-                <ItemsControl.Template>
-                    <ControlTemplate>
+        <ItemsControl.Template>
+            <ControlTemplate>
 
-                        <ScrollViewer
-                            Grid.Row="1"
-                            VerticalScrollBarVisibility="Visible"
-                            HorizontalScrollBarVisibility="Auto"
-                            Style="{StaticResource CustomScroll}">
+                <ScrollViewer
+                    Grid.Row="1"
+                    VerticalScrollBarVisibility="Visible"
+                    HorizontalScrollBarVisibility="Auto"
+                    Style="{StaticResource CustomScroll}">
 
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition/>
-                                </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
 
 
 
-                                <Grid>
+                        <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition
                                             Width="100"/>
@@ -159,227 +159,279 @@
 
 
 
-                                <ItemsPresenter
+                        <ItemsPresenter
                                     Grid.Row="1"/>
 
 
-                            </Grid>
-                        </ScrollViewer>
-                    </ControlTemplate>
-                </ItemsControl.Template>
+                    </Grid>
+                </ScrollViewer>
+            </ControlTemplate>
+        </ItemsControl.Template>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
-                                    Width="100"/>
-                                <ColumnDefinition
-                                    Width="70"/>
-                                <ColumnDefinition
-                                    Width="70"/>
-                                <ColumnDefinition
-                                    Width="70"/>
-                                <ColumnDefinition
-                                    Width="70"/>
-                                <ColumnDefinition
-                                    Width="100"/>
-                                <ColumnDefinition
-                                    Width="200"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition
-                                    Width="120"/>
-                                <ColumnDefinition
-                                    Width="120"/>
-                                <ColumnDefinition
-                                    Width="120"/>
-                            </Grid.ColumnDefinitions>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="100"/>
+                        <ColumnDefinition
+                            Width="70"/>
+                        <ColumnDefinition
+                            Width="70"/>
+                        <ColumnDefinition
+                            Width="70"/>
+                        <ColumnDefinition
+                            Width="70"/>
+                        <ColumnDefinition
+                            Width="100"/>
+                        <ColumnDefinition
+                            Width="200"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition
+                            Width="120"/>
+                        <ColumnDefinition
+                            Width="120"/>
+                        <ColumnDefinition
+                            Width="120"/>
+                    </Grid.ColumnDefinitions>
 
-                            <Grid.Style>
+                    <Grid.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="True">
+                                    <Setter Property="Grid.Background" Value="{StaticResource LightBlueBrush}"/>
+                                </DataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="True"/>
+                                        <Condition Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Failed}"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="Grid.Background">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{StaticResource Deny}" Opacity="0.3"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="False"/>
+                                        <Condition Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Failed}"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="Grid.Background">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{StaticResource Deny}" Opacity="0.1"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="True"/>
+                                        <Condition Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Closed}"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="Grid.Background">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{StaticResource Accept}" Opacity="0.3"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="False"/>
+                                        <Condition Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Closed}"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="Grid.Background">
+                                            <Setter.Value>
+                                                <SolidColorBrush Color="{StaticResource Accept}" Opacity="0.1"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+
+                    <StackPanel
+                        Orientation="Horizontal">
+
+                        <Button
+                            ToolTip="Редактировать"
+                            Style="{StaticResource IconButton}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.EditCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Image
+                                Source="/UI/Icons/edit_icon.png"/>
+                        </Button>
+
+                        <Button
+                            ToolTip="Добавить документы"
+                            Style="{StaticResource IconButton}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.AddDocumentCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Image
+                                Source="/UI/Icons/addoc_icon.png"/>
+                        </Button>
+
+                    </StackPanel>
+
+                    <Grid
+                        Grid.Column="1">
+                        <Image
+                            Height="45">
+                            <Image.Style>
                                 <Style>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="True">
-                                            <Setter Property="Grid.Background" Value="{StaticResource LightBlueBrush}"/>
+                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Created}">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/new_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.DocumentsRecieved}">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/recieve_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.DocumentSended}">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/send_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Closed}">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/done_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Failed}">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/fail_icon.png"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Grid.Style>
+                            </Image.Style>
+                        </Image>
 
-                            <StackPanel
-                                Orientation="Horizontal">
+                        <Button
+                            ToolTip="Срыв"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.SetFailCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
+                                    <Setter Property="Button.Visibility" Value="Hidden"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Created}">
+                                            <Setter Property="Button.Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
 
-                                <Button
-                                    ToolTip="Редактировать"
-                                    Style="{StaticResource IconButton}"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.EditCommand}"
-                                    CommandParameter="{Binding Id}">
-                                    <Image
-                                        Source="/UI/Icons/edit_icon.png"/>
-                                </Button>
+                    <TextBlock
+                        Grid.Column="2"
+                        TextAlignment="Center"
+                        Text="{Binding Carrier.Vat, Converter={StaticResource EnumToDescriptionConverter}}">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultText}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Carrier.Vat}" Value="{x:Static dtos:VAT.Without}">
+                                        <Setter Property="TextBlock.Foreground" Value="{StaticResource DenyDarkBrush}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
-                                <Button
-                                    ToolTip="Добавить документы"
-                                    Style="{StaticResource IconButton}"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.AddDocumentCommand}"
-                                    CommandParameter="{Binding Id}">
-                                    <Image
-                                        Source="/UI/Icons/addoc_icon.png"/>
-                                </Button>
+                    <TextBlock
+                        Grid.Column="3"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="ЛГСТ"/>
 
-                            </StackPanel>
+                    <TextBlock
+                        Grid.Column="4"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Number}"/>
 
-                            <Grid
-                                Grid.Column="1">
-                                <Image
-                                    Height="45">
-                                    <Image.Style>
-                                        <Style>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Created}">
-                                                    <Setter Property="Image.Source" Value="/UI/Icons/new_icon.png"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.DocumentsRecieved}">
-                                                    <Setter Property="Image.Source" Value="/UI/Icons/recieve_icon.png"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.DocumentSended}">
-                                                    <Setter Property="Image.Source" Value="/UI/Icons/send_icon.png"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Closed}">
-                                                    <Setter Property="Image.Source" Value="/UI/Icons/done_icon.png"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Failed}">
-                                                    <Setter Property="Image.Source" Value="/UI/Icons/fail_icon.png"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Image.Style>
-                                </Image>
+                    <TextBlock
+                        Grid.Column="5"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding CreationDate, StringFormat='dd.MM.yyyy'}"/>
 
-                                <Button
-                                    ToolTip="Срыв"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.AddDocumentCommand}"
-                                    CommandParameter="{Binding Id}">
-                                    <Button.Style>
-                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
-                                            <Setter Property="Button.Visibility" Value="Hidden"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Created}">
-                                                    <Setter Property="Button.Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                            </Grid>
+                    <TextBlock
+                        Grid.Column="6"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Route}"/>
 
-                            <TextBlock
-                                Grid.Column="2"
-                                TextAlignment="Center"
-                                Text="{Binding Carrier.Vat, Converter={StaticResource EnumToDescriptionConverter}}">
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultText}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Carrier.Vat}" Value="{x:Static dtos:VAT.Without}">
-                                                <Setter Property="TextBlock.Foreground" Value="{StaticResource DenyDarkBrush}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
+                    <TextBlock
+                        Grid.Column="7"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Carrier.Name}"/>
 
-                            <TextBlock
-                                Grid.Column="3"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
-                                Text="ЛГСТ"/>
+                    <TextBlock
+                        Grid.Column="8"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Driver.Name}"/>
 
-                            <TextBlock
-                                Grid.Column="4"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
-                                Text="{Binding Number}"/>
+                    <TextBlock
+                        Grid.Column="9"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center">
+                        <Run Text="{Binding Vehicle.TruckModel}"/>
+                        <Run Text="{Binding Vehicle.TruckNumber}"/>
+                        <Run Text=","/>
+                        <Run Text="{Binding Vehicle.TrailerNumber}"/>
+                    </TextBlock>
 
-                            <TextBlock
-                                Grid.Column="5"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
-                                Text="{Binding CreationDate, StringFormat='dd.MM.yyyy'}"/>
+                    <Grid
+                        Grid.Column="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
 
-                            <TextBlock
-                                Grid.Column="6"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
-                                Text="{Binding Route}"/>
+                        <TextBlock
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center"
+                            Text="{Binding Payment, StringFormat='n0'}"/>
 
-                            <TextBlock
-                                Grid.Column="7"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
-                                Text="{Binding Carrier.Name}"/>
+                        <TextBlock
+                            Grid.Row="1"
+                            TextAlignment="Center">
+                            <Run Text="п/п"/>
+                            <Run Text="{Binding Prepayment, StringFormat='n0'}"/>
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultText}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Prepayment}" Value="0">
+                                            <Setter Property="TextBlock.Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
 
-                            <TextBlock
-                                Grid.Column="8"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
-                                Text="{Binding Driver.Name}"/>
+                    <TextBlock
+                        Grid.Column="11"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding ClientPayment, StringFormat='n0'}"/>
 
-                            <TextBlock
-                                Grid.Column="9"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center">
-                                <Run Text="{Binding Vehicle.TruckModel}"/>
-                                <Run Text="{Binding Vehicle.TruckNumber}"/>
-                                <Run Text=","/>
-                                <Run Text="{Binding Vehicle.TrailerNumber}"/>
-                            </TextBlock>
+                    <TextBlock
+                        Grid.Column="12"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Profit, StringFormat='n0'}"/>
 
-                            <Grid
-                                Grid.Column="10">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
+                </Grid>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
 
-                                <TextBlock
-                                    Style="{StaticResource DefaultText}"
-                                    TextAlignment="Center"
-                                    Text="{Binding Payment, StringFormat='n0'}"/>
-
-                                <TextBlock
-                                    Grid.Row="1"
-                                    TextAlignment="Center">
-                                    <Run Text="п/п"/>
-                                    <Run Text="{Binding Prepayment, StringFormat='n0'}"/>
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultText}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Prepayment}" Value="0">
-                                                    <Setter Property="TextBlock.Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </Grid>
-
-                            <TextBlock
-                                Grid.Column="11"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
-                                Text="{Binding ClientPayment, StringFormat='n0'}"/>
-
-                            <TextBlock
-                                Grid.Column="12"
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
-                                Text="{Binding Profit, StringFormat='n0'}"/>
-
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-
-            </ItemsControl>
+    </ItemsControl>
 
 </UserControl>

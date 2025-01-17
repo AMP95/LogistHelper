@@ -65,6 +65,7 @@ namespace LogistHelper.ViewModels.Views
         #region Commands
 
         public ICommand AddDocumentCommand { get; set; }
+        public ICommand SetFailCommand { get; set; }
 
         #endregion Commands
 
@@ -102,6 +103,16 @@ namespace LogistHelper.ViewModels.Views
             AddDocumentCommand = new RelayCommand<Guid>((id) => 
             {
                 (MainParent as ISubParent).SwitchToSub(id);
+            });
+
+            SetFailCommand = new RelayCommand<Guid>(async (id) => 
+            {
+                if (_dialog.ShowQuestion("После установки статуса заявки - Срыв, восстановить статус будет невозможно. Вы уверены?")) 
+                { 
+                    await _client.UpdateContractStatus(id, ContractStatus.Failed);
+
+                    await Load();
+                }
             });
 
             #endregion CommandsInit
