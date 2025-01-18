@@ -1,11 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
-using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
-using ServerClient;
+using Models.Suggest;
 using Shared;
 using System.Windows.Input;
+using Utilities;
 
 namespace LogistHelper.ViewModels.Views
 {
@@ -15,18 +15,21 @@ namespace LogistHelper.ViewModels.Views
 
         private VehicleViewModel _vehicle;
 
+        private IDataSuggest<TruckModelSuggestItem> _truckSuggest;
+        private IDataSuggest<TrailerModelSuggestItem> _trailerSuggest;
+
         private IEnumerable<DataViewModel<CarrierDto>> _carriers;
         private DataViewModel<CarrierDto> _selectedCarrier;
 
         private IViewModelFactory<CarrierDto> _carrierFactory;
 
         private string _searchTruckBrand;
-        private IEnumerable<StringItem> _truckBrands;
-        private IEnumerable<StringItem> _trailerBrands;
+        private IEnumerable<ListItem<string>> _truckBrands;
+        private IEnumerable<ListItem<string>> _trailerBrands;
 
         private string _searchTrailerBrand;
-        private StringItem _selectedTruckBrand;
-        private StringItem _selectedTrailerBrand;
+        private ListItem<string> _selectedTruckBrand;
+        private ListItem<string> _selectedTrailerBrand;
 
         #endregion Private
 
@@ -37,13 +40,13 @@ namespace LogistHelper.ViewModels.Views
             get => _searchTruckBrand;
             set => SetProperty(ref _searchTruckBrand, value);
         }
-        public IEnumerable<StringItem> TruckBrands 
+        public IEnumerable<ListItem<string>> TruckBrands 
         {
             get => _truckBrands;
             set => SetProperty(ref _truckBrands, value);
         }
 
-        public StringItem SelectedTruckBrand
+        public ListItem<string> SelectedTruckBrand
         {
             get => _selectedTruckBrand;
             set
@@ -65,13 +68,13 @@ namespace LogistHelper.ViewModels.Views
             get => _searchTrailerBrand;
             set => SetProperty(ref _searchTrailerBrand, value);
         }
-        public IEnumerable<StringItem> TrailerBrands
+        public IEnumerable<ListItem<string>> TrailerBrands
         {
             get => _trailerBrands;
             set => SetProperty(ref _trailerBrands, value);
         }
 
-        public StringItem SelectedTrailerBrand
+        public ListItem<string> SelectedTrailerBrand
         {
             get => _selectedTrailerBrand;
             set
@@ -113,13 +116,17 @@ namespace LogistHelper.ViewModels.Views
         public ICommand SearchTrailerBrandCommand { get; set; }
 
         #endregion Commands
-        public EditVehicleViewModel(ISettingsRepository<Settings> repository, 
+        public EditVehicleViewModel(IDataAccess repository, 
                                     IViewModelFactory<VehicleDto> factory,
                                     IViewModelFactory<CarrierDto> carrierFactory,
-                                    IDialog dialog) : base(repository, factory, dialog)
+                                    IDialog dialog,
+                                    IDataSuggest<TruckModelSuggestItem> truckSuggest,
+                                    IDataSuggest<TrailerModelSuggestItem> trailerSuggest) : base(repository, factory, dialog)
         {
 
             _carrierFactory = carrierFactory;
+            _truckSuggest = truckSuggest;
+            _trailerSuggest = trailerSuggest;
 
             #region CommandsInit
 
@@ -130,12 +137,16 @@ namespace LogistHelper.ViewModels.Views
 
             SearchTruckBrandCommand = new RelayCommand<string>(async (searchString) =>
             {
-                await SearchTruckBrand(searchString);
+                var trucks = await _truckSuggest.SuggestAsync(searchString);
+
+                TruckBrands = trucks.Select(s => new ListItem<string>(s.TruckModel));
             });
 
             SearchTrailerBrandCommand = new RelayCommand<string>(async (searchString) =>
             {
-                await SearchTrailerBrand(searchString);
+                var trailers = await _trailerSuggest.SuggestAsync(searchString);
+
+                TruckBrands = trailers.Select(s => new ListItem<string>(s.TrailerModel));
             });
 
             #endregion CommandsInit
@@ -148,8 +159,8 @@ namespace LogistHelper.ViewModels.Views
             await base.Load(id);
             _vehicle = EditedViewModel as VehicleViewModel;
             SelectedCarrier = _vehicle.Carrier;
-            SelectedTruckBrand = new StringItem(_vehicle.TruckModel);
-            SelectedTrailerBrand = new StringItem(_vehicle.TrailerModel);
+            SelectedTruckBrand = new ListItem<string>(_vehicle.TruckModel);
+            SelectedTrailerBrand = new ListItem<string>(_vehicle.TrailerModel);
         }
 
         public override Task Save()
@@ -169,7 +180,7 @@ namespace LogistHelper.ViewModels.Views
         {
             await Task.Run(async () =>
             {
-                RequestResult<IEnumerable<CarrierDto>> result = await _client.GetFiltered<CarrierDto>(nameof(CarrierDto.Name), searchString);
+                IAccessResult<IEnumerable<CarrierDto>> result = await _access.GetFilteredAsync<CarrierDto>(nameof(CarrierDto.Name), searchString);
 
                 SelectedCarrier = null;
 
@@ -181,22 +192,6 @@ namespace LogistHelper.ViewModels.Views
                 {
                     Carriers = null;
                 }
-            });
-        }
-
-        private async Task SearchTruckBrand(string searchString)
-        {
-            await Task.Run(() => 
-            {
-                TruckBrands = _settings.TruckModels.Where(m => m.SearchInputs.Contains(searchString.ToLower())).Select(s => new StringItem(s.Standart));
-            });
-        }
-
-        private async Task SearchTrailerBrand(string searchString)
-        {
-            await Task.Run(() =>
-            {
-                TrailerBrands = _settings.TrailerModels.Where(m => m.SearchInputs.Contains(searchString.ToLower())).Select(s => new StringItem(s.Standart));
             });
         }
 

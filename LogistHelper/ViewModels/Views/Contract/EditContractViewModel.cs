@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
-using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
-using ServerClient;
 using Shared;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -108,7 +106,7 @@ namespace LogistHelper.ViewModels.Views
 
         #endregion Commands
 
-        public EditContractViewModel(ISettingsRepository<Settings> repository, 
+        public EditContractViewModel(IDataAccess repository, 
                                      IViewModelFactory<ContractDto> factory, 
                                      IDialog dialog) : base(repository, factory, dialog)
         {
@@ -138,12 +136,12 @@ namespace LogistHelper.ViewModels.Views
                 _contract = EditedViewModel as ContractViewModel;
 
                 _contract.CreationDate = DateTime.Now;
-                _contract.Number = (short)(AppSettings.Default.lastContractNumer + 1);
+                //_contract.Number = (short)(AppSettings.Default.lastContractNumer + 1);
 
-                if (AppSettings.Default.lastContractDate.Year != DateTime.Now.Year) 
-                {
-                    _contract.Number = 1;
-                }
+                //if (AppSettings.Default.lastContractDate.Year != DateTime.Now.Year) 
+                //{
+                //    _contract.Number = 1;
+                //}
 
                 Print = true;
                 Send = true;
@@ -153,7 +151,7 @@ namespace LogistHelper.ViewModels.Views
                 IsBlock = true;
                 BlockText = "Загрузка";
 
-                RequestResult<ContractDto> result = await _client.GetId<ContractDto>(id);
+                IAccessResult<ContractDto> result = await _access.GetIdAsync<ContractDto>(id);
 
                 if (result.IsSuccess)
                 {
@@ -162,7 +160,7 @@ namespace LogistHelper.ViewModels.Views
                     _selectedDriver = _contract.Driver;
                     OnPropertyChanged(nameof(SelectedDriver));
 
-                    var vehResult = await _client.GetFiltered<VehicleDto>("CarrierId", _contract.Carrier.Id.ToString());
+                    var vehResult = await _access.GetFilteredAsync<VehicleDto>("CarrierId", _contract.Carrier.Id.ToString());
 
                     if (vehResult.IsSuccess)
                     {
@@ -223,7 +221,7 @@ namespace LogistHelper.ViewModels.Views
             IsBlock = true;
             BlockText = "Сохранение";
 
-            RequestResult<bool> result;
+            IAccessResult<bool> result;
 
             CreateContractDocument();
 
@@ -234,17 +232,17 @@ namespace LogistHelper.ViewModels.Views
 
             if (EditedViewModel.Id == Guid.Empty)
             {
-                result = await _client.Add(EditedViewModel.GetDto());
+                result = await _access.AddAsync(EditedViewModel.GetDto());
             }
             else
             {
-                result = await _client.Update(EditedViewModel.GetDto());
+                result = await _access.UpdateAsync(EditedViewModel.GetDto());
             }
 
             if (result.IsSuccess)
             {
-                AppSettings.Default.lastContractNumer = _contract.Number;
-                AppSettings.Default.lastContractDate = _contract.CreationDate;
+                //AppSettings.Default.lastContractNumer = _contract.Number;
+                //AppSettings.Default.lastContractDate = _contract.CreationDate;
                 AppSettings.Default.Save();
 
                 if (Send)
@@ -274,7 +272,7 @@ namespace LogistHelper.ViewModels.Views
 
             await Task.Run(async () =>
             {
-                RequestResult<DriverDto> result = await _client.GetId<DriverDto>(id);
+                IAccessResult<DriverDto> result = await _access.GetIdAsync<DriverDto>(id);
 
                 if (result.IsSuccess)
                 {
@@ -289,7 +287,7 @@ namespace LogistHelper.ViewModels.Views
         {
             await Task.Run(async () =>
             {
-                RequestResult<IEnumerable<DriverDto>> result = await _client.GetFiltered<DriverDto>(nameof(DriverDto.Name), searchString);
+                IAccessResult<IEnumerable<DriverDto>> result = await _access.GetFilteredAsync<DriverDto>(nameof(DriverDto.Name), searchString);
 
                 if (result.IsSuccess)
                 {
@@ -306,7 +304,7 @@ namespace LogistHelper.ViewModels.Views
         {
             await Task.Run(async () =>
             {
-                RequestResult<IEnumerable<ClientDto>> result = await _client.GetFiltered<ClientDto>(nameof(ClientDto.Name), searchString);
+                IAccessResult<IEnumerable<ClientDto>> result = await _access.GetFilteredAsync<ClientDto>(nameof(ClientDto.Name), searchString);
 
                 if (result.IsSuccess)
                 {

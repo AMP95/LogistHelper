@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs.Dtos;
-using LogistHelper.Models.Settings;
-using ServerClient;
 using Shared;
 using System.Windows.Input;
 
@@ -12,10 +10,9 @@ namespace LogistHelper.ViewModels.Base
         #region Private
 
         protected IDialog _dialog;
-        protected Settings _settings;
-        protected ApiClient _client;
-
+        protected IDataAccess _access;
         protected IViewModelFactory<T> _factory;
+
         private DataViewModel<T> _editedViewModel;
 
         #endregion Private
@@ -37,15 +34,13 @@ namespace LogistHelper.ViewModels.Base
 
         #endregion Commands
 
-        public MainEditViewModel(ISettingsRepository<Settings> repository, 
+        public MainEditViewModel(IDataAccess dataAccess, 
                                  IViewModelFactory<T> factory, 
                                  IDialog dialog)
         {
-            _settings = repository.GetSettings();
             _dialog = dialog;
             _factory = factory;
-
-            _client = new ApiClient(_settings.ServerUri);
+            _access = dataAccess;
 
             #region CommanstInit
 
@@ -99,7 +94,7 @@ namespace LogistHelper.ViewModels.Base
                 IsBlock = true;
                 BlockText = "Загрузка";
 
-                RequestResult<T> result = await _client.GetId<T>(id);
+                IAccessResult<T> result = await _access.GetIdAsync<T>(id);
 
                 if (result.IsSuccess)
                 {
@@ -112,15 +107,15 @@ namespace LogistHelper.ViewModels.Base
 
         protected virtual async Task<bool> SaveEntity() 
         {
-            RequestResult<bool> result;
+            IAccessResult<bool> result;
 
             if (EditedViewModel.Id == Guid.Empty)
             {
-                result = await _client.Add(EditedViewModel.GetDto());
+                result = await _access.AddAsync(EditedViewModel.GetDto());
             }
             else
             {
-                result = await _client.Update(EditedViewModel.GetDto());
+                result = await _access.UpdateAsync(EditedViewModel.GetDto());
             }
             return result.IsSuccess;
         }

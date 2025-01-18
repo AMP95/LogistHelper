@@ -23,27 +23,30 @@ namespace LogistHelper {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public short lastContractNumer {
+        [global::System.Configuration.DefaultSettingValueAttribute("https://localhost:7081/api")]
+        public string DefaultServerUri {
             get {
-                return ((short)(this["lastContractNumer"]));
-            }
-            set {
-                this["lastContractNumer"] = value;
+                return ((string)(this["DefaultServerUri"]));
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2024-12-12")]
-        public global::System.DateTime lastContractDate {
+        [global::System.Configuration.DefaultSettingValueAttribute("00475e8fb9e3d1877e8b9e0d5d5f269c2a5a7f90")]
+        public string DefaultDaDataKey {
             get {
-                return ((global::System.DateTime)(this["lastContractDate"]));
+                return ((string)(this["DefaultDaDataKey"]));
             }
-            set {
-                this["lastContractDate"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("e9a264f5-e0d3-4b7b-aaf6-aed58083b36c")]
+        public string DefaultYandexKey {
+            get {
+                return ((string)(this["DefaultYandexKey"]));
             }
         }
     }

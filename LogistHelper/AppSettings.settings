@@ -1,12 +1,15 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LogistHelper" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LogistHelper" GeneratedClassName="AppSettings">
   <Profiles />
   <Settings>
-    <Setting Name="lastContractNumer" Type="System.Int16" Scope="User">
-      <Value Profile="(Default)">1</Value>
+    <Setting Name="DefaultServerUri" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://localhost:7081/api</Value>
     </Setting>
-    <Setting Name="lastContractDate" Type="System.DateTime" Scope="User">
-      <Value Profile="(Default)">2024-12-12</Value>
+    <Setting Name="DefaultDaDataKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">00475e8fb9e3d1877e8b9e0d5d5f269c2a5a7f90</Value>
+    </Setting>
+    <Setting Name="DefaultYandexKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">e9a264f5-e0d3-4b7b-aaf6-aed58083b36c</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -1,49 +1,16 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using DTOs;
+﻿using DTOs;
 using LogistHelper.ViewModels.Base;
 using System.Collections.ObjectModel;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
-    public class CompanyItem  : ObservableObject
-    {
-        private string _name;
-        private string _inn;
-        private string _kpp;
-        private string _address;
-
-        public string Name
-        {
-            get => _name;
-            set => SetProperty(ref _name, value);
-        }
-
-        public string Inn
-        {
-            get => _inn;
-            set => SetProperty(ref _inn, value);
-        }
-
-        public string Kpp
-        {
-            get => _kpp;
-            set => SetProperty(ref _kpp, value);
-        }
-
-        public string Address 
-        { 
-            get => _address;
-            set => SetProperty(ref _address, value);
-        }
-
-    }
 
     public abstract class CompanyViewModel<T> : DataViewModel<T> where T : CompanyDto
     {
         #region Private
 
-        private ObservableCollection<StringItem> _phones;
-        private ObservableCollection<StringItem> _emails;
+        private ObservableCollection<ListItem<string>> _phones;
+        private ObservableCollection<ListItem<string>> _emails;
 
         private string _inn;
         private string _kpp;
@@ -98,12 +65,12 @@ namespace LogistHelper.ViewModels.DataViewModels
             }
         }
 
-        public ObservableCollection<StringItem> Phones
+        public ObservableCollection<ListItem<string>> Phones
         {
             get => _phones;
             set => SetProperty(ref _phones, value);
         }
-        public ObservableCollection<StringItem> Emails
+        public ObservableCollection<ListItem<string>> Emails
         {
             get => _emails;
             set => SetProperty(ref _emails, value);
@@ -127,12 +94,12 @@ namespace LogistHelper.ViewModels.DataViewModels
 
                 if (dto.Phones != null)
                 {
-                    Phones = new ObservableCollection<StringItem>(dto.Phones.Select(s => new StringItem(s)));
+                    Phones = new ObservableCollection<ListItem<string>>(dto.Phones.Select(s => new ListItem<string>(s)));
                 }
 
                 if (dto.Emails != null)
                 {
-                    Emails = new ObservableCollection<StringItem>(dto.Emails.Select(s => new StringItem(s)));
+                    Emails = new ObservableCollection<ListItem<string>>(dto.Emails.Select(s => new ListItem<string>(s)));
                 }
             }
         }
@@ -166,8 +133,8 @@ namespace LogistHelper.ViewModels.DataViewModels
         protected override void DefaultInit()
         {
             _dto = new ClientDto();
-            Phones = new ObservableCollection<StringItem>() { new StringItem() };
-            Emails = new ObservableCollection<StringItem>() { new StringItem() };
+            Phones = new ObservableCollection<ListItem<string>>() { new ListItem<string>() };
+            Emails = new ObservableCollection<ListItem<string>>() { new ListItem<string>() };
         }
     }
 
@@ -189,8 +156,8 @@ namespace LogistHelper.ViewModels.DataViewModels
         protected override void DefaultInit()
         {
             _dto = new CarrierDto();
-            Phones = new ObservableCollection<StringItem>() { new StringItem() };
-            Emails = new ObservableCollection<StringItem>() { new StringItem() };
+            Phones = new ObservableCollection<ListItem<string>>() { new ListItem<string>() };
+            Emails = new ObservableCollection<ListItem<string>>() { new ListItem<string>() };
         }
     }
 

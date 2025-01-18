@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
-using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
 using Shared;
 using System.Windows.Input;
@@ -69,7 +68,7 @@ namespace LogistHelper.ViewModels.Views
 
         #endregion Commands
 
-        public ContractListViewModel(ISettingsRepository<Settings> repository, 
+        public ContractListViewModel(IDataAccess repository, 
                                      IViewModelFactory<ContractDto> factory, 
                                      IDialog dialog) : base(repository, factory, dialog)
         {
@@ -109,7 +108,7 @@ namespace LogistHelper.ViewModels.Views
             {
                 if (_dialog.ShowQuestion("После установки статуса заявки - Срыв, восстановить статус будет невозможно. Вы уверены?")) 
                 { 
-                    await _client.UpdateContractStatus(id, ContractStatus.Failed);
+                    await _client.UpdatePropertyAsync<ContractDto>(id, new KeyValuePair<string, object>("Status", ContractStatus.Failed.ToString()));
 
                     await Load();
                 }

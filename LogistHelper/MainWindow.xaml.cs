@@ -1,5 +1,6 @@
 ﻿using LogistHelper.Models;
 using LogistHelper.Services;
+using LogistHelper.ViewModels.Windows;
 using System.Windows;
 
 namespace LogistHelper
@@ -9,7 +10,7 @@ namespace LogistHelper
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = ContainerService.MainWindowViewModel;
+            DataContext = ContainerService.Services.GetService(typeof(MainWindowViewModel));
 
             Loaded += MainWindow_Loaded;
         }

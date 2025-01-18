@@ -1,7 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs.Dtos;
-using LogistHelper.Models.Settings;
-using ServerClient;
 using Shared;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -12,10 +10,8 @@ namespace LogistHelper.ViewModels.Base
     {
         #region Private
 
-        protected Settings _settings;
         protected IDialog _dialog;
-        protected ApiClient _client;
-
+        protected IDataAccess _client;
         protected IViewModelFactory<T> _factory;
 
         protected int _startIndex = 0;
@@ -29,6 +25,7 @@ namespace LogistHelper.ViewModels.Base
 
         private Dictionary<string, string> _searchFirters;
         private KeyValuePair<string, string> _selectedFilter;
+
         #endregion Private
 
         #region Public
@@ -81,14 +78,13 @@ namespace LogistHelper.ViewModels.Base
 
         #endregion Commands
 
-        public MainListViewModel(ISettingsRepository<Settings> repository,
+        public MainListViewModel(IDataAccess access, 
                                  IViewModelFactory<T> factory, 
                                  IDialog dialog)
         {
-            _settings = repository.GetSettings();
             _dialog = dialog;
             _factory = factory;
-            _client = new ApiClient(_settings.ServerUri);
+            _client = access;
 
             #region CommandsInit
 
@@ -158,7 +154,7 @@ namespace LogistHelper.ViewModels.Base
 
             List?.Clear();
 
-            RequestResult<IEnumerable<T>> result = await _client.GetRange<T>(_startIndex, _count);
+            IAccessResult<IEnumerable<T>> result = await _client.GetRangeAsync<T>(_startIndex, _count);
 
             if (result.IsSuccess)
             {
@@ -179,7 +175,7 @@ namespace LogistHelper.ViewModels.Base
 
             List?.Clear();
 
-            RequestResult<IEnumerable<T>> result = await _client.GetFiltered<T>(proerty, param);
+            IAccessResult<IEnumerable<T>> result = await _client.GetFilteredAsync<T>(proerty, param);
 
             if (result.IsSuccess)
             {
@@ -198,7 +194,7 @@ namespace LogistHelper.ViewModels.Base
             IsBlock = true;
             BlockText = "Удаление";
 
-            RequestResult<bool> result = await _client.Delete<T>(id);
+            IAccessResult<bool> result = await _client.DeleteAsync<T>(id);
 
             if (result.IsSuccess)
             {

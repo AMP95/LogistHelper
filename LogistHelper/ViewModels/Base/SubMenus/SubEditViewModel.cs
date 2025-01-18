@@ -1,15 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs.Dtos;
-using LogistHelper.Models.Settings;
 using Shared;
 
 namespace LogistHelper.ViewModels.Base
 {
     public class SubEditViewModel<T> : MainEditViewModel<T>, ISubEditView<T> where T : IDto
     {
-        public SubEditViewModel(ISettingsRepository<Settings> repository, 
+        public SubEditViewModel(IDataAccess access,
                                 IViewModelFactory<T> factory, 
-                                IDialog dialog) : base(repository, factory, dialog)
+                                IDialog dialog) : base(access, factory, dialog)
         {
 
             #region CommandInit
