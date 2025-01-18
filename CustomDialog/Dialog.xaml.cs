@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Shared;
+using System.Windows;
 
 namespace CustomDialog
 {

@@ -1,6 +1,8 @@
-﻿namespace ServerClient
+﻿using Shared;
+
+namespace HelpAPIs
 {
-    public class RequestResult<T>
+    internal class AccessResult<T> : IAccessResult<T>
     {
         public bool IsSuccess { get; set; }
         public string ErrorMessage { get; set; }

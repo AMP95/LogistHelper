@@ -1,4 +1,4 @@
-﻿namespace CustomDialog
+﻿namespace Shared
 {
     public interface IWindowCloser
     {

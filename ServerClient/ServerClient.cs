@@ -1,88 +1,89 @@
 ﻿using DTOs;
+using HelpAPIs.Settings;
 using Newtonsoft.Json;
+using Shared;
 using System.Net.Http.Json;
 
-namespace ServerClient
+namespace HelpAPIs
 {
-    public enum RequestStatus
+    internal enum RequestStatus
     {
         Created,
         InProgress,
         Done,
         Unknown
     }
-    public class ApiClient
+
+    public class ServerClient : IDataAccess
     {
         private string _url;
         private string _token;
 
-       
-        public ApiClient(string url)
+        public ServerClient(ISettingsRepository<ApiSettings> settings)
         {
-            _url = url;
+            _url = settings.GetSettings().ServerUri;
         }
 
-        private async Task<RequestResult<T>> GetRequest<T>(string route)
+        private async Task<IAccessResult<T>> GetRequest<T>(string route)
         {
             return await SendAsync<T>(HttpMethod.Get, $"{_url}/{route}");
         }
 
-
-        public async Task<RequestResult<T>> GetId<T>(Guid id)
+        public async Task<IAccessResult<T>> GetIdAsync<T>(Guid id)
         {
             string route = GetRoute(typeof(T));
-            RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/id/{id}");
+            IAccessResult<Guid> result = await GetRequest<Guid>($"Get/{route}/id/{id}");
             return await GetResult<T>(result);
         }
-
-        /* https://localhost:7081/api/Get/contract/filter/Date?param=01.01.2024&param=01.01.2025 */
-        public async Task<RequestResult<IEnumerable<T>>> GetFiltered<T>(string propertyName, params string[] param)
+                          
+        public async Task<IAccessResult<IEnumerable<T>>> GetFilteredAsync<T>(string propertyName, params string[] param)                                                        
         {
             string route = GetRoute(typeof(T));
 
             string uri = $"Get/{route}/filter/{propertyName}";
 
-            if (param.Any()) 
-            { 
+            if (param.Any())
+            {
                 uri += "?param=" + string.Join("&param=", param);
             }
 
-            RequestResult<Guid> result = await GetRequest<Guid>(uri);
+            IAccessResult<Guid> result = await GetRequest<Guid>(uri);
             return await GetResult<IEnumerable<T>>(result);
         }
-
-        public async Task<RequestResult<IEnumerable<T>>> GetRange<T>(int start, int end)
+                          
+        public async Task<IAccessResult<IEnumerable<T>>> GetRangeAsync<T>(int start, int end)
         {
             string route = GetRoute(typeof(T));
-            RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/range/{start}/{end}");
+            IAccessResult<Guid> result = await GetRequest<Guid>($"Get/{route}/range/{start}/{end}");
             return await GetResult<IEnumerable<T>>(result);
         }
-
-        public async Task<RequestResult<bool>> Add<T>(T value)
+                          
+        public async Task<IAccessResult<bool>> AddAsync<T>(T value)
         {
             string route = GetRoute(typeof(T));
-            RequestResult<Guid> result = await SendAsync<Guid>(HttpMethod.Post, $"{_url}/Add/{route}", JsonConvert.SerializeObject(value));
+            IAccessResult<Guid> result = await SendAsync<Guid>(HttpMethod.Post, $"{_url}/Add/{route}", JsonConvert.SerializeObject(value));
             return await GetResult<bool>(result);
         }
-
-        public async Task<RequestResult<bool>> Update<T>(T value)
+                          
+        public async Task<IAccessResult<bool>> UpdateAsync<T>(T value)
         {
             string route = GetRoute(typeof(T));
-            RequestResult<Guid> result = await SendAsync<Guid>(HttpMethod.Put, $"{_url}/Update/{route}", JsonConvert.SerializeObject(value));
+            IAccessResult<Guid> result = await SendAsync<Guid>(HttpMethod.Put, $"{_url}/Update/{route}", JsonConvert.SerializeObject(value));
             return await GetResult<bool>(result);
         }
-
-        public async Task<RequestResult<bool>> UpdateContractStatus(Guid contractId, ContractStatus status)
-        {
-            string route = GetRoute(typeof(ContractDto));
-            RequestResult<Guid> result = await SendAsync<Guid>(HttpMethod.Put, $"{_url}/Update/{route}/status/{contractId}/{status.ToString()}");
-            return await GetResult<bool>(result);
-        }
-
-        public async Task<RequestResult<bool>> Delete<T>(Guid id)
+                          
+        public async Task<IAccessResult<bool>> UpdatePropertyAsync<T>(Guid id, params KeyValuePair<string, object>[] updates)
         {
             string route = GetRoute(typeof(T));
-            RequestResult<Guid> result = await SendAsync<Guid>(HttpMethod.Delete, $"{_url}/Delete/{route}/{id}");
+            IAccessResult<Guid> result = await SendAsync<Guid>(HttpMethod.Patch, $"{_url}/Patch/{route}/{id}", JsonConvert.SerializeObject(updates));
+            return await GetResult<bool>(result);
+
+        }
+                          
+        public async Task<IAccessResult<bool>> DeleteAsync<T>(Guid id)
+        {
+            string route = GetRoute(typeof(T));
+            IAccessResult<Guid> result = await SendAsync<Guid>(HttpMethod.Delete, $"{_url}/Delete/{route}/{id}");
             return await GetResult<bool>(result);
         }
 
@@ -104,10 +105,9 @@ namespace ServerClient
             }
         }
 
-
-        private async Task<RequestResult<T>> SendAsync<T>(HttpMethod method, string route, string jObject = null)
+        private async Task<IAccessResult<T>> SendAsync<T>(HttpMethod method, string route, string jObject = null)
         {
-            RequestResult<T> result = new RequestResult<T>();
+            AccessResult<T> result = new AccessResult<T>();
 
             try
             {
@@ -156,14 +156,13 @@ namespace ServerClient
             return result;
         }
 
-
-        private async Task<RequestResult<T>> GetResult<T>(RequestResult<Guid> guidResult)
+        private async Task<IAccessResult<T>> GetResult<T>(IAccessResult<Guid> guidResult)
         {
-            RequestResult<T> result = new RequestResult<T>();
+            IAccessResult<T> result = new AccessResult<T>();
 
             if (guidResult.IsSuccess)
             {
-                RequestResult<RequestStatus> statusResult = await GetRequest<RequestStatus>($"Result/status/{guidResult.Result}");
+                IAccessResult<RequestStatus> statusResult = await GetRequest<RequestStatus>($"Result/status/{guidResult.Result}");
 
                 while (statusResult.IsSuccess && statusResult.Result != RequestStatus.Done)
                 {
