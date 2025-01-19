@@ -248,7 +248,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             _routeFactory = routeFactory;
 
-            if (dto != null) 
+            if (dto != null)
             {
                 _driver = new DriverViewModel(dto.Driver);
                 _vehicle = new VehicleViewModel(dto.Vehicle);
@@ -258,12 +258,12 @@ namespace LogistHelper.ViewModels.DataViewModels
 
                 if (dto.UnloadPoints != null)
                 {
-                    UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>(dto.UnloadPoints.Select(p => new ListItem<RoutePointViewModel>() 
-                    { 
+                    UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>(dto.UnloadPoints.Select(p => new ListItem<RoutePointViewModel>()
+                    {
                         Item = _routeFactory.GetViewModel(p) as RoutePointViewModel
                     }));
                 }
-                else 
+                else
                 {
                     ListItem<RoutePointViewModel> item = new ListItem<RoutePointViewModel>(_routeFactory.GetViewModel() as RoutePointViewModel);
                     item.Item.Type = LoadPointType.Download;
@@ -273,6 +273,11 @@ namespace LogistHelper.ViewModels.DataViewModels
                         item
                     };
                 }
+            }
+            else 
+            {
+                LoadPoint = _routeFactory.GetViewModel() as RoutePointViewModel;
+                UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>();
             }
 
             AddUnloadCommand = new RelayCommand(() =>
@@ -334,8 +339,7 @@ namespace LogistHelper.ViewModels.DataViewModels
 
             Client = new ClientViewModel();
             Driver = new DriverViewModel();
-            LoadPoint = _routeFactory.GetViewModel() as RoutePointViewModel;
-            UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>();
+            
         }
     }
 

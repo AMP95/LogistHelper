@@ -135,13 +135,28 @@ namespace LogistHelper.ViewModels.Views
                 EditedViewModel = _factory.GetViewModel();
                 _contract = EditedViewModel as ContractViewModel;
 
-                _contract.CreationDate = DateTime.Now;
-                //_contract.Number = (short)(AppSettings.Default.lastContractNumer + 1);
+                DateTime date = DateTime.Now;
+                int month = date.Month;
 
-                //if (AppSettings.Default.lastContractDate.Year != DateTime.Now.Year) 
-                //{
-                //    _contract.Number = 1;
-                //}
+                _contract.CreationDate = date;
+                _contract.Number = 1;
+
+                IAccessResult<IEnumerable<ContractDto>> result;
+                
+                for (int i = month; i >= 1; i--) 
+                { 
+                    int days = DateTime.DaysInMonth(date.Year, month);
+
+                    result = await _access.GetFilteredAsync<ContractDto>(nameof(ContractDto.CreationDate),
+                                                                         new DateTime(date.Year, month, 1).ToString(),
+                                                                         new DateTime(date.Year, month, days).ToString());
+
+                    if (result.IsSuccess && result.Result.Any()) 
+                    {
+                        _contract.Number = (short)(result.Result.OrderByDescending(x => x.CreationDate).FirstOrDefault().Number + 1);
+                        break;
+                    }
+                }
 
                 Print = true;
                 Send = true;
@@ -241,10 +256,6 @@ namespace LogistHelper.ViewModels.Views
 
             if (result.IsSuccess)
             {
-                //AppSettings.Default.lastContractNumer = _contract.Number;
-                //AppSettings.Default.lastContractDate = _contract.CreationDate;
-                AppSettings.Default.Save();
-
                 if (Send)
                 {
                     SendContractToCarrier();
