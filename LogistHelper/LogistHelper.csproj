@@ -23,7 +23,9 @@
     <None Remove="UI\Icons\contract_icon.png" />
     <None Remove="UI\Icons\database_icon.png" />
     <None Remove="UI\Icons\document_icon.png" />
+    <None Remove="UI\Icons\doc_icon.png" />
     <None Remove="UI\Icons\done_icon.png" />
+    <None Remove="UI\Icons\download_icon.png" />
     <None Remove="UI\Icons\down_icon.png" />
     <None Remove="UI\Icons\driver_icon.png" />
     <None Remove="UI\Icons\edit_icon.png" />
@@ -31,9 +33,12 @@
     <None Remove="UI\Icons\forward_icon.png" />
     <None Remove="UI\Icons\hide_icon.png" />
     <None Remove="UI\Icons\image_icon.png" />
+    <None Remove="UI\Icons\image_icon2.png" />
+    <None Remove="UI\Icons\jpeg_icon.png" />
     <None Remove="UI\Icons\logout_icon.png" />
     <None Remove="UI\Icons\new_icon.png" />
     <None Remove="UI\Icons\pdf_icon.png" />
+    <None Remove="UI\Icons\png_icon.png" />
     <None Remove="UI\Icons\recieve_icon.png" />
     <None Remove="UI\Icons\remove_icon.png" />
     <None Remove="UI\Icons\reset.png" />
@@ -47,6 +52,8 @@
     <None Remove="UI\Icons\trailer_icon.png" />
     <None Remove="UI\Icons\user_icon.png" />
     <None Remove="UI\Icons\vehicle_icon.png" />
+    <None Remove="UI\Icons\word_icon.png" />
+    <None Remove="UI\Icons\zip_icon.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,43 +78,138 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="UI\Icons\addoc_icon.png" />
-    <Resource Include="UI\Icons\add_icon.png" />
-    <Resource Include="UI\Icons\admin_icon.png" />
-    <Resource Include="UI\Icons\back_icon.png" />
-    <Resource Include="UI\Icons\billlict_icon.png" />
-    <Resource Include="UI\Icons\bill_icon.png" />
-    <Resource Include="UI\Icons\carrier_icon.png" />
-    <Resource Include="UI\Icons\cash_icon.png" />
-    <Resource Include="UI\Icons\company_icon.png" />
-    <Resource Include="UI\Icons\contractlist_icon.png" />
-    <Resource Include="UI\Icons\contract_icon.png" />
-    <Resource Include="UI\Icons\database_icon.png" />
-    <Resource Include="UI\Icons\document_icon.png" />
-    <Resource Include="UI\Icons\done_icon.png" />
-    <Resource Include="UI\Icons\down_icon.png" />
-    <Resource Include="UI\Icons\driver_icon.png" />
-    <Resource Include="UI\Icons\edit_icon.png" />
-    <Resource Include="UI\Icons\fail_icon.png" />
-    <Resource Include="UI\Icons\forward_icon.png" />
-    <Resource Include="UI\Icons\hide_icon.png" />
-    <Resource Include="UI\Icons\image_icon.png" />
-    <Resource Include="UI\Icons\logout_icon.png" />
-    <Resource Include="UI\Icons\new_icon.png" />
-    <Resource Include="UI\Icons\pdf_icon.png" />
-    <Resource Include="UI\Icons\recieve_icon.png" />
-    <Resource Include="UI\Icons\remove_icon.png" />
-    <Resource Include="UI\Icons\reset.png" />
-    <Resource Include="UI\Icons\reset_icon.png" />
-    <Resource Include="UI\Icons\return_icon.png" />
-    <Resource Include="UI\Icons\route_icon.png" />
-    <Resource Include="UI\Icons\search_icon.png" />
-    <Resource Include="UI\Icons\send_icon.png" />
-    <Resource Include="UI\Icons\setting_icon.png" />
-    <Resource Include="UI\Icons\show_icon.png" />
-    <Resource Include="UI\Icons\trailer_icon.png" />
-    <Resource Include="UI\Icons\user_icon.png" />
-    <Resource Include="UI\Icons\vehicle_icon.png" />
+    <Resource Include="UI\Icons\addoc_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\add_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\admin_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\back_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\billlict_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\bill_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\carrier_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\cash_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\company_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\contractlist_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\contract_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\database_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\document_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\doc_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\done_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\download_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\down_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\driver_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\edit_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\fail_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\forward_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\hide_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\image_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\image_icon2.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\jpeg_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\logout_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\new_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\pdf_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\png_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\recieve_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\remove_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\reset.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\reset_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\return_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\route_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\search_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\send_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\setting_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\show_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\trailer_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\user_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\vehicle_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\word_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="UI\Icons\zip_icon.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

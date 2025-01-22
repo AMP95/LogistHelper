@@ -20,8 +20,24 @@ namespace LogistHelper.UI.CustomControls
         }
 
         public static readonly DependencyProperty FilesProperty =
-            DependencyProperty.Register("Files", typeof(ObservableCollection<FileViewModel>), typeof(FileDropHandler));
+            DependencyProperty.Register("Files", typeof(ObservableCollection<FileViewModel>), typeof(FileDropHandler),
+                new FrameworkPropertyMetadata(new PropertyChangedCallback((d,e) => 
+                {
+                    if (d is FileDropHandler handler) 
+                    {
+                        if (e.OldValue != null) 
+                        { 
+                            ((ObservableCollection<FileViewModel>)e.OldValue).CollectionChanged -= handler.Files_CollectionChanged;
+                        }
 
+                        if (handler.Files != null)
+                        {
+                            handler.Files.CollectionChanged += handler.Files_CollectionChanged;
+                        }
+                    }
+                })));
+
+        
 
         public ICommand DownloadCommand
         {
@@ -31,6 +47,17 @@ namespace LogistHelper.UI.CustomControls
 
         public static readonly DependencyProperty DownloadCommandProperty =
             DependencyProperty.Register("DownloadCommand", typeof(ICommand), typeof(FileDropHandler));
+
+
+
+
+        public ICommand RemoveCommand
+        {
+            get { return (ICommand)GetValue(RemoveCommandProperty); }
+            set { SetValue(RemoveCommandProperty, value); }
+        }
+        public static readonly DependencyProperty RemoveCommandProperty =
+            DependencyProperty.Register("RemoveCommand", typeof(ICommand), typeof(FileDropHandler));
 
 
 
@@ -84,6 +111,7 @@ namespace LogistHelper.UI.CustomControls
             if (sender is Button button) 
             { 
                 OpenFileDialog openFile = new OpenFileDialog();
+                openFile.Multiselect = true;
 
                 if (openFile.ShowDialog() == true) 
                 {
@@ -118,6 +146,23 @@ namespace LogistHelper.UI.CustomControls
                 }
             }
         }
-        
+
+        private void UpdateCrossGrid() 
+        {
+            if (Files.Any()) 
+            { 
+                crossGrid.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                crossGrid.Visibility= Visibility.Visible;
+            }
+        }
+
+        private void Files_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            UpdateCrossGrid();
+        }
+
     }
 }

@@ -1,10 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
 using LogistHelper.Models.Settings;
+using LogistHelper.UI.CustomControls.FileDrag;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using ServerClient;
 using Shared;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
@@ -27,6 +29,8 @@ namespace LogistHelper.ViewModels.Views
         private string _searchTrailerBrand;
         private StringItem _selectedTruckBrand;
         private StringItem _selectedTrailerBrand;
+
+        private ObservableCollection<FileViewModel> _files;
 
         #endregion Private
 
@@ -104,6 +108,12 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
+        public ObservableCollection<FileViewModel> Files 
+        {
+            get => _files;
+            set => SetProperty(ref _files, value);
+        }
+
         #endregion Public
 
         #region Commands
@@ -111,6 +121,8 @@ namespace LogistHelper.ViewModels.Views
         public ICommand SearchCarrierCommand { get; set; }
         public ICommand SearchTruckBrandCommand { get; set; }
         public ICommand SearchTrailerBrandCommand { get; set; }
+        public ICommand DownloadFileCommand { get; set; }
+        public ICommand RemoveFileCommand { get; set; }
 
         #endregion Commands
         public EditVehicleViewModel(ISettingsRepository<Settings> repository, 
@@ -120,6 +132,8 @@ namespace LogistHelper.ViewModels.Views
         {
 
             _carrierFactory = carrierFactory;
+
+            Files = new ObservableCollection<FileViewModel>();
 
             #region CommandsInit
 
@@ -136,6 +150,24 @@ namespace LogistHelper.ViewModels.Views
             SearchTrailerBrandCommand = new RelayCommand<string>(async (searchString) =>
             {
                 await SearchTrailerBrand(searchString);
+            });
+
+            DownloadFileCommand = new RelayCommand<LoadPackage>((package) => 
+            {
+                if (package.FileToLoad.Any()) 
+                { 
+                
+                }
+            });
+
+            RemoveFileCommand = new RelayCommand<FileViewModel>((file) => 
+            { 
+                Files.Remove(file);
+
+                if (file.Id != Guid.Empty) 
+                { 
+                    
+                }
             });
 
             #endregion CommandsInit

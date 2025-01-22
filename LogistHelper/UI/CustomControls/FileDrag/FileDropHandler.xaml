@@ -11,26 +11,65 @@
         <converters:CollectionSizeToBollConverter x:Key="CollectionSizeToBollConverter"/>
         <converters:GuidEmptyToBoolConverter x:Key="GuidEmptyToBoolConverter"/>
     </UserControl.Resources>
+    
     <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Style="{StaticResource HeaderThreeText}"
+            Foreground="{StaticResource NeutralOneBrush}"
+            Text="Файлы"/>
+
+        <Grid
+            x:Name="crossGrid"
+            Grid.Row="1"
+            Opacity="0.2"
+            Width="100"
+            Height="100">
+
+            <Border
+                VerticalAlignment="Center"
+                Height="2"
+                Background="{StaticResource NeutralOneBrush}">
+                <Border.Effect>
+                    <DropShadowEffect
+                ShadowDepth="0"
+                Color="{StaticResource Dark}"/>
+                </Border.Effect>
+            </Border>
+            <Border
+                HorizontalAlignment="Center"
+                Width="2"
+                Background="{StaticResource NeutralOneBrush}">
+                <Border.Effect>
+                    <DropShadowEffect
+                ShadowDepth="0"
+                Color="{StaticResource Dark}"/>
+                </Border.Effect>
+            </Border>
+        </Grid>
+
         <ItemsControl
+            Grid.Row="1"
             AllowDrop="True"
             Drop="items_Drop"
+            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:FileDropHandler}, Path=Files}"
             x:Name="items">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel/>
+                    <WrapPanel
+                        HorizontalAlignment="Center"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             
             <ItemsControl.Template>
                 <ControlTemplate>
                     <Grid>
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition 
-                                Height="auto"/>
-                        </Grid.RowDefinitions>
 
                         <Grid
                             Margin="5">
@@ -49,76 +88,11 @@
                                 </Rectangle.Stroke>
                             </Rectangle>
 
-                            <Grid
-                                
-                                Opacity="0.2"
-                                Width="100"
-                                Height="100">
-
-                                <Grid.Style>
-                                    <Style>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:FileDropHandler}, Path=Files, Converter={StaticResource CollectionSizeToBollConverter}}" Value="True">
-                                                <Setter Property="Grid.Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Grid.Style>
-                                
-                                <Border
-                                    VerticalAlignment="Center"
-                                    Height="2"
-                                    Background="{StaticResource NeutralOneBrush}">
-                                    <Border.Effect>
-                                        <DropShadowEffect
-                                            ShadowDepth="0"
-                                            Color="{StaticResource Dark}"/>
-                                    </Border.Effect>
-                                </Border>
-                                <Border
-                                    HorizontalAlignment="Center"
-                                    Width="2"
-                                    Background="{StaticResource NeutralOneBrush}">
-                                    <Border.Effect>
-                                        <DropShadowEffect
-                                            ShadowDepth="0"
-                                            Color="{StaticResource Dark}"/>
-                                    </Border.Effect>
-                                </Border>
-                            </Grid>
-
                             <ScrollViewer
                                 Style="{StaticResource CustomScroll}"
                                 HorizontalScrollBarVisibility="Disabled">
                                 <ItemsPresenter/>
                             </ScrollViewer>
-                        </Grid>
-
-
-                        <Grid
-                            Grid.Row="1"
-                            HorizontalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-
-                            <Button
-                                ToolTip="Скачать все"
-                                Style="{StaticResource IconButton}"
-                                Click="DownloadAllButtonClick">
-                                <Image
-                                    Source="/UI/Icons/download_icon.png"/>
-                            </Button>
-
-                            <Button
-                                Grid.Column="1"
-                                ToolTip="Добавить документы"
-                                Style="{StaticResource IconButton}"
-                                Click="AddButtonClick">
-                                <Image
-                                    Source="/UI/Icons/add_icon.png"/>
-                            </Button>
                         </Grid>
                     </Grid>
                 </ControlTemplate>
@@ -127,19 +101,19 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid
+                        ShowGridLines="True"
                         Width="100"
                         Height="150"
-                        Margin="5">
+                        Margin="10">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition/>
-                            <RowDefinition
-                                Height="auto"/>
                         </Grid.RowDefinitions>
 
                         <Image
-                            Stretch="UniformToFill"
-                            Source="{Binding Thumbnail}"
-                            Margin="5"
+                            Stretch="Uniform"
+                            Width="100"
+                            Height="100"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
                             <Image.Style>
@@ -192,8 +166,9 @@
                         </Image>
 
                         <TextBlock
+                            Grid.Row="1"
                             Style="{StaticResource MiniText}"
-                            TextWrapping="NoWrap"
+                            TextAlignment="Center"
                             Text="{Binding Name}"/>
 
                         <Grid
@@ -224,17 +199,19 @@
                                 </Button.Style>
                                 
                                 <Image
-                                    Source="/UI/download_icon.png/"/>
+                                    Source="/UI/Icons/download_icon.png"/>
                             </Button>
 
                             <Button
                                 Grid.Column="1"
                                 Width="25"
                                 Height="25"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:FileDropHandler}, Path=RemoveCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext}"
                                 Tag="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext.Id}"
                                 Style="{StaticResource IconButton}">
                                 <Image
-                                    Source="/UI/remove_icon.png/"/>
+                                    Source="/UI/Icons/remove_icon.png"/>
                             </Button>
                         </Grid>
                         
@@ -242,6 +219,32 @@
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-        </ItemsControl>   
+        </ItemsControl>
+
+        <Grid
+            Grid.Row="2"
+            HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button
+                ToolTip="Скачать все"
+                Style="{StaticResource IconButton}"
+                Click="DownloadAllButtonClick">
+                <Image
+            Source="/UI/Icons/download_icon.png"/>
+            </Button>
+
+            <Button
+                Grid.Column="1"
+                ToolTip="Добавить документы"
+                Style="{StaticResource IconButton}"
+                Click="AddButtonClick">
+                <Image
+            Source="/UI/Icons/add_icon.png"/>
+            </Button>
+        </Grid>
     </Grid>
 </UserControl>

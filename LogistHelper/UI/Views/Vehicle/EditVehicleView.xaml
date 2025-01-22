@@ -8,15 +8,23 @@
              xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
              xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="600">
+             d:DesignHeight="450" d:DesignWidth="900">
 
     <UserControl.Resources>
         <converters:TruckNumberConverter x:Key="TruckNumberConverter"/>
         <converters:TrailerNumberConverter x:Key="TrailerNumberConverter"/>
     </UserControl.Resources>
-    
+
     <Grid
-        MaxWidth="600">
+        ShowGridLines="True"
+        MaxWidth="1200">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+
+        <Grid>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -169,4 +177,13 @@
         </controls:SearchBox>
 
     </Grid>
+
+        <controls:FileDropHandler
+            MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=ActualHeight}"
+            Files="{Binding Files,Mode=TwoWay}"
+            DownloadCommand="{Binding DownloadFileCommand}"
+            RemoveCommand="{Binding RemoveFileCommand}"
+            Grid.Column="1"/>
+    </Grid>
+    
 </UserControl>
