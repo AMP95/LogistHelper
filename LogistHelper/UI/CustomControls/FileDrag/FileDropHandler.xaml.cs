@@ -1,10 +1,10 @@
 ﻿using LogistHelper.UI.CustomControls.FileDrag;
-using Microsoft.WindowsAPICodePack.Shell;
-using Spire.Pdf;
+using Microsoft.Win32;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
+using System.Windows.Input;
 
 namespace LogistHelper.UI.CustomControls
 {
@@ -13,22 +13,24 @@ namespace LogistHelper.UI.CustomControls
     /// </summary>
     public partial class FileDropHandler : UserControl
     {
-        public IEnumerable<FileViewModel> Files
+        public ObservableCollection<FileViewModel> Files
         {
-            get { return (IEnumerable<FileViewModel>)GetValue(FilesProperty); }
+            get { return (ObservableCollection<FileViewModel>)GetValue(FilesProperty); }
             set { SetValue(FilesProperty, value); }
         }
 
         public static readonly DependencyProperty FilesProperty =
-            DependencyProperty.Register("Files", typeof(IEnumerable<FileViewModel>), typeof(FileDropHandler),
-                new FrameworkPropertyMetadata(new PropertyChangedCallback((d,e) => 
-                {
-                    if (d is FileDropHandler handler) 
-                    { 
-                        
-                    }
-                })));
+            DependencyProperty.Register("Files", typeof(ObservableCollection<FileViewModel>), typeof(FileDropHandler));
 
+
+        public ICommand DownloadCommand
+        {
+            get { return (ICommand)GetValue(DownloadCommandProperty); }
+            set { SetValue(DownloadCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty DownloadCommandProperty =
+            DependencyProperty.Register("DownloadCommand", typeof(ICommand), typeof(FileDropHandler));
 
 
 
@@ -37,59 +39,85 @@ namespace LogistHelper.UI.CustomControls
             InitializeComponent();
         }
 
-        public BitmapImage GetThumbnail(FileViewModel file)
+        private void DownloadAllButtonClick(object sender, RoutedEventArgs e)
         {
-            switch (file.Extension)
-            {
-                case ".PDF": return GetPDFThumbnail(file.FullPath);
-                case ".PNG":
-                case ".BMP":
-                case ".JPEG":
-                case ".JPG": return GetImageThumbnail(file.FullPath);
-                default: return GetApplicationIcon(file.FullPath);
+            if (sender is Button button) 
+            { 
+                SaveFileDialog saveFile = new SaveFileDialog();
+
+                if (saveFile.ShowDialog() == true) 
+                {
+                    LoadPackage package = new LoadPackage()
+                    {
+                        SavePath = Path.GetDirectoryName(saveFile.FileName),
+                        FileToLoad = Files.Where(f => f.Id != Guid.Empty)
+                    };
+
+                    DownloadCommand.Execute(package);
+                }
             }
         }
 
-        private BitmapImage GetPDFThumbnail(string fileName)
+        private void DownloadOneButtonClick(object sender, RoutedEventArgs e)
         {
-            PdfDocument doc = new PdfDocument();
-            doc.LoadFromFile(fileName);
-            using (Stream ms = doc.SaveAsImage(0))
+            if (sender is Button button)
             {
-                ms.Position = 0;
-                BitmapImage bmi = new BitmapImage();
-                bmi.BeginInit();
-                bmi.StreamSource = ms;
-                bmi.CacheOption = BitmapCacheOption.OnLoad;
-                bmi.DecodePixelWidth = 150;
-                bmi.EndInit();
-                return bmi;
+                SaveFileDialog saveFile = new SaveFileDialog();
+
+                if (saveFile.ShowDialog() == true)
+                {
+                    Guid guid = (Guid)button.Tag;
+
+                    LoadPackage package = new LoadPackage()
+                    {
+                        SavePath = Path.GetDirectoryName(saveFile.FileName),
+                        FileToLoad = Files.Where(f => f.Id != guid)
+                    };
+
+                    DownloadCommand.Execute(package);
+                }
             }
         }
 
-        private BitmapImage GetImageThumbnail(string fileName)
+        private void AddButtonClick(object sender, RoutedEventArgs e)
         {
-            BitmapImage bmi = new BitmapImage();
-            bmi.BeginInit();
-            bmi.UriSource = new Uri(fileName);
-            bmi.DecodePixelWidth = 150;
-            bmi.EndInit();
-            return bmi;
+            if (sender is Button button) 
+            { 
+                OpenFileDialog openFile = new OpenFileDialog();
+
+                if (openFile.ShowDialog() == true) 
+                {
+                    FillFiles(openFile.FileNames);
+                }
+            }
         }
-        private BitmapImage GetApplicationIcon(string fileName)
+
+        private void items_Drop(object sender, DragEventArgs e)
         {
-            BitmapSource bms = ShellFile.FromFilePath(fileName).Thumbnail.BitmapSource;
-            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-            MemoryStream ms = new MemoryStream();
-            BitmapImage bmi = new BitmapImage();
-            encoder.Frames.Add(BitmapFrame.Create(bms));
-            encoder.Save(ms);
-            ms.Position = 0;
-            bmi.BeginInit();
-            bmi.StreamSource = new MemoryStream(ms.ToArray());
-            bmi.DecodePixelWidth = 150;
-            bmi.EndInit();
-            return bmi;
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                FillFiles(files);
+            }
         }
+
+
+        private void FillFiles(string[] files) 
+        {
+            if (Files != null)
+            {
+                foreach (var file in files)
+                {
+                    Files.Add(new FileViewModel()
+                    {
+                        FullPath = file,
+                        Name = Path.GetFileNameWithoutExtension(file),
+                        Extension = Path.GetExtension(file)
+                    });
+                }
+            }
+        }
+        
     }
 }

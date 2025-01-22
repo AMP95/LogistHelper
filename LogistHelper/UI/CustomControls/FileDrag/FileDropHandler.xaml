@@ -4,40 +4,122 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="450">
+             d:DesignHeight="600" d:DesignWidth="450">
+    <UserControl.Resources>
+        <converters:CollectionSizeToBollConverter x:Key="CollectionSizeToBollConverter"/>
+        <converters:GuidEmptyToBoolConverter x:Key="GuidEmptyToBoolConverter"/>
+    </UserControl.Resources>
     <Grid>
         <ItemsControl
+            AllowDrop="True"
+            Drop="items_Drop"
             x:Name="items">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            
             <ItemsControl.Template>
                 <ControlTemplate>
-                    <Grid
-                        Margin="5">
-                        <Rectangle StrokeDashArray="8 4" 
-                            StrokeThickness="2"
-                            RadiusX="10"
-                            RadiusY="10"
-                            Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Path=ActualWidth}"
-                            Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Path=ActualHeight}">
-                            <Rectangle.Stroke>
-                                <SolidColorBrush
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition 
+                                Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid
+                            Margin="5">
+
+                            <Rectangle 
+                                StrokeDashArray="8 4" 
+                                StrokeThickness="2"
+                                RadiusX="10"
+                                RadiusY="10"
+                                Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Path=ActualWidth}"
+                                Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Path=ActualHeight}">
+                                <Rectangle.Stroke>
+                                    <SolidColorBrush
                                     Color="{StaticResource NeutralOne}"
                                     Opacity="0.5"/>
-                            </Rectangle.Stroke>
-                        </Rectangle>
+                                </Rectangle.Stroke>
+                            </Rectangle>
 
-                        <Image
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Width="100"
-                            Opacity="0.5"
-                            Source="/UI/Icons/addoc_icon.png"/>
+                            <Grid
+                                
+                                Opacity="0.2"
+                                Width="100"
+                                Height="100">
 
-                        <ScrollViewer
-                            Style="{StaticResource CustomScroll}"
-                            HorizontalScrollBarVisibility="Disabled">
-                            <ItemsPresenter/>
-                        </ScrollViewer>
+                                <Grid.Style>
+                                    <Style>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:FileDropHandler}, Path=Files, Converter={StaticResource CollectionSizeToBollConverter}}" Value="True">
+                                                <Setter Property="Grid.Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                                
+                                <Border
+                                    VerticalAlignment="Center"
+                                    Height="2"
+                                    Background="{StaticResource NeutralOneBrush}">
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            ShadowDepth="0"
+                                            Color="{StaticResource Dark}"/>
+                                    </Border.Effect>
+                                </Border>
+                                <Border
+                                    HorizontalAlignment="Center"
+                                    Width="2"
+                                    Background="{StaticResource NeutralOneBrush}">
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            ShadowDepth="0"
+                                            Color="{StaticResource Dark}"/>
+                                    </Border.Effect>
+                                </Border>
+                            </Grid>
+
+                            <ScrollViewer
+                                Style="{StaticResource CustomScroll}"
+                                HorizontalScrollBarVisibility="Disabled">
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Grid>
+
+
+                        <Grid
+                            Grid.Row="1"
+                            HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button
+                                ToolTip="Скачать все"
+                                Style="{StaticResource IconButton}"
+                                Click="DownloadAllButtonClick">
+                                <Image
+                                    Source="/UI/Icons/download_icon.png"/>
+                            </Button>
+
+                            <Button
+                                Grid.Column="1"
+                                ToolTip="Добавить документы"
+                                Style="{StaticResource IconButton}"
+                                Click="AddButtonClick">
+                                <Image
+                                    Source="/UI/Icons/add_icon.png"/>
+                            </Button>
+                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </ItemsControl.Template>
@@ -59,7 +141,55 @@
                             Source="{Binding Thumbnail}"
                             Margin="5"
                             HorizontalAlignment="Center"
-                            VerticalAlignment="Center"/>
+                            VerticalAlignment="Center">
+                            <Image.Style>
+                                <Style>
+                                    <Setter Property="Image.Source" Value="/UI/Icons/document_icon.png"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding 
+                                            RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
+                                            Path=DataContext.Extension}" Value=".png">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/png_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding 
+                                            RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
+                                            Path=DataContext.Extension}" Value=".jpg">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/jpeg_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding 
+                                            RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
+                                            Path=DataContext.Extension}" Value=".jpeg">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/jpeg_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding 
+                                            RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
+                                            Path=DataContext.Extension}" Value=".doc">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/word_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding 
+                                            RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
+                                            Path=DataContext.Extension}" Value=".docx">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/word_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding 
+                                            RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
+                                            Path=DataContext.Extension}" Value=".pdf">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/pdf_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding 
+                                            RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
+                                            Path=DataContext.Extension}" Value=".zip">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/zip_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding 
+                                            RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
+                                            Path=DataContext.Extension}" Value=".rar">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/zip_icon.png"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
 
                         <TextBlock
                             Style="{StaticResource MiniText}"
@@ -73,11 +203,26 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
+                            
+                            
 
                             <Button
                                 Width="25"
                                 Height="25"
-                                Style="{StaticResource IconButton}">
+                                Click="DownloadOneButtonClick"
+                                Tag="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
+                                Path=DataContext.Id}">
+
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext.Id, Converter={StaticResource GuidEmptyToBoolConverter}}" Value="True">
+                                                <Setter Property="Button.Visibility" Value="Collapsed"/>
+                                            </DataTrigger> 
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                
                                 <Image
                                     Source="/UI/download_icon.png/"/>
                             </Button>
@@ -86,12 +231,12 @@
                                 Grid.Column="1"
                                 Width="25"
                                 Height="25"
+                                Tag="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext.Id}"
                                 Style="{StaticResource IconButton}">
                                 <Image
                                     Source="/UI/remove_icon.png/"/>
                             </Button>
                         </Grid>
-                        
                         
 
                     </Grid>
