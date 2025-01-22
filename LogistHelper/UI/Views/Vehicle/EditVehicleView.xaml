@@ -150,7 +150,7 @@
             Grid.ColumnSpan="4"
             Style="{StaticResource DefaultText}"
             Text="Перевозчик"/>
-        
+
         <controls:SearchBox
             Grid.Row="5"
             Grid.ColumnSpan="4"
