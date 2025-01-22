@@ -69,7 +69,6 @@
 
 
 
-
             <DataTemplate
                 DataType="{x:Type viewsVM:ClientListViewModel}">
                 <views:ListView/>
@@ -92,7 +91,7 @@
 
             <DataTemplate
                 DataType="{x:Type viewsVM:ContractListViewModel}">
-                <views:ContractListView/>
+                <views:ListView/>
             </DataTemplate>
             
             <DataTemplate

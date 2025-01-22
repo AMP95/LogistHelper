@@ -5,11 +5,40 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
              xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
+             xmlns:dtos="clr-namespace:DTOs;assembly=DTOs"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
              xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
              xmlns:viewsVM="clr-namespace:LogistHelper.ViewModels.Views"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="600">
+
+    <UserControl.Resources>
+
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+        <converters:EvenNumberToBoolConverter x:Key="EvenNumberToBoolConverter"/>
+        <converters:ViewModelToTypeConverter x:Key="ViewModelToTypeConverter"/>
+
+        <ObjectDataProvider 
+          x:Key="status" 
+          MethodName="GetValues"
+          ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dtos:ContractStatus"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider 
+            x:Key="vat" 
+            MethodName="GetValues"
+            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dtos:VAT"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    
     <Grid>
 
         <Grid.RowDefinitions>
@@ -26,50 +55,187 @@
 
         <Grid
             Grid.Row="1"
-            Grid.Column="1"
-            MaxWidth="600">
+            HorizontalAlignment="Center">
+
             <Grid.ColumnDefinitions>
+                <ColumnDefinition
+                    Width="auto"/>
+                <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition
                     Width="auto"/>
                 <ColumnDefinition
                     Width="auto"/>
             </Grid.ColumnDefinitions>
+            
+            <TextBlock
+                Foreground="{StaticResource NeutralOneBrush}"
+                Style="{StaticResource HeaderTwoText}"
+                Text="Фильтр:"/>
 
-            <TextBox
-                x:Name="searchText"
-                PreviewKeyUp="searchText_PreviewKeyUp"
-                Style="{StaticResource MainCentralTextBox}">
-                <TextBox.Text>
-                    <Binding Path="SearchString" NotifyOnValidationError="True">
-                        <Binding.ValidationRules>
-                            <rules:EmptyStringValidationRule/>
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox.Text>
-            </TextBox>
+            <ComboBox
+                Grid.Column="1"
+                Height="40"
+                Width="200"
+                ItemsSource="{Binding SearchFirters}"
+                SelectedItem="{Binding SelectedFilter, Mode=TwoWay}"
+                Style="{StaticResource CustomComboBox}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Style="{StaticResource DefaultText}"
+                            Text="{Binding Value}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <Grid
+                Width="200"
+                Grid.Column="2">
+
+                <controls:CustomDatePicker
+                    StartDate="{Binding StartDate, Mode=TwoWay}"
+                    EndDate="{Binding EndDate, Mode=TwoWay}">
+                    <controls:CustomDatePicker.Style>
+                        <Style>
+                            <Setter Property="controls:CustomDatePicker.Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding SelectedFilter.Value}" Value="Дата создания">
+                                    <Setter Property="controls:CustomDatePicker.Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:CustomDatePicker.Style>
+                </controls:CustomDatePicker>
+
+                <controls:WatermarkTextbox
+                    Watermark="{Binding SelectedFilter.Value}">
+
+                    <controls:WatermarkTextbox.TextBox>
+                        <TextBox
+                            PreviewKeyUp="searchText_PreviewKeyUp"
+                            TextAlignment="Center"
+                            Text="{Binding SearchString, Mode=TwoWay}"
+                            Style="{StaticResource MainCentralTextBox}">
+                        </TextBox>
+                    </controls:WatermarkTextbox.TextBox>
+
+                    <controls:WatermarkTextbox.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding SelectedFilter.Value}" Value="Дата создания">
+                                    <Setter Property="controls:WatermarkTextbox.Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                                <DataTrigger
+                                    Binding="{Binding SelectedFilter.Value}" Value="Статус">
+                                    <Setter Property="controls:WatermarkTextbox.Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                                <DataTrigger
+                                    Binding="{Binding SelectedFilter.Value}" Value="Приоритет">
+                                    <Setter Property="controls:WatermarkTextbox.Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                                <DataTrigger
+                                    Binding="{Binding SelectedFilter.Value}" Value="Налог">
+                                    <Setter Property="controls:WatermarkTextbox.Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:WatermarkTextbox.Style>
+                </controls:WatermarkTextbox>
+
+                <ComboBox
+                    ItemsSource="{Binding Source={StaticResource status}}"
+                    SelectedItem="{Binding SelectedStatus}"
+                    Height="40">
+                    <ComboBox.Style>
+                        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource CustomComboBox}">
+                            <Setter Property="ComboBox.Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger
+                            Binding="{Binding SelectedFilter.Value}" Value="Статус">
+                                    <Setter Property="ComboBox.Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.Style>
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                        Style="{StaticResource DefaultText}"
+                        Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <ComboBox
+                    ItemsSource="{Binding Source={StaticResource vat}}"
+                    SelectedItem="{Binding SelectedVat, Mode=TwoWay}"
+                    Height="40">
+                    <ComboBox.Style>
+                        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource CustomComboBox}">
+                            <Setter Property="ComboBox.Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding SelectedFilter.Value}" Value="Налог">
+                                    <Setter Property="ComboBox.Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.Style>
+
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock
+                                Style="{StaticResource DefaultText}"
+                                Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <CheckBox
+                    Content="Приоритетный заказчик"
+                    IsChecked="{Binding IsPriority, Mode=TwoWay}">
+                    <CheckBox.Style>
+                        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CustomCheck}">
+                            <Setter Property="ComboBox.Visibility" Value="Hidden"/>
+                            <Style.Triggers>
+                                <DataTrigger
+                                    Binding="{Binding SelectedFilter.Value}" Value="Приоритет">
+                                    <Setter Property="ComboBox.Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </CheckBox.Style>
+                </CheckBox>
+
+            </Grid>
 
             <Button
                 x:Name="searchButton"
-                Grid.Column="1"
-                ToolTip="Поиск"
+                Grid.Column="3"
+                Height="40"
                 Style="{StaticResource IconButton}"
-                Command="{Binding SearchCommand}">
+                Command="{Binding FilterCommand}"
+                ToolTip="Применить">
                 <Image
                     Source="/UI/Icons/search_icon.png"/>
             </Button>
 
             <Button
-                Grid.Column="2"
+                Grid.Column="4"
                 ToolTip="Сбросить поиск"
                 Style="{StaticResource IconButton}"
-                Command="{Binding ResetSearchCommand}">
+                Command="{Binding ResetFilterCommand}">
                 <Image
                     Source="/UI/Icons/reset_icon.png"/>
             </Button>
         </Grid>
 
         <ContentControl
+            x:Name="content"
             Grid.Row="2"
             Content="{Binding RelativeSource={RelativeSource AncestorType=local:ListView}, Path=DataContext}">
             <ContentControl.Resources>
@@ -92,6 +258,11 @@
                     DataType="{x:Type viewsVM:VehicleListViewModel}">
                     <local:VehicleListView/>
                 </DataTemplate>
+
+                <DataTemplate
+                    DataType="{x:Type viewsVM:ContractListViewModel}">
+                    <local:ContractListView/>
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
 
@@ -102,6 +273,18 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+
+            <Grid.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=content, Path=Content, Converter={StaticResource ViewModelToTypeConverter}}"
+                                     Value="{x:Type viewsVM:ContractListViewModel}">
+                            <Setter Property="Grid.Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            
             <Button
                 ToolTip="Назад"
                 IsEnabled="{Binding IsBackwardAwaliable}"

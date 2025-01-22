@@ -20,6 +20,8 @@ namespace LogistHelper.ViewModels.Base
 
         private ObservableCollection<DataViewModel<T>> _list;
 
+        protected string _mainPropertyName;
+
         #endregion Private
 
         #region Public
@@ -85,7 +87,7 @@ namespace LogistHelper.ViewModels.Base
 
         public virtual async Task Load(Guid mainId)
         {
-            if (MainId == Guid.Empty) 
+            if (mainId == Guid.Empty) 
             { 
                 return;
             }
@@ -97,11 +99,11 @@ namespace LogistHelper.ViewModels.Base
 
             List?.Clear();
 
-            RequestResult<IEnumerable<T>> result = await _client.GetMainId<T>(MainId);
+            RequestResult<IEnumerable<T>> result = await _client.GetFiltered<T>(_mainPropertyName, mainId.ToString());
 
             if (result.IsSuccess)
             {
-                int counter = 0;
+                int counter = 1;
                 List = new ObservableCollection<DataViewModel<T>>(result.Result.Select(c => _factory.GetViewModel(c, counter++)));
             }
 

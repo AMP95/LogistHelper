@@ -90,16 +90,16 @@
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition
-                    Width="auto"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition/>
-                <ColumnDefinition
-                    Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <TextBlock
-                Style="{StaticResource DefaultText}"
+                Style="{StaticResource MiniText}"
                 Text="Дата"/>
 
             <DatePicker
@@ -109,16 +109,17 @@
 
             <TextBlock
                 Grid.Column="2"
-                Style="{StaticResource DefaultText}"
+                Style="{StaticResource MiniText}"
                 Text="Время"/>
 
             <controls:WatermarkTextbox
                 Grid.Column="3"
+                Width="100"
                 Watermark="12:00">
 
                 <controls:WatermarkTextbox.TextBox>
                     <TextBox
-                        Style="{StaticResource SubLeftTextBox}">
+                        Style="{StaticResource SubCentralTextBox}">
                         <TextBox.Text>
                             <Binding Path="Time" Converter="{StaticResource TimeConverter}">
                                 <Binding.ValidationRules>
@@ -130,24 +131,28 @@
                 </controls:WatermarkTextbox.TextBox>
             </controls:WatermarkTextbox>
 
+            <TextBlock
+                Grid.Column="4"
+                Style="{StaticResource MiniText}"
+                Text="Способ"/>
+
+            <ComboBox
+                Height="40"
+                MinWidth="100"
+                Grid.Column="5"
+                Style="{StaticResource CustomComboBox}"
+                ItemsSource="{Binding Source={StaticResource loadSide}}"
+                SelectedItem="{Binding Side}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock
+                            Style="{StaticResource DefaultText}"
+                            Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
         </Grid>
-
-        <ComboBox
-            Style="{StaticResource CustomComboBox}"
-            ItemsSource="{Binding Source={StaticResource loadSide}}"
-            SelectedItem="{Binding Side}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock
-                        Style="{StaticResource DefaultText}"
-                        Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-
-        <TextBlock
-            Style="{StaticResource DefaultText}"
-            Text="Контакты"/>
 
         <ItemsControl
             ItemsSource="{Binding Phones}">
@@ -158,6 +163,10 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Style="{StaticResource MiniText}"
+                            Text="Контакты"/>
 
                         <Button
                             Style="{StaticResource IconButton}"

@@ -22,6 +22,7 @@ namespace LogistHelper.ViewModels.Pages
 
         public Task SwitchToSub(Guid mainid)
         {
+            _sub.Load(mainid);
             Content = _sub;
             return Task.CompletedTask;
         }

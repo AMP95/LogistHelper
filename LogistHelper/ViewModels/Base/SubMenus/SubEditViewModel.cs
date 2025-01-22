@@ -35,7 +35,7 @@ namespace LogistHelper.ViewModels.Base
             }
             MainId = mainId;
 
-            await base.Load(subId);
+            await Load(subId);
         }
 
         public async override Task SaveAndClose()

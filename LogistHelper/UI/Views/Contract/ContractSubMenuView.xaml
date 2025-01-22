@@ -11,6 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
+            <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
@@ -21,9 +22,17 @@
         <pages:DataMenuPage
             Grid.Row="1"
             DataContext="{Binding DocumentSub}"/>
-        
-        <pages:DataMenuPage
+
+        <Border
             Grid.Row="2"
+            Height="2"
+            Margin="0 5"
+            Background="{StaticResource BorderGradient}"/>
+
+        <pages:DataMenuPage
+            Grid.Row="3"
             DataContext="{Binding PaymentSub}"/>
+
+        
     </Grid>
 </UserControl>

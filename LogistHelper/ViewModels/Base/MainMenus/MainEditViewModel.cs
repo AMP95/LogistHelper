@@ -110,7 +110,7 @@ namespace LogistHelper.ViewModels.Base
             }
         }
 
-        protected async Task<bool> SaveEntity() 
+        protected virtual async Task<bool> SaveEntity() 
         {
             RequestResult<bool> result;
 

@@ -9,6 +9,7 @@ namespace LogistHelper.ViewModels.Views
     {
         public DocumentListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<DocumentDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
+            _mainPropertyName = nameof(DocumentDto.ContractId);
         }
     }
 
@@ -16,6 +17,7 @@ namespace LogistHelper.ViewModels.Views
     {
         public PaymentListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<PaymentDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
+            _mainPropertyName = nameof(PaymentDto.ContractId);
         }
     }
 }

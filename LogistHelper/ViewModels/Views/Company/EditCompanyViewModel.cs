@@ -6,7 +6,6 @@ using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Shared;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
@@ -109,6 +108,14 @@ namespace LogistHelper.ViewModels.Views
         {
             await base.Load(id);
             _company = EditedViewModel as CompanyViewModel<T>;
+            _selectedCompany = new CompanyItem()
+            {
+                Name = _company.Name,
+                Address = _company.Address,
+                Inn = _company.Inn,
+                Kpp = _company.Kpp
+            };
+            OnPropertyChanged(nameof(SelectedCompany));
         }
 
         public async Task Search(string searchString)
@@ -168,8 +175,56 @@ namespace LogistHelper.ViewModels.Views
 
     public class EditCarrierViewModel : EditCompanyViewModel<CarrierDto>
     {
+        private CarrierViewModel _carrier;
+
+        private bool _isWithVat;
+        private bool _isWithoutVat;
+
+        public bool IsWithVat 
+        {
+            get => _isWithVat;
+            set => SetProperty(ref _isWithVat, value);
+        }
+        public bool IsWithoutVat
+        {
+            get => _isWithoutVat;
+            set => SetProperty(ref _isWithoutVat, value);
+        }
         public EditCarrierViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<CarrierDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
         }
+
+        public override async Task Load(Guid id)
+        {
+            await base.Load(id);
+
+            _carrier = EditedViewModel as CarrierViewModel;
+
+            if (_carrier.Vat == VAT.With)
+            {
+                IsWithVat = true;
+                IsWithoutVat = false;
+            }
+            else 
+            {
+                IsWithVat = false;
+                IsWithoutVat = true;
+            }
+        }
+
+        protected override Task<bool> SaveEntity()
+        {
+            if (IsWithVat)
+            {
+                _carrier.Vat = VAT.With;
+            }
+            else
+            {
+                _carrier.Vat = VAT.Without;
+            }
+
+            return base.SaveEntity();
+        }
+
     }
 }

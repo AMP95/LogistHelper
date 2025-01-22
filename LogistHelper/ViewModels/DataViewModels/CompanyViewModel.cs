@@ -77,7 +77,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             {
                 SetProperty(ref _inn, value);
                 _dto.InnKpp = $"{Inn}";
-                if (string.IsNullOrWhiteSpace(Kpp))
+                if (!string.IsNullOrWhiteSpace(Kpp))
                 {
                     _dto.InnKpp += $"/{Kpp}";
                 }
@@ -91,7 +91,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             {
                 SetProperty(ref _kpp, value);
                 _dto.InnKpp = $"{Inn}";
-                if (string.IsNullOrWhiteSpace(Kpp))
+                if (!string.IsNullOrWhiteSpace(Kpp))
                 {
                     _dto.InnKpp += $"/{Kpp}";
                 }
@@ -144,8 +144,14 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         public override T GetDto()
         {
-            _dto.Phones = _phones.Select(s => s.Item).ToList();
-            _dto.Emails = _emails.Select(s => s.Item).ToList();
+            if (_phones != null)
+            {
+                _dto.Phones = _phones.Select(s => s.Item).ToList();
+            }
+            if (_emails != null)
+            {
+                _dto.Emails = _emails.Select(s => s.Item).ToList();
+            }
             return base.GetDto();
         }
 

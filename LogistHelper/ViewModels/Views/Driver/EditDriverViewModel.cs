@@ -177,7 +177,7 @@ namespace LogistHelper.ViewModels.Views
         {
             await Task.Run(async () => 
             {
-                RequestResult<IEnumerable<CarrierDto>> result = await _client.Search<CarrierDto>(searchString);
+                RequestResult<IEnumerable<CarrierDto>> result = await _client.GetFiltered<CarrierDto>(nameof(DriverDto.Carrier), searchString);
 
                 SelectedCarrier = null;
 
@@ -196,7 +196,7 @@ namespace LogistHelper.ViewModels.Views
         {
             await Task.Run(async () =>
             {
-                RequestResult<IEnumerable<VehicleDto>> result = await _client.GetMainId<VehicleDto>(SelectedCarrier?.Id);
+                RequestResult<IEnumerable<VehicleDto>> result = await _client.GetFiltered<VehicleDto>("CarrierId", SelectedCarrier?.Id.ToString());
 
                 Vehicles = null;
 

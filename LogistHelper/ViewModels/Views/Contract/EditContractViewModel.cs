@@ -19,8 +19,13 @@ namespace LogistHelper.ViewModels.Views
         private IEnumerable<DriverViewModel> _drivers;
         private DriverViewModel _selectedDriver;
 
+        private IEnumerable<ClientViewModel> _clients;
+
         private ObservableCollection<VehicleViewModel> _vehicles;
         private int _selectedVehicleIndex;
+
+        private bool _sendToCarrier;
+        private bool _print;
 
         #endregion Private
 
@@ -49,6 +54,12 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
+        public IEnumerable<ClientViewModel> Clients
+        {
+            get => _clients;
+            set => SetProperty(ref _clients, value);
+        }
+
         public ObservableCollection<VehicleViewModel> Vehicles
         {
             get => _vehicles;
@@ -75,7 +86,17 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
+        public bool Send 
+        {
+            get => _sendToCarrier;
+            set => SetProperty(ref _sendToCarrier, value);
+        }
 
+        public bool Print
+        {
+            get => _print;
+            set => SetProperty(ref _print, value);
+        }
 
         #endregion Public
 
@@ -83,6 +104,7 @@ namespace LogistHelper.ViewModels.Views
         #region Commands
 
         public ICommand SearchDriverCommand { get; }
+        public ICommand SearchClientCommand { get; }
 
         #endregion Commands
 
@@ -98,8 +120,15 @@ namespace LogistHelper.ViewModels.Views
                 await SearchDriver(searchString);
             });
 
+            SearchClientCommand = new RelayCommand<string>(async(searchString) => 
+            {
+                await SearchClient(searchString);
+            });
+
             #endregion CommandsInit
         }
+
+       
 
         public override async Task Load(Guid id)
         {
@@ -115,6 +144,9 @@ namespace LogistHelper.ViewModels.Views
                 {
                     _contract.Number = 1;
                 }
+
+                Print = true;
+                Send = true;
             }
             else
             {
@@ -127,15 +159,32 @@ namespace LogistHelper.ViewModels.Views
                 {
                     EditedViewModel = _factory.GetViewModel(result.Result);
                     _contract = EditedViewModel as ContractViewModel;
-                    SelectedDriver = _contract.Driver;
+                    _selectedDriver = _contract.Driver;
+                    OnPropertyChanged(nameof(SelectedDriver));
+
+                    var vehResult = await _client.GetFiltered<VehicleDto>("CarrierId", _contract.Carrier.Id.ToString());
+
+                    if (vehResult.IsSuccess)
+                    {
+                        Vehicles = new ObservableCollection<VehicleViewModel>(vehResult.Result.Select(v => new VehicleViewModel(v)));
+                        SelectedVehicleIndex = Vehicles.IndexOf(Vehicles.FirstOrDefault(v => v.Id == _contract.Vehicle.Id));
+                    }
                 }
 
                 IsBlock = false;
+
+                Print = true;
+                Send = false;
             }
         }
 
         public override bool CheckSave()
         {
+            if (_contract.Status == ContractStatus.Failed) 
+            {
+                _dialog.ShowError("Нельзя сохранить данные сорваной заявки", "Сохранение");
+                return false;
+            }
             if (_contract.Volume <= 0 || _contract.Weight <= 0)
             {
                 _dialog.ShowError("Необходимо указать вес и объем груза", "Сохранение");
@@ -178,6 +227,11 @@ namespace LogistHelper.ViewModels.Views
 
             CreateContractDocument();
 
+            if (Print)
+            {
+                PrintContract();
+            }
+
             if (EditedViewModel.Id == Guid.Empty)
             {
                 result = await _client.Add(EditedViewModel.GetDto());
@@ -193,7 +247,10 @@ namespace LogistHelper.ViewModels.Views
                 AppSettings.Default.lastContractDate = _contract.CreationDate;
                 AppSettings.Default.Save();
 
-                SendContractToCarrier();
+                if (Send)
+                {
+                    SendContractToCarrier();
+                }
 
                 BackCommand.Execute(this);
             }
@@ -232,9 +289,7 @@ namespace LogistHelper.ViewModels.Views
         {
             await Task.Run(async () =>
             {
-                RequestResult<IEnumerable<DriverDto>> result = await _client.Search<DriverDto>(searchString);
-
-                Drivers = null;
+                RequestResult<IEnumerable<DriverDto>> result = await _client.GetFiltered<DriverDto>(nameof(DriverDto.Name), searchString);
 
                 if (result.IsSuccess)
                 {
@@ -247,9 +302,30 @@ namespace LogistHelper.ViewModels.Views
             });
         }
 
+        private async Task SearchClient(string searchString)
+        {
+            await Task.Run(async () =>
+            {
+                RequestResult<IEnumerable<ClientDto>> result = await _client.GetFiltered<ClientDto>(nameof(ClientDto.Name), searchString);
+
+                if (result.IsSuccess)
+                {
+                    Clients = result.Result.Select(d => new ClientViewModel(d));
+                }
+                else
+                {
+                    Clients = null;
+                }
+            });
+        }
+
         private async Task CreateContractDocument() 
         { 
         
+        }
+        private async Task PrintContract()
+        {
+
         }
 
         private async Task SendContractToCarrier() 

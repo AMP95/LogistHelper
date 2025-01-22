@@ -141,9 +141,7 @@
                 IsChecked="{Binding IsWithoutVat, Mode=TwoWay}"/>
         </Grid>
 
-        <TextBlock
-            Style="{StaticResource MiniText}"
-            Text="Телефон"/>
+        
 
         <ItemsControl
             ItemsSource="{Binding EditedViewModel.Phones}">
@@ -154,6 +152,10 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Style="{StaticResource MiniText}"
+                            Text="Телефон"/>
 
                         <Button
                             Style="{StaticResource IconButton}"
@@ -207,9 +209,6 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <TextBlock
-            Style="{StaticResource MiniText}"
-            Text="Email"/>
 
         <ItemsControl
             ItemsSource="{Binding EditedViewModel.Emails}">
@@ -221,6 +220,10 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Style="{StaticResource MiniText}"
+                            Text="Email"/>
 
                         <Button
                             Style="{StaticResource IconButton}"
