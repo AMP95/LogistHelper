@@ -1,12 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
 using DTOs.Dtos;
+using HelpAPIs;
 using LogistHelper.UI.CustomControls.FileDrag;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Models.Suggest;
 using Shared;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Windows.Input;
 using Utilities;
 
@@ -17,6 +19,8 @@ namespace LogistHelper.ViewModels.Views
         #region Private
 
         private VehicleViewModel _vehicle;
+
+        private IFileLoader _fileLoader;
 
         private IDataSuggest<TruckModelSuggestItem> _truckSuggest;
         private IDataSuggest<TrailerModelSuggestItem> _trailerSuggest;
@@ -134,12 +138,14 @@ namespace LogistHelper.ViewModels.Views
                                     IViewModelFactory<CarrierDto> carrierFactory,
                                     IDialog dialog,
                                     IDataSuggest<TruckModelSuggestItem> truckSuggest,
-                                    IDataSuggest<TrailerModelSuggestItem> trailerSuggest) : base(repository, factory, dialog)
+                                    IDataSuggest<TrailerModelSuggestItem> trailerSuggest,
+                                    IFileLoader loader) : base(repository, factory, dialog)
         {
 
             _carrierFactory = carrierFactory;
             _truckSuggest = truckSuggest;
             _trailerSuggest = trailerSuggest;
+            _fileLoader = loader;
 
             Files = new ObservableCollection<FileViewModel>();
 
@@ -164,11 +170,18 @@ namespace LogistHelper.ViewModels.Views
                 TruckBrands = trailers.Select(s => new ListItem<string>(s.TrailerModel));
             });
 
-            DownloadFileCommand = new RelayCommand<LoadPackage>((package) => 
+            DownloadFileCommand = new RelayCommand<LoadPackage>(async(package) => 
             {
                 if (package.FileToLoad.Any()) 
-                { 
-                
+                {
+                    if (await _fileLoader.DownloadFiles(package.SavePath, package.FileToLoad.Select(f => f.Id)))
+                    {
+                        _dialog.ShowSuccess("Файлы сохранены");
+                    }
+                    else 
+                    {
+                        _dialog.ShowError("Ошибка сохранения файлов");
+                    }
                 }
             });
 
@@ -194,9 +207,18 @@ namespace LogistHelper.ViewModels.Views
             SelectedCarrier = _vehicle.Carrier;
             SelectedTruckBrand = new ListItem<string>(_vehicle.TruckModel);
             SelectedTrailerBrand = new ListItem<string>(_vehicle.TrailerModel);
+
+            IAccessResult<IEnumerable<FileDto>> files = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.EntityId), EditedViewModel.Id.ToString());
+
+            Files = new ObservableCollection<FileViewModel>(files.Result.Select(f => new FileViewModel()
+            {
+                Id = f.Id,
+                Extension = Path.GetExtension(f.FileName),
+                Name = Path.GetFileNameWithoutExtension(f.FileName),
+            }));
         }
 
-        public override Task Save()
+        public async override Task Save()
         {
             if (SelectedTruckBrand == null) 
             {
@@ -206,7 +228,34 @@ namespace LogistHelper.ViewModels.Views
             { 
                 _vehicle.TrailerModel = SearchTrailerString;
             }
-            return base.Save();
+
+            IsBlock = true;
+            BlockText = "Сохранение";
+
+            if (await SaveEntity())
+            {
+                if (await _fileLoader.UploadFiles(EditedViewModel.Id, nameof(VehicleDto), Files.Where(f => f.Id == Guid.Empty)))
+                {
+                    _dialog.ShowSuccess("Файлы заргужены");
+                }
+                else 
+                {
+                    _dialog.ShowError("Ошибка загрузки файлов на сервер");
+                }
+
+                _dialog.ShowSuccess("ТС сохранено в базу данных");
+
+                if (EditedViewModel.Id == Guid.Empty)
+                {
+                    Load(Guid.Empty);
+                }
+            }
+            else
+            {
+                _dialog.ShowError("Не удалось сохранить изменения", "Сохранение");
+            }
+
+            IsBlock = false;
         }
 
         private async Task SearchCarrier(string searchString)

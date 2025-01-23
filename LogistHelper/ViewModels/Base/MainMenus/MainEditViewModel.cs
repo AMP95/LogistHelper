@@ -107,17 +107,20 @@ namespace LogistHelper.ViewModels.Base
 
         protected virtual async Task<bool> SaveEntity() 
         {
-            IAccessResult<bool> result;
-
             if (EditedViewModel.Id == Guid.Empty)
             {
-                result = await _access.AddAsync(EditedViewModel.GetDto());
+                IAccessResult<Guid> addResult = await _access.AddAsync(EditedViewModel.GetDto());
+                if (addResult.IsSuccess)
+                {
+                    EditedViewModel.Id = addResult.Result;
+                }
+                return addResult.IsSuccess;
             }
             else
             {
-                result = await _access.UpdateAsync(EditedViewModel.GetDto());
+                IAccessResult<bool> updateResult = await _access.UpdateAsync(EditedViewModel.GetDto());
+                return updateResult.IsSuccess;
             }
-            return result.IsSuccess;
         }
 
         public virtual bool CheckSave() 

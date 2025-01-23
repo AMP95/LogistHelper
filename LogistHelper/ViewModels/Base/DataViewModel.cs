@@ -18,6 +18,11 @@ namespace LogistHelper.ViewModels.Base
         public Guid Id
         {
             get => _dto.Id;
+            set
+            {
+                _dto.Id = value;
+                OnPropertyChanged(nameof(Id));
+            }
         }
 
         public DataViewModel(TDto dto, int counter)
