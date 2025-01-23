@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
+using DTOs.Dtos;
+using LogistHelper.UI.CustomControls.FileDrag;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Models.Suggest;
@@ -176,7 +178,7 @@ namespace LogistHelper.ViewModels.Views
 
                 if (file.Id != Guid.Empty) 
                 { 
-                    RequestResult<bool> result = await _client.Delete<FileDto>(file.Id);
+                    IAccessResult<bool> result = await _access.DeleteAsync<FileDto>(file.Id);
                 }
             });
 
