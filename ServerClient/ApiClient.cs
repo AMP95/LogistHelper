@@ -1,5 +1,6 @@
 ﻿using DTOs;
 using Newtonsoft.Json;
+using System.ComponentModel;
 using System.Net.Http.Json;
 
 namespace ServerClient
@@ -34,6 +35,7 @@ namespace ServerClient
             RequestResult<Guid> result = await GetRequest<Guid>($"Get/{route}/id/{id}");
             return await GetResult<T>(result);
         }
+
 
         /* https://localhost:7081/api/Get/contract/filter/Date?param=01.01.2024&param=01.01.2025 */
         public async Task<RequestResult<IEnumerable<T>>> GetFiltered<T>(string propertyName, params string[] param)

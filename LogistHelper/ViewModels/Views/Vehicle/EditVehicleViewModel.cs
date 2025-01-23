@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
+using DTOs.Dtos;
 using LogistHelper.Models.Settings;
 using LogistHelper.UI.CustomControls.FileDrag;
 using LogistHelper.ViewModels.Base;
@@ -160,13 +161,13 @@ namespace LogistHelper.ViewModels.Views
                 }
             });
 
-            RemoveFileCommand = new RelayCommand<FileViewModel>((file) => 
-            { 
+            RemoveFileCommand = new RelayCommand<FileViewModel>(async (file) => 
+            {
                 Files.Remove(file);
 
                 if (file.Id != Guid.Empty) 
                 { 
-                    
+                    RequestResult<bool> result = await _client.Delete<FileDto>(file.Id);
                 }
             });
 
