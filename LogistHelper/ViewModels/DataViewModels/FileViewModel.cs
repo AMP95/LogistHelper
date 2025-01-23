@@ -57,6 +57,18 @@ namespace LogistHelper.ViewModels.DataViewModels
             { 
                 _dto.DtoType = value;
                 OnPropertyChanged(nameof(DtoType));
+
+                ServerCatalog = _dto.DtoType.Name;
+            }
+        }
+
+        public Guid DtoId 
+        {
+            get => _dto.DtoId;
+            set 
+            { 
+                _dto.DtoId = value;
+                OnPropertyChanged(nameof(DtoId));
             }
         }
 

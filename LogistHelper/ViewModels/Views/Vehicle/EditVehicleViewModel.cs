@@ -166,7 +166,7 @@ namespace LogistHelper.ViewModels.Views
             {
                 var trailers = await _trailerSuggest.SuggestAsync(searchString);
 
-                TruckBrands = trailers.Select(s => new ListItem<string>(s.TrailerModel));
+                TrailerBrands = trailers.Select(s => new ListItem<string>(s.TrailerModel));
             });
 
             DownloadFileCommand = new RelayCommand<LoadPackage>(async(package) => 
@@ -215,20 +215,17 @@ namespace LogistHelper.ViewModels.Views
 
         public async override Task Save()
         {
-            if (SelectedTruckBrand == null) 
-            {
-                _vehicle.TruckModel = SearchTruckString;
-            }
-            if (SelectedTrailerBrand == null) 
-            { 
-                _vehicle.TrailerModel = SearchTrailerString;
-            }
-
             IsBlock = true;
             BlockText = "Сохранение";
 
             if (await SaveEntity())
             {
+                foreach (var file in Files) 
+                {
+                    file.Item.DtoType = typeof(VehicleDto);
+                    file.Item.DtoId = EditedViewModel.Id;
+                }    
+
                 if (await _fileLoader.UploadFiles(EditedViewModel.Id, Files.Select(f => f.Item).Where(f => f.Id == Guid.Empty)))
                 {
                     _dialog.ShowSuccess("Файлы заргужены");
@@ -274,6 +271,15 @@ namespace LogistHelper.ViewModels.Views
 
         public override bool CheckSave()
         {
+            if (SelectedTruckBrand == null)
+            {
+                _vehicle.TruckModel = SearchTruckString;
+            }
+            if (SelectedTrailerBrand == null)
+            {
+                _vehicle.TrailerModel = SearchTrailerString;
+            }
+
             if (string.IsNullOrWhiteSpace(_vehicle.TruckModel)) 
             {
                 _dialog.ShowError("Необходимо указать модель тягача");

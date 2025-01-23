@@ -2,10 +2,10 @@
 using LogistHelper.ViewModels.DataViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
-using Microsoft.Xaml.Behaviors.Layout;
 using Shared;
-using System;
 using System.IO;
+using System.Net.Http;
+using System.Security.Policy;
 using Utilities;
 
 namespace LogistHelper.Models
@@ -63,28 +63,34 @@ namespace LogistHelper.Models
             {
                 FileDto fileDto = fileViewModel.GetDto();
 
-                IFormFile file = null;
                 try
                 {
-                    using (var stream = new MemoryStream(File.ReadAllBytes(fileViewModel.LocalFullFilePath).ToArray()))
+                    using (MultipartFormDataContent content = new MultipartFormDataContent
                     {
-                        file = new FormFile(stream, 0, stream.Length, null, fileViewModel.LocalNameWithExtension);
+                        // file
+                        { new StreamContent(File.OpenRead(fileViewModel.LocalFullFilePath)), "FileToUpload", fileDto.FileNameWithExtencion },
+
+                        // payload
+                        { new StringContent(fileDto.Id.ToString()), nameof(fileDto.Id) },
+                        { new StringContent(fileDto.FileNameWithExtencion), nameof(fileDto.FileNameWithExtencion) },
+                        { new StringContent(fileDto.Catalog), nameof(fileDto.Catalog) },
+                        { new StringContent(fileDto.DtoType.Name), nameof(fileDto.DtoType) },
+                        { new StringContent(fileDto.DtoId.ToString()), nameof(fileDto.DtoId) },
+                    }) 
+                    {
+                        IAccessResult<Guid> addResult = await _access.AddMultipartAsync(content);
+
+                        if (addResult.IsSuccess)
+                        {
+                            fileViewModel.Id = addResult.Result;
+                            result |= true;
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
                     _logger.Log(ex, ex.Message, LogLevel.Error);
                     continue;
-                }
-
-                fileDto.File = file;
-
-                IAccessResult<Guid> addResult = await _access.AddAsync<FileDto>(fileDto);
-
-                if (addResult.IsSuccess) 
-                {
-                    fileViewModel.Id = addResult.Result;
-                    result |= true;
                 }
             }
 

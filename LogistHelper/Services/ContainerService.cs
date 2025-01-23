@@ -102,6 +102,7 @@ namespace LogistHelper.Services
             services.AddTransient<IDataSuggest<TrailerModelSuggestItem>, VehicleSuggestClient>();
             services.AddTransient<IDataSuggest<GeoSuggestItem>, YandexGeoSuggestClient>();
             services.AddTransient<IDataAccess, ServerClient>();
+            services.AddTransient<IFileLoader, FileManager>();
 
             #endregion Services
 

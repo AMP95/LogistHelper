@@ -1,6 +1,6 @@
 ﻿using DTOs;
+using DTOs.Dtos;
 using HelpAPIs.Settings;
-using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using Shared;
 using System.Net.Http.Json;
@@ -102,6 +102,7 @@ namespace HelpAPIs
                 case nameof(ContractDto): return "contract";
                 case nameof(DocumentDto): return "document";
                 case nameof(PaymentDto): return "payment";
+                case nameof(FileDto): return "file";
                 default: return string.Empty;
             }
         }
@@ -125,6 +126,54 @@ namespace HelpAPIs
                             {
                                 message.Content = new StringContent(jObject, encoding: System.Text.Encoding.UTF8, "application/json");
                             }
+
+                            var response = await client.SendAsync(message);
+                            if (response.IsSuccessStatusCode)
+                            {
+                                result.IsSuccess = true;
+                                result.Result = await response.Content.ReadFromJsonAsync<T>();
+                            }
+                            else
+                            {
+                                result.IsSuccess = false;
+                                string errorMessage = await response.Content.ReadAsStringAsync();
+                                if (string.IsNullOrWhiteSpace(errorMessage))
+                                {
+                                    result.ErrorMessage = response.ReasonPhrase;
+                                }
+                                else
+                                {
+                                    result.ErrorMessage = errorMessage;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.ErrorMessage = ex.Message;
+            }
+            return result;
+        }
+
+        private async Task<IAccessResult<T>> SendAsync<T>(HttpMethod method, string route, HttpContent content)
+        {
+            AccessResult<T> result = new AccessResult<T>();
+
+            try
+            {
+                using (HttpClientHandler clientHandler = new HttpClientHandler()
+                { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } })
+                {
+                    using (HttpClient client = new HttpClient(clientHandler))
+                    {
+                        using (HttpRequestMessage message = new HttpRequestMessage(method, route))
+                        {
+                            message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _token);
+
+                            message.Content = content;
 
                             var response = await client.SendAsync(message);
                             if (response.IsSuccessStatusCode)
@@ -187,6 +236,19 @@ namespace HelpAPIs
             }
 
             return result;
+        }
+
+        public async Task<IAccessResult<Guid>> AddMultipartAsync(HttpContent content)
+        {
+            using (HttpClient client = new HttpClient() { BaseAddress = new Uri(_url) }) 
+            {
+                using (var request = new HttpRequestMessage(HttpMethod.Post, $"api/Add/file"))
+                {
+                    request.Content = content;
+                    var result = await client.SendAsync(request);
+                }
+            }
+            return null;
         }
     }
 }
