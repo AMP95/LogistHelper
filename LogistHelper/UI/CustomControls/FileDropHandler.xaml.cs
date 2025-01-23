@@ -1,4 +1,5 @@
-﻿using LogistHelper.UI.CustomControls.FileDrag;
+﻿using LogistHelper.Models;
+using LogistHelper.ViewModels.DataViewModels;
 using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -13,21 +14,21 @@ namespace LogistHelper.UI.CustomControls
     /// </summary>
     public partial class FileDropHandler : UserControl
     {
-        public ObservableCollection<FileViewModel> Files
+        public ObservableCollection<ListItem<FileViewModel>> Files
         {
-            get { return (ObservableCollection<FileViewModel>)GetValue(FilesProperty); }
+            get { return (ObservableCollection<ListItem<FileViewModel>>)GetValue(FilesProperty); }
             set { SetValue(FilesProperty, value); }
         }
 
         public static readonly DependencyProperty FilesProperty =
-            DependencyProperty.Register("Files", typeof(ObservableCollection<FileViewModel>), typeof(FileDropHandler),
+            DependencyProperty.Register("Files", typeof(ObservableCollection<ListItem<FileViewModel>>), typeof(FileDropHandler),
                 new FrameworkPropertyMetadata(new PropertyChangedCallback((d,e) => 
                 {
                     if (d is FileDropHandler handler) 
                     {
                         if (e.OldValue != null) 
                         { 
-                            ((ObservableCollection<FileViewModel>)e.OldValue).CollectionChanged -= handler.Files_CollectionChanged;
+                            ((ObservableCollection<ListItem<FileViewModel>>)e.OldValue).CollectionChanged -= handler.Files_CollectionChanged;
                         }
 
                         if (handler.Files != null)
@@ -77,7 +78,7 @@ namespace LogistHelper.UI.CustomControls
                     LoadPackage package = new LoadPackage()
                     {
                         SavePath = Path.GetDirectoryName(saveFile.FileName),
-                        FileToLoad = Files.Where(f => f.Id != Guid.Empty)
+                        FileToLoad = Files.Where(f => f.Item.Id != Guid.Empty).Select(f => f.Item)
                     };
 
                     DownloadCommand.Execute(package);
@@ -98,7 +99,7 @@ namespace LogistHelper.UI.CustomControls
                     LoadPackage package = new LoadPackage()
                     {
                         SavePath = Path.GetDirectoryName(saveFile.FileName),
-                        FileToLoad = Files.Where(f => f.Id != guid)
+                        FileToLoad = Files.Where(f => f.Item.Id != guid).Select(f => f.Item)
                     };
 
                     DownloadCommand.Execute(package);
@@ -137,12 +138,7 @@ namespace LogistHelper.UI.CustomControls
             {
                 foreach (var file in files)
                 {
-                    Files.Add(new FileViewModel()
-                    {
-                        FullPath = file,
-                        Name = Path.GetFileNameWithoutExtension(file),
-                        Extension = Path.GetExtension(file)
-                    });
+                    Files.Add(new ListItem<FileViewModel>(new FileViewModel() { LocalFullFilePath = file }));
                 }
             }
         }

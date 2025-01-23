@@ -1,5 +1,6 @@
 ﻿using CustomDialog;
 using DTOs;
+using DTOs.Dtos;
 using HelpAPIs;
 using HelpAPIs.Settings;
 using Log4NetLogger;
@@ -80,6 +81,7 @@ namespace LogistHelper.Services
             services.AddTransient<IViewModelFactory<PaymentDto>, PaymentViewModelFactory>();
             services.AddTransient<IViewModelFactory<RoutePointDto>, RouteViewModelFactory>();
             services.AddTransient<IViewModelFactory<ContractDto>, ContractViewModelFactory>();
+            services.AddTransient<IViewModelFactory<FileDto>, FileViewModelFactory>();
 
             #endregion Factories
 

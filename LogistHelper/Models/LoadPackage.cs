@@ -1,4 +1,6 @@
-﻿namespace LogistHelper.UI.CustomControls.FileDrag
+﻿using LogistHelper.ViewModels.DataViewModels;
+
+namespace LogistHelper.Models
 {
     public class LoadPackage
     {

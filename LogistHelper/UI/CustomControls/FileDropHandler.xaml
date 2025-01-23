@@ -83,8 +83,8 @@
                                 Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Grid}}, Path=ActualHeight}">
                                 <Rectangle.Stroke>
                                     <SolidColorBrush
-                                    Color="{StaticResource NeutralOne}"
-                                    Opacity="0.5"/>
+                                        Color="{StaticResource NeutralOne}"
+                                        Opacity="0.5"/>
                                 </Rectangle.Stroke>
                             </Rectangle>
 
@@ -122,42 +122,42 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding 
                                             RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
-                                            Path=DataContext.Extension}" Value=".png">
+                                            Path=DataContext.Item.Extension}" Value=".png">
                                             <Setter Property="Image.Source" Value="/UI/Icons/png_icon.png"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding 
                                             RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
-                                            Path=DataContext.Extension}" Value=".jpg">
+                                            Path=DataContext.Item.Extension}" Value=".jpg">
                                             <Setter Property="Image.Source" Value="/UI/Icons/jpeg_icon.png"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding 
                                             RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
-                                            Path=DataContext.Extension}" Value=".jpeg">
+                                            Path=DataContext.Item.Extension}" Value=".jpeg">
                                             <Setter Property="Image.Source" Value="/UI/Icons/jpeg_icon.png"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding 
                                             RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
-                                            Path=DataContext.Extension}" Value=".doc">
+                                            Path=DataContext.Item.Extension}" Value=".doc">
                                             <Setter Property="Image.Source" Value="/UI/Icons/word_icon.png"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding 
                                             RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
-                                            Path=DataContext.Extension}" Value=".docx">
+                                            Path=DataContext.Item.Extension}" Value=".docx">
                                             <Setter Property="Image.Source" Value="/UI/Icons/word_icon.png"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding 
                                             RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
-                                            Path=DataContext.Extension}" Value=".pdf">
+                                            Path=DataContext.Item.Extension}" Value=".pdf">
                                             <Setter Property="Image.Source" Value="/UI/Icons/pdf_icon.png"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding 
                                             RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
-                                            Path=DataContext.Extension}" Value=".zip">
+                                            Path=DataContext.Item.Extension}" Value=".zip">
                                             <Setter Property="Image.Source" Value="/UI/Icons/zip_icon.png"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding 
                                             RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
-                                            Path=DataContext.Extension}" Value=".rar">
+                                            Path=DataContext.Item.Extension}" Value=".rar">
                                             <Setter Property="Image.Source" Value="/UI/Icons/zip_icon.png"/>
                                         </DataTrigger>
                                     </Style.Triggers>
@@ -169,7 +169,7 @@
                             Grid.Row="1"
                             Style="{StaticResource MiniText}"
                             TextAlignment="Center"
-                            Text="{Binding Name}"/>
+                            Text="{Binding Item.LocalNameWithExtension}"/>
 
                         <Grid
                             VerticalAlignment="Top"
@@ -185,13 +185,12 @@
                                 Width="25"
                                 Height="25"
                                 Click="DownloadOneButtonClick"
-                                Tag="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, 
-                                Path=DataContext.Id}">
+                                Tag="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext.Item.Id}">
 
                                 <Button.Style>
                                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext.Id, Converter={StaticResource GuidEmptyToBoolConverter}}" Value="True">
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext.Item.Id, Converter={StaticResource GuidEmptyToBoolConverter}}" Value="True">
                                                 <Setter Property="Button.Visibility" Value="Collapsed"/>
                                             </DataTrigger> 
                                         </Style.Triggers>
@@ -208,7 +207,6 @@
                                 Height="25"
                                 Command="{Binding RelativeSource={RelativeSource AncestorType=local:FileDropHandler}, Path=RemoveCommand}"
                                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext}"
-                                Tag="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext.Id}"
                                 Style="{StaticResource IconButton}">
                                 <Image
                                     Source="/UI/Icons/remove_icon.png"/>

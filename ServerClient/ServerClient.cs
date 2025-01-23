@@ -58,11 +58,11 @@ namespace HelpAPIs
             return await GetResult<IEnumerable<T>>(result);
         }
                           
-        public async Task<IAccessResult<bool>> AddAsync<T>(T value)
+        public async Task<IAccessResult<Guid>> AddAsync<T>(T value)
         {
             string route = GetRoute(typeof(T));
             IAccessResult<Guid> result = await SendAsync<Guid>(HttpMethod.Post, $"{_url}/Add/{route}", JsonConvert.SerializeObject(value));
-            return await GetResult<bool>(result);
+            return await GetResult<Guid>(result);
         }
                           
         public async Task<IAccessResult<bool>> UpdateAsync<T>(T value)
@@ -187,6 +187,5 @@ namespace HelpAPIs
 
             return result;
         }
-
     }
 }
