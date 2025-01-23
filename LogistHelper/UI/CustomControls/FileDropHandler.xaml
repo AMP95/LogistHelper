@@ -206,7 +206,7 @@
                                 Width="25"
                                 Height="25"
                                 Command="{Binding RelativeSource={RelativeSource AncestorType=local:FileDropHandler}, Path=RemoveCommand}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext.Id}"
                                 Style="{StaticResource IconButton}">
                                 <Image
                                     Source="/UI/Icons/remove_icon.png"/>

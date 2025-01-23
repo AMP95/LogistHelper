@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
 using DTOs.Dtos;
-using HelpAPIs;
-using LogistHelper.UI.CustomControls.FileDrag;
+using LogistHelper.Models;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Models.Suggest;
@@ -38,7 +37,7 @@ namespace LogistHelper.ViewModels.Views
         private ListItem<string> _selectedTruckBrand;
         private ListItem<string> _selectedTrailerBrand;
 
-        private ObservableCollection<FileViewModel> _files;
+        private ObservableCollection<ListItem<FileViewModel>> _files;
 
         #endregion Private
 
@@ -116,7 +115,7 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
-        public ObservableCollection<FileViewModel> Files 
+        public ObservableCollection<ListItem<FileViewModel>> Files 
         {
             get => _files;
             set => SetProperty(ref _files, value);
@@ -147,7 +146,7 @@ namespace LogistHelper.ViewModels.Views
             _trailerSuggest = trailerSuggest;
             _fileLoader = loader;
 
-            Files = new ObservableCollection<FileViewModel>();
+            Files = new ObservableCollection<ListItem<FileViewModel>>();
 
             #region CommandsInit
 
@@ -185,13 +184,14 @@ namespace LogistHelper.ViewModels.Views
                 }
             });
 
-            RemoveFileCommand = new RelayCommand<FileViewModel>(async (file) => 
+            RemoveFileCommand = new RelayCommand<Guid>(async (id) => 
             {
-                Files.Remove(file);
+                ListItem<FileViewModel> item = Files.FirstOrDefault(i => i.Id == id);  
+                Files.Remove(item);
 
-                if (file.Id != Guid.Empty) 
+                if (item.Item.Id != Guid.Empty) 
                 { 
-                    IAccessResult<bool> result = await _access.DeleteAsync<FileDto>(file.Id);
+                    IAccessResult<bool> result = await _access.DeleteAsync<FileDto>(item.Item.Id);
                 }
             });
 
@@ -208,14 +208,9 @@ namespace LogistHelper.ViewModels.Views
             SelectedTruckBrand = new ListItem<string>(_vehicle.TruckModel);
             SelectedTrailerBrand = new ListItem<string>(_vehicle.TrailerModel);
 
-            IAccessResult<IEnumerable<FileDto>> files = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.EntityId), EditedViewModel.Id.ToString());
+            IAccessResult<IEnumerable<FileDto>> files = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
 
-            Files = new ObservableCollection<FileViewModel>(files.Result.Select(f => new FileViewModel()
-            {
-                Id = f.Id,
-                Extension = Path.GetExtension(f.FileName),
-                Name = Path.GetFileNameWithoutExtension(f.FileName),
-            }));
+            Files = new ObservableCollection<ListItem<FileViewModel>>(files.Result.Select(f => new ListItem<FileViewModel>(new FileViewModel(f))));
         }
 
         public async override Task Save()
@@ -234,7 +229,7 @@ namespace LogistHelper.ViewModels.Views
 
             if (await SaveEntity())
             {
-                if (await _fileLoader.UploadFiles(EditedViewModel.Id, nameof(VehicleDto), Files.Where(f => f.Id == Guid.Empty)))
+                if (await _fileLoader.UploadFiles(EditedViewModel.Id, Files.Select(f => f.Item).Where(f => f.Id == Guid.Empty)))
                 {
                     _dialog.ShowSuccess("Файлы заргужены");
                 }

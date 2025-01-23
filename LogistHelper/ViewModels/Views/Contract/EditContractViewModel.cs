@@ -4,6 +4,7 @@ using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Shared;
 using System.Collections.ObjectModel;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Views
@@ -236,7 +237,7 @@ namespace LogistHelper.ViewModels.Views
             IsBlock = true;
             BlockText = "Сохранение";
 
-            IAccessResult<bool> result;
+            bool result = false;
 
             CreateContractDocument();
 
@@ -247,14 +248,20 @@ namespace LogistHelper.ViewModels.Views
 
             if (EditedViewModel.Id == Guid.Empty)
             {
-                result = await _access.AddAsync(EditedViewModel.GetDto());
+                IAccessResult<Guid> addResult = await _access.AddAsync(EditedViewModel.GetDto());
+                if (addResult.IsSuccess) 
+                {
+                    result = true;
+                    EditedViewModel.Id = addResult.Result;
+                }
             }
             else
             {
-                result = await _access.UpdateAsync(EditedViewModel.GetDto());
+                IAccessResult<bool> updateResult = await _access.UpdateAsync(EditedViewModel.GetDto());
+                result = updateResult.IsSuccess;
             }
 
-            if (result.IsSuccess)
+            if (result)
             {
                 if (Send)
                 {
