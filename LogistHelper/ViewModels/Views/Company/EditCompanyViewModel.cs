@@ -1,12 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Dadata;
 using DTOs;
-using LogistHelper.Models.Settings;
 using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
+using Models.Suggest;
 using Shared;
 using System.Windows.Input;
+using Utilities;
 
 namespace LogistHelper.ViewModels.Views
 {
@@ -14,18 +14,18 @@ namespace LogistHelper.ViewModels.Views
     {
         private CompanyViewModel<T> _company;
 
-        private IEnumerable<CompanyItem> _companiesList;
-        private CompanyItem _selectedCompany;
+        private IDataSuggest<CompanySuggestItem> _dataSuggest;
+        private IEnumerable<CompanySuggestItem> _companiesList;
+        private CompanySuggestItem _selectedCompany;
 
         #region Public
 
-        public IEnumerable<CompanyItem> CompaniesList 
+        public IEnumerable<CompanySuggestItem> CompaniesList 
         {
             get => _companiesList;
             set => SetProperty(ref _companiesList, value);
         }
-
-        public CompanyItem SelectedCompany
+        public CompanySuggestItem SelectedCompany
         {
             get => _selectedCompany;
             set
@@ -57,30 +57,32 @@ namespace LogistHelper.ViewModels.Views
         public ICommand AddEmailCommand { get; set; }
         public ICommand DeletePhoneCommand { get; set; }
         public ICommand AddPhoneCommand { get; set; }
-
         public ICommand SearchCompanyCommand { get; set; }
 
         #endregion Commands
 
-        public EditCompanyViewModel(ISettingsRepository<Settings> repository, 
+        public EditCompanyViewModel(IDataAccess dataAccess,
                                     IViewModelFactory<T> factory, 
-                                    IDialog dialog) : base(repository, factory, dialog)
+                                    IDialog dialog,
+                                    IDataSuggest<CompanySuggestItem> dataSuggest) : base(dataAccess, factory, dialog)
         {
+            _dataSuggest = dataSuggest;
+
             #region CommandsInit
 
             AddPhoneCommand = new RelayCommand(() =>
             {
-                _company.Phones.Add(new StringItem());
+                _company.Phones.Add(new ListItem<string>());
             });
 
             AddEmailCommand = new RelayCommand(() =>
             {
-                _company.Emails.Add(new StringItem());
+                _company.Emails.Add(new ListItem<string>());
             });
 
             DeleteEmailCommand = new RelayCommand<Guid>((id) =>
             {
-                StringItem item = _company.Emails.FirstOrDefault(e => e.Id == id);
+                ListItem<string> item = _company.Emails.FirstOrDefault(e => e.Id == id);
                 if (item != null)
                 {
                     _company.Emails.Remove(item);
@@ -89,7 +91,7 @@ namespace LogistHelper.ViewModels.Views
 
             DeletePhoneCommand = new RelayCommand<Guid>((id) =>
             {
-                StringItem item = _company.Phones.FirstOrDefault(e => e.Id == id);
+                ListItem<string> item = _company.Phones.FirstOrDefault(e => e.Id == id);
                 if (item != null)
                 {
                     _company.Phones.Remove(item);
@@ -98,7 +100,7 @@ namespace LogistHelper.ViewModels.Views
 
             SearchCompanyCommand = new RelayCommand<string>(async (searchString) =>
             {
-                await Search(searchString);
+                CompaniesList = await _dataSuggest.SuggestAsync(searchString);
             });
 
             #endregion CommandsInit
@@ -108,21 +110,10 @@ namespace LogistHelper.ViewModels.Views
         {
             await base.Load(id);
             _company = EditedViewModel as CompanyViewModel<T>;
-            _selectedCompany = new CompanyItem()
-            {
-                Name = _company.Name,
-                Address = _company.Address,
-                Inn = _company.Inn,
-                Kpp = _company.Kpp
-            };
-            OnPropertyChanged(nameof(SelectedCompany));
-        }
 
-        public async Task Search(string searchString)
-        {
-            var api = new SuggestClientAsync(_settings.DaDataApiKey);
-            var response = await api.SuggestParty(searchString);
-            CompaniesList = response.suggestions.Select(s => new CompanyItem() { Name = s.value, Inn = s.data.inn, Kpp = s.data.kpp, Address = s.data.address.value });
+            var companies = await _dataSuggest.SuggestAsync(_company.Name);
+            _selectedCompany = companies.FirstOrDefault();
+            OnPropertyChanged(nameof(SelectedCompany));
         }
 
         public override bool CheckSave()
@@ -168,7 +159,7 @@ namespace LogistHelper.ViewModels.Views
 
     public class EditClientViewModel : EditCompanyViewModel<ClientDto>
     {
-        public EditClientViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<ClientDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public EditClientViewModel(IDataAccess dataAccess, IViewModelFactory<ClientDto> factory, IDialog dialog, IDataSuggest<CompanySuggestItem> dataSuggest) : base(dataAccess, factory, dialog, dataSuggest)
         {
         }
     }
@@ -190,7 +181,7 @@ namespace LogistHelper.ViewModels.Views
             get => _isWithoutVat;
             set => SetProperty(ref _isWithoutVat, value);
         }
-        public EditCarrierViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<CarrierDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public EditCarrierViewModel(IDataAccess dataAccess, IViewModelFactory<CarrierDto> factory, IDialog dialog, IDataSuggest<CompanySuggestItem> dataSuggest) : base(dataAccess, factory, dialog, dataSuggest)
         {
         }
 

@@ -1,23 +1,22 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
-using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
+using Models.Sugget;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Windows.Input;
+using Utilities;
 
 namespace LogistHelper.ViewModels.DataViewModels
 {
-   
-
     public class RoutePointViewModel : DataViewModel<RoutePointDto>
     {
         #region Private
 
-        private ObservableCollection<StringItem> _phones;
-        private IEnumerable<GeoSuggestResult> _searchResult;
-        private GeoSuggestResult _selectedAddress;
+        private IDataSuggest<GeoSuggestItem> _dataSuggest;
+        private ObservableCollection<ListItem<string>> _phones;
+        private IEnumerable<GeoSuggestItem> _searchResult;
+        private GeoSuggestItem _selectedAddress;
 
         #endregion Private
 
@@ -95,19 +94,19 @@ namespace LogistHelper.ViewModels.DataViewModels
             }
         }
 
-        public ObservableCollection<StringItem> Phones
+        public ObservableCollection<ListItem<string>> Phones
         {
             get => _phones;
             set => SetProperty(ref _phones, value);
         }
 
-        public IEnumerable<GeoSuggestResult> SearchResult 
+        public IEnumerable<GeoSuggestItem> SearchResult 
         {
             get => _searchResult;
             set => SetProperty(ref _searchResult, value);
         }
 
-        public GeoSuggestResult SelectedAddress
+        public GeoSuggestItem SelectedAddress
         {
             get => _selectedAddress;
             set 
@@ -132,34 +131,36 @@ namespace LogistHelper.ViewModels.DataViewModels
         public ICommand DeletePhoneCommand { get; private set; }
         public ICommand SearchAddressesCommand { get; private set; }
 
-        public RoutePointViewModel(RoutePointDto route, int counter) : base(route, counter)
+        public RoutePointViewModel(RoutePointDto route, int counter, IDataSuggest<GeoSuggestItem> dataSuggest) : base(route, counter)
         {
+            _dataSuggest = dataSuggest;
+
             if (route != null)
             {
                 if (route.Phones != null)
                 {
-                    Phones = new ObservableCollection<StringItem>(route.Phones.Select(s => new StringItem(s)));
+                    Phones = new ObservableCollection<ListItem<string>>(route.Phones.Select(s => new ListItem<string>(s)));
                 }
-                SelectedAddress = new GeoSuggestResult() { Location = Route, FullAddress = Address };
+                SelectedAddress = new GeoSuggestItem() { Location = Route, FullAddress = Address };
             }
 
             InitCommands();
         }
 
-        public RoutePointViewModel(RoutePointDto route) : this(route, 0) { }
+        public RoutePointViewModel(RoutePointDto route, IDataSuggest<GeoSuggestItem> dataSuggest) : this(route, 0, dataSuggest) { }
 
-        public RoutePointViewModel() : base() { }
+        public RoutePointViewModel(IDataSuggest<GeoSuggestItem> dataSuggest) : base() { _dataSuggest = dataSuggest; }
 
         private void InitCommands() 
         {
             AddPhoneCommand = new RelayCommand(() =>
             {
-                Phones.Add(new StringItem());
+                Phones.Add(new ListItem<string>());
             });
 
             DeletePhoneCommand = new RelayCommand<Guid>((id) =>
             {
-                StringItem item = Phones.FirstOrDefault(e => e.Id == id);
+                ListItem<string> item = Phones.FirstOrDefault(e => e.Id == id);
                 if (item != null)
                 {
                     Phones.Remove(item);
@@ -168,7 +169,7 @@ namespace LogistHelper.ViewModels.DataViewModels
 
             SearchAddressesCommand = new RelayCommand<string>(async (searchString) =>
             {
-                SearchResult = await GeoSuggestService.GetSuggestions(searchString);
+                SearchResult = await _dataSuggest.SuggestAsync(searchString);
             });
         }
         
@@ -183,7 +184,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             _dto = new RoutePointDto();
 
-            Phones = new ObservableCollection<StringItem>() { new StringItem() };
+            Phones = new ObservableCollection<ListItem<string>>() { new ListItem<string>() };
 
             InitCommands();
         }
@@ -212,19 +213,26 @@ namespace LogistHelper.ViewModels.DataViewModels
 
     public class RouteViewModelFactory : IViewModelFactory<RoutePointDto>
     {
+        IDataSuggest<GeoSuggestItem> _dataSuggest;
+
+        public RouteViewModelFactory(IDataSuggest<GeoSuggestItem> dataSuggest)
+        {
+            _dataSuggest = dataSuggest;
+        }
+
         public DataViewModel<RoutePointDto> GetViewModel(RoutePointDto dto, int number)
         {
-            return new RoutePointViewModel(dto, number);
+            return new RoutePointViewModel(dto, number, _dataSuggest);
         }
 
         public DataViewModel<RoutePointDto> GetViewModel(RoutePointDto dto)
         {
-            return new RoutePointViewModel(dto);
+            return new RoutePointViewModel(dto, _dataSuggest);
         }
 
         public DataViewModel<RoutePointDto> GetViewModel()
         {
-            return new RoutePointViewModel();
+            return new RoutePointViewModel(_dataSuggest);
         }
     }
 }

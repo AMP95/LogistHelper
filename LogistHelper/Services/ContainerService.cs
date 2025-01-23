@@ -1,21 +1,23 @@
 ﻿using CustomDialog;
 using DTOs;
+using HelpAPIs;
+using HelpAPIs.Settings;
 using Log4NetLogger;
-using LogistHelper.Models.Settings;
+using LogistHelper.Models;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using LogistHelper.ViewModels.Pages;
 using LogistHelper.ViewModels.Views;
-using LogistHelper.ViewModels.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Models.Suggest;
+using Models.Sugget;
 using Shared;
+using Utilities;
 
 namespace LogistHelper.Services
 {
     public static class ContainerService
     {
-        public static MainWindowViewModel MainWindowViewModel => Services.GetService<MainWindowViewModel>();
-        public static ISettingsRepository<Settings> SettingsRepository => Services.GetService<ISettingsRepository<Settings>>();
         public static ILogger Logger => Services.GetService<ILogger>();
 
         public static IServiceProvider Services { get; private set; }
@@ -70,14 +72,14 @@ namespace LogistHelper.Services
 
             #region Factories
 
-            services.AddSingleton<IViewModelFactory<ClientDto>, ClientViewModelFactory>();
-            services.AddSingleton<IViewModelFactory<CarrierDto>, CarrierViewModelFactory>();
-            services.AddSingleton<IViewModelFactory<DriverDto>, DriverViewModelFactory>();
-            services.AddSingleton<IViewModelFactory<VehicleDto>, VehicleViewModelFactory>();
-            services.AddSingleton<IViewModelFactory<DocumentDto>, DocumentViewModelFactory>();
-            services.AddSingleton<IViewModelFactory<PaymentDto>, PaymentViewModelFactory>();
-            services.AddSingleton<IViewModelFactory<RoutePointDto>, RouteViewModelFactory>();
-            services.AddSingleton<IViewModelFactory<ContractDto>, ContractViewModelFactory>();
+            services.AddTransient<IViewModelFactory<ClientDto>, ClientViewModelFactory>();
+            services.AddTransient<IViewModelFactory<CarrierDto>, CarrierViewModelFactory>();
+            services.AddTransient<IViewModelFactory<DriverDto>, DriverViewModelFactory>();
+            services.AddTransient<IViewModelFactory<VehicleDto>, VehicleViewModelFactory>();
+            services.AddTransient<IViewModelFactory<DocumentDto>, DocumentViewModelFactory>();
+            services.AddTransient<IViewModelFactory<PaymentDto>, PaymentViewModelFactory>();
+            services.AddTransient<IViewModelFactory<RoutePointDto>, RouteViewModelFactory>();
+            services.AddTransient<IViewModelFactory<ContractDto>, ContractViewModelFactory>();
 
             #endregion Factories
 
@@ -89,8 +91,15 @@ namespace LogistHelper.Services
             #region Services
 
             services.AddSingleton<ILogger, Logger>();
-            services.AddSingleton<ISettingsRepository<Settings>, JsonRepository>();
+            services.AddSingleton<ISettingsRepository<ApiSettings>, ApiJsonRepository>();
             services.AddSingleton<IDialog, CustomDialogService>();
+
+            services.AddTransient<IDataSuggest<CompanySuggestItem>, DaDataClient>();
+            services.AddTransient<IDataSuggest<FmsSuggestItem>, DaDataClient>();
+            services.AddTransient<IDataSuggest<TruckModelSuggestItem>, VehicleSuggestClient>();
+            services.AddTransient<IDataSuggest<TrailerModelSuggestItem>, VehicleSuggestClient>();
+            services.AddTransient<IDataSuggest<GeoSuggestItem>, YandexGeoSuggestClient>();
+            services.AddTransient<IDataAccess, ServerClient>();
 
             #endregion Services
 

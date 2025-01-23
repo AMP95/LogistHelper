@@ -1,5 +1,4 @@
 ﻿using DTOs;
-using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Shared;
@@ -10,7 +9,7 @@ namespace LogistHelper.ViewModels.Views
     {
         private DocumentViewModel _document;
 
-        public EditDocumentViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<DocumentDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public EditDocumentViewModel(IDataAccess repository, IViewModelFactory<DocumentDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
         }
 
@@ -31,7 +30,7 @@ namespace LogistHelper.ViewModels.Views
     {
         private PaymentViewModel _payment;
 
-        public EditPaymentViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<PaymentDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public EditPaymentViewModel(IDataAccess repository, IViewModelFactory<PaymentDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
         }
 

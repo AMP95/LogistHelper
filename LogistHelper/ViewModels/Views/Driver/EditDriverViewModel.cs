@@ -2,12 +2,15 @@
 using Dadata;
 using Dadata.Model;
 using DTOs;
+using LogistHelper.Models;
 using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
-using ServerClient;
+using Models.Suggest;
 using Shared;
+using System.Runtime;
 using System.Windows.Input;
+using Utilities;
 
 namespace LogistHelper.ViewModels.Views
 {
@@ -15,14 +18,15 @@ namespace LogistHelper.ViewModels.Views
     {
         private DriverViewModel _driver;
 
+        private IDataSuggest<FmsSuggestItem> _dataSuggest;
         private List<DataViewModel<VehicleDto>> _vehicles;
         private int _selectedIndex;
 
         private IEnumerable<DataViewModel<CarrierDto>> _carriers;
         private DataViewModel<CarrierDto> _selectedCarrier;
 
-        private IEnumerable<IssuerItem> _issuersList;
-        private IssuerItem _selectedIssuer;
+        private IEnumerable<FmsSuggestItem> _issuersList;
+        private FmsSuggestItem _selectedIssuer;
 
         private IViewModelFactory<CarrierDto> _carrierFactory;
         private IViewModelFactory<VehicleDto> _vehicleFactory;
@@ -62,13 +66,13 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
-        public IEnumerable<IssuerItem> IssuersList
+        public IEnumerable<FmsSuggestItem> IssuersList
         {
             get => _issuersList;
             set => SetProperty(ref _issuersList, value);
         }
 
-        public IssuerItem SelectedIssuer 
+        public FmsSuggestItem SelectedIssuer 
         { 
             get => _selectedIssuer;
             set
@@ -110,25 +114,27 @@ namespace LogistHelper.ViewModels.Views
 
         #endregion Commands
 
-        public EditDriverViewModel(ISettingsRepository<Settings> repository, 
+        public EditDriverViewModel(IDataAccess repository, 
                                    IViewModelFactory<DriverDto> factory, 
                                    IViewModelFactory<CarrierDto> carrierFactory, 
                                    IViewModelFactory<VehicleDto> vehicleFactory, 
-                                   IDialog dialog) : base(repository, factory, dialog)
+                                   IDialog dialog,
+                                   IDataSuggest<FmsSuggestItem> dataSuggest) : base(repository, factory, dialog)
         {
             _carrierFactory = carrierFactory;
             _vehicleFactory = vehicleFactory;
+            _dataSuggest = dataSuggest;
 
             #region CommandsInit
 
             AddPhoneCommand = new RelayCommand(() =>
             {
-                _driver.Phones.Add(new StringItem());
+                _driver.Phones.Add(new ListItem<string>());
             });
 
             DeletePhoneCommand = new RelayCommand<Guid>((id) =>
             {
-                StringItem item = _driver.Phones.FirstOrDefault(e => e.Id == id);
+                ListItem<string> item = _driver.Phones.FirstOrDefault(e => e.Id == id);
                 if (item != null)
                 {
                     _driver.Phones.Remove(item);
@@ -137,7 +143,7 @@ namespace LogistHelper.ViewModels.Views
 
             SearchIssuerCommand = new RelayCommand<string>(async (searchString) =>
             {
-                await SearchIssuer(searchString);
+                IssuersList = await _dataSuggest.SuggestAsync(searchString);
             });
 
             SearchCarrierCommand = new RelayCommand<string>(async (searchString) => 
@@ -166,18 +172,11 @@ namespace LogistHelper.ViewModels.Views
             SelectedVehicleIndex = -1;
         }
 
-        public async Task SearchIssuer(string searchString)
-        {
-            var api = new OutwardClientAsync(_settings.DaDataApiKey);
-            var response = await api.Suggest<FmsUnit>(searchString);
-            IssuersList = response.suggestions.Select(s => new IssuerItem() { Code = s.data.code, Name = s.data.name });
-        }
-
         private async Task SearchCarrier(string searchString)
         {
             await Task.Run(async () => 
             {
-                RequestResult<IEnumerable<CarrierDto>> result = await _client.GetFiltered<CarrierDto>(nameof(DriverDto.Carrier), searchString);
+                IAccessResult<IEnumerable<CarrierDto>> result = await _access.GetFilteredAsync<CarrierDto>(nameof(DriverDto.Carrier), searchString);
 
                 SelectedCarrier = null;
 
@@ -196,7 +195,7 @@ namespace LogistHelper.ViewModels.Views
         {
             await Task.Run(async () =>
             {
-                RequestResult<IEnumerable<VehicleDto>> result = await _client.GetFiltered<VehicleDto>("CarrierId", SelectedCarrier?.Id.ToString());
+                IAccessResult<IEnumerable<VehicleDto>> result = await _access.GetFilteredAsync<VehicleDto>("CarrierId", SelectedCarrier?.Id.ToString());
 
                 Vehicles = null;
 

@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
-using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
 using Shared;
 
@@ -15,7 +14,7 @@ namespace LogistHelper.ViewModels.Views
             get => _searchString;
             set => SetProperty(ref _searchString, value);
         }
-        public VehicleListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<VehicleDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public VehicleListViewModel(IDataAccess repository, IViewModelFactory<VehicleDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
 
             SearchFirters = new Dictionary<string, string>()

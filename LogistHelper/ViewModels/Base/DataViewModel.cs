@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using DTOs.Dtos;
-using System.ComponentModel;
 
 namespace LogistHelper.ViewModels.Base
 {

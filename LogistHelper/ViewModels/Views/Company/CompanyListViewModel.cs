@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
-using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
 using Shared;
 
@@ -34,7 +33,7 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
-        public ClientListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<ClientDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public ClientListViewModel(IDataAccess repository, IViewModelFactory<ClientDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
             SearchFirters = new Dictionary<string, string>()
             {
@@ -94,7 +93,7 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
-        public CarrierListViewModel(ISettingsRepository<Settings> repository, IViewModelFactory<CarrierDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public CarrierListViewModel(IDataAccess repository, IViewModelFactory<CarrierDto> factory, IDialog dialog) : base(repository, factory, dialog)
         {
             SearchFirters = new Dictionary<string, string>()
             {

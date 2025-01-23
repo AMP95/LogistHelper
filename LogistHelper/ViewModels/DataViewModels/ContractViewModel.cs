@@ -9,6 +9,7 @@ namespace LogistHelper.ViewModels.DataViewModels
     public class ContractViewModel : DataViewModel<ContractDto>
     {
         #region Private
+        private IViewModelFactory<RoutePointDto> _routeFactory;
 
         private DriverViewModel _driver;
         private VehicleViewModel _vehicle;
@@ -243,35 +244,48 @@ namespace LogistHelper.ViewModels.DataViewModels
         public ICommand AddUnloadCommand { get; }
         public ICommand DeleteUnloadCommand { get; }
 
-        public ContractViewModel(ContractDto dto, int counter) : base(dto, counter)
+        public ContractViewModel(ContractDto dto, int counter, IViewModelFactory<RoutePointDto> routeFactory) : base(dto, counter)
         {
-            if (dto != null) 
+            _routeFactory = routeFactory;
+
+            if (dto != null)
             {
                 _driver = new DriverViewModel(dto.Driver);
                 _vehicle = new VehicleViewModel(dto.Vehicle);
                 _carrier = new CarrierViewModel(dto.Carrier);
                 _client = new ClientViewModel(dto.Client);
-                _loadingPoint = new RoutePointViewModel(dto.LoadPoint);
+                _loadingPoint = _routeFactory.GetViewModel(dto.LoadPoint) as RoutePointViewModel;
 
                 if (dto.UnloadPoints != null)
                 {
-                    UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>(dto.UnloadPoints.Select(p => new ListItem<RoutePointViewModel>() 
-                    { 
-                        Item = new RoutePointViewModel(p)
+                    UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>(dto.UnloadPoints.Select(p => new ListItem<RoutePointViewModel>()
+                    {
+                        Item = _routeFactory.GetViewModel(p) as RoutePointViewModel
                     }));
                 }
-                else 
+                else
                 {
+                    ListItem<RoutePointViewModel> item = new ListItem<RoutePointViewModel>(_routeFactory.GetViewModel() as RoutePointViewModel);
+                    item.Item.Type = LoadPointType.Download;
+
                     UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>()
                     {
-                        new ListItem<RoutePointViewModel>(new RoutePointViewModel(){ Type = LoadPointType.Download })
+                        item
                     };
                 }
             }
-
-            AddUnloadCommand = new RelayCommand(() => 
+            else 
             {
-                UnloadPoints.Add(new ListItem<RoutePointViewModel>() { Item = new RoutePointViewModel() { Type = LoadPointType.Download } });
+                LoadPoint = _routeFactory.GetViewModel() as RoutePointViewModel;
+                UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>();
+            }
+
+            AddUnloadCommand = new RelayCommand(() =>
+            {
+                ListItem<RoutePointViewModel> item = new ListItem<RoutePointViewModel>(_routeFactory.GetViewModel() as RoutePointViewModel);
+                item.Item.Type = LoadPointType.Download;
+
+                UnloadPoints.Add(item);
             });
 
             DeleteUnloadCommand = new RelayCommand<Guid>((id) => 
@@ -284,13 +298,18 @@ namespace LogistHelper.ViewModels.DataViewModels
             });
         }
 
-        public ContractViewModel(ContractDto dto) : this(dto, 0) { }
+        public ContractViewModel(ContractDto dto, IViewModelFactory<RoutePointDto> routeFactory) : this(dto, 0, routeFactory) { }
 
-        public ContractViewModel() : base() 
+        public ContractViewModel(IViewModelFactory<RoutePointDto> routeFactory) : base() 
         {
+            _routeFactory = routeFactory;
+
             AddUnloadCommand = new RelayCommand(() =>
             {
-                UnloadPoints.Add(new ListItem<RoutePointViewModel>() { Item = new RoutePointViewModel() { Type = LoadPointType.Download } });
+                ListItem<RoutePointViewModel> item = new ListItem<RoutePointViewModel>(_routeFactory.GetViewModel() as RoutePointViewModel);
+                item.Item.Type = LoadPointType.Download;
+
+                UnloadPoints.Add(item);
             });
 
             DeleteUnloadCommand = new RelayCommand<Guid>((id) =>
@@ -320,26 +339,32 @@ namespace LogistHelper.ViewModels.DataViewModels
 
             Client = new ClientViewModel();
             Driver = new DriverViewModel();
-            LoadPoint = new RoutePointViewModel();
-            UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>();
+            
         }
     }
 
     public class ContractViewModelFactory : IViewModelFactory<ContractDto>
     {
+        private IViewModelFactory<RoutePointDto> _routeFactory;
+
+        public ContractViewModelFactory(IViewModelFactory<RoutePointDto> routeFactory)
+        {
+            _routeFactory = routeFactory;
+        }
+
         public DataViewModel<ContractDto> GetViewModel(ContractDto dto, int number)
         {
-            return new ContractViewModel(dto, number);
+            return new ContractViewModel(dto, number, _routeFactory);
         }
 
         public DataViewModel<ContractDto> GetViewModel(ContractDto dto)
         {
-            return new ContractViewModel(dto);
+            return new ContractViewModel(dto, _routeFactory);
         }
 
         public DataViewModel<ContractDto> GetViewModel()
         {
-            return new ContractViewModel();
+            return new ContractViewModel(_routeFactory);
         }
     }
 }

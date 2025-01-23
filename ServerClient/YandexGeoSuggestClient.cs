@@ -1,37 +1,23 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using HelpAPIs.Settings;
+using Models.Sugget;
 using Shared;
-using System.Net.Http;
 using System.Net.Http.Json;
+using Utilities;
 
-namespace LogistHelper.Services
+namespace HelpAPIs
 {
-    public class GeoSuggestResult : ObservableObject
+    public class YandexGeoSuggestClient : IDataSuggest<GeoSuggestItem>
     {
-        private string _location;
-        private string _fullAddress;
+        private string _apiKey;
+        private ILogger _logger;
 
-        public string Location
+        public YandexGeoSuggestClient(ISettingsRepository<ApiSettings> repository, ILogger logger)
         {
-            get => _location;
-            set => SetProperty(ref _location, value);
-        }
-        public string FullAddress
-        {
-            get => _fullAddress;
-            set => SetProperty(ref _fullAddress, value);
-        }
-    }
-    public static class GeoSuggestService
-    {
-        private static string _apiKey;
-        private static ILogger _logger;
-        static GeoSuggestService()
-        {
-            _apiKey = ContainerService.SettingsRepository.GetSettings().YandexGeoSuggestApiKey;
-            _logger = ContainerService.Logger;
+            _logger = logger;
+            _apiKey = repository.GetSettings().YandexGeoSuggestApiKey;
         }
 
-        public static async Task<IEnumerable<GeoSuggestResult>> GetSuggestions(string searchString)
+        public async Task<IEnumerable<GeoSuggestItem>> SuggestAsync(string searchString)
         {
             try
             {
@@ -49,8 +35,8 @@ namespace LogistHelper.Services
                             if (response.IsSuccessStatusCode)
                             {
                                 GeoSuggestResponse geoResult = await response.Content.ReadFromJsonAsync<GeoSuggestResponse>();
-                                IEnumerable<GeoSuggestResult> results = geoResult.results.Where(r => !r.Address.Component.Any(c => c.Kind.Any(k => k == "ENTRANCE"))).
-                                                                                          Select(r => new GeoSuggestResult()
+                                IEnumerable<GeoSuggestItem> results = geoResult.results.Where(r => !r.Address.Component.Any(c => c.Kind.Any(k => k == "ENTRANCE"))).
+                                                                                          Select(r => new GeoSuggestItem()
                                                                                           {
                                                                                               FullAddress = r.Address.Formatted_address,
                                                                                               Location = r.Address.Component.FirstOrDefault(c => c.Kind.Any(k => k == "LOCALITY"))?.Name
@@ -66,18 +52,18 @@ namespace LogistHelper.Services
                 _logger.Log(ex, ex.Message, LogLevel.Error);
             }
 
-            return Enumerable.Empty<GeoSuggestResult>();
+            return Enumerable.Empty<GeoSuggestItem>();
         }
     }
 
     #region GeoClasses
 
-    public class GeoSuggestResponse
+    internal class GeoSuggestResponse
     {
         public GeoResponseResult[] results { get; set; }
     }
 
-    public class GeoResponseResult
+    internal class GeoResponseResult
     {
         public GeoTitle Title { get; set; }
         public GeoSubtitle Subtitle { get; set; }
@@ -88,36 +74,36 @@ namespace LogistHelper.Services
         public string Uri { get; set; }
     }
 
-    public class GeoTitle
+    internal class GeoTitle
     {
         public string Text { get; set; }
         public List<GeoTiTleHl> Hl { get; set; }
     }
 
-    public class GeoTiTleHl
+    internal class GeoTiTleHl
     {
         public int Begin { get; set; }
         public int End { get; set; }
     }
 
-    public class GeoSubtitle
+    internal class GeoSubtitle
     {
         public string Text { get; set; }
     }
 
-    public class GeoDistanse
+    internal class GeoDistanse
     {
         public string Text { get; set; }
         public double Value { get; set; }
     }
 
-    public class GeoAddress
+    internal class GeoAddress
     {
         public string Formatted_address { get; set; }
         public List<GeoAddressComponent> Component { get; set; }
     }
 
-    public class GeoAddressComponent
+    internal class GeoAddressComponent
     {
         public string Name { get; set; }
         public string[] Kind { get; set; }

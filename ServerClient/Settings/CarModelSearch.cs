@@ -1,6 +1,6 @@
-﻿namespace LogistHelper.Models.Settings
+﻿namespace HelpAPIs.Settings
 {
-    public class CarModelSearch
+    internal class CarModelSearch
     {
         public string Standart { get; set; }
         public string SearchInputs { get; set; }
