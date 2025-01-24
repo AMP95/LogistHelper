@@ -1,17 +1,24 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
+using DTOs.Dtos;
+using LogistHelper.Models;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
+using Microsoft.Win32;
 using Shared;
 using System.Collections.ObjectModel;
-using System.Windows.Documents;
+using System.IO.Packaging;
+using System.Threading;
 using System.Windows.Input;
+using Utilities;
 
 namespace LogistHelper.ViewModels.Views
 {
     class EditContractViewModel : MainEditViewModel<ContractDto>
     {
         #region Private
+        private IFileLoader<FileViewModel> _fileLoader;
+        private FileViewModel _file;
 
         private ContractViewModel _contract;
 
@@ -25,6 +32,8 @@ namespace LogistHelper.ViewModels.Views
 
         private bool _sendToCarrier;
         private bool _print;
+
+        
 
         #endregion Private
 
@@ -97,6 +106,12 @@ namespace LogistHelper.ViewModels.Views
             set => SetProperty(ref _print, value);
         }
 
+        public FileViewModel File
+        {
+            get => _file;
+            set => SetProperty(ref _file, value);
+        }
+
         #endregion Public
 
 
@@ -105,12 +120,17 @@ namespace LogistHelper.ViewModels.Views
         public ICommand SearchDriverCommand { get; }
         public ICommand SearchClientCommand { get; }
 
+        public ICommand DownloadFileCommand { get; set; }
+        public ICommand SendFileCommand { get; set; }
+
         #endregion Commands
 
         public EditContractViewModel(IDataAccess repository, 
                                      IViewModelFactory<ContractDto> factory, 
-                                     IDialog dialog) : base(repository, factory, dialog)
+                                     IDialog dialog,
+                                     IFileLoader<FileViewModel> fileLoader) : base(repository, factory, dialog)
         {
+            _fileLoader = fileLoader;
 
             #region CommandsInit
 
@@ -122,6 +142,25 @@ namespace LogistHelper.ViewModels.Views
             SearchClientCommand = new RelayCommand<string>(async(searchString) => 
             {
                 await SearchClient(searchString);
+            });
+
+            DownloadFileCommand = new RelayCommand(async () =>
+            {
+                OpenFolderDialog folderDialog = new OpenFolderDialog();
+
+                if (folderDialog.ShowDialog() == true) 
+                { 
+                    string directory = folderDialog.FolderName;
+
+                    if (await _fileLoader.DownloadFile(directory, File))
+                    {
+                        _dialog.ShowSuccess("Файл сохранен");
+                    }
+                    else
+                    {
+                        _dialog.ShowError("Ошибка сохранения файлов");
+                    }
+                }
             });
 
             #endregion CommandsInit
@@ -183,6 +222,10 @@ namespace LogistHelper.ViewModels.Views
                         Vehicles = new ObservableCollection<VehicleViewModel>(vehResult.Result.Select(v => new VehicleViewModel(v)));
                         SelectedVehicleIndex = Vehicles.IndexOf(Vehicles.FirstOrDefault(v => v.Id == _contract.Vehicle.Id));
                     }
+
+                    IAccessResult<IEnumerable<FileDto>> files = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
+
+                    File = new FileViewModel(files.Result.FirstOrDefault());
                 }
 
                 IsBlock = false;
@@ -254,15 +297,27 @@ namespace LogistHelper.ViewModels.Views
                     result = true;
                     EditedViewModel.Id = addResult.Result;
                 }
+
+
+                File.DtoId = EditedViewModel.Id;
+                File.DtoType = nameof(CarrierDto);
+                File.ServerCatalog = $"{DateTime.Now.Year}".Replace(" ", "_");
             }
             else
             {
                 IAccessResult<bool> updateResult = await _access.UpdateAsync(EditedViewModel.GetDto());
                 result = updateResult.IsSuccess;
+
+                if (result)
+                {
+                    await _access.DeleteAsync<FileDto>(File.DtoId);
+                }
             }
 
             if (result)
             {
+                await _fileLoader.UploadFile(EditedViewModel.Id, File);
+
                 if (Send)
                 {
                     SendContractToCarrier();
@@ -339,6 +394,7 @@ namespace LogistHelper.ViewModels.Views
         { 
         
         }
+
         private async Task PrintContract()
         {
 

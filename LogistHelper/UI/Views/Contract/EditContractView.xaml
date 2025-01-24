@@ -32,6 +32,7 @@
         </ObjectDataProvider>
 
         <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+        <converters:GuidEmptyToBoolConverter x:Key="GuidEmptyToBoolConverter"/>
     </UserControl.Resources>
 
     <Grid
@@ -56,14 +57,38 @@
             </Style>
         </Grid.Style>
 
-        <TextBlock
+        <StackPanel
             Grid.ColumnSpan="3"
-            Style="{StaticResource HeaderTwoText}">
-            <Run Text="Заявка-договор №"/>
-            <Run Text="{Binding EditedViewModel.Number}"/>
-            <Run Text="от"/>
-            <Run Text="{Binding EditedViewModel.CreationDate, StringFormat='dd.MM.yyyy'}"/>
-        </TextBlock>
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+            
+            <TextBlock
+                Style="{StaticResource HeaderTwoText}">
+                <Run Text="Заявка-договор №"/>
+                <Run Text="{Binding EditedViewModel.Number}"/>
+                <Run Text="от"/>
+                <Run Text="{Binding EditedViewModel.CreationDate, StringFormat='dd.MM.yyyy'}"/>
+            </TextBlock>
+            
+            <Button
+                ToolTip="Скачать файл заявки"
+                Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.DownloadFileCommand}">
+                <Image
+                    Source="/UI/Icons/download_icon.png"/>
+
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding File}" Value="{x:Null}">
+                                <Setter Property="Button.Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+
+        
 
         <StackPanel
             Margin="10"

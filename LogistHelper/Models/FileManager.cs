@@ -7,7 +7,7 @@ using Utilities;
 
 namespace LogistHelper.Models
 {
-    public class FileManager : IFileLoader
+    public class FileManager : IFileLoader<FileViewModel>
     {
         private IDataAccess _access;
         private ILogger _logger;
@@ -17,7 +17,7 @@ namespace LogistHelper.Models
             _logger = logger;
         }
 
-        public async Task<bool> DownloadFiles(string downloadPath, IEnumerable<object> filesData)
+        public async Task<bool> DownloadFiles(string downloadPath, IEnumerable<FileViewModel> filesData)
         {
             bool result = false;
 
@@ -28,59 +28,61 @@ namespace LogistHelper.Models
             return result;
         }
 
-        public async Task<bool> DownloadFile(string downloadFullPath, object fileData)
+        public async Task<bool> DownloadFile(string downloadFullPath, FileViewModel fileData)
         {
-            if (fileData is FileViewModel viewModel)
-            {
-                string fileFullSavePath = Path.Combine(downloadFullPath, viewModel.LocalNameWithExtension);
+            string fileFullSavePath = Path.Combine(downloadFullPath, fileData.LocalNameWithExtension);
 
-                IAccessResult<bool> loadResult = await _access.DownloadFileAsync(viewModel.Id, fileFullSavePath);
-                if (loadResult.IsSuccess)
-                {
-                    return true;
-                }
+            IAccessResult<bool> loadResult = await _access.DownloadFileAsync(fileData.Id, fileFullSavePath);
+            if (loadResult.IsSuccess)
+            {
+                return true;
             }
             return false;
         }
 
-        public async Task<bool> UploadFiles(Guid entityID, IEnumerable<object> viewModels)
+        public async Task<bool> UploadFiles(Guid entityID, IEnumerable<FileViewModel> viewModels)
         {
-            IEnumerable<FileViewModel> files = viewModels.Cast<FileViewModel>();
-
             bool result = false;
 
-            foreach (var fileViewModel in files) 
+            foreach (var fileViewModel in viewModels) 
             {
-                FileDto fileDto = fileViewModel.GetDto();
-
-                try
-                {
-                    using (MultipartFormDataContent content = new MultipartFormDataContent()) 
-                    {
-                        content.Add(new StreamContent(File.OpenRead(fileViewModel.LocalFullFilePath)), "File", fileDto.FileNameWithExtencion);
-
-                        content.Add(new StringContent(fileDto.FileNameWithExtencion), "FileDto.FileNameWithExtencion");
-                        content.Add(new StringContent(fileDto.Catalog), "FileDto.Catalog");
-                        content.Add(new StringContent(fileDto.DtoType), "FileDto.DtoType");
-                        content.Add(new StringContent(fileDto.DtoId.ToString()), "FileDto.DtoId");
-
-                        IAccessResult<Guid> addResult = await _access.SendMultipartAsync(content);
-
-                        if (addResult.IsSuccess)
-                        {
-                            fileViewModel.Id = addResult.Result;
-                            result |= true;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _logger.Log(ex, ex.Message, LogLevel.Error);
-                    continue;
-                }
+                result |= await UploadFile(entityID, fileViewModel);
             }
 
             return result;
+        }
+
+        public async Task<bool> UploadFile(Guid entityID, FileViewModel fileData)
+        {
+            FileDto fileDto = fileData.GetDto();
+
+            try
+            {
+                using (MultipartFormDataContent content = new MultipartFormDataContent())
+                {
+                    content.Add(new StreamContent(File.OpenRead(fileData.LocalFullFilePath)), "File", fileDto.FileNameWithExtencion);
+
+                    content.Add(new StringContent(fileDto.FileNameWithExtencion), "FileDto.FileNameWithExtencion");
+                    content.Add(new StringContent(fileDto.Catalog), "FileDto.Catalog");
+                    content.Add(new StringContent(fileDto.DtoType), "FileDto.DtoType");
+                    content.Add(new StringContent(fileDto.DtoId.ToString()), "FileDto.DtoId");
+
+                    IAccessResult<Guid> addResult = await _access.SendMultipartAsync(content);
+
+                    if (addResult.IsSuccess)
+                    {
+                        fileData.Id = addResult.Result;
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(ex, ex.Message, LogLevel.Error);
+               
+            }
+
+            return false;
         }
     }
 }

@@ -14,7 +14,13 @@
         <converters:PhoneConverter x:Key="PhoneConverter"/>
     </UserControl.Resources>
 
-    <StackPanel
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <StackPanel
         MaxWidth="600">
 
         <TextBlock
@@ -255,5 +261,15 @@
         </ComboBox>
 
     </StackPanel>
+
+        <controls:FileDropHandler
+            MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=ActualHeight}"
+            Files="{Binding Files,Mode=TwoWay}"
+            DownloadCommand="{Binding DownloadFileCommand}"
+            RemoveCommand="{Binding RemoveFileCommand}"
+            Grid.Column="1"/>
+
+    </Grid>
+
 
 </UserControl>

@@ -16,7 +16,14 @@
         <converters:ViewModelToTypeConverter x:Key="ViewModelToTypeConverter"/>
     </UserControl.Resources>
 
-    <StackPanel
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition
+                Width="auto"/>
+        </Grid.ColumnDefinitions>
+    
+        <StackPanel
         MaxWidth="600">
 
         <controls:SearchBox
@@ -276,6 +283,27 @@
 
 
     </StackPanel>
+
+        <controls:FileDropHandler
+            MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=ActualHeight}"
+            Files="{Binding Files,Mode=TwoWay}"
+            DownloadCommand="{Binding DownloadFileCommand}"
+            RemoveCommand="{Binding RemoveFileCommand}"
+            Grid.Column="1">
+            <controls:FileDropHandler.Style>
+                <Style>
+                    <Setter Property="controls:FileDropHandler.Visibility" Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext, Converter={StaticResource ViewModelToTypeConverter}}" Value="{x:Type viewVM:EditCarrierViewModel}">
+                            <Setter Property="controls:FileDropHandler.Visibility" Value="Visible"/>
+                        </DataTrigger> 
+                    </Style.Triggers>
+                </Style>
+            </controls:FileDropHandler.Style>
+        </controls:FileDropHandler>
+
+    </Grid>
+    
 
 
 </UserControl>

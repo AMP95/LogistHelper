@@ -18,7 +18,7 @@ namespace LogistHelper.ViewModels.Views
 
         private VehicleViewModel _vehicle;
 
-        private IFileLoader _fileLoader;
+        private IFileLoader<FileViewModel> _fileLoader;
 
         private IDataSuggest<TruckModelSuggestItem> _truckSuggest;
         private IDataSuggest<TrailerModelSuggestItem> _trailerSuggest;
@@ -137,7 +137,7 @@ namespace LogistHelper.ViewModels.Views
                                     IDialog dialog,
                                     IDataSuggest<TruckModelSuggestItem> truckSuggest,
                                     IDataSuggest<TrailerModelSuggestItem> trailerSuggest,
-                                    IFileLoader loader) : base(repository, factory, dialog)
+                                    IFileLoader<FileViewModel> loader) : base(repository, factory, dialog)
         {
 
             _carrierFactory = carrierFactory;
@@ -223,17 +223,10 @@ namespace LogistHelper.ViewModels.Views
                 {
                     file.Item.DtoId = EditedViewModel.Id;
                     file.Item.DtoType = nameof(VehicleDto);
-                    file.Item.ServerCatalog = $"{_vehicle.TruckModel}_{_vehicle.TruckNumber}_{_vehicle.TrailerNumber}";
-                }    
+                    file.Item.ServerCatalog = $"{_vehicle.TruckModel}_{_vehicle.TruckNumber}_{_vehicle.TrailerNumber}".Replace("/", "");
+                }
 
-                if (await _fileLoader.UploadFiles(EditedViewModel.Id, Files.Select(f => f.Item).Where(f => f.Id == Guid.Empty)))
-                {
-                    _dialog.ShowSuccess("Файлы заргужены");
-                }
-                else 
-                {
-                    _dialog.ShowError("Ошибка загрузки файлов на сервер");
-                }
+                await _fileLoader.UploadFiles(EditedViewModel.Id, Files.Select(f => f.Item).Where(f => f.Id == Guid.Empty));
 
                 _dialog.ShowSuccess("ТС сохранено в базу данных");
 

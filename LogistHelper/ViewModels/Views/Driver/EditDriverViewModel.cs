@@ -1,14 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Dadata;
 using Dadata.Model;
 using DTOs;
+using DTOs.Dtos;
 using LogistHelper.Models;
-using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Models.Suggest;
 using Shared;
-using System.Runtime;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Utilities;
 
@@ -17,6 +16,8 @@ namespace LogistHelper.ViewModels.Views
     public class EditDriverViewModel : MainEditViewModel<DriverDto>
     {
         private DriverViewModel _driver;
+
+        private IFileLoader<FileViewModel> _fileLoader;
 
         private IDataSuggest<FmsSuggestItem> _dataSuggest;
         private List<DataViewModel<VehicleDto>> _vehicles;
@@ -31,6 +32,7 @@ namespace LogistHelper.ViewModels.Views
         private IViewModelFactory<CarrierDto> _carrierFactory;
         private IViewModelFactory<VehicleDto> _vehicleFactory;
 
+        private ObservableCollection<ListItem<FileViewModel>> _files;
 
         #region Public
 
@@ -100,6 +102,12 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
+        public ObservableCollection<ListItem<FileViewModel>> Files
+        {
+            get => _files;
+            set => SetProperty(ref _files, value);
+        }
+
         #endregion Public
 
 
@@ -112,6 +120,10 @@ namespace LogistHelper.ViewModels.Views
         public ICommand SearchIssuerCommand { get; set; }
         public ICommand SearchCarrierCommand { get; set; }
 
+        public ICommand DownloadFileCommand { get; set; }
+        public ICommand RemoveFileCommand { get; set; }
+
+
         #endregion Commands
 
         public EditDriverViewModel(IDataAccess repository, 
@@ -119,11 +131,13 @@ namespace LogistHelper.ViewModels.Views
                                    IViewModelFactory<CarrierDto> carrierFactory, 
                                    IViewModelFactory<VehicleDto> vehicleFactory, 
                                    IDialog dialog,
-                                   IDataSuggest<FmsSuggestItem> dataSuggest) : base(repository, factory, dialog)
+                                   IDataSuggest<FmsSuggestItem> dataSuggest,
+                                   IFileLoader<FileViewModel> fileLoader) : base(repository, factory, dialog)
         {
             _carrierFactory = carrierFactory;
             _vehicleFactory = vehicleFactory;
             _dataSuggest = dataSuggest;
+            _fileLoader = fileLoader;
 
             #region CommandsInit
 
@@ -151,6 +165,32 @@ namespace LogistHelper.ViewModels.Views
                 await SearchCarrier(searchString);
             });
 
+            DownloadFileCommand = new RelayCommand<LoadPackage>(async (package) =>
+            {
+                if (package.FileToLoad.Any())
+                {
+                    if (await _fileLoader.DownloadFiles(package.SavePath, package.FileToLoad))
+                    {
+                        _dialog.ShowSuccess("Файлы сохранены");
+                    }
+                    else
+                    {
+                        _dialog.ShowError("Ошибка сохранения файлов");
+                    }
+                }
+            });
+
+            RemoveFileCommand = new RelayCommand<Guid>(async (id) =>
+            {
+                ListItem<FileViewModel> item = Files.FirstOrDefault(i => i.Id == id);
+                Files.Remove(item);
+
+                if (item.Item.Id != Guid.Empty)
+                {
+                    IAccessResult<bool> result = await _access.DeleteAsync<FileDto>(item.Item.Id);
+                }
+            });
+
             #endregion CommandsInit
         }
 
@@ -162,7 +202,43 @@ namespace LogistHelper.ViewModels.Views
             {
                 _driver = EditedViewModel as DriverViewModel;
                 SelectedCarrier = _driver.Carrier;
+
+                IAccessResult<IEnumerable<FileDto>> files = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
+
+                Files = new ObservableCollection<ListItem<FileViewModel>>(files.Result.Select(f => new ListItem<FileViewModel>(new FileViewModel(f))));
             }
+
+        }
+
+        public async override Task Save()
+        {
+            IsBlock = true;
+            BlockText = "Сохранение";
+
+            if (await SaveEntity())
+            {
+                foreach (var file in Files)
+                {
+                    file.Item.DtoId = EditedViewModel.Id;
+                    file.Item.DtoType = nameof(DriverDto);
+                    file.Item.ServerCatalog = $"{_driver.Name}".Replace(" ", "_");
+                }
+
+                await _fileLoader.UploadFiles(EditedViewModel.Id, Files.Select(f => f.Item).Where(f => f.Id == Guid.Empty));
+
+                _dialog.ShowSuccess("ТС сохранено в базу данных");
+
+                if (EditedViewModel.Id == Guid.Empty)
+                {
+                    Load(Guid.Empty);
+                }
+            }
+            else
+            {
+                _dialog.ShowError("Не удалось сохранить изменения", "Сохранение");
+            }
+
+            IsBlock = false;
         }
 
         public override void Clear()

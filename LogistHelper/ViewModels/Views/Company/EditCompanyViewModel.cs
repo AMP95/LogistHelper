@@ -1,10 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
+using DTOs.Dtos;
+using LogistHelper.Models;
 using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Models.Suggest;
 using Shared;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Utilities;
 
@@ -166,6 +169,9 @@ namespace LogistHelper.ViewModels.Views
 
     public class EditCarrierViewModel : EditCompanyViewModel<CarrierDto>
     {
+        private IFileLoader<FileViewModel> _fileLoader;
+        private ObservableCollection<ListItem<FileViewModel>> _files;
+
         private CarrierViewModel _carrier;
 
         private bool _isWithVat;
@@ -181,27 +187,111 @@ namespace LogistHelper.ViewModels.Views
             get => _isWithoutVat;
             set => SetProperty(ref _isWithoutVat, value);
         }
-        public EditCarrierViewModel(IDataAccess dataAccess, IViewModelFactory<CarrierDto> factory, IDialog dialog, IDataSuggest<CompanySuggestItem> dataSuggest) : base(dataAccess, factory, dialog, dataSuggest)
+
+        public ObservableCollection<ListItem<FileViewModel>> Files
         {
+            get => _files;
+            set => SetProperty(ref _files, value);
+        }
+
+        public ICommand DownloadFileCommand { get; set; }
+        public ICommand RemoveFileCommand { get; set; }
+
+        public EditCarrierViewModel(IDataAccess dataAccess, 
+                                    IViewModelFactory<CarrierDto> factory, 
+                                    IDialog dialog, 
+                                    IDataSuggest<CompanySuggestItem> dataSuggest,
+                                    IFileLoader<FileViewModel> fileLoader) : base(dataAccess, factory, dialog, dataSuggest)
+        {
+            _fileLoader = fileLoader;
+
+
+            DownloadFileCommand = new RelayCommand<LoadPackage>(async (package) =>
+            {
+                if (package.FileToLoad.Any())
+                {
+                    if (await _fileLoader.DownloadFiles(package.SavePath, package.FileToLoad))
+                    {
+                        _dialog.ShowSuccess("Файлы сохранены");
+                    }
+                    else
+                    {
+                        _dialog.ShowError("Ошибка сохранения файлов");
+                    }
+                }
+            });
+
+            RemoveFileCommand = new RelayCommand<Guid>(async (id) =>
+            {
+                ListItem<FileViewModel> item = Files.FirstOrDefault(i => i.Id == id);
+                Files.Remove(item);
+
+                if (item.Item.Id != Guid.Empty)
+                {
+                    IAccessResult<bool> result = await _access.DeleteAsync<FileDto>(item.Item.Id);
+                }
+            });
         }
 
         public override async Task Load(Guid id)
         {
             await base.Load(id);
 
-            _carrier = EditedViewModel as CarrierViewModel;
+            if (EditedViewModel != null)
+            {
 
-            if (_carrier.Vat == VAT.With)
-            {
-                IsWithVat = true;
-                IsWithoutVat = false;
+                _carrier = EditedViewModel as CarrierViewModel;
+
+                if (_carrier.Vat == VAT.With)
+                {
+                    IsWithVat = true;
+                    IsWithoutVat = false;
+                }
+                else
+                {
+                    IsWithVat = false;
+                    IsWithoutVat = true;
+                }
+
+                IAccessResult<IEnumerable<FileDto>> files = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
+
+                Files = new ObservableCollection<ListItem<FileViewModel>>(files.Result.Select(f => new ListItem<FileViewModel>(new FileViewModel(f))));
+
             }
-            else 
-            {
-                IsWithVat = false;
-                IsWithoutVat = true;
-            }
+
         }
+
+        public async override Task Save()
+        {
+            IsBlock = true;
+            BlockText = "Сохранение";
+
+            if (await SaveEntity())
+            {
+                foreach (var file in Files)
+                {
+                    file.Item.DtoId = EditedViewModel.Id;
+                    file.Item.DtoType = nameof(CarrierDto);
+                    file.Item.ServerCatalog = $"{_carrier.Name}".Replace(" ", "_");
+                }
+
+                await _fileLoader.UploadFiles(EditedViewModel.Id, Files.Select(f => f.Item).Where(f => f.Id == Guid.Empty));
+
+                _dialog.ShowSuccess("ТС сохранено в базу данных");
+
+                if (EditedViewModel.Id == Guid.Empty)
+                {
+                    Load(Guid.Empty);
+                }
+            }
+            else
+            {
+                _dialog.ShowError("Не удалось сохранить изменения", "Сохранение");
+            }
+
+            IsBlock = false;
+        }
+
 
         protected override Task<bool> SaveEntity()
         {

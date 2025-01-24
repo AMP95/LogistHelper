@@ -51,7 +51,7 @@
                         <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition
-                                            Width="100"/>
+                                            Width="150"/>
                                         <ColumnDefinition
                                             Width="70"/>
                                         <ColumnDefinition
@@ -173,7 +173,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition
-                            Width="100"/>
+                            Width="150"/>
                         <ColumnDefinition
                             Width="70"/>
                         <ColumnDefinition
@@ -278,6 +278,15 @@
                             CommandParameter="{Binding Id}">
                             <Image
                                 Source="/UI/Icons/addoc_icon.png"/>
+                        </Button>
+
+                        <Button
+                            ToolTip="Скачать файл заявки"
+                            Style="{StaticResource IconButton}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.DownloadFileCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Image
+                                Source="/UI/Icons/download_icon.png"/>
                         </Button>
 
                     </StackPanel>
