@@ -2,10 +2,9 @@
 using DTOs.Dtos;
 using HelpAPIs.Settings;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Shared;
-using System.Data;
 using System.Net.Http.Json;
-using System.Text;
 
 namespace HelpAPIs
 {
@@ -192,7 +191,7 @@ namespace HelpAPIs
             return result;
         }
 
-        public async Task<IAccessResult<Guid>> AddMultipartAsync(MultipartFormDataContent content)
+        public async Task<IAccessResult<Guid>> SendMultipartAsync(MultipartFormDataContent content)
         {
             IAccessResult<Guid> result = new AccessResult<Guid>()
             {
@@ -241,6 +240,74 @@ namespace HelpAPIs
             {
                 result.IsSuccess = false;
                 result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        public async Task<IAccessResult<bool>> DownloadFileAsync(Guid fileId, string savePath)
+        {
+            IAccessResult<bool> result = new AccessResult<bool>()
+            {
+                IsSuccess = false,
+                ErrorMessage = "Ошибка загрузки"
+            };
+            IAccessResult<Guid> guidResult = await GetRequest<Guid>($"Get/file/download/{fileId}");
+
+            if (guidResult.IsSuccess)
+            {
+                IAccessResult<RequestStatus> statusResult = await GetRequest<RequestStatus>($"Result/status/{guidResult.Result}");
+
+                while (statusResult.IsSuccess && statusResult.Result != RequestStatus.Done)
+                {
+                    statusResult = await GetRequest<RequestStatus>($"Result/status/{guidResult.Result}");
+                }
+
+                if (statusResult.IsSuccess)
+                {
+                    try
+                    {
+                        using (HttpClientHandler clientHandler = new HttpClientHandler()
+                        { ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; } })
+                        {
+                            using (HttpClient client = new HttpClient(clientHandler))
+                            {
+                                using (HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, $"{_url}/Result/file/{guidResult.Result}"))
+                                {
+                                    message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _token);
+
+                                    var response = await client.SendAsync(message);
+                                    if (response.IsSuccessStatusCode)
+                                    {
+                                        using (FileStream fs = File.OpenWrite(savePath))
+                                        {
+                                            await response.Content.CopyToAsync(fs);
+                                        }
+                                        result.IsSuccess = true;
+                                        result.Result = true;
+                                    }
+                                    else
+                                    {
+                                        result.IsSuccess = false;
+                                        string errorMessage = await response.Content.ReadAsStringAsync();
+                                        if (string.IsNullOrWhiteSpace(errorMessage))
+                                        {
+                                            result.ErrorMessage = response.ReasonPhrase;
+                                        }
+                                        else
+                                        {
+                                            result.ErrorMessage = errorMessage;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        result.ErrorMessage = ex.Message;
+                    }
+                }
             }
 
             return result;

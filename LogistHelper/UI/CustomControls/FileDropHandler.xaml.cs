@@ -99,7 +99,7 @@ namespace LogistHelper.UI.CustomControls
                     LoadPackage package = new LoadPackage()
                     {
                         SavePath = Path.GetDirectoryName(saveFile.FileName),
-                        FileToLoad = Files.Where(f => f.Item.Id != guid).Select(f => f.Item)
+                        FileToLoad = Files.Where(f => f.Id == guid).Select(f => f.Item).ToList()
                     };
 
                     DownloadCommand.Execute(package);

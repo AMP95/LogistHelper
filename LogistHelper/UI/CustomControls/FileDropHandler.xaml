@@ -185,7 +185,7 @@
                                 Width="25"
                                 Height="25"
                                 Click="DownloadOneButtonClick"
-                                Tag="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext.Item.Id}">
+                                Tag="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext.Id}">
 
                                 <Button.Style>
                                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">

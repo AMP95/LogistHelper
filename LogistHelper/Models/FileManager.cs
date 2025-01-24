@@ -22,32 +22,31 @@ namespace LogistHelper.Models
             return await Task.Run<bool>(async () => 
             {
                 bool result = false;
-                //foreach (var fileGuid in fileGuids)
-                //{
-                //    IAccessResult<FileDto> loadResult = await _access.GetIdAsync<FileDto>(fileGuid);
-                //    if (loadResult.IsSuccess)
-                //    {
-                //        FileDto dto = loadResult.Result;
 
-                //        string fullPath = Path.Combine(downloadPath, dto.FileNameWithExtencion);
-
-                //        try
-                //        {
-                //            using (FileStream fileStream = new FileStream(fullPath, FileMode.Create))
-                //            {
-                //                await dto.File.CopyToAsync(fileStream);
-                //            }
-                //            result |= true;
-                //        }
-                //        catch (Exception ex)
-                //        {
-                //            _logger.Log(ex, ex.Message, LogLevel.Error);
-                //        }
-                //    }
-                //}
+                foreach (var fileGuid in fileGuids)
+                {
+                    IAccessResult<bool> loadResult = await _access.DownloadFileAsync(fileGuid, downloadPath);
+                    if (loadResult.IsSuccess)
+                    {
+                        result |= true;
+                    }
+                }
                 return result;
             });
             
+        }
+        public async Task<bool> DownloadFile(string downloadFullPath, Guid fileId)
+        {
+            return await Task.Run<bool>(async () =>
+            {
+                IAccessResult<bool> loadResult = await _access.DownloadFileAsync(fileGuid, downloadFullPath);
+                if (loadResult.IsSuccess)
+                {
+                    result |= true;
+                }
+                return result;
+            });
+
         }
 
         public async Task<bool> UploadFiles(Guid entityID, IEnumerable<object> viewModels)
@@ -71,7 +70,7 @@ namespace LogistHelper.Models
                         content.Add(new StringContent(fileDto.DtoType), "FileDto.DtoType");
                         content.Add(new StringContent(fileDto.DtoId.ToString()), "FileDto.DtoId");
 
-                        IAccessResult<Guid> addResult = await _access.AddMultipartAsync(content);
+                        IAccessResult<Guid> addResult = await _access.SendMultipartAsync(content);
 
                         if (addResult.IsSuccess)
                         {
