@@ -172,7 +172,7 @@ namespace LogistHelper.ViewModels.Views
             {
                 if (package.FileToLoad.Any()) 
                 {
-                    if (await _fileLoader.DownloadFiles(package.SavePath, package.FileToLoad.Select(f => f.Id)))
+                    if (await _fileLoader.DownloadFiles(package.SavePath, package.FileToLoad))
                     {
                         _dialog.ShowSuccess("Файлы сохранены");
                     }

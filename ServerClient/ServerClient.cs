@@ -245,7 +245,7 @@ namespace HelpAPIs
             return result;
         }
 
-        public async Task<IAccessResult<bool>> DownloadFileAsync(Guid fileId, string savePath)
+        public async Task<IAccessResult<bool>> DownloadFileAsync(Guid fileId, string fullPath)
         {
             IAccessResult<bool> result = new AccessResult<bool>()
             {
@@ -279,7 +279,7 @@ namespace HelpAPIs
                                     var response = await client.SendAsync(message);
                                     if (response.IsSuccessStatusCode)
                                     {
-                                        using (FileStream fs = File.OpenWrite(savePath))
+                                        using (FileStream fs = File.OpenWrite(fullPath))
                                         {
                                             await response.Content.CopyToAsync(fs);
                                         }

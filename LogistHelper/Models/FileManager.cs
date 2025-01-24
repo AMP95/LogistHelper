@@ -17,36 +17,30 @@ namespace LogistHelper.Models
             _logger = logger;
         }
 
-        public async Task<bool> DownloadFiles(string downloadPath, IEnumerable<Guid> fileGuids)
+        public async Task<bool> DownloadFiles(string downloadPath, IEnumerable<object> filesData)
         {
-            return await Task.Run<bool>(async () => 
-            {
-                bool result = false;
+            bool result = false;
 
-                foreach (var fileGuid in fileGuids)
-                {
-                    IAccessResult<bool> loadResult = await _access.DownloadFileAsync(fileGuid, downloadPath);
-                    if (loadResult.IsSuccess)
-                    {
-                        result |= true;
-                    }
-                }
-                return result;
-            });
-            
-        }
-        public async Task<bool> DownloadFile(string downloadFullPath, Guid fileId)
-        {
-            return await Task.Run<bool>(async () =>
+            foreach (var file in filesData)
             {
-                IAccessResult<bool> loadResult = await _access.DownloadFileAsync(fileGuid, downloadFullPath);
+                result |= await DownloadFile(downloadPath, file);
+            }
+            return result;
+        }
+
+        public async Task<bool> DownloadFile(string downloadFullPath, object fileData)
+        {
+            if (fileData is FileViewModel viewModel)
+            {
+                string fileFullSavePath = Path.Combine(downloadFullPath, viewModel.LocalNameWithExtension);
+
+                IAccessResult<bool> loadResult = await _access.DownloadFileAsync(viewModel.Id, fileFullSavePath);
                 if (loadResult.IsSuccess)
                 {
-                    result |= true;
+                    return true;
                 }
-                return result;
-            });
-
+            }
+            return false;
         }
 
         public async Task<bool> UploadFiles(Guid entityID, IEnumerable<object> viewModels)
