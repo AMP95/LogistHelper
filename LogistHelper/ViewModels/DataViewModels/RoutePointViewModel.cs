@@ -149,7 +149,13 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         public RoutePointViewModel(RoutePointDto route, IDataSuggest<GeoSuggestItem> dataSuggest) : this(route, 0, dataSuggest) { }
 
-        public RoutePointViewModel(IDataSuggest<GeoSuggestItem> dataSuggest) : base() { _dataSuggest = dataSuggest; }
+        public RoutePointViewModel(IDataSuggest<GeoSuggestItem> dataSuggest) : base() 
+        { 
+            _dataSuggest = dataSuggest;
+            Date = DateTime.Now;
+            InitCommands();
+
+        }
 
         private void InitCommands() 
         {

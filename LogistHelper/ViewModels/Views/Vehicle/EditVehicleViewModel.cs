@@ -223,7 +223,7 @@ namespace LogistHelper.ViewModels.Views
                 {
                     file.Item.DtoId = EditedViewModel.Id;
                     file.Item.DtoType = nameof(VehicleDto);
-                    file.Item.ServerCatalog = $"{_vehicle.TruckModel}_{_vehicle.TruckNumber}_{_vehicle.TrailerNumber}".Replace("/", "");
+                    file.Item.ServerCatalog = $"{_vehicle.TruckModel}_{_vehicle.TruckNumber}_{_vehicle.TrailerNumber}".Replace("/", "").Replace(" ", "");
                 }
 
                 await _fileLoader.UploadFiles(EditedViewModel.Id, Files.Select(f => f.Item).Where(f => f.Id == Guid.Empty));

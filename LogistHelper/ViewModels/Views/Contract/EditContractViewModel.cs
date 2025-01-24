@@ -1,14 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
 using DTOs.Dtos;
-using LogistHelper.Models;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Microsoft.Win32;
 using Shared;
 using System.Collections.ObjectModel;
-using System.IO.Packaging;
-using System.Threading;
 using System.Windows.Input;
 using Utilities;
 
@@ -17,8 +14,12 @@ namespace LogistHelper.ViewModels.Views
     class EditContractViewModel : MainEditViewModel<ContractDto>
     {
         #region Private
+
         private IFileLoader<FileViewModel> _fileLoader;
         private FileViewModel _file;
+
+        private IEnumerable<ContractTeplateViewModel> _templates;
+        private int _selectedTEmplateIndex;
 
         private ContractViewModel _contract;
 
@@ -38,6 +39,29 @@ namespace LogistHelper.ViewModels.Views
         #endregion Private
 
         #region Public
+
+        public IEnumerable<ContractTeplateViewModel> Templates
+        {
+            get => _templates;
+            set => SetProperty(ref _templates, value);
+        }
+
+        public int SelectedTemplateIndex 
+        {
+            get => _selectedTEmplateIndex;
+            set 
+            { 
+                SetProperty(ref _selectedTEmplateIndex, value);
+                if (value >= 0)
+                {
+                    _contract.Template = Templates.ElementAt(value);
+                }
+                else 
+                {
+                    _contract.Template = null;
+                }
+            }
+        }
 
         public IEnumerable<DriverViewModel> Drivers 
         {
@@ -170,6 +194,13 @@ namespace LogistHelper.ViewModels.Views
 
         public override async Task Load(Guid id)
         {
+            var templateResult = await _access.GetFilteredAsync<ContractTemplateDto>("ccc", "name");
+
+            if (templateResult.IsSuccess) 
+            {
+                Templates = templateResult.Result.Select(t => new ContractTeplateViewModel(t)).ToList();
+            }
+
             if (id == Guid.Empty)
             {
                 EditedViewModel = _factory.GetViewModel();
@@ -200,6 +231,8 @@ namespace LogistHelper.ViewModels.Views
 
                 Print = true;
                 Send = true;
+
+                SelectedTemplateIndex = 0;
             }
             else
             {
@@ -226,6 +259,10 @@ namespace LogistHelper.ViewModels.Views
                     IAccessResult<IEnumerable<FileDto>> files = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
 
                     File = new FileViewModel(files.Result.FirstOrDefault());
+
+                    var tempate = Templates.FirstOrDefault(t => t.Id == _contract.Template.Id);
+
+                    SelectedTemplateIndex = Templates.ToList().IndexOf(tempate);
                 }
 
                 IsBlock = false;

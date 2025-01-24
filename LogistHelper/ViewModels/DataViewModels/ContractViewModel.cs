@@ -15,6 +15,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         private VehicleViewModel _vehicle;
         private CarrierViewModel _carrier;
         private ClientViewModel _client;
+        private ContractTeplateViewModel _template;
 
         private RoutePointViewModel _loadingPoint;
 
@@ -197,6 +198,23 @@ namespace LogistHelper.ViewModels.DataViewModels
             }
         }
 
+        public ContractTeplateViewModel Template 
+        {
+            get => _template;
+            set 
+            {
+                SetProperty(ref _template, value);
+                if (value != null)
+                {
+                    _dto.Template = Template.GetDto();
+                }
+                else
+                {
+                    _dto.Template = null;
+                }
+            }
+        }
+
         public RoutePointViewModel LoadPoint
         {
             get => _loadingPoint;
@@ -254,6 +272,8 @@ namespace LogistHelper.ViewModels.DataViewModels
                 _vehicle = new VehicleViewModel(dto.Vehicle);
                 _carrier = new CarrierViewModel(dto.Carrier);
                 _client = new ClientViewModel(dto.Client);
+                _template = new ContractTeplateViewModel(dto.Template);
+
                 _loadingPoint = _routeFactory.GetViewModel(dto.LoadPoint) as RoutePointViewModel;
 
                 if (dto.UnloadPoints != null)
@@ -304,6 +324,8 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             _routeFactory = routeFactory;
 
+            LoadPoint = _routeFactory.GetViewModel() as RoutePointViewModel;
+
             AddUnloadCommand = new RelayCommand(() =>
             {
                 ListItem<RoutePointViewModel> item = new ListItem<RoutePointViewModel>(_routeFactory.GetViewModel() as RoutePointViewModel);
@@ -329,6 +351,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             _dto.Carrier = Carrier.GetDto();
             _dto.Client  = Client.GetDto();
             _dto.Vehicle = Vehicle.GetDto();
+            _dto.Template = Template.GetDto();
 
             return base.GetDto();
         }
@@ -337,8 +360,13 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             _dto = new ContractDto();
 
+            
+
             Client = new ClientViewModel();
             Driver = new DriverViewModel();
+            Template = new ContractTeplateViewModel();
+            
+            UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>();
             
         }
     }
