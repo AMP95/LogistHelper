@@ -263,6 +263,11 @@
                     DataType="{x:Type viewsVM:ContractListViewModel}">
                     <local:ContractListView/>
                 </DataTemplate>
+
+                <DataTemplate
+                    DataType="{x:Type viewsVM:TemplateListViewModel}">
+                    <local:TemplateListView/>
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
 

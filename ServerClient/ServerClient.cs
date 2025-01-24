@@ -104,6 +104,8 @@ namespace HelpAPIs
                 case nameof(DocumentDto): return "document";
                 case nameof(PaymentDto): return "payment";
                 case nameof(FileDto): return "file";
+                case nameof(ContractTemplateDto): return "template";
+                case nameof(BookMarkDto): return "bookmark";
                 default: return string.Empty;
             }
         }

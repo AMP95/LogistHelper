@@ -28,38 +28,21 @@
         <Grid
             x:Name="crossGrid"
             Grid.Row="1"
-            Opacity="0.2"
-            Width="100"
-            Height="100">
+            Opacity="0.2">
 
-            <Border
-                VerticalAlignment="Center"
-                Height="2"
-                Background="{StaticResource NeutralOneBrush}">
-                <Border.Effect>
-                    <DropShadowEffect
-                ShadowDepth="0"
-                Color="{StaticResource Dark}"/>
-                </Border.Effect>
-            </Border>
-            <Border
-                HorizontalAlignment="Center"
-                Width="2"
-                Background="{StaticResource NeutralOneBrush}">
-                <Border.Effect>
-                    <DropShadowEffect
-                ShadowDepth="0"
-                Color="{StaticResource Dark}"/>
-                </Border.Effect>
-            </Border>
+            <TextBlock
+                Style="{StaticResource HeaderOneText}"
+                FontWeight="Light"
+                Foreground="{StaticResource NeutralOneBrush}"
+                Text="Перетащите файлы в область"/>
         </Grid>
 
         <ItemsControl
+            AllowDrop="{Binding RelativeSource={RelativeSource AncestorType=local:FileDropHandler}, Path=IsAllowToAddFiles}"
             Grid.Row="1"
-            AllowDrop="True"
             Drop="items_Drop"
             ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:FileDropHandler}, Path=Files}"
-            x:Name="items">
+            x:Name="dropField">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel
@@ -101,7 +84,6 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid
-                        ShowGridLines="True"
                         Width="100"
                         Height="150"
                         Margin="10">
@@ -238,6 +220,7 @@
             <Button
                 Grid.Column="1"
                 ToolTip="Добавить документы"
+                IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=local:FileDropHandler}, Path=IsAllowToAddFiles}"
                 Style="{StaticResource IconButton}"
                 Click="AddButtonClick">
                 <Image

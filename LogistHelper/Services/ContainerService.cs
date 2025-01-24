@@ -46,6 +46,8 @@ namespace LogistHelper.Services
             services.AddTransient<IMainMenuPage<DriverDto>, DriverMenuViewModel>();
             services.AddTransient<IMainMenuPage<VehicleDto>, VehicleMenuViewModel>();
             services.AddTransient<IMainMenuPage<ContractDto>, ContractMenuViewModel>();
+            services.AddTransient<IMainMenuPage<ContractTemplateDto>, TemplateMenuViewModel>();
+
             services.AddTransient<ISubMenuPage<DocumentDto>, DocumentMenuViewModel>();
             services.AddTransient<ISubMenuPage<PaymentDto>, PaymentMenuViewModel>();
 
@@ -58,6 +60,8 @@ namespace LogistHelper.Services
             services.AddTransient<IMainListView<DriverDto>, DriverListViewModel>();
             services.AddTransient<IMainListView<VehicleDto>, VehicleListViewModel>();
             services.AddTransient<IMainListView<ContractDto>, ContractListViewModel>();
+            services.AddTransient<IMainListView<ContractTemplateDto>, TemplateListViewModel>();
+
             services.AddTransient<ISubListView<DocumentDto>, DocumentListViewModel>();
             services.AddTransient<ISubListView<PaymentDto>, PaymentListViewModel>();
 
@@ -66,6 +70,8 @@ namespace LogistHelper.Services
             services.AddTransient<IMainEditView<DriverDto>, EditDriverViewModel>();
             services.AddTransient<IMainEditView<VehicleDto>, EditVehicleViewModel>();
             services.AddTransient<IMainEditView<ContractDto>, EditContractViewModel>();
+            services.AddTransient<IMainEditView<ContractTemplateDto>, EditTemplateViewModel>();
+
             services.AddTransient<ISubEditView<DocumentDto>, EditDocumentViewModel>();
             services.AddTransient<ISubEditView<PaymentDto>, EditPaymentViewModel>();
 
@@ -82,6 +88,7 @@ namespace LogistHelper.Services
             services.AddTransient<IViewModelFactory<RoutePointDto>, RouteViewModelFactory>();
             services.AddTransient<IViewModelFactory<ContractDto>, ContractViewModelFactory>();
             services.AddTransient<IViewModelFactory<FileDto>, FileViewModelFactory>();
+            services.AddTransient<IViewModelFactory<ContractTemplateDto>, TemplateViewModelFactory>();
 
             #endregion Factories
 

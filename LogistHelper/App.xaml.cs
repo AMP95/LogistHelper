@@ -1,4 +1,5 @@
 ﻿using LogistHelper.Services;
+using System.Text;
 using System.Windows;
 
 namespace LogistHelper
@@ -13,6 +14,7 @@ namespace LogistHelper
             ContainerService.ConfigureServices();
             NavigationService.RegisterPages();
             ContainerService.Logger.Log(message: "APP START");
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
     }
 

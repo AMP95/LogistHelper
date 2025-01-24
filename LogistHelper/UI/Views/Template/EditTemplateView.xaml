@@ -1,0 +1,147 @@
+﻿<UserControl x:Class="LogistHelper.UI.Views.EditTemplateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
+             xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+    <Grid
+        MaxWidth="900">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                Style="{StaticResource DefaultText}"
+                Foreground="{StaticResource NeutralOneBrush}"
+                Text="Название шаблона:"/>
+
+            <TextBox
+                Grid.Column="1"
+                Style="{StaticResource MainLeftTextBox}">
+                <TextBox.Text>
+                    <Binding Path="EditedViewModel.Name">
+                        <Binding.ValidationRules>
+                            <rules:EmptyStringValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+
+            <TextBlock
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                Style="{StaticResource MiniText}"
+                Text='Создайте документ Microsoft Word и отметьте 
+                поля для автозаполнения соответствующими закладками. Готовый документ загрузите в поле "Файлы" '/>
+
+            <TextBlock
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Style="{StaticResource DefaultText}"
+                TextAlignment="Center"
+                Foreground="{StaticResource NeutralOneBrush}"
+                Text="Список закладок"/>
+
+            <ItemsControl
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
+                ItemsSource="{Binding RequiredBookMarks}">
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid
+                                Margin="0 0 10 0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Text="Поле"/>
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Text="Закладка"/>
+
+                                <Border
+                                    Grid.ColumnSpan="2"
+                                    VerticalAlignment="Bottom"
+                                    Height="2"
+                                    Background="{StaticResource BorderGradient}"/>
+                            </Grid>
+
+                            <ScrollViewer
+                                Grid.Row="1"
+                                Style="{StaticResource CustomScroll}"
+                                VerticalScrollBarVisibility="Visible"
+                                HorizontalScrollBarVisibility="Disabled">
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Grid>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock
+                                Style="{StaticResource DefaultText}"
+                                TextAlignment="Center"
+                                Text="{Binding Name}"/>
+
+                            <TextBox
+                                Grid.Column="1"
+                                Style="{StaticResource SubCentralTextBox}"
+                                IsReadOnly="True"
+                                Text="{Binding InsertView}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                
+            </ItemsControl>
+        </Grid>
+
+        <controls:FileDropHandler
+            Grid.Column="1"
+            MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=ActualHeight}"
+            Files="{Binding Files,Mode=TwoWay}"
+            AllowableFileCount="1"
+            IsAllowToAddFiles ="{Binding IsAllowToAddFiles, Mode=TwoWay}"
+            AllowableFileExtensions="{Binding AllowedExtensions}"
+            RemoveCommand="{Binding RemoveFileCommand}"/>
+    </Grid>
+</UserControl>

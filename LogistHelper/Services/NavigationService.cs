@@ -1,4 +1,5 @@
 ﻿using DTOs;
+using DTOs.Dtos;
 using LogistHelper.Models;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.Pages;
@@ -31,6 +32,7 @@ namespace LogistHelper.Services
             pages.Add(PageType.DriverMenu, typeof(IMainMenuPage<DriverDto>));
             pages.Add(PageType.VehicleMenu, typeof(IMainMenuPage<VehicleDto>));
             pages.Add(PageType.ContractMenu, typeof(IMainMenuPage<ContractDto>));
+            pages.Add(PageType.TemplateMenu, typeof(IMainMenuPage<ContractTemplateDto>));
             pages.Add(PageType.NewContract, typeof(SecondContractMenuViewModel));
         }
     }

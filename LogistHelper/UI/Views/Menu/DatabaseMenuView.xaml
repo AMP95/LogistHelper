@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <WrapPanel
-        MaxWidth="600"
+        MaxWidth="800"
         VerticalAlignment="Center"
         HorizontalAlignment="Center">
 
@@ -88,6 +88,26 @@
                     Grid.Row="1"
                     Style="{StaticResource HeaderTwoText}"
                     Text="ТС"/>
+            </Grid>
+        </Button>
+
+        <Button
+            Style="{StaticResource MenuButton}"
+            Command="{Binding NavigateTemplateMenuCommand}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition
+                Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <Image
+                    Source="/UI/Icons/template_icon.png"
+                    Height="100"/>
+                <TextBlock
+                    Grid.Row="1"
+                    Style="{StaticResource HeaderTwoText}"
+                    Text="Шаблоны заявок"/>
             </Grid>
         </Button>
 

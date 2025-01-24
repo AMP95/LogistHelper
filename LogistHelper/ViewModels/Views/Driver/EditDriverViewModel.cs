@@ -139,6 +139,9 @@ namespace LogistHelper.ViewModels.Views
             _dataSuggest = dataSuggest;
             _fileLoader = fileLoader;
 
+
+            Files = new ObservableCollection<ListItem<FileViewModel>>();
+
             #region CommandsInit
 
             AddPhoneCommand = new RelayCommand(() =>

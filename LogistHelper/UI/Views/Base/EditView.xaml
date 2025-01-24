@@ -25,14 +25,9 @@
                 <Image
                     Source="/UI/Icons/return_icon.png"/>
             </Button>
-
-            <ScrollViewer
-                Grid.Row="1"
-                Style="{StaticResource CustomScroll}"
-                HorizontalScrollBarVisibility="Disabled"
-                VerticalScrollBarVisibility="Auto">
-
-                <ContentControl
+            
+            <ContentControl
+                    Grid.Row="1"
                     Content="{Binding RelativeSource={RelativeSource AncestorType=local:EditView}, Path=DataContext}">
                     <ContentControl.Resources>
                         <DataTemplate
@@ -49,31 +44,35 @@
                             DataType="{x:Type viewsVM:EditDriverViewModel}">
                             <local:EditDriverView/>
                         </DataTemplate>
-                        
+
                         <DataTemplate
                             DataType="{x:Type viewsVM:EditVehicleViewModel}">
                             <local:EditVehicleView/>
                         </DataTemplate>
-                        
+
                         <DataTemplate
                             DataType="{x:Type viewsVM:EditContractViewModel}">
                             <local:EditContractView/>
                         </DataTemplate>
-                        
+
                         <DataTemplate
                             DataType="{x:Type viewsVM:EditDocumentViewModel}">
                             <local:EditDocumentView/>
                         </DataTemplate>
-                        
+
                         <DataTemplate
                             DataType="{x:Type viewsVM:EditPaymentViewModel}">
                             <local:EditPaymentView/>
                         </DataTemplate>
+
+                        <DataTemplate
+                            DataType="{x:Type viewsVM:EditTemplateViewModel}">
+                            <local:EditTemplateView/>
+                        </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
-            </ScrollViewer>
 
-            <Grid
+                <Grid
                 MaxWidth="900"
                 Grid.Row="2">
                 <Grid.ColumnDefinitions>

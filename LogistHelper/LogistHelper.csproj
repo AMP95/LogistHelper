@@ -49,6 +49,7 @@
     <None Remove="UI\Icons\send_icon.png" />
     <None Remove="UI\Icons\setting_icon.png" />
     <None Remove="UI\Icons\show_icon.png" />
+    <None Remove="UI\Icons\template_icon.png" />
     <None Remove="UI\Icons\trailer_icon.png" />
     <None Remove="UI\Icons\user_icon.png" />
     <None Remove="UI\Icons\vehicle_icon.png" />
@@ -66,10 +67,13 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="IronPdf" Version="2025.1.1" />
+    <PackageReference Include="IronWord" Version="2025.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -196,6 +200,7 @@
     <Resource Include="UI\Icons\show_icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="UI\Icons\template_icon.png" />
     <Resource Include="UI\Icons\trailer_icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

@@ -205,6 +205,7 @@ namespace LogistHelper.ViewModels.Views
         {
             _fileLoader = fileLoader;
 
+            Files = new ObservableCollection<ListItem<FileViewModel>>();
 
             DownloadFileCommand = new RelayCommand<LoadPackage>(async (package) =>
             {
