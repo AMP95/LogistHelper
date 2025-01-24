@@ -50,7 +50,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             set => SetProperty(ref _extencion, value);
         }
 
-        public Type DtoType 
+        public string DtoType 
         { 
             get => _dto.DtoType;
             set 
@@ -58,7 +58,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 _dto.DtoType = value;
                 OnPropertyChanged(nameof(DtoType));
 
-                ServerCatalog = _dto.DtoType.Name;
+                ServerCatalog = _dto.DtoType;
             }
         }
 

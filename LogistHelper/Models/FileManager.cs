@@ -1,11 +1,8 @@
 ﻿using DTOs.Dtos;
 using LogistHelper.ViewModels.DataViewModels;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Shared;
 using System.IO;
 using System.Net.Http;
-using System.Security.Policy;
 using Utilities;
 
 namespace LogistHelper.Models
@@ -25,29 +22,29 @@ namespace LogistHelper.Models
             return await Task.Run<bool>(async () => 
             {
                 bool result = false;
-                foreach (var fileGuid in fileGuids)
-                {
-                    IAccessResult<FileDto> loadResult = await _access.GetIdAsync<FileDto>(fileGuid);
-                    if (loadResult.IsSuccess)
-                    {
-                        FileDto dto = loadResult.Result;
+                //foreach (var fileGuid in fileGuids)
+                //{
+                //    IAccessResult<FileDto> loadResult = await _access.GetIdAsync<FileDto>(fileGuid);
+                //    if (loadResult.IsSuccess)
+                //    {
+                //        FileDto dto = loadResult.Result;
 
-                        string fullPath = Path.Combine(downloadPath, dto.FileNameWithExtencion);
+                //        string fullPath = Path.Combine(downloadPath, dto.FileNameWithExtencion);
 
-                        try
-                        {
-                            using (FileStream fileStream = new FileStream(fullPath, FileMode.Create))
-                            {
-                                await dto.File.CopyToAsync(fileStream);
-                            }
-                            result |= true;
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.Log(ex, ex.Message, LogLevel.Error);
-                        }
-                    }
-                }
+                //        try
+                //        {
+                //            using (FileStream fileStream = new FileStream(fullPath, FileMode.Create))
+                //            {
+                //                await dto.File.CopyToAsync(fileStream);
+                //            }
+                //            result |= true;
+                //        }
+                //        catch (Exception ex)
+                //        {
+                //            _logger.Log(ex, ex.Message, LogLevel.Error);
+                //        }
+                //    }
+                //}
                 return result;
             });
             
@@ -65,19 +62,15 @@ namespace LogistHelper.Models
 
                 try
                 {
-                    using (MultipartFormDataContent content = new MultipartFormDataContent
+                    using (MultipartFormDataContent content = new MultipartFormDataContent()) 
                     {
-                        // file
-                        { new StreamContent(File.OpenRead(fileViewModel.LocalFullFilePath)), "FileToUpload", fileDto.FileNameWithExtencion },
+                        content.Add(new StreamContent(File.OpenRead(fileViewModel.LocalFullFilePath)), "File", fileDto.FileNameWithExtencion);
 
-                        // payload
-                        { new StringContent(fileDto.Id.ToString()), nameof(fileDto.Id) },
-                        { new StringContent(fileDto.FileNameWithExtencion), nameof(fileDto.FileNameWithExtencion) },
-                        { new StringContent(fileDto.Catalog), nameof(fileDto.Catalog) },
-                        { new StringContent(fileDto.DtoType.Name), nameof(fileDto.DtoType) },
-                        { new StringContent(fileDto.DtoId.ToString()), nameof(fileDto.DtoId) },
-                    }) 
-                    {
+                        content.Add(new StringContent(fileDto.FileNameWithExtencion), "FileDto.FileNameWithExtencion");
+                        content.Add(new StringContent(fileDto.Catalog), "FileDto.Catalog");
+                        content.Add(new StringContent(fileDto.DtoType), "FileDto.DtoType");
+                        content.Add(new StringContent(fileDto.DtoId.ToString()), "FileDto.DtoId");
+
                         IAccessResult<Guid> addResult = await _access.AddMultipartAsync(content);
 
                         if (addResult.IsSuccess)

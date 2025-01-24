@@ -222,7 +222,7 @@ namespace LogistHelper.ViewModels.Views
             {
                 foreach (var file in Files) 
                 {
-                    file.Item.DtoType = typeof(VehicleDto);
+                    file.Item.DtoType = nameof(VehicleDto);
                     file.Item.DtoId = EditedViewModel.Id;
                 }    
 
