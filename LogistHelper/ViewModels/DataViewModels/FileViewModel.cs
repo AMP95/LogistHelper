@@ -85,7 +85,10 @@ namespace LogistHelper.ViewModels.DataViewModels
             _dto = new FileDto();
         }
 
-        public FileViewModel(FileDto dto, int counter) : base(dto, counter) { }
+        public FileViewModel(FileDto dto, int counter) : base(dto, counter) 
+        {
+            LocalNameWithExtension = LocalNameWithExtension;
+        }
         public FileViewModel(FileDto dto) : this(dto, 0) { }
         public FileViewModel() : base() { }
     }

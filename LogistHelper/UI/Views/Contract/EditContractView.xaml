@@ -73,7 +73,7 @@
             
             <Button
                 ToolTip="Скачать файл заявки"
-                Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.DownloadFileCommand}">
+                Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditContractView}, Path=DataContext.DownloadFileCommand}">
                 <Image
                     Source="/UI/Icons/download_icon.png"/>
 

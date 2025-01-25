@@ -245,6 +245,7 @@ namespace LogistHelper.ViewModels.Views
                 {
                     EditedViewModel = _factory.GetViewModel(result.Result);
                     _contract = EditedViewModel as ContractViewModel;
+                    Guid vehicleId = _contract.Vehicle.Id;
                     _selectedDriver = _contract.Driver;
                     OnPropertyChanged(nameof(SelectedDriver));
 
@@ -253,7 +254,7 @@ namespace LogistHelper.ViewModels.Views
                     if (vehResult.IsSuccess)
                     {
                         Vehicles = new ObservableCollection<VehicleViewModel>(vehResult.Result.Select(v => new VehicleViewModel(v)));
-                        SelectedVehicleIndex = Vehicles.IndexOf(Vehicles.FirstOrDefault(v => v.Id == _contract.Vehicle.Id));
+                        SelectedVehicleIndex = Vehicles.IndexOf(Vehicles.FirstOrDefault(v => v.Id == vehicleId));
                     }
 
                     IAccessResult<IEnumerable<FileDto>> files = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
@@ -319,13 +320,6 @@ namespace LogistHelper.ViewModels.Views
 
             bool result = false;
 
-            CreateContractDocument();
-
-            if (Print)
-            {
-                PrintContract();
-            }
-
             if (EditedViewModel.Id == Guid.Empty)
             {
                 IAccessResult<Guid> addResult = await _access.AddAsync(EditedViewModel.GetDto());
@@ -334,33 +328,32 @@ namespace LogistHelper.ViewModels.Views
                     result = true;
                     EditedViewModel.Id = addResult.Result;
                 }
-
-
-                File.DtoId = EditedViewModel.Id;
-                File.DtoType = nameof(CarrierDto);
-                File.ServerCatalog = $"{DateTime.Now.Year}".Replace(" ", "_");
             }
             else
             {
                 IAccessResult<bool> updateResult = await _access.UpdateAsync(EditedViewModel.GetDto());
                 result = updateResult.IsSuccess;
-
-                if (result)
-                {
-                    await _access.DeleteAsync<FileDto>(File.DtoId);
-                }
             }
 
             if (result)
             {
-                await _fileLoader.UploadFile(EditedViewModel.Id, File);
+                var fileResult = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
+
+                if (fileResult.IsSuccess) 
+                {
+                    File = new FileViewModel(fileResult.Result.First());
+                }
+
+                if (Print)
+                {
+                    PrintContract();
+                }
 
                 if (Send)
                 {
                     SendContractToCarrier();
                 }
 
-                BackCommand.Execute(this);
             }
             else
             {
@@ -425,11 +418,6 @@ namespace LogistHelper.ViewModels.Views
                     Clients = null;
                 }
             });
-        }
-
-        private async Task CreateContractDocument() 
-        { 
-        
         }
 
         private async Task PrintContract()

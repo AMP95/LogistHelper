@@ -1,8 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
+using DTOs.Dtos;
 using LogistHelper.ViewModels.Base;
+using LogistHelper.ViewModels.DataViewModels;
+using Microsoft.Win32;
 using Shared;
 using System.Windows.Input;
+using Utilities;
 
 namespace LogistHelper.ViewModels.Views
 {
@@ -14,6 +18,7 @@ namespace LogistHelper.ViewModels.Views
         private ContractStatus _selectedStatus;
         private DateTime _startDate;
         private DateTime _endDate;
+        private IFileLoader<FileViewModel> _fileLoader;
 
         #endregion Private
 
@@ -65,15 +70,18 @@ namespace LogistHelper.ViewModels.Views
 
         public ICommand AddDocumentCommand { get; set; }
         public ICommand SetFailCommand { get; set; }
+        public ICommand DownloadFileCommand { get; set; }
 
         #endregion Commands
 
         public ContractListViewModel(IDataAccess repository, 
                                      IViewModelFactory<ContractDto> factory, 
-                                     IDialog dialog) : base(repository, factory, dialog)
+                                     IDialog dialog,
+                                     IFileLoader<FileViewModel> fileLoader) : base(repository, factory, dialog)
         {
             IsBackwardAwaliable = false;
             IsForwardAwaliable = false;
+            _fileLoader = fileLoader;
 
             SearchFirters = new Dictionary<string, string>()
             {
@@ -111,6 +119,32 @@ namespace LogistHelper.ViewModels.Views
                     await _client.UpdatePropertyAsync<ContractDto>(id, new KeyValuePair<string, object>("Status", ContractStatus.Failed.ToString()));
 
                     await Load();
+                }
+            });
+
+            DownloadFileCommand = new RelayCommand<Guid>(async (id) =>
+            {
+                OpenFolderDialog folderDialog = new OpenFolderDialog();
+
+                if (folderDialog.ShowDialog() == true)
+                {
+                    string directory = folderDialog.FolderName;
+
+                    var fileResult = await _client.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), id.ToString());
+
+                    if (fileResult.IsSuccess)
+                    {
+                        var fileViewModel = new FileViewModel(fileResult.Result.First());
+
+                        if (await _fileLoader.DownloadFile(directory, fileViewModel))
+                        {
+                            _dialog.ShowSuccess("Файл сохранен");
+                        }
+                        else
+                        {
+                            _dialog.ShowError("Ошибка сохранения файлов");
+                        }
+                    }
                 }
             });
 

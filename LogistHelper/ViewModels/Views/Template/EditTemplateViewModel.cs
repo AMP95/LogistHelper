@@ -149,9 +149,11 @@ namespace LogistHelper.ViewModels.Views
 
             WordDocument doc = new WordDocument(file.LocalFullFilePath);
 
+            string strText = string.Join("", doc.Texts);
+
             foreach (BookMarkDto mark in RequiredBookMarks) 
             {
-                if (!doc.Texts.Any(t => t.Text.Contains(mark.InsertView))) 
+                if (!strText.Contains(mark.InsertView)) 
                 {
                     _dialog.ShowError($"Отсутствует закладка для {mark.Name}");
                     return false;
