@@ -19,5 +19,7 @@
         Task<IAccessResult<Guid>> SendMultipartAsync(MultipartFormDataContent content);
         Task<IAccessResult<bool>> DownloadFileAsync(Guid fileId, string savePath);
         Task<IAccessResult<IEnumerable<T>>> GetRequiredPayments<T>();
+        Task<IAccessResult<T>> Login<T>(T dto);
+        Task Logout();
     }
 }

@@ -2,6 +2,7 @@
 using DTOs.Dtos;
 using HelpAPIs.Settings;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Shared;
 using System.Net.Http.Json;
 
@@ -318,6 +319,37 @@ namespace HelpAPIs
         {
             IAccessResult<Guid> result = await GetRequest<Guid>($"Get/contract/payment");
             return await GetResult<IEnumerable<T>>(result);
+        }
+
+        public async Task<IAccessResult<T>> Login<T>(T dto)
+        {
+            IAccessResult<Guid> result = await SendAsync<Guid>(HttpMethod.Post, $"{_url}/Get/validate", JsonConvert.SerializeObject(dto));
+            IAccessResult<object[]> loginResult = await GetResult<object[]>(result);
+
+            if (loginResult.IsSuccess && loginResult.Result.Any()) 
+            {
+                _token = loginResult.Result[0].ToString();
+
+                T returnDto = (T)loginResult.Result[1];
+
+                return new AccessResult<T>() 
+                { 
+                    IsSuccess = true,
+                    Result = returnDto,
+                };
+            }
+
+            return new AccessResult<T>()
+            {
+                IsSuccess = false,
+                ErrorMessage = loginResult.ErrorMessage
+            }; 
+        }
+
+        public Task Logout()
+        {
+            _token = string.Empty;
+            return Task.CompletedTask;
         }
     }
 }
