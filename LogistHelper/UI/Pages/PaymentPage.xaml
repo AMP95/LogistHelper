@@ -1,0 +1,278 @@
+﻿<UserControl x:Class="LogistHelper.UI.Pages.PaymentPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogistHelper.UI.Pages"
+             xmlns:views="clr-namespace:LogistHelper.UI.Views"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
+             xmlns:dtos="clr-namespace:DTOs;assembly=DTOs"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+        <converters:EvenNumberToBoolConverter x:Key="EvenNumberToBoolConverter"/>
+        <converters:ExpirationConverter x:Key="ExpirationConverter"/>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <views:NavigationBack
+            HorizontalAlignment="Right"/>
+
+        <ItemsControl
+            Grid.Row="1"
+            ItemsSource="{Binding RequiredToPay}">
+
+            <ItemsControl.Template>
+                <ControlTemplate>
+
+                    <ScrollViewer
+                        Grid.Row="1"
+                        VerticalScrollBarVisibility="Visible"
+                        HorizontalScrollBarVisibility="Auto"
+                        Style="{StaticResource CustomScroll}">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <Grid
+                                ShowGridLines="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition
+                                        Width="50"/>
+                                    <ColumnDefinition
+                                        x:Name="typeCol"
+                                        MinWidth="100" MaxWidth="200"/>
+                                    <ColumnDefinition
+                                        x:Name="noCol"
+                                        MinWidth="100" MaxWidth="200"/>
+                                    <ColumnDefinition
+                                        x:Name="dateCol"
+                                        MinWidth="100" MaxWidth="200"/>
+                                    <ColumnDefinition
+                                        x:Name="cariCol"
+                                        MinWidth="200" MaxWidth="400"/>
+                                    <ColumnDefinition
+                                        x:Name="drivCol"
+                                        MinWidth="200" MaxWidth="400"/>
+                                    <ColumnDefinition
+                                        x:Name="vehCol"
+                                        MinWidth="200" MaxWidth="400"/>
+                                    <ColumnDefinition
+                                        x:Name="balCol"
+                                        MinWidth="100" MaxWidth="200"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button
+                                    Style="{StaticResource IconButton}"
+                                    ToolTip="Печать выбранных"
+                                    Command="{Binding PrintPaymentsCommand}">
+                                    <Image
+                                        Source="/UI/Icons/print_icon.png"/>
+                                </Button>
+
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Foreground="{StaticResource NeutralOneBrush}"
+                                    Text="Тип"/>
+
+                                <TextBlock
+                                    Grid.Column="2"
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Foreground="{StaticResource NeutralOneBrush}"
+                                    Text="№"/>
+
+                                <TextBlock
+                                    Grid.Column="3"
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Foreground="{StaticResource NeutralOneBrush}"
+                                    Text="Дата"/>
+
+                                <TextBlock
+                                    Grid.Column="4"
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Foreground="{StaticResource NeutralOneBrush}"
+                                    Text="Перевозчик"/>
+
+                                <TextBlock
+                                    Grid.Column="5"
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Foreground="{StaticResource NeutralOneBrush}"
+                                    Text="Водитель"/>
+
+                                <TextBlock
+                                    Grid.Column="6"
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Foreground="{StaticResource NeutralOneBrush}"
+                                    Text="ТС"/>
+
+                                <TextBlock
+                                    Grid.Column="7"
+                                    Style="{StaticResource HeaderThreeText}"
+                                    Foreground="{StaticResource NeutralOneBrush}"
+                                    Text="К оплате"/>
+
+                            </Grid>
+                            
+                            <ItemsPresenter
+                                Grid.Row="1"/>
+
+
+                        </Grid>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </ItemsControl.Template>
+
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid
+                        ShowGridLines="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="50"/>
+                            <ColumnDefinition
+                                Width="{Binding ElementName=typeCol, Path=ActualWidth}"/>
+                            <ColumnDefinition
+                                Width="{Binding ElementName=noCol, Path=ActualWidth}"/>
+                            <ColumnDefinition
+                                Width="{Binding ElementName=dateCol, Path=ActualWidth}"/>
+                            <ColumnDefinition
+                                Width="{Binding ElementName=cariCol, Path=ActualWidth}"/>
+                            <ColumnDefinition
+                                Width="{Binding ElementName=drivCol, Path=ActualWidth}"/>
+                            <ColumnDefinition
+                                Width="{Binding ElementName=vehCol, Path=ActualWidth}"/>
+                            <ColumnDefinition
+                                Width="{Binding ElementName=balCol, Path=ActualWidth}"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="True">
+                                        <Setter Property="Grid.Background" Value="{StaticResource LightBlueBrush}"/>
+                                    </DataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="True"/>
+                                            <Condition Binding="{Binding DaysToExpiration, Converter={StaticResource ExpirationConverter}}" Value="-1"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="Grid.Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="{StaticResource Deny}" Opacity="0.3"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="False"/>
+                                            <Condition Binding="{Binding DaysToExpiration, Converter={StaticResource ExpirationConverter}}" Value="-1"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="Grid.Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="{StaticResource Deny}" Opacity="0.1"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="True"/>
+                                            <Condition Binding="{Binding DaysToExpiration, Converter={StaticResource ExpirationConverter}}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="Grid.Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="{StaticResource NeutralTwoDark}" Opacity="0.3"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="False"/>
+                                            <Condition Binding="{Binding DaysToExpiration, Converter={StaticResource ExpirationConverter}}" Value="0"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="Grid.Background">
+                                                <Setter.Value>
+                                                    <SolidColorBrush Color="{StaticResource NeutralTwoDark}" Opacity="0.1"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <CheckBox
+                            Style="{StaticResource CustomCheck}"
+                            IsChecked="{Binding IsSelectedToPrint, Mode=TwoWay}"/>
+
+                        <TextBlock
+                            Grid.Column="1"
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center"
+                            Text="{Binding Type, Converter={StaticResource EnumToDescriptionConverter}}"/>
+
+                        <TextBlock
+                            Grid.Column="2"
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center"
+                            Text="{Binding Number}"/>
+
+                        <TextBlock
+                            Grid.Column="3"
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center"
+                            Text="{Binding CreationDate, StringFormat='dd.MM.yyyy'}"/>
+
+                        <TextBlock
+                            Grid.Column="4"
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center"
+                            Text="{Binding Carrier}"/>
+
+                        <TextBlock
+                            Grid.Column="5"
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center"
+                            Text="{Binding Driver}"/>
+
+                        <TextBlock
+                            Grid.Column="6"
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center"
+                            Text="{Binding Vehicle}"/>
+
+                        <TextBlock
+                            Grid.Column="7"
+                            Style="{StaticResource DefaultText}"
+                            TextAlignment="Center"
+                            Text="{Binding Balance, StringFormat='n0'}"/>
+
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+
+        </ItemsControl>
+
+        <views:BlockView
+            Grid.RowSpan="2"/>
+    </Grid>
+</UserControl>

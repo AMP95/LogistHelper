@@ -2,7 +2,6 @@
 using DTOs.Dtos;
 using HelpAPIs.Settings;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Shared;
 using System.Net.Http.Json;
 
@@ -313,6 +312,12 @@ namespace HelpAPIs
             }
 
             return result;
+        }
+
+        public async Task<IAccessResult<IEnumerable<T>>> GetRequiredPayments<T>()
+        {
+            IAccessResult<Guid> result = await GetRequest<Guid>($"Get/contract/payment");
+            return await GetResult<IEnumerable<T>>(result);
         }
     }
 }

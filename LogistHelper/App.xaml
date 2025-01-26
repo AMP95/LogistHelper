@@ -33,6 +33,11 @@
             </DataTemplate>
 
             <DataTemplate
+                DataType="{x:Type pagesVM:PaymentPageViewModel}">
+                <pages:PaymentPage/>
+            </DataTemplate>
+
+            <DataTemplate
                 DataType="{x:Type pagesVM:ClientMenuPageViewModel}">
                 <pages:DataMenuPage/>
             </DataTemplate> 

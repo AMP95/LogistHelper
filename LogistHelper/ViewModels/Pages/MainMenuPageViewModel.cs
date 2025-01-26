@@ -29,7 +29,7 @@ namespace LogistHelper.ViewModels.Pages
 
             NavigateBillsMenuCommand = new RelayCommand(() => 
             {
-                
+                NavigationService.Navigate(PageType.PaymentMenu);
             });
 
             NavigateDatabaseMenuCommand = new RelayCommand(() =>

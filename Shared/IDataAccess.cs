@@ -18,5 +18,6 @@
         Task<IAccessResult<bool>> DeleteAsync<T>(Guid id);
         Task<IAccessResult<Guid>> SendMultipartAsync(MultipartFormDataContent content);
         Task<IAccessResult<bool>> DownloadFileAsync(Guid fileId, string savePath);
+        Task<IAccessResult<IEnumerable<T>>> GetRequiredPayments<T>();
     }
 }

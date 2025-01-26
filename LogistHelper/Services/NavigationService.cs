@@ -34,6 +34,7 @@ namespace LogistHelper.Services
             pages.Add(PageType.ContractMenu, typeof(IMainMenuPage<ContractDto>));
             pages.Add(PageType.TemplateMenu, typeof(IMainMenuPage<ContractTemplateDto>));
             pages.Add(PageType.NewContract, typeof(SecondContractMenuViewModel));
+            pages.Add(PageType.PaymentMenu, typeof(PaymentPageViewModel));
         }
     }
 }

@@ -15,6 +15,7 @@ namespace LogistHelper.Models
         ContractMenu,
         TemplateMenu,
         NewContract,
+        PaymentMenu,
     }
 
 

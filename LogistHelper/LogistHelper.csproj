@@ -39,6 +39,7 @@
     <None Remove="UI\Icons\new_icon.png" />
     <None Remove="UI\Icons\pdf_icon.png" />
     <None Remove="UI\Icons\png_icon.png" />
+    <None Remove="UI\Icons\print_icon.png" />
     <None Remove="UI\Icons\recieve_icon.png" />
     <None Remove="UI\Icons\remove_icon.png" />
     <None Remove="UI\Icons\reset.png" />
@@ -170,6 +171,7 @@
     <Resource Include="UI\Icons\png_icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="UI\Icons\print_icon.png" />
     <Resource Include="UI\Icons\recieve_icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
