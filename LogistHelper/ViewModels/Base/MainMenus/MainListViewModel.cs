@@ -10,7 +10,7 @@ namespace LogistHelper.ViewModels.Base
     {
         #region Private
 
-        protected IDialog _dialog;
+        protected IMessageDialog _dialog;
         protected IDataAccess _client;
         protected IViewModelFactory<T> _factory;
 
@@ -80,7 +80,7 @@ namespace LogistHelper.ViewModels.Base
 
         public MainListViewModel(IDataAccess access, 
                                  IViewModelFactory<T> factory, 
-                                 IDialog dialog)
+                                 IMessageDialog dialog)
         {
             _dialog = dialog;
             _factory = factory;

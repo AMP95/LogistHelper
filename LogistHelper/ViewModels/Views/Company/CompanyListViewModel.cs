@@ -33,7 +33,7 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
-        public ClientListViewModel(IDataAccess repository, IViewModelFactory<ClientDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public ClientListViewModel(IDataAccess repository, IViewModelFactory<ClientDto> factory, IMessageDialog dialog) : base(repository, factory, dialog)
         {
             SearchFirters = new Dictionary<string, string>()
             {
@@ -93,7 +93,7 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
-        public CarrierListViewModel(IDataAccess repository, IViewModelFactory<CarrierDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public CarrierListViewModel(IDataAccess repository, IViewModelFactory<CarrierDto> factory, IMessageDialog dialog) : base(repository, factory, dialog)
         {
             SearchFirters = new Dictionary<string, string>()
             {

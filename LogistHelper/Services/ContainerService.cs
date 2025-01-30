@@ -102,7 +102,9 @@ namespace LogistHelper.Services
 
             services.AddSingleton<ILogger, Logger>();
             services.AddSingleton<ISettingsRepository<ApiSettings>, ApiJsonRepository>();
-            services.AddSingleton<IDialog, CustomDialogService>();
+            services.AddSingleton<IMessageDialog, CustomDialogService>();
+            services.AddSingleton<IAuthDialog<LogistDto>, CustomDialogService>();
+            services.AddSingleton<IHashService, HashService>();
 
             services.AddTransient<IDataSuggest<CompanySuggestItem>, DaDataClient>();
             services.AddTransient<IDataSuggest<FmsSuggestItem>, DaDataClient>();

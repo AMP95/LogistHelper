@@ -66,7 +66,7 @@ namespace LogistHelper.ViewModels.Views
 
         public EditCompanyViewModel(IDataAccess dataAccess,
                                     IViewModelFactory<T> factory, 
-                                    IDialog dialog,
+                                    IMessageDialog dialog,
                                     IDataSuggest<CompanySuggestItem> dataSuggest) : base(dataAccess, factory, dialog)
         {
             _dataSuggest = dataSuggest;
@@ -162,7 +162,7 @@ namespace LogistHelper.ViewModels.Views
 
     public class EditClientViewModel : EditCompanyViewModel<ClientDto>
     {
-        public EditClientViewModel(IDataAccess dataAccess, IViewModelFactory<ClientDto> factory, IDialog dialog, IDataSuggest<CompanySuggestItem> dataSuggest) : base(dataAccess, factory, dialog, dataSuggest)
+        public EditClientViewModel(IDataAccess dataAccess, IViewModelFactory<ClientDto> factory, IMessageDialog dialog, IDataSuggest<CompanySuggestItem> dataSuggest) : base(dataAccess, factory, dialog, dataSuggest)
         {
         }
     }
@@ -199,7 +199,7 @@ namespace LogistHelper.ViewModels.Views
 
         public EditCarrierViewModel(IDataAccess dataAccess, 
                                     IViewModelFactory<CarrierDto> factory, 
-                                    IDialog dialog, 
+                                    IMessageDialog dialog, 
                                     IDataSuggest<CompanySuggestItem> dataSuggest,
                                     IFileLoader<FileViewModel> fileLoader) : base(dataAccess, factory, dialog, dataSuggest)
         {

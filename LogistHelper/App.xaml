@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:LogistHelper"
              xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
              xmlns:views="clr-namespace:LogistHelper.UI.Views"
+             xmlns:dialog="clr-namespace:CustomDialog;assembly=CustomDialog"
              xmlns:pagesVM="clr-namespace:LogistHelper.ViewModels.Pages"
              xmlns:viewsVM="clr-namespace:LogistHelper.ViewModels.Views"
              xmlns:viewsVMBase="clr-namespace:LogistHelper.ViewModels.Base"
@@ -164,6 +165,21 @@
                 <views:EditView/>
             </DataTemplate>
 
+
+            <DataTemplate
+                DataType="{x:Type dialog:QuestionDialog}">
+                <dialog:MessageView/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type dialog:StatementDialog}">
+                <dialog:MessageView/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type dialog:PasswordChangeViewModel}">
+                <dialog:PasswordChangeView/>
+            </DataTemplate>
 
         </ResourceDictionary>
     </Application.Resources>

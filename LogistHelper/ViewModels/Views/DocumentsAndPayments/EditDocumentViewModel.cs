@@ -9,7 +9,7 @@ namespace LogistHelper.ViewModels.Views
     {
         private DocumentViewModel _document;
 
-        public EditDocumentViewModel(IDataAccess repository, IViewModelFactory<DocumentDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public EditDocumentViewModel(IDataAccess repository, IViewModelFactory<DocumentDto> factory, IMessageDialog dialog) : base(repository, factory, dialog)
         {
         }
 
@@ -30,7 +30,7 @@ namespace LogistHelper.ViewModels.Views
     {
         private PaymentViewModel _payment;
 
-        public EditPaymentViewModel(IDataAccess repository, IViewModelFactory<PaymentDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public EditPaymentViewModel(IDataAccess repository, IViewModelFactory<PaymentDto> factory, IMessageDialog dialog) : base(repository, factory, dialog)
         {
         }
 

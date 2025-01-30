@@ -19,7 +19,7 @@ namespace LogistHelper.ViewModels.Pages
         #region Private
 
         private IDataAccess _access;
-        private IDialog _dialog;
+        private IMessageDialog _dialog;
 
         private bool _isBlock;
         private string _blockText = "Печать";
@@ -57,7 +57,7 @@ namespace LogistHelper.ViewModels.Pages
 
         #endregion Commands
 
-        public PaymentPageViewModel(IDataAccess access, IDialog dialog)
+        public PaymentPageViewModel(IDataAccess access, IMessageDialog dialog)
         {
             _access = access;
             _dialog = dialog;

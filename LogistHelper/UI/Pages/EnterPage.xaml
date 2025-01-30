@@ -53,7 +53,8 @@
                 Grid.Row="3"
                 Style="{StaticResource NeutralButton}"
                 Content="Вход"
-                Command="{Binding EnterCommand}"/>
+                Command="{Binding EnterCommand}"
+                CommandParameter="{Binding ElementName=passboxPasswordBox, Path=PasswordBox}"/>
         </Grid>
     </Grid>
 </UserControl>

@@ -59,7 +59,7 @@ namespace LogistHelper.ViewModels.Views
 
         public EditTemplateViewModel(IDataAccess dataAccess, 
                                      IViewModelFactory<ContractTemplateDto> factory, 
-                                     IDialog dialog,
+                                     IMessageDialog dialog,
                                      IFileLoader<FileViewModel> fileLoader) : base(dataAccess, factory, dialog)
         {
             _fileLoader = fileLoader;

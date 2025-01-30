@@ -17,7 +17,7 @@ namespace LogistHelper.ViewModels.Views
         }
         public TemplateListViewModel(IDataAccess access, 
                                      IViewModelFactory<ContractTemplateDto> factory, 
-                                     IDialog dialog) : base(access, factory, dialog)
+                                     IMessageDialog dialog) : base(access, factory, dialog)
         {
             SearchFirters = new Dictionary<string, string>()
             {

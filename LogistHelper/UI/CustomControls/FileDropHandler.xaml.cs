@@ -106,13 +106,13 @@ namespace LogistHelper.UI.CustomControls
 
 
 
-        private IDialog _dialog;
+        private IMessageDialog _dialog;
 
         public FileDropHandler()
         {
             InitializeComponent();
 
-            _dialog = (IDialog)ContainerService.Services.GetService(typeof(IDialog));
+            _dialog = (IMessageDialog)ContainerService.Services.GetService(typeof(IMessageDialog));
         }
 
         private void DownloadAllButtonClick(object sender, RoutedEventArgs e)

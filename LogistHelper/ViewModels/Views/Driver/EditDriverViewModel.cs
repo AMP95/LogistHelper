@@ -130,7 +130,7 @@ namespace LogistHelper.ViewModels.Views
                                    IViewModelFactory<DriverDto> factory, 
                                    IViewModelFactory<CarrierDto> carrierFactory, 
                                    IViewModelFactory<VehicleDto> vehicleFactory, 
-                                   IDialog dialog,
+                                   IMessageDialog dialog,
                                    IDataSuggest<FmsSuggestItem> dataSuggest,
                                    IFileLoader<FileViewModel> fileLoader) : base(repository, factory, dialog)
         {

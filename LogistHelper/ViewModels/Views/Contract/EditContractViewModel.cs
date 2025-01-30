@@ -151,7 +151,7 @@ namespace LogistHelper.ViewModels.Views
 
         public EditContractViewModel(IDataAccess repository, 
                                      IViewModelFactory<ContractDto> factory, 
-                                     IDialog dialog,
+                                     IMessageDialog dialog,
                                      IFileLoader<FileViewModel> fileLoader) : base(repository, factory, dialog)
         {
             _fileLoader = fileLoader;

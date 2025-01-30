@@ -1,6 +1,6 @@
 ﻿namespace Shared
 {
-    public interface IDialog
+    public interface IMessageDialog
     {
         public void ShowError(string message, string title = "Ошибка");
         public void ShowWarning(string message, string title = "Внимание");

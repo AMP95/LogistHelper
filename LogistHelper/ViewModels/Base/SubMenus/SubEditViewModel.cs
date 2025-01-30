@@ -8,7 +8,7 @@ namespace LogistHelper.ViewModels.Base
     {
         public SubEditViewModel(IDataAccess access,
                                 IViewModelFactory<T> factory, 
-                                IDialog dialog) : base(access, factory, dialog)
+                                IMessageDialog dialog) : base(access, factory, dialog)
         {
 
             #region CommandInit

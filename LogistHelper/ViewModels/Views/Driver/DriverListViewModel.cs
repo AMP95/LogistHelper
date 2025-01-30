@@ -14,7 +14,7 @@ namespace LogistHelper.ViewModels.Views
             get => _searchString;
             set => SetProperty(ref _searchString, value);
         }
-        public DriverListViewModel(IDataAccess repository, IViewModelFactory<DriverDto> factory, IDialog dialog) : base(repository, factory, dialog)
+        public DriverListViewModel(IDataAccess repository, IViewModelFactory<DriverDto> factory, IMessageDialog dialog) : base(repository, factory, dialog)
         {
             SearchFirters = new Dictionary<string, string>()
             {

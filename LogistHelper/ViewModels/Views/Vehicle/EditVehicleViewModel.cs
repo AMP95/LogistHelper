@@ -134,7 +134,7 @@ namespace LogistHelper.ViewModels.Views
         public EditVehicleViewModel(IDataAccess repository, 
                                     IViewModelFactory<VehicleDto> factory,
                                     IViewModelFactory<CarrierDto> carrierFactory,
-                                    IDialog dialog,
+                                    IMessageDialog dialog,
                                     IDataSuggest<TruckModelSuggestItem> truckSuggest,
                                     IDataSuggest<TrailerModelSuggestItem> trailerSuggest,
                                     IFileLoader<FileViewModel> loader) : base(repository, factory, dialog)

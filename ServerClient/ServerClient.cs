@@ -106,6 +106,7 @@ namespace HelpAPIs
                 case nameof(FileDto): return "file";
                 case nameof(ContractTemplateDto): return "template";
                 case nameof(BookMarkDto): return "bookmark";
+                case nameof(LogistDto): return "logist";
                 default: return string.Empty;
             }
         }
@@ -330,7 +331,7 @@ namespace HelpAPIs
             {
                 _token = loginResult.Result[0].ToString();
 
-                T returnDto = (T)loginResult.Result[1];
+                T returnDto = (T)JsonConvert.DeserializeObject(loginResult.Result[1].ToString(), typeof(T));
 
                 return new AccessResult<T>() 
                 { 

@@ -76,7 +76,7 @@ namespace LogistHelper.ViewModels.Views
 
         public ContractListViewModel(IDataAccess repository, 
                                      IViewModelFactory<ContractDto> factory, 
-                                     IDialog dialog,
+                                     IMessageDialog dialog,
                                      IFileLoader<FileViewModel> fileLoader) : base(repository, factory, dialog)
         {
             IsBackwardAwaliable = false;

@@ -16,7 +16,6 @@ namespace CustomDialog
 
         private void DialogWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            accept.Focus();
             if (this.DataContext is IWindowCloser closer)
             {
                 closer.Close += new Action<bool?>((result) =>

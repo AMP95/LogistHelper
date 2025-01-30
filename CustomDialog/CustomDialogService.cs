@@ -1,9 +1,11 @@
-﻿using Shared;
+﻿using DTOs.Dtos;
+using Shared;
 using System.Windows;
+using Utilities;
 
 namespace CustomDialog
 {
-    public class CustomDialogService : IDialog
+    public class CustomDialogService : IMessageDialog, IAuthDialog<LogistDto>
     {
         private void ShowStatementWindow(string message, string title, DialogType type)
         {
@@ -33,7 +35,7 @@ namespace CustomDialog
             ShowStatementWindow(message, title, DialogType.Error);
         }
 
-        public void ShowInformation(string message, string title = "Инфо")
+        public void ShowInfo(string message, string title = "Инфо")
         {
             ShowStatementWindow(message, title, DialogType.Info);
         }
@@ -58,9 +60,16 @@ namespace CustomDialog
             ShowStatementWindow(message, title, DialogType.Warning);
         }
 
-        public void ShowInfo(string message, string title = "Информация")
+        public bool ShowPasswordChange(LogistDto user, IDataAccess access, IHashService hashService)
         {
-            throw new NotImplementedException();
+            return Application.Current.Dispatcher.Invoke(new Func<bool>(() =>
+            {
+                PasswordChangeViewModel dialogViewModel = new PasswordChangeViewModel(user, this, access, hashService);
+                Dialog window = new Dialog();
+                window.DataContext = dialogViewModel;
+                bool? result = window.ShowDialog();
+                return result.HasValue ? result.Value : false;
+            }));
         }
     }
 }

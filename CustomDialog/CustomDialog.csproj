@@ -24,6 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="DTOs">
+      <HintPath>..\Dll\DTOs.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Icons\error_icon.png" />
     <Resource Include="Icons\info_icon.png" />
     <Resource Include="Icons\quest_icon.png" />
