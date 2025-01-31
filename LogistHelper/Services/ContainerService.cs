@@ -8,6 +8,7 @@ using LogistHelper.Models;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using LogistHelper.ViewModels.Pages;
+using LogistHelper.ViewModels.Pages.DataMenu;
 using LogistHelper.ViewModels.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Suggest;
@@ -48,6 +49,7 @@ namespace LogistHelper.Services
             services.AddTransient<IMainMenuPage<VehicleDto>, VehicleMenuViewModel>();
             services.AddTransient<IMainMenuPage<ContractDto>, ContractMenuViewModel>();
             services.AddTransient<IMainMenuPage<ContractTemplateDto>, TemplateMenuViewModel>();
+            services.AddTransient<IMainMenuPage<LogistDto>, LogistMenuViewModel>();
 
             services.AddTransient<ISubMenuPage<DocumentDto>, DocumentMenuViewModel>();
             services.AddTransient<ISubMenuPage<PaymentDto>, PaymentMenuViewModel>();
@@ -62,6 +64,7 @@ namespace LogistHelper.Services
             services.AddTransient<IMainListView<VehicleDto>, VehicleListViewModel>();
             services.AddTransient<IMainListView<ContractDto>, ContractListViewModel>();
             services.AddTransient<IMainListView<ContractTemplateDto>, TemplateListViewModel>();
+            services.AddTransient<IMainListView<LogistDto>, LogistListViewModel>();
 
             services.AddTransient<ISubListView<DocumentDto>, DocumentListViewModel>();
             services.AddTransient<ISubListView<PaymentDto>, PaymentListViewModel>();
