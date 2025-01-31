@@ -5,10 +5,12 @@ using HelpAPIs;
 using HelpAPIs.Settings;
 using Log4NetLogger;
 using LogistHelper.Models;
+using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using LogistHelper.ViewModels.Pages;
 using LogistHelper.ViewModels.Views;
+using MailSender;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Suggest;
 using Models.Sugget;
@@ -105,9 +107,14 @@ namespace LogistHelper.Services
             #region Services
 
             services.AddSingleton<ILogger, Logger>();
+
             services.AddSingleton<ISettingsRepository<ApiSettings>, ApiJsonRepository>();
+            services.AddSingleton<ISettingsRepository<MailSetting>, MailJsonRepository>();
+            services.AddSingleton<ISettingsRepository<CompanySettings>, ComanyJsonRepository>();
+
             services.AddSingleton<IMessageDialog, CustomDialogService>();
             services.AddSingleton<IAuthDialog<LogistDto>, CustomDialogService>();
+
             services.AddSingleton<IHashService, HashService>();
 
             services.AddTransient<IDataSuggest<CompanySuggestItem>, DaDataSuggestClient>();

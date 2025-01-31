@@ -18,13 +18,13 @@ namespace LogistHelper.Models.Settings
             Init();
         }
 
-        protected abstract T GetDegault();
+        protected abstract T GetDefault();
 
         private void Init()
         {
             if (!File.Exists(_filePath))
             {
-                _settings = GetDegault();
+                _settings = GetDefault();
 
                 SaveSettings(_settings);
             }

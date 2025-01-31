@@ -1,8 +1,6 @@
 ﻿using HelpAPIs.Settings;
 using LogistHelper.Models.Settings;
 using Shared;
-using System.IO;
-using System.Text.Json;
 
 namespace LogistHelper.Models
 {
@@ -10,7 +8,7 @@ namespace LogistHelper.Models
     {
         public ApiJsonRepository(ILogger logger) : base(logger, "apiSettings.txt") { }
 
-        protected override ApiSettings GetDegault()
+        protected override ApiSettings GetDefault()
         {
            return new ApiSettings()
            {
