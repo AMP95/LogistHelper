@@ -7,12 +7,12 @@ using Utilities;
 
 namespace HelpAPIs
 {
-    public class DaDataClient : IDataSuggest<CompanySuggestItem>, IDataSuggest<FmsSuggestItem>
+    public class DaDataSuggestClient : IDataSuggest<CompanySuggestItem>, IDataSuggest<FmsSuggestItem>
     {
         private ILogger _logger;
         private string _apiKey;
 
-        public DaDataClient(ILogger logger, ISettingsRepository<ApiSettings> repository)
+        public DaDataSuggestClient(ILogger logger, ISettingsRepository<ApiSettings> repository)
         {
             _logger = logger;
             _apiKey = repository.GetSettings().DaDataApiKey;

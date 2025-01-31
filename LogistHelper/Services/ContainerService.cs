@@ -90,6 +90,7 @@ namespace LogistHelper.Services
             services.AddTransient<IViewModelFactory<ContractDto>, ContractViewModelFactory>();
             services.AddTransient<IViewModelFactory<FileDto>, FileViewModelFactory>();
             services.AddTransient<IViewModelFactory<ContractTemplateDto>, TemplateViewModelFactory>();
+            services.AddTransient<IViewModelFactory<LogistDto>, LogistViewModelFactory>();
 
             #endregion Factories
 
@@ -106,8 +107,8 @@ namespace LogistHelper.Services
             services.AddSingleton<IAuthDialog<LogistDto>, CustomDialogService>();
             services.AddSingleton<IHashService, HashService>();
 
-            services.AddTransient<IDataSuggest<CompanySuggestItem>, DaDataClient>();
-            services.AddTransient<IDataSuggest<FmsSuggestItem>, DaDataClient>();
+            services.AddTransient<IDataSuggest<CompanySuggestItem>, DaDataSuggestClient>();
+            services.AddTransient<IDataSuggest<FmsSuggestItem>, DaDataSuggestClient>();
             services.AddTransient<IDataSuggest<TruckModelSuggestItem>, VehicleSuggestClient>();
             services.AddTransient<IDataSuggest<TrailerModelSuggestItem>, VehicleSuggestClient>();
             services.AddTransient<IDataSuggest<GeoSuggestItem>, YandexGeoSuggestClient>();

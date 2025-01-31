@@ -1,0 +1,217 @@
+﻿<UserControl x:Class="LogistHelper.UI.Views.LogistListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:dtos="clr-namespace:DTOs;assembly=DTOs"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
+             xmlns:pages="clr-namespace:LogistHelper.UI.Pages"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+    
+     <UserControl.Resources>
+
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+        <converters:EvenNumberToBoolConverter x:Key="EvenNumberToBoolConverter"/>
+
+        <ObjectDataProvider 
+            x:Key="logistRoles" 
+            MethodName="GetValues"
+            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dtos:LogistRole"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+    </UserControl.Resources>
+    
+    <ItemsControl
+        Grid.Row="1"
+        ItemsSource="{Binding List}">
+        <ItemsControl.Template>
+            <ControlTemplate>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+        
+                    <Grid
+                        Margin="0 0 12 0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition
+                                Width="70"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition
+                                Width="50"/>
+                            <ColumnDefinition
+                                Width="50"/>
+                        </Grid.ColumnDefinitions>
+        
+                        <TextBlock
+                                Style="{StaticResource HeaderThreeText}"
+                                Text="№"
+                                Foreground="{StaticResource NeutralOneBrush}"/>
+        
+                        <TextBlock
+                                Grid.Column="1"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="ФИО"/>
+        
+                        <TextBlock
+                                Grid.Column="2"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Логин"/>
+        
+                        <TextBlock
+                                Grid.Column="3"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Роль"/>
+        
+                        <TextBlock
+                                Grid.Column="4"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Доступ"/>
+        
+                        <Button
+                                Grid.Column="6"
+                                ToolTip="Новый логист"
+                                Style="{StaticResource IconButton}"
+                                HorizontalAlignment="Right"
+                                Command="{Binding AddCommand}">
+                                <Image
+                                    Source="/UI/Icons/add_icon.png"/>
+                            </Button>
+                    </Grid>
+        
+                    <ScrollViewer
+                            Grid.Row="1"
+                            VerticalScrollBarVisibility="Visible"
+                            HorizontalScrollBarVisibility="Disabled"
+                            Style="{StaticResource CustomScroll}">
+                            <ItemsPresenter/>
+                        </ScrollViewer>
+                </Grid>
+            </ControlTemplate>
+        </ItemsControl.Template>
+        
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="70"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition
+                            Width="50"/>
+                        <ColumnDefinition
+                            Width="50"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Grid.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Counter, Converter={StaticResource EvenNumberToBoolConverter}}" Value="True">
+                                    <Setter Property="Grid.Background" Value="{StaticResource LightBlueBrush}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+        
+                    <TextBlock
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Counter}"/>
+        
+                    <TextBlock
+                         Grid.Column="1"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Name}"/>
+
+                    <TextBlock
+                        Grid.Column="2"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Login}"/>
+
+                    <TextBlock
+                        Grid.Column="3"
+                        Style="{StaticResource DefaultText}"
+                        TextAlignment="Center"
+                        Text="{Binding Role, Converter={StaticResource EnumToDescriptionConverter}}"/>
+
+                    <Button
+                        Grid.Column="4"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext.Id}">
+                       
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsExpired}" Value="True">
+                                        <Setter Property="Button.Command" Value="{Binding RelativeSource={RelativeSource AncestorType=local:LogistListView}, Path=DataContext.AddAccessCommand}"/>
+                                        <Setter Property="Button.ToolTip" Value="Дать доступ"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding IsExpired}" Value="False">
+                                        <Setter Property="Button.Command" Value="{Binding RelativeSource={RelativeSource AncestorType=local:LogistListView}, Path=DataContext.RemoveAccessCommand}"/>
+                                        <Setter Property="Button.ToolTip" Value="Отменить доступ"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        
+                        <Image>
+                            <Image.Style>
+                                <Style>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsExpired}" Value="True">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/fail_icon.png"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsExpired}" Value="False">
+                                            <Setter Property="Image.Source" Value="/UI/Icons/done_icon.png"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </Button>
+
+        
+                    <Button
+                        Grid.Column="5"
+                        ToolTip="Редактировать"
+                        Style="{StaticResource IconButton}"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:LogistListView}, Path=DataContext.EditCommand}"
+                        CommandParameter="{Binding Id}">
+                        <Image
+                            Source="/UI/Icons/edit_icon.png"/>
+                    </Button>
+        
+                    <Button
+                        Grid.Column="6"
+                        ToolTip="Удалить"
+                        Style="{StaticResource IconButton}"
+                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:LogistListView}, Path=DataContext.DeleteCommand}"
+                        CommandParameter="{Binding Id}">
+                        <Image
+                            Source="/UI/Icons/remove_icon.png"/>
+                    </Button>
+                </Grid>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</UserControl>
