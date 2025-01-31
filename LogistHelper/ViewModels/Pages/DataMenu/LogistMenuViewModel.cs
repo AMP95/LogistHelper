@@ -1,7 +1,7 @@
 ﻿using DTOs.Dtos;
 using LogistHelper.ViewModels.Base;
 
-namespace LogistHelper.ViewModels.Pages.DataMenu
+namespace LogistHelper.ViewModels.Pages
 {
     public class LogistMenuViewModel : MainMenuPageViewModel<LogistDto>
     {

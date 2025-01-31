@@ -68,6 +68,10 @@
                 <pages:DataMenuPage/>
             </DataTemplate>
 
+            <DataTemplate
+                DataType="{x:Type pagesVM:LogistMenuViewModel}">
+                <pages:DataMenuPage/>
+            </DataTemplate>
 
             <DataTemplate
                 DataType="{x:Type pagesVM:SecondContractMenuViewModel}">
@@ -112,6 +116,11 @@
             </DataTemplate>
 
             <DataTemplate
+                DataType="{x:Type viewsVM:LogistListViewModel}">
+                <views:ListView/>
+            </DataTemplate>
+
+            <DataTemplate
                 DataType="{x:Type viewsVM:DocumentListViewModel}">
                 <views:DocumentListView/>
             </DataTemplate>
@@ -121,7 +130,9 @@
                 <views:PaymentListView/>
             </DataTemplate>
 
-            
+           
+
+
 
 
 
@@ -162,6 +173,11 @@
 
             <DataTemplate
                 DataType="{x:Type viewsVM:EditTemplateViewModel}">
+                <views:EditView/>
+            </DataTemplate>
+
+            <DataTemplate
+                DataType="{x:Type viewsVM:EditLogistViewModel}">
                 <views:EditView/>
             </DataTemplate>
 

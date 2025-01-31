@@ -39,7 +39,7 @@ namespace LogistHelper.ViewModels.Pages
 
             NavigateAdminCommand = new RelayCommand(() =>
             {
-                
+                NavigationService.Navigate(PageType.LogistMenu);
             });
 
             NavigateSettingsCommand = new RelayCommand(() =>

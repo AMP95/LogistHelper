@@ -8,7 +8,6 @@ using LogistHelper.Models;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using LogistHelper.ViewModels.Pages;
-using LogistHelper.ViewModels.Pages.DataMenu;
 using LogistHelper.ViewModels.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Suggest;

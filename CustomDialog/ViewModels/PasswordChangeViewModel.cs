@@ -75,16 +75,22 @@ namespace CustomDialog
 
                     _user.Password = _hashService.GetHash(first);
 
-                    var result = await _access.UpdateAsync<LogistDto>(_user);
+                    bool boolResult = true;
 
-                    if (result.IsSuccess)
+                    if (_user.Id != Guid.Empty)
                     {
-                        _dialog.ShowSuccess("Смена пароля");
-                        Close?.Invoke(true);
+                        IAccessResult<bool> result = await _access.UpdateAsync<LogistDto>(_user);
+                        boolResult = result.IsSuccess;
+                    }
+
+                    if (!boolResult)
+                    {
+                        _dialog.ShowError("Не удалось сохранить пароль");
+                        
                     }
                     else 
                     {
-                        _dialog.ShowError(result.ErrorMessage);
+                        Close?.Invoke(true);
                     }
                 }
             });
