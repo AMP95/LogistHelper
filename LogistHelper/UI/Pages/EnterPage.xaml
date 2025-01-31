@@ -34,9 +34,36 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock
-                Style="{StaticResource HeaderOneText}"
-                Text="Вход"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Grid.Column="1"
+                    Style="{StaticResource HeaderOneText}"
+                    Text="Вход"/>
+
+                <controls:Loader
+                    Grid.Column="2"
+                    Height="30"
+                    HorizontalAlignment="Left"
+                    IsActive="{Binding IsOnEnter}">
+                    <controls:Loader.Style>
+                        <Style>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsOnEnter}" Value="False">
+                                    <Setter Property="controls:Loader.Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </controls:Loader.Style>
+                </controls:Loader>
+            </Grid>
+
+            
 
             <TextBox
                 Grid.Row="1"
@@ -46,11 +73,13 @@
             <controls:CustomPasswordBox 
                 Grid.Row="2"
                 ShowButtonStyle="{StaticResource ActivePwdToggle}"
+                KeyUp="passboxPasswordBox_KeyUp"
                 Style="{StaticResource CustomPwdStyle}"
                 x:Name="passboxPasswordBox"/>
 
             <Button
                 Grid.Row="3"
+                x:Name="enterButton"
                 Style="{StaticResource NeutralButton}"
                 Content="Вход"
                 Command="{Binding EnterCommand}"

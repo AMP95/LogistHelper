@@ -18,12 +18,19 @@ namespace LogistHelper.ViewModels.Pages
         private IAuthDialog<LogistDto> _authDialog;
 
         private string _login;
+        private bool _isOnEnter;
 
 
         public string Login 
         {
             get => _login;
             set => SetProperty(ref _login, value);
+        }
+
+        public bool IsOnEnter 
+        {
+            get => _isOnEnter;
+            set => SetProperty(ref _isOnEnter, value);
         }
 
         public ICommand EnterCommand { get; }
@@ -42,6 +49,8 @@ namespace LogistHelper.ViewModels.Pages
 
             EnterCommand = new RelayCommand<PasswordBox>(async (box) => 
             {
+                IsOnEnter = true;
+
                 IAccessResult<LogistDto> loginResult = await _access.Login(new LogistDto() { Login = Login, Password = _hashService.GetHash(box.Password) });
 
                 if (loginResult.IsSuccess) 
@@ -69,6 +78,8 @@ namespace LogistHelper.ViewModels.Pages
                 {
                     _dialog.ShowError(loginResult.ErrorMessage);
                 }
+
+                IsOnEnter = false;
             });
 
             #endregion CommandsInit
