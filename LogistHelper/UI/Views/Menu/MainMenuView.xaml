@@ -4,12 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
+             xmlns:services="clr-namespace:LogistHelper.Services"
+             xmlns:dtos="clr-namespace:DTOs;assembly=DTOs"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <WrapPanel
-        MaxWidth="800"
         VerticalAlignment="Center"
         HorizontalAlignment="Center">
+
+        <WrapPanel.Style>
+            <Style>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Source={x:Static services:LogistService.EnteredLogist}, Path=Role}"
+                                 Value="{x:Static dtos:LogistRole.User}">
+                        <Setter Property="WrapPanel.MaxWidth" Value="600"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Source={x:Static services:LogistService.EnteredLogist}, Path=Role}"
+                                Value="{x:Static dtos:LogistRole.Admin}">
+                        <Setter Property="WrapPanel.MaxWidth" Value="800"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </WrapPanel.Style>
+
         <Button
             Style="{StaticResource MenuButton}"
             Command="{Binding NewContractCommand}">
@@ -88,8 +106,20 @@
         </Button>
 
         <Button
-            Style="{StaticResource MenuButton}"
+            x:Name="adminButton"
             Command="{Binding NavigateAdminCommand}">
+
+            <Button.Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MenuButton}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Static services:LogistService.EnteredLogist}, Path=Role}" 
+                                     Value="{x:Static dtos:LogistRole.User}">
+                            <Setter Property="Button.Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -108,6 +138,7 @@
         </Button>
 
         <Button
+            Visibility="{Binding ElementName=adminButton,  Path=Visibility}"
             Style="{StaticResource MenuButton}"
             Command="{Binding NavigateSettingsCommand}">
             <Grid>
