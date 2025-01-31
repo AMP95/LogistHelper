@@ -69,6 +69,11 @@
                             DataType="{x:Type viewsVM:EditTemplateViewModel}">
                             <local:EditTemplateView/>
                         </DataTemplate>
+                        
+                        <DataTemplate
+                            DataType="{x:Type viewsVM:EditLogistViewModel}">
+                            <local:EditLogistView/>
+                        </DataTemplate>
                     </ContentControl.Resources>
                 </ContentControl>
 

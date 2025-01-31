@@ -75,6 +75,7 @@ namespace LogistHelper.Services
             services.AddTransient<IMainEditView<VehicleDto>, EditVehicleViewModel>();
             services.AddTransient<IMainEditView<ContractDto>, EditContractViewModel>();
             services.AddTransient<IMainEditView<ContractTemplateDto>, EditTemplateViewModel>();
+            services.AddTransient<IMainEditView<LogistDto>, EditLogistViewModel>();
 
             services.AddTransient<ISubEditView<DocumentDto>, EditDocumentViewModel>();
             services.AddTransient<ISubEditView<PaymentDto>, EditPaymentViewModel>();

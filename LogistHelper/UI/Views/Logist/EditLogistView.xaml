@@ -5,8 +5,97 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
              mc:Ignorable="d" 
+             xmlns:dtos="clr-namespace:DTOs;assembly=DTOs"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:rules="clr-namespace:LogistHelper.UI.ValidationRules"
+             xmlns:controls="clr-namespace:LogistHelper.UI.CustomControls"
+             xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              d:DesignHeight="450" d:DesignWidth="600">
-    <Grid>
-            
-    </Grid>
+    
+     <UserControl.Resources>
+
+        <converters:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+        <converters:GuidEmptyToBoolConverter x:Key="GuidEmptyToBoolConverter"/>
+
+        <ObjectDataProvider 
+            x:Key="logistRoles" 
+            MethodName="GetValues"
+            ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dtos:LogistRole"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+     </UserControl.Resources>
+
+    <StackPanel
+        MaxWidth="600">
+
+        <TextBlock
+            Style="{StaticResource DefaultText}"
+            Foreground="{StaticResource NeutralOneBrush}"
+            Text="ФИО"/>
+
+        <TextBox
+            Style="{StaticResource SubLeftTextBox}">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.Name">
+                    <Binding.ValidationRules>
+                        <rules:EmptyStringValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        
+         <TextBlock
+            Style="{StaticResource DefaultText}"
+            Foreground="{StaticResource NeutralOneBrush}"
+            Text="Логин"/>
+
+        <TextBox
+            Style="{StaticResource SubLeftTextBox}">
+            <TextBox.Text>
+                <Binding Path="EditedViewModel.Login">
+                    <Binding.ValidationRules>
+                        <rules:EmptyStringValidationRule/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+        </TextBox>
+        
+        <TextBlock
+            Style="{StaticResource DefaultText}"
+            Foreground="{StaticResource NeutralOneBrush}"
+            Text="Роль"/>
+        
+        <ComboBox
+            Style="{StaticResource CustomComboBox}"
+            ItemsSource="{Binding Source={StaticResource logistRoles}}"
+            SelectedItem="{Binding EditedViewModel.Role}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock
+                        Style="{StaticResource DefaultText}"
+                        Text="{Binding Converter={StaticResource EnumToDescriptionConverter}}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <Button
+            Command="{Binding ChangePasswordCommand}">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource NeutralButton}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding EditedViewModel.Id, Converter={StaticResource GuidEmptyToBoolConverter}}" Value="True">
+                            <Setter Property="Button.Content" Value="Назначить пароль"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding EditedViewModel.Id, Converter={StaticResource GuidEmptyToBoolConverter}}" Value="False">
+                            <Setter Property="Button.Content" Value="Сменить пароль"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
+    </StackPanel>
 </UserControl>

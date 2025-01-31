@@ -268,6 +268,11 @@
                     DataType="{x:Type viewsVM:TemplateListViewModel}">
                     <local:TemplateListView/>
                 </DataTemplate>
+                
+                <DataTemplate
+                    DataType="{x:Type viewsVM:LogistListViewModel}">
+                    <local:LogistListView/>
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
 
