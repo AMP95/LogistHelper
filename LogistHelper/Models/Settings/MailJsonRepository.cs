@@ -4,15 +4,15 @@ using Shared;
 
 namespace LogistHelper.Models
 {
-    public class MailJsonRepository : JsonRepository<MailSetting>
+    public class MailJsonRepository : JsonRepository<MailSettings>
     {
         public MailJsonRepository(ILogger logger) : base(logger, "mailSettings.txt")
         {
         }
 
-        protected override MailSetting GetDefault()
+        protected override MailSettings GetDefault()
         {
-            return new MailSetting()
+            return new MailSettings()
             {
                 FromAddress = "chunya95@mail.ru",
                 FromName = "Логист, ООО",

@@ -43,6 +43,7 @@ namespace LogistHelper.Services
             services.AddTransient<SecondContractMenuViewModel, SecondContractMenuViewModel>();
             services.AddTransient<CountractSubMenuViewModel, CountractSubMenuViewModel>();
             services.AddTransient<PaymentPageViewModel, PaymentPageViewModel>();
+            services.AddTransient<SettingsPageViewModel, SettingsPageViewModel>();
 
             services.AddTransient<IMainMenuPage<CarrierDto>, CarrierMenuPageViewModel>();
             services.AddTransient<IMainMenuPage<ClientDto>, ClientMenuPageViewModel>();
@@ -109,7 +110,7 @@ namespace LogistHelper.Services
             services.AddSingleton<ILogger, Logger>();
 
             services.AddSingleton<ISettingsRepository<ApiSettings>, ApiJsonRepository>();
-            services.AddSingleton<ISettingsRepository<MailSetting>, MailJsonRepository>();
+            services.AddSingleton<ISettingsRepository<MailSettings>, MailJsonRepository>();
             services.AddSingleton<ISettingsRepository<CompanySettings>, ComanyJsonRepository>();
 
             services.AddSingleton<IMessageDialog, CustomDialogService>();

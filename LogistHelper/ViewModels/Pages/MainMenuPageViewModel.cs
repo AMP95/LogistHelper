@@ -44,7 +44,7 @@ namespace LogistHelper.ViewModels.Pages
 
             NavigateSettingsCommand = new RelayCommand(() =>
             {
-                
+                NavigationService.Navigate(PageType.SettingsPage);
             });
         }
 

@@ -77,12 +77,19 @@
                 DataType="{x:Type pagesVM:SecondContractMenuViewModel}">
                 <pages:DataMenuPage/>
             </DataTemplate>
-            
+
+            <DataTemplate
+                DataType="{x:Type pagesVM:SettingsPageViewModel}">
+                <pages:SettingsPage/>
+            </DataTemplate>
+
+
             <DataTemplate
                 DataType="{x:Type pagesVM:CountractSubMenuViewModel}">
                 <views:ContractSubMenuView/>
             </DataTemplate>
 
+            
 
 
             <DataTemplate

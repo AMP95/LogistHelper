@@ -1,6 +1,6 @@
 ﻿namespace MailSender
 {
-    public class MailSetting
+    public class MailSettings
     {
         
         public string FromAddress { get; set; }

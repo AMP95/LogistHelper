@@ -53,7 +53,7 @@ namespace LogistHelper.Models.Settings
             _settings = null;
         }
 
-        public void SaveSettings(T settings)
+        public bool SaveSettings(T settings)
         {
             _settings = settings;
             try
@@ -62,10 +62,12 @@ namespace LogistHelper.Models.Settings
                 {
                     JsonSerializer.Serialize<T>(file, _settings);
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.Log(ex, ex.Message, LogLevel.Error);
+                return false;
             }
         }
     }

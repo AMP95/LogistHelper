@@ -7,10 +7,10 @@ namespace MailSender
 {
     public class ContractMailSender : IContractSender
     {
-        private MailSetting _settings;
+        private MailSettings _settings;
         private ILogger _logger;
 
-        public ContractMailSender(ILogger logger, ISettingsRepository<MailSetting> repository)
+        public ContractMailSender(ILogger logger, ISettingsRepository<MailSettings> repository)
         {
             _logger = logger;
             _settings = repository.GetSettings();

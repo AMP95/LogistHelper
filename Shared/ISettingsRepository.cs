@@ -2,7 +2,7 @@
 {
     public interface ISettingsRepository<T>
     {
-        void SaveSettings(T settings);
+        bool SaveSettings(T settings);
         T GetSettings();
         void ResetSettings();
     }

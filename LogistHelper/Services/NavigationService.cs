@@ -3,7 +3,6 @@ using DTOs.Dtos;
 using LogistHelper.Models;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.Pages;
-using LogistHelper.ViewModels.Views;
 using System.Windows.Controls;
 
 namespace LogistHelper.Services
@@ -36,6 +35,7 @@ namespace LogistHelper.Services
             pages.Add(PageType.LogistMenu, typeof(IMainMenuPage<LogistDto>));
             pages.Add(PageType.NewContract, typeof(SecondContractMenuViewModel));
             pages.Add(PageType.PaymentMenu, typeof(PaymentPageViewModel));
+            pages.Add(PageType.SettingsPage, typeof(SettingsPageViewModel));
         }
     }
 }

@@ -10,27 +10,25 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <WrapPanel
+        MaxWidth="600"
         VerticalAlignment="Center"
         HorizontalAlignment="Center">
 
-        <WrapPanel.Style>
-            <Style>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Source={x:Static services:LogistService.EnteredLogist}, Path=Role}"
-                                 Value="{x:Static dtos:LogistRole.User}">
-                        <Setter Property="WrapPanel.MaxWidth" Value="600"/>
-                    </DataTrigger>
-                    <DataTrigger Binding="{Binding Source={x:Static services:LogistService.EnteredLogist}, Path=Role}"
-                                Value="{x:Static dtos:LogistRole.Admin}">
-                        <Setter Property="WrapPanel.MaxWidth" Value="800"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </WrapPanel.Style>
-
         <Button
-            Style="{StaticResource MenuButton}"
+            x:Name="contractButton"
             Command="{Binding NewContractCommand}">
+
+            <Button.Style>
+                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MenuButton}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Source={x:Static services:LogistService.EnteredLogist}, Path=Role}" 
+                         Value="{x:Static dtos:LogistRole.Admin}">
+                            <Setter Property="Button.Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
@@ -47,7 +45,9 @@
                     Text="Новая заявка"/>
             </Grid>
         </Button>
+        
         <Button
+            Visibility="{Binding ElementName=contractButton, Path=Visibility}"
             Style="{StaticResource MenuButton}"
             Command="{Binding NavigateContractsMenuCommand}">
             <Grid>
@@ -66,7 +66,9 @@
                     Text="Заявки"/>
             </Grid>
         </Button>
+        
         <Button
+            Visibility="{Binding ElementName=contractButton, Path=Visibility}"
             Style="{StaticResource MenuButton}"
             Command="{Binding NavigateBillsMenuCommand}">
             <Grid>
@@ -85,7 +87,9 @@
                     Text="Оплаты"/>
             </Grid>
         </Button>
+        
         <Button
+            Visibility="{Binding ElementName=contractButton, Path=Visibility}"
             Style="{StaticResource MenuButton}"
             Command="{Binding NavigateDatabaseMenuCommand}">
             <Grid>
