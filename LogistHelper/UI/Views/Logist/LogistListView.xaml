@@ -162,6 +162,9 @@
                         <Button.Style>
                             <Style TargetType="{x:Type Button}" BasedOn="{StaticResource IconButton}">
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Role}" Value="{x:Static dtos:LogistRole.Admin}">
+                                        <Setter Property="Button.IsEnabled" Value="False"/>
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding IsExpired}" Value="True">
                                         <Setter Property="Button.Command" Value="{Binding RelativeSource={RelativeSource AncestorType=local:LogistListView}, Path=DataContext.AddAccessCommand}"/>
                                         <Setter Property="Button.ToolTip" Value="Дать доступ"/>
