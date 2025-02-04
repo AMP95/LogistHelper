@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
 using DTOs.Dtos;
+using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Microsoft.Win32;
@@ -33,8 +34,6 @@ namespace LogistHelper.ViewModels.Views
 
         private bool _sendToCarrier;
         private bool _print;
-
-        
 
         #endregion Private
 
@@ -206,6 +205,8 @@ namespace LogistHelper.ViewModels.Views
                 EditedViewModel = _factory.GetViewModel();
                 _contract = EditedViewModel as ContractViewModel;
 
+                _contract.Logist = new LogistViewModel(new LogistDto() { Id = LogistService.EnteredLogist.Id });
+
                 DateTime date = DateTime.Now;
                 int month = date.Month;
 
@@ -318,42 +319,67 @@ namespace LogistHelper.ViewModels.Views
             IsBlock = true;
             BlockText = "Сохранение";
 
-            bool result = false;
-
-            if (EditedViewModel.Id == Guid.Empty)
+            if (await SaveEntity())
             {
-                IAccessResult<Guid> addResult = await _access.AddAsync(EditedViewModel.GetDto());
-                if (addResult.IsSuccess) 
+                var fileResult = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
+
+                if (fileResult.IsSuccess)
                 {
-                    result = true;
-                    EditedViewModel.Id = addResult.Result;
+                    File = new FileViewModel(fileResult.Result.First());
+
+                    if (Print)
+                    {
+                        PrintContract();
+                    }
+
+                    if (Send)
+                    {
+                        SendContractToCarrier();
+                    }
+                }
+
+                _dialog.ShowSuccess("Сохранение");
+
+                if (EditedViewModel.Id == Guid.Empty)
+                {
+                    Load(Guid.Empty);
                 }
             }
             else
             {
-                IAccessResult<bool> updateResult = await _access.UpdateAsync(EditedViewModel.GetDto());
-                result = updateResult.IsSuccess;
+                _dialog.ShowError("Не удалось сохранить изменения", "Сохранение");
             }
 
-            if (result)
+            IsBlock = false;
+        }
+
+        public override async Task SaveAndClose()
+        {
+            IsBlock = true;
+            BlockText = "Сохранение";
+
+            if (await SaveEntity())
             {
                 var fileResult = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
 
-                if (fileResult.IsSuccess) 
+                if (fileResult.IsSuccess)
                 {
                     File = new FileViewModel(fileResult.Result.First());
+
+                    if (Print)
+                    {
+                        PrintContract();
+                    }
+
+                    if (Send)
+                    {
+                        SendContractToCarrier();
+                    }
                 }
 
-                if (Print)
-                {
-                    PrintContract();
-                }
+                _dialog.ShowSuccess("Сохранение");
 
-                if (Send)
-                {
-                    SendContractToCarrier();
-                }
-
+                MainParent.SwitchToList();
             }
             else
             {

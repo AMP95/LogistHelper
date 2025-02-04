@@ -46,8 +46,7 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
 
-                            <Grid
-                                ShowGridLines="True">
+                            <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition
                                         Width="50"/>

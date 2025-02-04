@@ -141,7 +141,7 @@
                     <DataTemplate>
                         <TextBlock
                             Style="{StaticResource DefaultText}"
-                            Text="{Binding }"/>
+                            Text="{Binding Name}"/>
                     </DataTemplate>
                 </controls:SearchBox.ItemTemplate>
             </controls:SearchBox>

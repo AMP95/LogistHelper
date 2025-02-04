@@ -16,6 +16,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         private CarrierViewModel _carrier;
         private CompanyViewModel _client;
         private TeplateViewModel _template;
+        private LogistViewModel _logist;
 
         private RoutePointViewModel _loadingPoint;
 
@@ -134,13 +135,11 @@ namespace LogistHelper.ViewModels.DataViewModels
                 SetProperty(ref _driver, value);
                 if (value != null)
                 {
-                    _dto.Driver = Driver.GetDto();
                     Carrier = Driver.Carrier;
                     Vehicle = Driver.Vehicle;
                 }
                 else
                 {
-                    _dto.Driver = null;
                     Carrier = null;
                     Vehicle = null;
                 }
@@ -153,14 +152,6 @@ namespace LogistHelper.ViewModels.DataViewModels
             set
             {
                 SetProperty(ref _vehicle, value);
-                if (value != null)
-                {
-                    _dto.Vehicle = Vehicle.GetDto();
-                }
-                else
-                {
-                    _dto.Vehicle = null;
-                }
             }
         }
 
@@ -170,14 +161,6 @@ namespace LogistHelper.ViewModels.DataViewModels
             set
             {
                 SetProperty(ref _carrier, value);
-                if (value != null)
-                {
-                    _dto.Carrier = Carrier.GetDto();
-                }
-                else
-                {
-                    _dto.Carrier = null;
-                }
             }
         }
 
@@ -187,14 +170,6 @@ namespace LogistHelper.ViewModels.DataViewModels
             set
             {
                 SetProperty(ref _client, value);
-                if (value != null)
-                {
-                    _dto.Client = Client.GetDto();
-                }
-                else
-                {
-                    _dto.Client = null;
-                }
             }
         }
 
@@ -204,15 +179,13 @@ namespace LogistHelper.ViewModels.DataViewModels
             set 
             {
                 SetProperty(ref _template, value);
-                if (value != null)
-                {
-                    _dto.Template = Template.GetDto();
-                }
-                else
-                {
-                    _dto.Template = null;
-                }
             }
+        }
+
+        public LogistViewModel Logist 
+        {
+            get => _logist;
+            set => SetProperty(ref _logist, value);
         }
 
         public RoutePointViewModel LoadPoint
@@ -273,6 +246,7 @@ namespace LogistHelper.ViewModels.DataViewModels
                 _carrier = new CarrierViewModel(dto.Carrier);
                 _client = new CompanyViewModel(dto.Client);
                 _template = new TeplateViewModel(dto.Template);
+                _logist = new LogistViewModel(dto.Logist);
 
                 _loadingPoint = _routeFactory.GetViewModel(dto.LoadPoint) as RoutePointViewModel;
 
@@ -352,6 +326,8 @@ namespace LogistHelper.ViewModels.DataViewModels
             _dto.Client  = Client.GetDto();
             _dto.Vehicle = Vehicle.GetDto();
             _dto.Template = Template.GetDto();
+            _dto.Logist = Logist.GetDto();
+            _dto.Driver = Driver.GetDto();
 
             return base.GetDto();
         }
@@ -360,11 +336,10 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             _dto = new ContractDto();
 
-            
-
             Client = new CompanyViewModel();
             Driver = new DriverViewModel();
             Template = new TeplateViewModel();
+            Logist = new LogistViewModel();
             
             UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>();
             

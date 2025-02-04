@@ -61,7 +61,6 @@ namespace LogistHelper.ViewModels.Pages
                     {
                         if (_dialog.ShowQuestion("Вы авторизовались по временному паролю. Необходимо установить постоянный пароль."))
                         {
-
                             dto.PasswordState = DTOs.PasswordState.Active;
                             dto.Password = box.Password;
 

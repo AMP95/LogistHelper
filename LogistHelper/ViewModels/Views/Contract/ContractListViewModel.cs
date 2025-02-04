@@ -94,6 +94,7 @@ namespace LogistHelper.ViewModels.Views
                 {  nameof(ContractDto.Vehicle),"ТС" },
                 {  nameof(ContractDto.LoadPoint), "Загрузка" },
                 {  nameof(ContractDto.UnloadPoints), "Выгрузка" },
+                {  nameof(ContractDto.Logist), "Логист" },
             };
 
             SelectedFilter = SearchFirters.FirstOrDefault(p => p.Key == nameof(ContractDto.CreationDate));

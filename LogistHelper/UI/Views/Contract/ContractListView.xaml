@@ -354,7 +354,7 @@
                         Grid.Column="3"
                         Style="{StaticResource DefaultText}"
                         TextAlignment="Center"
-                        Text="ЛГСТ"/>
+                        Text="{Binding Logist.Login}"/>
 
                     <TextBlock
                         Grid.Column="4"
