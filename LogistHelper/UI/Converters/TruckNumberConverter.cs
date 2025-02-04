@@ -29,18 +29,18 @@ namespace LogistHelper.UI.Converters
                     input = string.Concat(input.ToUpper().Where(c => "АВЕКМНОРСУX0123456789".Contains(c)));
                     for (int i = 0; i < input.Length; i++)
                     {
-                        if (i == 0 || i == 5 || i == 6)
+                        if (i == 0 || i == 4 || i == 5)
                         {
                             if (char.IsDigit(input[i]))
                             {
-                                input.Remove(i);
+                                input = input.Remove(i);
                             }
                         }
                         else
                         {
                             if (char.IsLetter(input[i]))
                             {
-                                input.Remove(i);
+                                input = input.Remove(i);
                             }
                         }
                     }

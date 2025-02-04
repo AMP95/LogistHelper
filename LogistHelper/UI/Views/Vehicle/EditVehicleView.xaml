@@ -15,16 +15,13 @@
         <converters:TrailerNumberConverter x:Key="TrailerNumberConverter"/>
     </UserControl.Resources>
 
-    <Grid
-        ShowGridLines="True"
-        MaxWidth="1200">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+    <ScrollViewer
+        Style="{StaticResource CustomScroll}"
+        MaxWidth="600">
+        
+        <StackPanel>
 
-
-        <Grid>
+            <Grid>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
@@ -178,12 +175,12 @@
 
     </Grid>
 
-        <controls:FileDropHandler
-            MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=ActualHeight}"
-            Files="{Binding Files,Mode=TwoWay}"
-            DownloadCommand="{Binding DownloadFileCommand}"
-            RemoveCommand="{Binding RemoveFileCommand}"
-            Grid.Column="1"/>
-    </Grid>
-    
+            <controls:FileDropHandler
+                MinHeight="400"
+                Files="{Binding Files,Mode=TwoWay}"
+                DownloadCommand="{Binding DownloadFileCommand}"
+                RemoveCommand="{Binding RemoveFileCommand}"
+                Grid.Column="1"/>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

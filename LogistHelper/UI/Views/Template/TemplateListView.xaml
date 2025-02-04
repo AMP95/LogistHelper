@@ -13,6 +13,7 @@
     </UserControl.Resources>
 
     <ItemsControl
+        MaxWidth="900"
         Grid.Row="1"
         ItemsSource="{Binding List}">
         <ItemsControl.Template>

@@ -221,12 +221,13 @@ namespace LogistHelper.UI.CustomControls
                     Files.Add(new ListItem<FileViewModel>(new FileViewModel() { LocalFullFilePath = file }));
                 }
             }
+            
             UpdateLoadAllowance();
         }
 
         private void UpdateLoadAllowance() 
         {
-            if (Files.Count() >= AllowableFileCount)
+            if (Files != null && Files.Count() >= AllowableFileCount)
             {
                 IsAllowToAddFiles = false;
             }

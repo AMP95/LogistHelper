@@ -33,14 +33,14 @@ namespace LogistHelper.UI.Converters
                         {
                             if (char.IsDigit(input[i]))
                             {
-                                input.Remove(i);
+                                input = input.Remove(i);
                             }
                         }
                         else
                         {
                             if (char.IsLetter(input[i]))
                             {
-                                input.Remove(i);
+                                input = input.Remove(i);
                             }
                         }
                     }

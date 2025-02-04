@@ -30,7 +30,14 @@ namespace LogistHelper.ViewModels.DataViewModels
         {
             if (dto != null)
             {
-                Additionals = new ObservableCollection<AdditionalsViewModel>(_dto.Additionals.Select(a => new AdditionalsViewModel(a)));
+                if (_dto.Additionals != null && _dto.Additionals.Any())
+                {
+                    Additionals = new ObservableCollection<AdditionalsViewModel>(_dto.Additionals.Select(a => new AdditionalsViewModel(a)));
+                }
+                else
+                {
+                    Additionals = new ObservableCollection<AdditionalsViewModel>();
+                }
             }
         }
 

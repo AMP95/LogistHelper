@@ -13,10 +13,6 @@
         MaxWidth="900">
 
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
@@ -25,26 +21,35 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <TextBlock
-                Style="{StaticResource DefaultText}"
-                Foreground="{StaticResource NeutralOneBrush}"
-                Text="Название шаблона:"/>
+            <Grid
+                MaxWidth="600">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-            <TextBox
-                Grid.Column="1"
-                Style="{StaticResource MainLeftTextBox}">
-                <TextBox.Text>
-                    <Binding Path="EditedViewModel.Name">
-                        <Binding.ValidationRules>
-                            <rules:EmptyStringValidationRule/>
-                        </Binding.ValidationRules>
-                    </Binding>
-                </TextBox.Text>
-            </TextBox>
+                <TextBlock
+                    Style="{StaticResource DefaultText}"
+                    Foreground="{StaticResource NeutralOneBrush}"
+                    Text="Название шаблона:"/>
+
+                <TextBox
+                    Grid.Column="1"
+                    Style="{StaticResource MainCentralTextBox}">
+                    <TextBox.Text>
+                        <Binding Path="EditedViewModel.Name">
+                            <Binding.ValidationRules>
+                                <rules:EmptyStringValidationRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+            </Grid>
+
+            
 
             <TextBlock
                 Grid.Row="1"
-                Grid.ColumnSpan="2"
                 Style="{StaticResource DefaultText}"
                 TextAlignment="Center"
                 Foreground="{StaticResource NeutralOneBrush}"
@@ -52,59 +57,60 @@
 
             <ItemsControl
                 Grid.Row="3"
-                Grid.ColumnSpan="2"
-                ItemsSource="{Binding RequiredBookMarks}">
+                ItemsSource="{Binding EditedViewModel.Additionals}">
                 <ItemsControl.Template>
                     <ControlTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
+                        <ScrollViewer
+                            Style="{StaticResource CustomScroll}"
+                            VerticalScrollBarVisibility="Auto"
+                            HorizontalScrollBarVisibility="Auto">
+                        
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
 
-                            <Grid
-                                Margin="0 0 10 0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition
-                                        Width="2*"/>
-                                    <ColumnDefinition
-                                        Width="auto"/>
-                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition
+                                            Width="200"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition
+                                            Width="auto"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <TextBlock
-                                    Style="{StaticResource HeaderThreeText}"
-                                    Text="Заголовок"/>
+                                    <TextBlock
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Text="Заголовок"/>
 
-                                <TextBlock
-                                    Grid.Column="1"
-                                    Style="{StaticResource HeaderThreeText}"
-                                    Text="Текст требования"/>
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Style="{StaticResource HeaderThreeText}"
+                                        Text="Текст требования"/>
 
-                                <Button
-                                    Grid.Column="2"
-                                    ToolTip="Добавить требование"
-                                    Style="{StaticResource IconButton}"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditTemplateView}, Path=DataContext.AddAdditionalCommand}">
-                                    <Image
-                                        Source="/UI/Icons/add_icon.png"/>
-                                </Button>
+                                    <Button
+                                        Grid.Column="2"
+                                        ToolTip="Добавить требование"
+                                        Style="{StaticResource IconButton}"
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditTemplateView}, Path=DataContext.AddAdditionalCommand}">
+                                        <Image
+                                            Source="/UI/Icons/add_icon.png"/>
+                                    </Button>
 
-                                <Border
-                                    Grid.ColumnSpan="3"
-                                    VerticalAlignment="Bottom"
-                                    Height="2"
-                                    Background="{StaticResource BorderGradient}"/>
+                                    <Border
+                                        Grid.ColumnSpan="3"
+                                        VerticalAlignment="Bottom"
+                                        Height="2"
+                                        Background="{StaticResource BorderGradient}"/>
+                                </Grid>
+
+                            
+                                <ItemsPresenter
+                                    Grid.Row="1"/>
+                            
                             </Grid>
-
-                            <ScrollViewer
-                                Grid.Row="1"
-                                Style="{StaticResource CustomScroll}"
-                                VerticalScrollBarVisibility="Auto"
-                                HorizontalScrollBarVisibility="Auto">
-                                <ItemsPresenter/>
-                            </ScrollViewer>
-                        </Grid>
+                        </ScrollViewer>
                     </ControlTemplate>
                 </ItemsControl.Template>
 
@@ -113,20 +119,22 @@
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
                                 <ColumnDefinition
-                                        Width="2*"/>
+                                    Width="200"/>
+                                <ColumnDefinition/>
                                 <ColumnDefinition
                                         Width="auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock
-                                Style="{StaticResource DefaultText}"
-                                TextAlignment="Center"
+                            <TextBox
+                                VerticalAlignment="Center"
+                                Style="{StaticResource MainCentralTextBox}"
                                 Text="{Binding Name}"/>
 
                             <TextBox
                                 Grid.Column="1"
+                                MaxWidth="600"
+                                TextWrapping="WrapWithOverflow"
                                 Style="{StaticResource SubLeftTextBox}"
                                 Text="{Binding Description}"/>
 

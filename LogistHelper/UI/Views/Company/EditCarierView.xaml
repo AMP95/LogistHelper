@@ -16,17 +16,16 @@
         <converters:ViewModelToTypeConverter x:Key="ViewModelToTypeConverter"/>
     </UserControl.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition
-                Width="auto"/>
-        </Grid.ColumnDefinitions>
-    
-        <StackPanel
-        MaxWidth="600">
+    <ScrollViewer
+        MaxWidth="600"
+        Style="{StaticResource CustomScroll}">
+        
 
-        <controls:SearchBox
+    <StackPanel>
+
+        <StackPanel>
+
+            <controls:SearchBox
             WatermarkText="ОГРН, ИНН, название или ФИО"
             IsButtonVisible="True"
             IsDynamicSearch="False"
@@ -66,11 +65,11 @@
         </controls:SearchBox>
 
 
-        <TextBlock
+            <TextBlock
             Style="{StaticResource MiniText}"
             Text="ИНН/КПП"/>
 
-        <Grid>
+            <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition
@@ -101,11 +100,11 @@
 
 
 
-        <TextBlock
-            Style="{StaticResource MiniText}"
-            Text="Адрес"/>
+            <TextBlock
+                Style="{StaticResource MiniText}"
+                Text="Адрес"/>
 
-        <TextBox
+            <TextBox
             Style="{StaticResource SubLeftTextBox}">
             <TextBox.Text>
                 <Binding Path="EditedViewModel.Address">
@@ -116,7 +115,7 @@
             </TextBox.Text>
         </TextBox>
 
-        <Grid>
+            <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -150,7 +149,7 @@
 
         
 
-        <ItemsControl
+            <ItemsControl
             ItemsSource="{Binding EditedViewModel.Phones}">
             <ItemsControl.Template>
                 <ControlTemplate>
@@ -217,7 +216,7 @@
         </ItemsControl>
 
 
-        <ItemsControl
+            <ItemsControl
             ItemsSource="{Binding EditedViewModel.Emails}">
 
             <ItemsControl.Template>
@@ -285,16 +284,16 @@
     </StackPanel>
 
         <controls:FileDropHandler
-            MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=ActualHeight}"
+            MinHeight="400"
             Files="{Binding Files,Mode=TwoWay}"
+            AllowableFileCount="{Binding AllowableFileCount}"
             DownloadCommand="{Binding DownloadFileCommand}"
-            RemoveCommand="{Binding RemoveFileCommand}"
-            Grid.Column="1">
+            RemoveCommand="{Binding RemoveFileCommand}">
             <controls:FileDropHandler.Style>
                 <Style>
                     <Setter Property="controls:FileDropHandler.Visibility" Value="Collapsed"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext, Converter={StaticResource ViewModelToTypeConverter}}" Value="{x:Type viewVM:EditCarrierViewModel}">
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.IsFileAvaliable}" Value="True">
                             <Setter Property="controls:FileDropHandler.Visibility" Value="Visible"/>
                         </DataTrigger> 
                     </Style.Triggers>
@@ -302,8 +301,8 @@
             </controls:FileDropHandler.Style>
         </controls:FileDropHandler>
 
-    </Grid>
-    
+    </StackPanel>
 
 
+    </ScrollViewer>
 </UserControl>
