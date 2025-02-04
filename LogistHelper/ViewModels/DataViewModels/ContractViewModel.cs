@@ -14,8 +14,8 @@ namespace LogistHelper.ViewModels.DataViewModels
         private DriverViewModel _driver;
         private VehicleViewModel _vehicle;
         private CarrierViewModel _carrier;
-        private ClientViewModel _client;
-        private ContractTeplateViewModel _template;
+        private CompanyViewModel _client;
+        private TeplateViewModel _template;
 
         private RoutePointViewModel _loadingPoint;
 
@@ -181,7 +181,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             }
         }
 
-        public ClientViewModel Client
+        public CompanyViewModel Client
         {
             get => _client;
             set
@@ -198,7 +198,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             }
         }
 
-        public ContractTeplateViewModel Template 
+        public TeplateViewModel Template 
         {
             get => _template;
             set 
@@ -271,8 +271,8 @@ namespace LogistHelper.ViewModels.DataViewModels
                 _driver = new DriverViewModel(dto.Driver);
                 _vehicle = new VehicleViewModel(dto.Vehicle);
                 _carrier = new CarrierViewModel(dto.Carrier);
-                _client = new ClientViewModel(dto.Client);
-                _template = new ContractTeplateViewModel(dto.Template);
+                _client = new CompanyViewModel(dto.Client);
+                _template = new TeplateViewModel(dto.Template);
 
                 _loadingPoint = _routeFactory.GetViewModel(dto.LoadPoint) as RoutePointViewModel;
 
@@ -362,9 +362,9 @@ namespace LogistHelper.ViewModels.DataViewModels
 
             
 
-            Client = new ClientViewModel();
+            Client = new CompanyViewModel();
             Driver = new DriverViewModel();
-            Template = new ContractTeplateViewModel();
+            Template = new TeplateViewModel();
             
             UnloadPoints = new ObservableCollection<ListItem<RoutePointViewModel>>();
             

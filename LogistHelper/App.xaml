@@ -39,7 +39,7 @@
             </DataTemplate>
 
             <DataTemplate
-                DataType="{x:Type pagesVM:ClientMenuPageViewModel}">
+                DataType="{x:Type pagesVM:CompanyMenuPageViewModel}">
                 <pages:DataMenuPage/>
             </DataTemplate> 
             
@@ -93,7 +93,7 @@
 
 
             <DataTemplate
-                DataType="{x:Type viewsVM:ClientListViewModel}">
+                DataType="{x:Type viewsVM:CompanyListViewModel}">
                 <views:ListView/>
             </DataTemplate>
 

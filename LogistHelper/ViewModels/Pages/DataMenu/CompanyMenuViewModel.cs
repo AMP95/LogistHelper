@@ -4,9 +4,9 @@ using LogistHelper.ViewModels.Base;
 
 namespace LogistHelper.ViewModels.Pages
 {
-    public class ClientMenuPageViewModel : MainMenuPageViewModel<ClientDto>
+    public class CompanyMenuPageViewModel : MainMenuPageViewModel<CompanyDto>
     {
-        public ClientMenuPageViewModel(IMainListView<ClientDto> list, IMainEditView<ClientDto> edit) : base(list, edit)
+        public CompanyMenuPageViewModel(IMainListView<CompanyDto> list, IMainEditView<CompanyDto> edit) : base(list, edit)
         {
         }
 

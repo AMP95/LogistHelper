@@ -13,9 +13,9 @@ using Utilities;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class EditCompanyViewModel<T> : MainEditViewModel<T> where T : CompanyDto
+    public class EditCompanyViewModel<T> : MainEditViewModel<T> where T : CompanyBaseDto
     {
-        private CompanyViewModel<T> _company;
+        private CompanyBaseViewModel<T> _company;
 
         private IDataSuggest<CompanySuggestItem> _dataSuggest;
         private IEnumerable<CompanySuggestItem> _companiesList;
@@ -112,7 +112,7 @@ namespace LogistHelper.ViewModels.Views
         public override async Task Load(Guid id)
         {
             await base.Load(id);
-            _company = EditedViewModel as CompanyViewModel<T>;
+            _company = EditedViewModel as CompanyBaseViewModel<T>;
 
             var companies = await _dataSuggest.SuggestAsync(_company.Name);
             _selectedCompany = companies.FirstOrDefault();
@@ -160,10 +160,19 @@ namespace LogistHelper.ViewModels.Views
         }
     }
 
-    public class EditClientViewModel : EditCompanyViewModel<ClientDto>
+    public class EditClientViewModel : EditCompanyViewModel<CompanyDto>
     {
-        public EditClientViewModel(IDataAccess dataAccess, IViewModelFactory<ClientDto> factory, IMessageDialog dialog, IDataSuggest<CompanySuggestItem> dataSuggest) : base(dataAccess, factory, dialog, dataSuggest)
+        public EditClientViewModel(IDataAccess dataAccess, 
+                                   IViewModelFactory<CompanyDto> factory, 
+                                   IMessageDialog dialog, 
+                                   IDataSuggest<CompanySuggestItem> dataSuggest) : base(dataAccess, factory, dialog, dataSuggest)
         {
+        }
+
+        public override Task Save()
+        {
+            (EditedViewModel as CompanyViewModel).Type = CompanyType.Client;
+            return base.Save();
         }
     }
 

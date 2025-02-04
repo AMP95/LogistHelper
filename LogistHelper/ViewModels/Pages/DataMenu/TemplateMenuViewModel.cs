@@ -3,9 +3,9 @@ using LogistHelper.ViewModels.Base;
 
 namespace LogistHelper.ViewModels.Pages
 {
-    internal class TemplateMenuViewModel : MainMenuPageViewModel<ContractTemplateDto>
+    internal class TemplateMenuViewModel : MainMenuPageViewModel<TemplateDto>
     {
-        public TemplateMenuViewModel(IMainListView<ContractTemplateDto> list, IMainEditView<ContractTemplateDto> edit) : base(list, edit)
+        public TemplateMenuViewModel(IMainListView<TemplateDto> list, IMainEditView<TemplateDto> edit) : base(list, edit)
         {
         }
     }

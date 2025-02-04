@@ -12,12 +12,6 @@
     <Grid
         MaxWidth="900">
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        
-
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
@@ -51,17 +45,10 @@
             <TextBlock
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
-                Style="{StaticResource MiniText}"
-                Text='Создайте документ Microsoft Word и отметьте 
-                поля для автозаполнения соответствующими закладками. Готовый документ загрузите в поле "Файлы" '/>
-
-            <TextBlock
-                Grid.Row="2"
-                Grid.ColumnSpan="2"
                 Style="{StaticResource DefaultText}"
                 TextAlignment="Center"
                 Foreground="{StaticResource NeutralOneBrush}"
-                Text="Список закладок"/>
+                Text="Требования"/>
 
             <ItemsControl
                 Grid.Row="3"
@@ -79,20 +66,32 @@
                                 Margin="0 0 10 0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition
+                                        Width="2*"/>
+                                    <ColumnDefinition
+                                        Width="auto"/>
                                 </Grid.ColumnDefinitions>
 
                                 <TextBlock
                                     Style="{StaticResource HeaderThreeText}"
-                                    Text="Поле"/>
+                                    Text="Заголовок"/>
 
                                 <TextBlock
                                     Grid.Column="1"
                                     Style="{StaticResource HeaderThreeText}"
-                                    Text="Закладка"/>
+                                    Text="Текст требования"/>
+
+                                <Button
+                                    Grid.Column="2"
+                                    ToolTip="Добавить требование"
+                                    Style="{StaticResource IconButton}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditTemplateView}, Path=DataContext.AddAdditionalCommand}">
+                                    <Image
+                                        Source="/UI/Icons/add_icon.png"/>
+                                </Button>
 
                                 <Border
-                                    Grid.ColumnSpan="2"
+                                    Grid.ColumnSpan="3"
                                     VerticalAlignment="Bottom"
                                     Height="2"
                                     Background="{StaticResource BorderGradient}"/>
@@ -101,8 +100,8 @@
                             <ScrollViewer
                                 Grid.Row="1"
                                 Style="{StaticResource CustomScroll}"
-                                VerticalScrollBarVisibility="Visible"
-                                HorizontalScrollBarVisibility="Disabled">
+                                VerticalScrollBarVisibility="Auto"
+                                HorizontalScrollBarVisibility="Auto">
                                 <ItemsPresenter/>
                             </ScrollViewer>
                         </Grid>
@@ -115,7 +114,10 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition
+                                        Width="2*"/>
+                                <ColumnDefinition
+                                        Width="auto"/>
                             </Grid.ColumnDefinitions>
 
                             <TextBlock
@@ -125,9 +127,18 @@
 
                             <TextBox
                                 Grid.Column="1"
-                                Style="{StaticResource SubCentralTextBox}"
-                                IsReadOnly="True"
-                                Text="{Binding InsertView}"/>
+                                Style="{StaticResource SubLeftTextBox}"
+                                Text="{Binding Description}"/>
+
+                            <Button
+                                Grid.Column="2"
+                                ToolTip="Удалить требование"
+                                Style="{StaticResource IconButton}"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditTemplateView}, Path=DataContext.RemoveAdditionalCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContentPresenter}, Path=DataContext}">
+                                <Image
+                                    Source="/UI/Icons/remove_icon.png"/>
+                            </Button>
                         </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -135,13 +146,5 @@
             </ItemsControl>
         </Grid>
 
-        <controls:FileDropHandler
-            Grid.Column="1"
-            MaxHeight="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=ActualHeight}"
-            Files="{Binding Files,Mode=TwoWay}"
-            AllowableFileCount="1"
-            IsAllowToAddFiles ="{Binding IsAllowToAddFiles, Mode=TwoWay}"
-            AllowableFileExtensions="{Binding AllowedExtensions}"
-            RemoveCommand="{Binding RemoveFileCommand}"/>
     </Grid>
 </UserControl>

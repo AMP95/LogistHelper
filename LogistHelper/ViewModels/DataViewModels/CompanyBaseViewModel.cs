@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 namespace LogistHelper.ViewModels.DataViewModels
 {
 
-    public abstract class CompanyViewModel<T> : DataViewModel<T> where T : CompanyDto
+    public abstract class CompanyBaseViewModel<T> : DataViewModel<T> where T : CompanyBaseDto
     {
         #region Private
 
@@ -78,7 +78,7 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         #endregion Public
 
-        public CompanyViewModel(T dto, int counter) : base(dto, counter)
+        public CompanyBaseViewModel(T dto, int counter) : base(dto, counter)
         {
             if (dto != null)
             {
@@ -104,9 +104,9 @@ namespace LogistHelper.ViewModels.DataViewModels
             }
         }
 
-        public CompanyViewModel(T dto) : this(dto, 0) { }
+        public CompanyBaseViewModel(T dto) : this(dto, 0) { }
 
-        public CompanyViewModel() : base() { }
+        public CompanyBaseViewModel() : base() { }
 
 
         public override T GetDto()
@@ -124,21 +124,31 @@ namespace LogistHelper.ViewModels.DataViewModels
 
     }
 
-    public class ClientViewModel : CompanyViewModel<ClientDto> 
+    public class CompanyViewModel : CompanyBaseViewModel<CompanyDto> 
     {
-        public ClientViewModel() : base() { }
-        public ClientViewModel(ClientDto dto) : this(dto, 0) { }
-        public ClientViewModel(ClientDto dto, int number) : base(dto, number) { }
+        public CompanyType Type
+        { 
+            get => _dto.Type;
+            set 
+            { 
+                _dto.Type = value;
+                OnPropertyChanged(nameof(Type));
+            }
+        }
+
+        public CompanyViewModel() : base() { }
+        public CompanyViewModel(CompanyDto dto) : this(dto, 0) { }
+        public CompanyViewModel(CompanyDto dto, int number) : base(dto, number) { }
 
         protected override void DefaultInit()
         {
-            _dto = new ClientDto();
+            _dto = new CompanyDto();
             Phones = new ObservableCollection<ListItem<string>>() { new ListItem<string>() };
             Emails = new ObservableCollection<ListItem<string>>() { new ListItem<string>() };
         }
     }
 
-    public class CarrierViewModel : CompanyViewModel<CarrierDto> 
+    public class CarrierViewModel : CompanyBaseViewModel<CarrierDto> 
     {
         public CarrierViewModel() : base() { }
         public CarrierViewModel(CarrierDto dto) : this(dto, 0) { }
@@ -161,21 +171,21 @@ namespace LogistHelper.ViewModels.DataViewModels
         }
     }
 
-    public class ClientViewModelFactory : IViewModelFactory<ClientDto>
+    public class CompanyViewModelFactory : IViewModelFactory<CompanyDto>
     {
-        public DataViewModel<ClientDto> GetViewModel(ClientDto dto, int number)
+        public DataViewModel<CompanyDto> GetViewModel(CompanyDto dto, int number)
         {
-            return new ClientViewModel(dto,  number);
+            return new CompanyViewModel(dto,  number);
         }
 
-        public DataViewModel<ClientDto> GetViewModel(ClientDto dto)
+        public DataViewModel<CompanyDto> GetViewModel(CompanyDto dto)
         {
-            return new ClientViewModel(dto);
+            return new CompanyViewModel(dto);
         }
 
-        public DataViewModel<ClientDto> GetViewModel()
+        public DataViewModel<CompanyDto> GetViewModel()
         {
-            return new ClientViewModel();
+            return new CompanyViewModel();
         }
     }
 

@@ -6,7 +6,7 @@ using Shared;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class TemplateListViewModel : MainListViewModel<ContractTemplateDto>
+    public class TemplateListViewModel : MainListViewModel<TemplateDto>
     {
         private string _searchString;
 
@@ -16,7 +16,7 @@ namespace LogistHelper.ViewModels.Views
             set => SetProperty(ref _searchString, value);
         }
         public TemplateListViewModel(IDataAccess access, 
-                                     IViewModelFactory<ContractTemplateDto> factory, 
+                                     IViewModelFactory<TemplateDto> factory, 
                                      IMessageDialog dialog) : base(access, factory, dialog)
         {
             SearchFirters = new Dictionary<string, string>()

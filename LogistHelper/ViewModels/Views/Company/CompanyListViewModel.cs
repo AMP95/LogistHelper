@@ -5,10 +5,9 @@ using Shared;
 
 namespace LogistHelper.ViewModels.Views
 {
-    public class ClientListViewModel : MainListViewModel<ClientDto>
+    public class CompanyListViewModel : MainListViewModel<CompanyDto>
     {
         private string _searchString;
-        private bool _isPriority;
 
         public string SearchString 
         {
@@ -16,11 +15,6 @@ namespace LogistHelper.ViewModels.Views
             set => SetProperty(ref _searchString, value);
         }
 
-        public bool IsPriority 
-        { 
-            get => _isPriority;
-            set => SetProperty(ref _isPriority, value);
-        }
 
         public override KeyValuePair<string, string> SelectedFilter 
         { 
@@ -29,25 +23,22 @@ namespace LogistHelper.ViewModels.Views
             { 
                 base.SelectedFilter = value;
                 SearchString = string.Empty;
-                IsPriority = false;
             }
         }
 
-        public ClientListViewModel(IDataAccess repository, IViewModelFactory<ClientDto> factory, IMessageDialog dialog) : base(repository, factory, dialog)
+        public CompanyListViewModel(IDataAccess repository, IViewModelFactory<CompanyDto> factory, IMessageDialog dialog) : base(repository, factory, dialog)
         {
             SearchFirters = new Dictionary<string, string>()
             {
-                { nameof(ClientDto.Name), "Название"  },
-                { nameof(ClientDto.InnKpp), "ИНН/КПП" },
-                { nameof(ClientDto.IsPriority),  "Приоритет" },
+                { nameof(CompanyDto.Name), "Название"  },
+                { nameof(CompanyDto.InnKpp), "ИНН/КПП" }
             };
 
-            SelectedFilter = SearchFirters.FirstOrDefault(p => p.Key == nameof(ClientDto.Name));
+            SelectedFilter = SearchFirters.FirstOrDefault(p => p.Key == nameof(CompanyDto.Name));
 
             ResetFilterCommand = new RelayCommand(async () =>
             {
                 SearchString = null;
-                IsPriority = false;
 
                 await Load();
             });
@@ -55,14 +46,7 @@ namespace LogistHelper.ViewModels.Views
 
         protected override async Task FilterCommandExecutor()
         {
-            if (SelectedFilter.Key == nameof(ClientDto.IsPriority))
-            {
-                await Filter(SelectedFilter.Key, IsPriority.ToString());
-            }
-            else 
-            {
-                await Filter(SelectedFilter.Key, SearchString);
-            }
+            await Filter(SelectedFilter.Key, SearchString);
         }
     }
 

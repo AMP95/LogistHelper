@@ -18,7 +18,7 @@ namespace LogistHelper.ViewModels.Views
         private IFileLoader<FileViewModel> _fileLoader;
         private FileViewModel _file;
 
-        private IEnumerable<ContractTeplateViewModel> _templates;
+        private IEnumerable<TeplateViewModel> _templates;
         private int _selectedTEmplateIndex;
 
         private ContractViewModel _contract;
@@ -26,7 +26,7 @@ namespace LogistHelper.ViewModels.Views
         private IEnumerable<DriverViewModel> _drivers;
         private DriverViewModel _selectedDriver;
 
-        private IEnumerable<ClientViewModel> _clients;
+        private IEnumerable<CompanyViewModel> _clients;
 
         private ObservableCollection<VehicleViewModel> _vehicles;
         private int _selectedVehicleIndex;
@@ -40,7 +40,7 @@ namespace LogistHelper.ViewModels.Views
 
         #region Public
 
-        public IEnumerable<ContractTeplateViewModel> Templates
+        public IEnumerable<TeplateViewModel> Templates
         {
             get => _templates;
             set => SetProperty(ref _templates, value);
@@ -86,7 +86,7 @@ namespace LogistHelper.ViewModels.Views
             }
         }
 
-        public IEnumerable<ClientViewModel> Clients
+        public IEnumerable<CompanyViewModel> Clients
         {
             get => _clients;
             set => SetProperty(ref _clients, value);
@@ -194,11 +194,11 @@ namespace LogistHelper.ViewModels.Views
 
         public override async Task Load(Guid id)
         {
-            var templateResult = await _access.GetFilteredAsync<ContractTemplateDto>("ccc", "name");
+            var templateResult = await _access.GetFilteredAsync<TemplateDto>("ccc", "name");
 
             if (templateResult.IsSuccess) 
             {
-                Templates = templateResult.Result.Select(t => new ContractTeplateViewModel(t)).ToList();
+                Templates = templateResult.Result.Select(t => new TeplateViewModel(t)).ToList();
             }
 
             if (id == Guid.Empty)
@@ -407,11 +407,11 @@ namespace LogistHelper.ViewModels.Views
         {
             await Task.Run(async () =>
             {
-                IAccessResult<IEnumerable<ClientDto>> result = await _access.GetFilteredAsync<ClientDto>(nameof(ClientDto.Name), searchString);
+                IAccessResult<IEnumerable<CompanyDto>> result = await _access.GetFilteredAsync<CompanyDto>(nameof(CompanyDto.Name), searchString);
 
                 if (result.IsSuccess)
                 {
-                    Clients = result.Result.Select(d => new ClientViewModel(d));
+                    Clients = result.Result.Select(d => new CompanyViewModel(d));
                 }
                 else
                 {

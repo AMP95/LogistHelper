@@ -240,7 +240,7 @@
             Content="{Binding RelativeSource={RelativeSource AncestorType=local:ListView}, Path=DataContext}">
             <ContentControl.Resources>
                 <DataTemplate
-                    DataType="{x:Type viewsVM:ClientListViewModel}">
+                    DataType="{x:Type viewsVM:CompanyListViewModel}">
                     <local:CompanyListView/>
                 </DataTemplate>
 

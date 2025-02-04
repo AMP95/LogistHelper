@@ -98,14 +98,13 @@ namespace HelpAPIs
                 case nameof(VehicleDto): return "vehicle";
                 case nameof(DriverDto): return "driver";
                 case nameof(CarrierDto): return "carrier";
-                case nameof(ClientDto): return "client";
+                case nameof(CompanyDto): return "company";
                 case nameof(RoutePointDto): return "route";
                 case nameof(ContractDto): return "contract";
                 case nameof(DocumentDto): return "document";
                 case nameof(PaymentDto): return "payment";
                 case nameof(FileDto): return "file";
-                case nameof(ContractTemplateDto): return "template";
-                case nameof(BookMarkDto): return "bookmark";
+                case nameof(TemplateDto): return "template";
                 case nameof(LogistDto): return "logist";
                 default: return string.Empty;
             }

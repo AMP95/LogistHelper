@@ -25,7 +25,7 @@
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext, 
                                  Converter={StaticResource ViewModelToTypeConverter}}" 
-                                 Value="{x:Type viewVM:ClientListViewModel}">
+                                 Value="{x:Type viewVM:CompanyListViewModel}">
                         <Setter Property="ItemsControl.MaxWidth" Value="900"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext, 
@@ -58,7 +58,7 @@
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext, 
                                                          Converter={StaticResource ViewModelToTypeConverter}}" 
-                                                         Value="{x:Type viewVM:ClientListViewModel}">
+                                                         Value="{x:Type viewVM:CompanyListViewModel}">
                                                 <Setter Property="ColumnDefinition.Width" Value="0"/>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -130,7 +130,7 @@
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:CompanyListView}, Path=DataContext, 
                                                      Converter={StaticResource ViewModelToTypeConverter}}" 
-                                                     Value="{x:Type viewVM:ClientListViewModel}">
+                                                     Value="{x:Type viewVM:CompanyListViewModel}">
                                             <Setter Property="ColumnDefinition.Width" Value="0"/>
                                         </DataTrigger>
                                     </Style.Triggers>
