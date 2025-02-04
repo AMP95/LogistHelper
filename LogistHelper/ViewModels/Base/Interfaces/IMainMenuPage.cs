@@ -17,6 +17,7 @@ namespace LogistHelper.ViewModels.Base
     public interface IMainEditView<T> where T : IDto
     {
         IMainMenuPage<T> MainParent { get; set; }
+        DataViewModel<T> EditedViewModel { get; set; }
         Task Load(Guid id);
     }
 

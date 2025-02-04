@@ -14,6 +14,7 @@ namespace LogistHelper.ViewModels.Pages
         public ICommand NavigateDatabaseMenuCommand { get; }
         public ICommand NavigateAdminCommand { get; }
         public ICommand NavigateSettingsCommand { get; }
+        public ICommand NavigateCompanySettingsCommand { get; }
 
         public MainMenuPageViewModel()
         {
@@ -45,6 +46,10 @@ namespace LogistHelper.ViewModels.Pages
             NavigateSettingsCommand = new RelayCommand(() =>
             {
                 NavigationService.Navigate(PageType.SettingsPage);
+            });
+            NavigateCompanySettingsCommand = new RelayCommand(() =>
+            {
+                NavigationService.Navigate(PageType.CompanySettingPage);
             });
         }
 

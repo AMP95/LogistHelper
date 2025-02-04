@@ -18,7 +18,7 @@ namespace LogistHelper.ViewModels.Base
         }
 
         public MainMenuPageViewModel(IMainListView<T> list,
-                                 IMainEditView<T> edit)
+                                     IMainEditView<T> edit)
         {
             _list = list;
             _edit = edit;

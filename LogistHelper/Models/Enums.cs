@@ -18,6 +18,7 @@ namespace LogistHelper.Models
         PaymentMenu,
         LogistMenu,
         SettingsPage,
+        CompanySettingPage
     }
 
 

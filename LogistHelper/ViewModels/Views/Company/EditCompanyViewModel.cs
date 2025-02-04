@@ -168,12 +168,6 @@ namespace LogistHelper.ViewModels.Views
                                    IDataSuggest<CompanySuggestItem> dataSuggest) : base(dataAccess, factory, dialog, dataSuggest)
         {
         }
-
-        public override Task Save()
-        {
-            (EditedViewModel as CompanyViewModel).Type = CompanyType.Client;
-            return base.Save();
-        }
     }
 
     public class EditCarrierViewModel : EditCompanyViewModel<CarrierDto>
@@ -249,7 +243,6 @@ namespace LogistHelper.ViewModels.Views
 
             if (EditedViewModel != null)
             {
-
                 _carrier = EditedViewModel as CarrierViewModel;
 
                 if (_carrier.Vat == VAT.With)

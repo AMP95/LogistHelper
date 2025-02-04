@@ -15,7 +15,6 @@ namespace LogistHelper.ViewModels.Views
             set => SetProperty(ref _searchString, value);
         }
 
-
         public override KeyValuePair<string, string> SelectedFilter 
         { 
             get => base.SelectedFilter;

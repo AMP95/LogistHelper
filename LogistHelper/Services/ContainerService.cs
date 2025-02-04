@@ -44,6 +44,7 @@ namespace LogistHelper.Services
             services.AddTransient<CountractSubMenuViewModel, CountractSubMenuViewModel>();
             services.AddTransient<PaymentPageViewModel, PaymentPageViewModel>();
             services.AddTransient<SettingsPageViewModel, SettingsPageViewModel>();
+            services.AddTransient<CompanySettingsPageViewModel, CompanySettingsPageViewModel>();
 
             services.AddTransient<IMainMenuPage<CarrierDto>, CarrierMenuPageViewModel>();
             services.AddTransient<IMainMenuPage<CompanyDto>, CompanyMenuPageViewModel>();

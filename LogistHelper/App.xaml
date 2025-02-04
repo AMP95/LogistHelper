@@ -89,7 +89,12 @@
                 <views:ContractSubMenuView/>
             </DataTemplate>
 
-            
+            <DataTemplate
+                DataType="{x:Type pagesVM:CompanySettingsPageViewModel}">
+                <pages:CompanySettingsPage/>
+            </DataTemplate>
+
+
 
 
             <DataTemplate
