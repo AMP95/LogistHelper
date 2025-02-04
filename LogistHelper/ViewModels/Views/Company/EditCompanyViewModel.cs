@@ -71,7 +71,7 @@ namespace LogistHelper.ViewModels.Views
 
         public int AllowableFileCount 
         { 
-            get => AllowableFileCount;
+            get => _allowableFileCount;
             set => SetProperty(ref _allowableFileCount, value);
         }
 
