@@ -51,25 +51,18 @@
                                     <ColumnDefinition
                                         Width="50"/>
                                     <ColumnDefinition
-                                        x:Name="typeCol"
                                         MinWidth="100" MaxWidth="200"/>
                                     <ColumnDefinition
-                                        x:Name="noCol"
                                         MinWidth="100" MaxWidth="200"/>
                                     <ColumnDefinition
-                                        x:Name="dateCol"
                                         MinWidth="100" MaxWidth="200"/>
                                     <ColumnDefinition
-                                        x:Name="cariCol"
-                                        MinWidth="200" MaxWidth="400"/>
+                                        MinWidth="200" />
                                     <ColumnDefinition
-                                        x:Name="drivCol"
-                                        MinWidth="200" MaxWidth="400"/>
+                                        MinWidth="200"/>
                                     <ColumnDefinition
-                                        x:Name="vehCol"
-                                        MinWidth="200" MaxWidth="400"/>
+                                        MinWidth="200"/>
                                     <ColumnDefinition
-                                        x:Name="balCol"
                                         MinWidth="100" MaxWidth="200"/>
                                 </Grid.ColumnDefinitions>
 
@@ -136,25 +129,24 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Grid
-                        ShowGridLines="True">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition
                                 Width="50"/>
                             <ColumnDefinition
-                                Width="{Binding ElementName=typeCol, Path=ActualWidth}"/>
+                                MinWidth="100" MaxWidth="200"/>
                             <ColumnDefinition
-                                Width="{Binding ElementName=noCol, Path=ActualWidth}"/>
+                                MinWidth="100" MaxWidth="200"/>
                             <ColumnDefinition
-                                Width="{Binding ElementName=dateCol, Path=ActualWidth}"/>
+                                MinWidth="100" MaxWidth="200"/>
                             <ColumnDefinition
-                                Width="{Binding ElementName=cariCol, Path=ActualWidth}"/>
+                                MinWidth="200" />
                             <ColumnDefinition
-                                Width="{Binding ElementName=drivCol, Path=ActualWidth}"/>
+                                MinWidth="200"/>
                             <ColumnDefinition
-                                Width="{Binding ElementName=vehCol, Path=ActualWidth}"/>
+                                MinWidth="200"/>
                             <ColumnDefinition
-                                Width="{Binding ElementName=balCol, Path=ActualWidth}"/>
+                                MinWidth="100" MaxWidth="200"/>
                         </Grid.ColumnDefinitions>
 
                         <Grid.Style>
@@ -197,7 +189,7 @@
                                         <MultiDataTrigger.Setters>
                                             <Setter Property="Grid.Background">
                                                 <Setter.Value>
-                                                    <SolidColorBrush Color="{StaticResource NeutralTwoDark}" Opacity="0.3"/>
+                                                    <SolidColorBrush Color="{StaticResource NeutralTwo}" Opacity="0.3"/>
                                                 </Setter.Value>
                                             </Setter>
                                         </MultiDataTrigger.Setters>
@@ -210,7 +202,7 @@
                                         <MultiDataTrigger.Setters>
                                             <Setter Property="Grid.Background">
                                                 <Setter.Value>
-                                                    <SolidColorBrush Color="{StaticResource NeutralTwoDark}" Opacity="0.1"/>
+                                                    <SolidColorBrush Color="{StaticResource NeutralTwo}" Opacity="0.1"/>
                                                 </Setter.Value>
                                             </Setter>
                                         </MultiDataTrigger.Setters>
@@ -221,6 +213,7 @@
 
                         <CheckBox
                             Style="{StaticResource CustomCheck}"
+                            HorizontalAlignment="Center"
                             IsChecked="{Binding IsSelectedToPrint, Mode=TwoWay}"/>
 
                         <TextBlock

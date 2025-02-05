@@ -11,7 +11,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         public bool IsSelectedToPrint 
         { 
             get => _isSelectedToPrint;
-            set => _isSelectedToPrint = value;
+            set => SetProperty(ref _isSelectedToPrint, value);
         }
 
         public short Number 
