@@ -24,7 +24,7 @@ namespace LogistHelper.ViewModels.Pages
         private bool _isBlock;
         private string _blockText = "Печать";
 
-        private IEnumerable<RequredToPayContractViewModel> _requiredToPay;
+        private List<RequredToPayContractViewModel> _requiredToPay;
 
         private string _printString;
         #endregion Private
@@ -43,7 +43,7 @@ namespace LogistHelper.ViewModels.Pages
             set => SetProperty(ref _blockText, value);
         }
 
-        public IEnumerable<RequredToPayContractViewModel> RequiredToPay 
+        public List<RequredToPayContractViewModel> RequiredToPay 
         {
             get => _requiredToPay;
             set => SetProperty(ref _requiredToPay, value);
@@ -112,7 +112,7 @@ namespace LogistHelper.ViewModels.Pages
                 if (loadResult.IsSuccess) 
                 {
                     int count = 0;
-                    RequiredToPay = loadResult.Result.Select(x => new RequredToPayContractViewModel(x, count++));
+                    RequiredToPay = loadResult.Result.Select(x => new RequredToPayContractViewModel(x, count++)).ToList();
                 }
             });
         }
