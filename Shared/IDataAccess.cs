@@ -2,8 +2,8 @@
 {
     public interface IAccessResult<T>
     {
-        string ErrorMessage { get; set; }
         bool IsSuccess { get; set; }
+        string ErrorMessage { get; set; }
         T Result { get; set; }
     }
 
@@ -18,6 +18,7 @@
         Task<IAccessResult<bool>> DeleteAsync<T>(Guid id);
         Task<IAccessResult<Guid>> SendMultipartAsync(MultipartFormDataContent content);
         Task<IAccessResult<bool>> DownloadFileAsync(Guid fileId, string savePath);
+        Task<IAccessResult<bool>> UploadFileAsync<T>(Guid entityId, T fileDto, string fullFilePath);
         Task<IAccessResult<IEnumerable<T>>> GetRequiredPayments<T>();
         Task<IAccessResult<T>> Login<T>(T dto);
         Task Logout();

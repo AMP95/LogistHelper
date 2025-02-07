@@ -2,18 +2,16 @@
 using DTOs.Dtos;
 using HelpAPIs.Settings;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Shared;
 using System.Net.Http.Json;
 
 namespace HelpAPIs
 {
-    internal enum RequestStatus
+    internal enum Status
     {
         Created,
         InProgress,
-        Done,
-        Unknown
+        Done
     }
 
     public class ServerClient : IDataAccess
@@ -28,13 +26,13 @@ namespace HelpAPIs
 
         private async Task<IAccessResult<T>> GetRequest<T>(string route)
         {
-            return await SendAsync<T>(HttpMethod.Get, $"{_url}/{route}");
+            return await SendStringAsync<T>(HttpMethod.Get, $"{_url}/{route}");
         }
 
         public async Task<IAccessResult<T>> GetIdAsync<T>(Guid id)
         {
             string route = GetRoute(typeof(T));
-            IAccessResult<Guid> result = await GetRequest<Guid>($"Get/{route}/id/{id}");
+            IAccessResult<Guid> result = await GetRequest<Guid>($"{route}/{id}");
             return await GetResult<T>(result);
         }
                           
@@ -42,7 +40,7 @@ namespace HelpAPIs
         {
             string route = GetRoute(typeof(T));
 
-            string uri = $"Get/{route}/filter/{propertyName}";
+            string uri = $"{route}/filter/{propertyName}";
 
             if (param.Any())
             {
@@ -56,28 +54,28 @@ namespace HelpAPIs
         public async Task<IAccessResult<IEnumerable<T>>> GetRangeAsync<T>(int start, int end)
         {
             string route = GetRoute(typeof(T));
-            IAccessResult<Guid> result = await GetRequest<Guid>($"Get/{route}/range/{start}/{end}");
+            IAccessResult<Guid> result = await GetRequest<Guid>($"{route}/range/{start}/{end}");
             return await GetResult<IEnumerable<T>>(result);
         }
                           
         public async Task<IAccessResult<Guid>> AddAsync<T>(T value)
         {
             string route = GetRoute(typeof(T));
-            IAccessResult<Guid> result = await SendAsync<Guid>(HttpMethod.Post, $"{_url}/Add/{route}", JsonConvert.SerializeObject(value));
+            IAccessResult<Guid> result = await SendStringAsync<Guid>(HttpMethod.Post, $"{_url}/{route}", JsonConvert.SerializeObject(value));
             return await GetResult<Guid>(result);
         }
                           
         public async Task<IAccessResult<bool>> UpdateAsync<T>(T value)
         {
             string route = GetRoute(typeof(T));
-            IAccessResult<Guid> result = await SendAsync<Guid>(HttpMethod.Put, $"{_url}/Update/{route}", JsonConvert.SerializeObject(value));
+            IAccessResult<Guid> result = await SendStringAsync<Guid>(HttpMethod.Put, $"{_url}/{route}", JsonConvert.SerializeObject(value));
             return await GetResult<bool>(result);
         }
                           
         public async Task<IAccessResult<bool>> UpdatePropertyAsync<T>(Guid id, params KeyValuePair<string, object>[] updates)
         {
             string route = GetRoute(typeof(T));
-            IAccessResult<Guid> result = await SendAsync<Guid>(HttpMethod.Patch, $"{_url}/Patch/{route}/{id}", JsonConvert.SerializeObject(updates));
+            IAccessResult<Guid> result = await SendStringAsync<Guid>(HttpMethod.Patch, $"{_url}/{route}/{id}", JsonConvert.SerializeObject(updates));
             return await GetResult<bool>(result);
 
         }
@@ -85,7 +83,7 @@ namespace HelpAPIs
         public async Task<IAccessResult<bool>> DeleteAsync<T>(Guid id)
         {
             string route = GetRoute(typeof(T));
-            IAccessResult<Guid> result = await SendAsync<Guid>(HttpMethod.Delete, $"{_url}/Delete/{route}/{id}");
+            IAccessResult<Guid> result = await SendStringAsync<Guid>(HttpMethod.Delete, $"{_url}/{route}/{id}");
             return await GetResult<bool>(result);
         }
 
@@ -95,24 +93,26 @@ namespace HelpAPIs
 
             switch (typeName)
             {
-                case nameof(VehicleDto): return "vehicle";
-                case nameof(DriverDto): return "driver";
-                case nameof(CarrierDto): return "carrier";
-                case nameof(CompanyDto): return "company";
-                case nameof(RoutePointDto): return "route";
-                case nameof(ContractDto): return "contract";
-                case nameof(DocumentDto): return "document";
-                case nameof(PaymentDto): return "payment";
-                case nameof(FileDto): return "file";
-                case nameof(TemplateDto): return "template";
-                case nameof(LogistDto): return "logist";
+                case nameof(VehicleDto): return "Vehicle";
+                case nameof(DriverDto): return "Driver";
+                case nameof(CarrierDto): return "Carrier";
+                case nameof(CompanyDto): return "Company";
+                case nameof(ContractDto): return "Contract";
+                case nameof(DocumentDto): return "Document";
+                case nameof(PaymentDto): return "Payment";
+                case nameof(FileDto): return "File";
+                case nameof(TemplateDto): return "Template";
+                case nameof(LogistDto): return "Logist";
                 default: return string.Empty;
             }
         }
 
-        private async Task<IAccessResult<T>> SendAsync<T>(HttpMethod method, string route, string jObject = null)
+        private async Task<IAccessResult<T>> SendStringAsync<T>(HttpMethod method, string route, string jObject = null)
         {
-            AccessResult<T> result = new AccessResult<T>();
+            AccessResult<T> result = new AccessResult<T>()
+            {
+                IsSuccess = false
+            };
 
             try
             {
@@ -130,24 +130,15 @@ namespace HelpAPIs
                                 message.Content = new StringContent(jObject, encoding: System.Text.Encoding.UTF8, "application/json");
                             }
 
-                            var response = await client.SendAsync(message);
+                            HttpResponseMessage response = await client.SendAsync(message);
+
                             if (response.IsSuccessStatusCode)
                             {
-                                result.IsSuccess = true;
-                                result.Result = await response.Content.ReadFromJsonAsync<T>();
+                                result = await response.Content.ReadFromJsonAsync<AccessResult<T>>();
                             }
                             else
                             {
-                                result.IsSuccess = false;
-                                string errorMessage = await response.Content.ReadAsStringAsync();
-                                if (string.IsNullOrWhiteSpace(errorMessage))
-                                {
-                                    result.ErrorMessage = response.ReasonPhrase;
-                                }
-                                else
-                                {
-                                    result.ErrorMessage = errorMessage;
-                                }
+                                result.ErrorMessage = response.ReasonPhrase;
                             }
                         }
                     }
@@ -155,41 +146,8 @@ namespace HelpAPIs
             }
             catch (Exception ex)
             {
-                result.IsSuccess = false;
                 result.ErrorMessage = ex.Message;
             }
-            return result;
-        }
-
-        private async Task<IAccessResult<T>> GetResult<T>(IAccessResult<Guid> guidResult)
-        {
-            IAccessResult<T> result = new AccessResult<T>();
-
-            if (guidResult.IsSuccess)
-            {
-                IAccessResult<RequestStatus> statusResult = await GetRequest<RequestStatus>($"Result/status/{guidResult.Result}");
-
-                while (statusResult.IsSuccess && statusResult.Result != RequestStatus.Done)
-                {
-                    statusResult = await GetRequest<RequestStatus>($"Result/status/{guidResult.Result}");
-                }
-
-                if (statusResult.IsSuccess)
-                {
-                    result = await GetRequest<T>($"Result/{guidResult.Result}");
-                }
-                else
-                {
-                    result.IsSuccess = false;
-                    result.ErrorMessage = statusResult.ErrorMessage;
-                }
-            }
-            else
-            {
-                result.IsSuccess = false;
-                result.ErrorMessage = guidResult.ErrorMessage;
-            }
-
             return result;
         }
 
@@ -208,31 +166,21 @@ namespace HelpAPIs
                 {
                     using (HttpClient client = new HttpClient(clientHandler))
                     {
-                        using (HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, $"{_url}/Add/file"))
+                        using (HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Post, $"{_url}/File"))
                         {
                             message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _token);
 
                             message.Content = content;
 
                             var response = await client.SendAsync(message);
+
                             if (response.IsSuccessStatusCode)
                             {
-                                Guid id = await response.Content.ReadFromJsonAsync<Guid>();
-
-                                result = await GetResult<Guid>(new AccessResult<Guid>() { IsSuccess = true, Result = id });
+                                result = await response.Content.ReadFromJsonAsync<AccessResult<Guid>>();
                             }
                             else
                             {
-                                result.IsSuccess = false;
-                                string errorMessage = await response.Content.ReadAsStringAsync();
-                                if (string.IsNullOrWhiteSpace(errorMessage))
-                                {
-                                    result.ErrorMessage = response.ReasonPhrase;
-                                }
-                                else
-                                {
-                                    result.ErrorMessage = errorMessage;
-                                }
+                                result.ErrorMessage = response.ReasonPhrase;
                             }
                         }
                     }
@@ -240,8 +188,40 @@ namespace HelpAPIs
             }
             catch (Exception ex)
             {
-                result.IsSuccess = false;
                 result.ErrorMessage = ex.Message;
+            }
+
+            return result;
+        }
+
+        private async Task<IAccessResult<T>> GetResult<T>(IAccessResult<Guid> guidResult)
+        {
+            IAccessResult<T> result = new AccessResult<T>()
+            {
+                IsSuccess = false
+            };
+
+            if (guidResult.IsSuccess)
+            {
+                IAccessResult<Status> statusResult = await GetRequest<Status>($"Result/status/{guidResult.Result}");
+
+                while (statusResult.IsSuccess && statusResult.Result != Status.Done)
+                {
+                    statusResult = await GetRequest<Status>($"Result/status/{guidResult.Result}");
+                }
+
+                if (statusResult.IsSuccess)
+                {
+                    result = await GetRequest<T>($"Result/{guidResult.Result}");
+                }
+                else
+                {
+                    result.ErrorMessage = statusResult.ErrorMessage;
+                }
+            }
+            else
+            {
+                result.ErrorMessage = guidResult.ErrorMessage;
             }
 
             return result;
@@ -254,15 +234,15 @@ namespace HelpAPIs
                 IsSuccess = false,
                 ErrorMessage = "Ошибка загрузки"
             };
-            IAccessResult<Guid> guidResult = await GetRequest<Guid>($"Get/file/download/{fileId}");
+            IAccessResult<Guid> guidResult = await GetRequest<Guid>($"File/download/{fileId}");
 
             if (guidResult.IsSuccess)
             {
-                IAccessResult<RequestStatus> statusResult = await GetRequest<RequestStatus>($"Result/status/{guidResult.Result}");
+                IAccessResult<Status> statusResult = await GetRequest<Status>($"Result/status/{guidResult.Result}");
 
-                while (statusResult.IsSuccess && statusResult.Result != RequestStatus.Done)
+                while (statusResult.IsSuccess && statusResult.Result != Status.Done)
                 {
-                    statusResult = await GetRequest<RequestStatus>($"Result/status/{guidResult.Result}");
+                    statusResult = await GetRequest<Status>($"Result/status/{guidResult.Result}");
                 }
 
                 if (statusResult.IsSuccess)
@@ -279,6 +259,7 @@ namespace HelpAPIs
                                     message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _token);
 
                                     var response = await client.SendAsync(message);
+
                                     if (response.IsSuccessStatusCode)
                                     {
                                         using (FileStream fs = File.OpenWrite(fullPath))
@@ -291,14 +272,10 @@ namespace HelpAPIs
                                     else
                                     {
                                         result.IsSuccess = false;
-                                        string errorMessage = await response.Content.ReadAsStringAsync();
-                                        if (string.IsNullOrWhiteSpace(errorMessage))
+                                        result.ErrorMessage = await response.Content.ReadAsStringAsync();
+                                        if (string.IsNullOrWhiteSpace(result.ErrorMessage))
                                         {
                                             result.ErrorMessage = response.ReasonPhrase;
-                                        }
-                                        else
-                                        {
-                                            result.ErrorMessage = errorMessage;
                                         }
                                     }
                                 }
@@ -315,15 +292,40 @@ namespace HelpAPIs
             return result;
         }
 
+        public async Task<IAccessResult<bool>> UploadFileAsync<T>(Guid entityId, T file, string fullFilePath) 
+        {
+            FileDto fileDto = file as FileDto;
+
+            IAccessResult<Guid> addResult = new AccessResult<Guid>()
+            {
+                IsSuccess = false,
+                ErrorMessage = "Ошибка отправки файла"
+            };
+
+            using (MultipartFormDataContent content = new MultipartFormDataContent())
+            {
+                content.Add(new StreamContent(File.OpenRead(fullFilePath)), "File", fileDto.FileNameWithExtencion);
+
+                content.Add(new StringContent(fileDto.FileNameWithExtencion), "FileDto.FileNameWithExtencion");
+                content.Add(new StringContent(fileDto.Catalog), "FileDto.Catalog");
+                content.Add(new StringContent(fileDto.DtoType), "FileDto.DtoType");
+                content.Add(new StringContent(fileDto.DtoId.ToString()), "FileDto.DtoId");
+
+                addResult = await SendMultipartAsync(content);
+            }
+
+            return await GetResult<bool>(addResult);
+        }
+
         public async Task<IAccessResult<IEnumerable<T>>> GetRequiredPayments<T>()
         {
-            IAccessResult<Guid> result = await GetRequest<Guid>($"Get/contract/payment");
+            IAccessResult<Guid> result = await GetRequest<Guid>($"Contract/payment");
             return await GetResult<IEnumerable<T>>(result);
         }
 
         public async Task<IAccessResult<T>> Login<T>(T dto)
         {
-            IAccessResult<Guid> result = await SendAsync<Guid>(HttpMethod.Post, $"{_url}/Get/validate", JsonConvert.SerializeObject(dto));
+            IAccessResult<Guid> result = await SendStringAsync<Guid>(HttpMethod.Post, $"{_url}/Logist/validate", JsonConvert.SerializeObject(dto));
             IAccessResult<object[]> loginResult = await GetResult<object[]>(result);
 
             if (loginResult.IsSuccess && loginResult.Result.Any()) 

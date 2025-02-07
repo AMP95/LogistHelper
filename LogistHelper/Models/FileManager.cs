@@ -56,33 +56,9 @@ namespace LogistHelper.Models
         {
             FileDto fileDto = fileData.GetDto();
 
-            try
-            {
-                using (MultipartFormDataContent content = new MultipartFormDataContent())
-                {
-                    content.Add(new StreamContent(File.OpenRead(fileData.LocalFullFilePath)), "File", fileDto.FileNameWithExtencion);
+            IAccessResult<bool> result = await _access.UploadFileAsync<FileDto>(entityID, fileDto, fileData.LocalFullFilePath);
 
-                    content.Add(new StringContent(fileDto.FileNameWithExtencion), "FileDto.FileNameWithExtencion");
-                    content.Add(new StringContent(fileDto.Catalog), "FileDto.Catalog");
-                    content.Add(new StringContent(fileDto.DtoType), "FileDto.DtoType");
-                    content.Add(new StringContent(fileDto.DtoId.ToString()), "FileDto.DtoId");
-
-                    IAccessResult<Guid> addResult = await _access.SendMultipartAsync(content);
-
-                    if (addResult.IsSuccess)
-                    {
-                        fileData.Id = addResult.Result;
-                        return true;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(ex, ex.Message, LogLevel.Error);
-               
-            }
-
-            return false;
+            return result.Result;
         }
     }
 }
