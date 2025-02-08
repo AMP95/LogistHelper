@@ -121,7 +121,7 @@
                     <TextBox
                         Style="{StaticResource SubCentralTextBox}">
                         <TextBox.Text>
-                            <Binding Path="Time" Converter="{StaticResource TimeConverter}">
+                            <Binding Path="Time" UpdateSourceTrigger="PropertyChanged" Converter="{StaticResource TimeConverter}" >
                                 <Binding.ValidationRules>
                                     <rules:TimeValidationRule/>
                                 </Binding.ValidationRules>

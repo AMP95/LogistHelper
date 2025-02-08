@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
+using Google.Protobuf.WellKnownTypes;
 using LogistHelper.ViewModels.Base;
 using Models.Sugget;
 using System.Collections.ObjectModel;
@@ -12,6 +13,8 @@ namespace LogistHelper.ViewModels.DataViewModels
     public class RoutePointViewModel : DataViewModel<RoutePointDto>
     {
         #region Private
+
+        private string _time;
 
         private IDataSuggest<GeoSuggestItem> _dataSuggest;
         private ObservableCollection<ListItem<string>> _phones;
@@ -57,20 +60,17 @@ namespace LogistHelper.ViewModels.DataViewModels
             get => _dto.DateAndTime;
             set
             {
-                DateTime time = DateTime.ParseExact(Time, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault);
-                _dto.DateAndTime = new DateTime(value.Year, value.Month, value.Day, time.Hour, time.Minute, 0);
+                _dto.DateAndTime = new DateTime(value.Year, value.Month, value.Day, _dto.DateAndTime.Hour, _dto.DateAndTime.Minute, 0);
                 OnPropertyChanged(nameof(Date));
             }
         }
 
         public string Time
         {
-            get => _dto.DateAndTime.ToString("HH:mm");
-            set
-            {
-                DateTime time = DateTime.ParseExact(value, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.NoCurrentDateDefault);
-                _dto.DateAndTime = new DateTime(Date.Year, Date.Month, Date.Day, time.Hour, time.Minute, 0);
-                OnPropertyChanged(nameof(Time));
+            get => _time;
+            set 
+            { 
+                SetProperty(ref _time, value); 
             }
         }
 
@@ -137,6 +137,8 @@ namespace LogistHelper.ViewModels.DataViewModels
 
             if (route != null)
             {
+                Time = _dto.DateAndTime.ToString("HH:mm");
+
                 if (route.Phones != null)
                 {
                     Phones = new ObservableCollection<ListItem<string>>(route.Phones.Select(s => new ListItem<string>(s)));
@@ -152,7 +154,6 @@ namespace LogistHelper.ViewModels.DataViewModels
         public RoutePointViewModel(IDataSuggest<GeoSuggestItem> dataSuggest) : base() 
         { 
             _dataSuggest = dataSuggest;
-            Date = DateTime.Now;
             InitCommands();
 
         }
@@ -183,12 +184,18 @@ namespace LogistHelper.ViewModels.DataViewModels
         public override RoutePointDto GetDto() 
         {
             _dto.Phones = _phones.Select(s => s.Item).ToList();
-            return base.GetDto();  
-        }
 
+            DateOnly date = new DateOnly(_dto.DateAndTime.Year, _dto.DateAndTime.Month, _dto.DateAndTime.Day);
+            TimeOnly time = TimeOnly.Parse(Time);
+
+            _dto.DateAndTime = new DateTime(date, time);
+            return base.GetDto();
+        }
         protected override void DefaultInit()
         {
             _dto = new RoutePointDto();
+
+            Date = DateTime.Now;
 
             Phones = new ObservableCollection<ListItem<string>>() { new ListItem<string>() };
 
@@ -208,6 +215,10 @@ namespace LogistHelper.ViewModels.DataViewModels
             if (Date == DateTime.MinValue) 
             {
                 return false;
+            }
+            if (Time.LastOrDefault() == ':') 
+            {
+                Time += "00";
             }
             return true;
         }
