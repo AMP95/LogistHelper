@@ -292,6 +292,8 @@
         <controls:FileDropHandler
             MinHeight="400"
             Files="{Binding Files,Mode=TwoWay}"
+            AllowableFileExtensions="{Binding AllowableExtencions}"
+            Header="{Binding Header}"
             AllowableFileCount="{Binding AllowableFileCount}"
             DownloadCommand="{Binding DownloadFileCommand}"
             RemoveCommand="{Binding RemoveFileCommand}">

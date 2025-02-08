@@ -16,6 +16,19 @@ namespace LogistHelper.UI.CustomControls
     /// </summary>
     public partial class FileDropHandler : UserControl
     {
+
+
+        public string Header
+        {
+            get { return (string)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
+
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register("Header", typeof(string), typeof(FileDropHandler), new PropertyMetadata("Файлы"));
+
+
+
         public ObservableCollection<ListItem<FileViewModel>> Files
         {
             get { return (ObservableCollection<ListItem<FileViewModel>>)GetValue(FilesProperty); }
@@ -65,7 +78,14 @@ namespace LogistHelper.UI.CustomControls
         }
 
         public static readonly DependencyProperty AllowableFileCountProperty =
-            DependencyProperty.Register("AllowableFileCount", typeof(int), typeof(FileDropHandler), new PropertyMetadata(10));
+            DependencyProperty.Register("AllowableFileCount", typeof(int), typeof(FileDropHandler), 
+                new FrameworkPropertyMetadata( 10 ,new PropertyChangedCallback((d,e) => 
+                {
+                    if (d is FileDropHandler handler)
+                    {
+                        handler.UpdateLoadAllowance();
+                    }
+                })));
 
 
 
@@ -146,7 +166,7 @@ namespace LogistHelper.UI.CustomControls
 
                     LoadPackage package = new LoadPackage()
                     {
-                        SavePath = Path.GetDirectoryName(saveFile.FolderName),
+                        SavePath = saveFile.FolderName,
                         FileToLoad = Files.Where(f => f.Id == guid).Select(f => f.Item).ToList()
                     };
 

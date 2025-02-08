@@ -26,9 +26,17 @@ namespace LogistHelper.ViewModels.Views
         private IFileLoader<FileViewModel> _fileLoader;
         private ObservableCollection<ListItem<FileViewModel>> _files;
         private int _allowableFileCount;
+        private List<string> _allowableExtencions;
+        private string _header;
+        
 
         #region Public
 
+        public string Header 
+        {
+            get => _header;
+            set => SetProperty(ref _header, value);
+        }
         public IEnumerable<CompanySuggestItem> CompaniesList 
         {
             get => _companiesList;
@@ -75,6 +83,12 @@ namespace LogistHelper.ViewModels.Views
             set => SetProperty(ref _allowableFileCount, value);
         }
 
+        public List<string> AllowableExtencions
+        {
+            get => _allowableExtencions;
+            set => SetProperty(ref _allowableExtencions, value);
+        }
+
         #endregion Public
 
         #region Commands
@@ -101,6 +115,13 @@ namespace LogistHelper.ViewModels.Views
 
             Files = new ObservableCollection<ListItem<FileViewModel>>();
             AllowableFileCount = 10;
+
+            AllowableExtencions = new List<string>()
+            {
+                ".doc", ".docx", ".pdf", ".txt", ".png", ".jpg", ".jpeg", ".rar", ".zip"
+            };
+
+            Header = "Файлы";
 
             #region CommandsInit
 
@@ -222,41 +243,33 @@ namespace LogistHelper.ViewModels.Views
             return true;
         }
 
-        public async override Task Save()
-        {
-            IsBlock = true;
-            BlockText = "Сохранение";
 
-            if (await SaveEntity())
+        protected override async Task<bool> SaveEntity()
+        {
+            if (await base.SaveEntity()) 
             {
+                string filesCatalog = string.Join("", _company.Name.Where(c => !"/\\*:;\"\'|<>".Contains(c))).Replace(" ", "_");
+
                 foreach (var file in Files)
                 {
                     file.Item.DtoId = EditedViewModel.Id;
                     file.Item.DtoType = nameof(T);
-                    file.Item.ServerCatalog = $"{_company.Name}".Replace(" ", "_");
+                    file.Item.ServerCatalog = filesCatalog;
                 }
 
                 await _fileLoader.UploadFiles(EditedViewModel.Id, Files.Select(f => f.Item).Where(f => f.Id == Guid.Empty));
 
-                _dialog.ShowSuccess("ТС сохранено в базу данных");
-
-                if (EditedViewModel.Id == Guid.Empty)
-                {
-                    Load(Guid.Empty);
-                }
-            }
-            else
-            {
-                _dialog.ShowError("Не удалось сохранить изменения", "Сохранение");
+                return true;
             }
 
-            IsBlock = false;
+            return false;
         }
     }
 
     public class EditClientViewModel : EditCompanyViewModel<CompanyDto>
     {
         private CompanyViewModel _company;
+        
 
         public EditClientViewModel(IDataAccess dataAccess, 
                                    IViewModelFactory<CompanyDto> factory, 
@@ -275,8 +288,21 @@ namespace LogistHelper.ViewModels.Views
             if (_company.Type == CompanyType.Current) 
             { 
                 IsFileAvaliable = true;
+
                 AllowableFileCount = 1;
+                AllowableExtencions = new List<string>() { ".png" };
+                Header = "Печать организации";
             }
+        }
+
+        public override bool CheckSave()
+        {
+            if (!Files.Any()) 
+            {
+                _dialog.ShowError("Необходимо добавить файл печати");
+                return false;
+            }
+            return base.CheckSave();
         }
     }
 

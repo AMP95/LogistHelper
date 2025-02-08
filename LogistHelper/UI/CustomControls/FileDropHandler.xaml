@@ -23,7 +23,7 @@
         <TextBlock
             Style="{StaticResource HeaderThreeText}"
             Foreground="{StaticResource NeutralOneBrush}"
-            Text="Файлы"/>
+            Text="{Binding RelativeSource={RelativeSource AncestorType=local:FileDropHandler}, Path=Header, Mode=OneWay}"/>
 
         <Grid
             x:Name="crossGrid"
