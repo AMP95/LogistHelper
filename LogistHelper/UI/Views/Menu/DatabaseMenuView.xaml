@@ -6,7 +6,12 @@
              xmlns:local="clr-namespace:LogistHelper.UI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <WrapPanel
+
+    <ScrollViewer
+        Style="{StaticResource CustomScroll}"
+        VerticalScrollBarVisibility="Auto">
+        
+        <WrapPanel
         MaxWidth="800"
         VerticalAlignment="Center"
         HorizontalAlignment="Center">
@@ -113,4 +118,5 @@
 
     </WrapPanel>
 
+    </ScrollViewer>
 </UserControl>

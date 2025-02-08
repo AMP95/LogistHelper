@@ -86,23 +86,23 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                <Button
-                    Grid.Column="1"
-                    Background="{StaticResource AcceptDarkBrush}"
-                    Style="{StaticResource AcceptButton}"
-                    Content="Сохранить и закрыть"
-                    Command="{Binding SaveAndCloseCommand}"/>
+                    <Button
+                        Grid.Column="1"
+                        Background="{StaticResource AcceptDarkBrush}"
+                        Style="{StaticResource AcceptButton}"
+                        Content="Сохранить и закрыть"
+                        Command="{Binding SaveAndCloseCommand}"/>
 
-                <Button
-                    Style="{StaticResource AcceptButton}"
-                    Content="Сохранить"
-                    Command="{Binding SaveCommand}"/>
+                    <Button
+                        Style="{StaticResource AcceptButton}"
+                        Content="Сохранить"
+                        Command="{Binding SaveCommand}"/>
 
-                <Button
-                    Grid.Column="2"
-                    Style="{StaticResource CancelButton}"
-                    Content="Отмена"
-                    Command="{Binding CancelCommand}"/>
+                    <Button
+                        Grid.Column="2"
+                        Style="{StaticResource CancelButton}"
+                        Content="Отмена"
+                        Command="{Binding CancelCommand}"/>
             </Grid>
 
         </Grid>

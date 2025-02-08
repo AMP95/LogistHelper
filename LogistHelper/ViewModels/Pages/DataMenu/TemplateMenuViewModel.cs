@@ -1,4 +1,5 @@
 ﻿using DTOs.Dtos;
+using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 
 namespace LogistHelper.ViewModels.Pages
@@ -7,6 +8,11 @@ namespace LogistHelper.ViewModels.Pages
     {
         public TemplateMenuViewModel(IMainListView<TemplateDto> list, IMainEditView<TemplateDto> edit) : base(list, edit)
         {
+        }
+
+        protected override void BackCommandExecutor()
+        {
+            NavigationService.Navigate(Models.PageType.DatabaseMenu);
         }
     }
 }

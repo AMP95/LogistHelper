@@ -38,23 +38,27 @@
     
             <ItemsControl.Template>
                 <ControlTemplate>
-    
-                    
-    
+
+                    <ScrollViewer
+                        VerticalScrollBarVisibility="Visible"
+                        HorizontalScrollBarVisibility="Auto"
+                        Style="{StaticResource CustomScroll}">
+
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto"/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
     
-                            <Grid
-                                Margin="0 0 12 0">
+                            <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition
                                         Width="100"/>
                                     <ColumnDefinition/>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition
+                                        MinWidth="150"/>
+                                    <ColumnDefinition
+                                        MinWidth="150"/>
                                     <ColumnDefinition
                                         Width="50"/>
                                     <ColumnDefinition
@@ -96,18 +100,16 @@
     
                             </Grid>
 
-                        <ScrollViewer
-                            Grid.Row="1"
-                            VerticalScrollBarVisibility="Visible"
-                            HorizontalScrollBarVisibility="Disabled"
-                            Style="{StaticResource CustomScroll}">
+                        
 
                             <ItemsPresenter
                                 Grid.Row="1"/>
 
-                        </ScrollViewer>
-                    </Grid>
-                    
+                        
+                        </Grid>
+
+                    </ScrollViewer>
+
                 </ControlTemplate>
             </ItemsControl.Template>
     
@@ -118,8 +120,10 @@
                             <ColumnDefinition
                                     Width="100"/>
                             <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition
+                                MinWidth="150"/>
+                            <ColumnDefinition
+                                MinWidth="150"/>
                             <ColumnDefinition
                                     Width="50"/>
                             <ColumnDefinition

@@ -47,7 +47,12 @@
         
     </UserControl.Resources>
 
-    <Grid>
+    <ScrollViewer
+        Style="{StaticResource CustomScroll}"
+        VerticalScrollBarVisibility="Auto"
+        HorizontalScrollBarVisibility="Auto">
+        
+        <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
@@ -223,6 +228,9 @@
             </ComboBox>
         </Grid>
     </Grid>
+        
+    </ScrollViewer>
+    
 
     
 </UserControl>

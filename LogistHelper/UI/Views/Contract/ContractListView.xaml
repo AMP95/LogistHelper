@@ -64,9 +64,12 @@
                                             Width="100"/>
                                         <ColumnDefinition
                                             Width="200"/>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition
+                                            MinWidth="200"/>
+                                        <ColumnDefinition
+                                            MinWidth="200"/>
+                                        <ColumnDefinition
+                                            MinWidth="200"/>
                                         <ColumnDefinition
                                             Width="120"/>
                                         <ColumnDefinition
@@ -186,9 +189,12 @@
                             Width="100"/>
                         <ColumnDefinition
                             Width="200"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition
+                            MinWidth="200"/>
+                        <ColumnDefinition
+                            MinWidth="200"/>
+                        <ColumnDefinition
+                            MinWidth="200"/>
                         <ColumnDefinition
                             Width="120"/>
                         <ColumnDefinition

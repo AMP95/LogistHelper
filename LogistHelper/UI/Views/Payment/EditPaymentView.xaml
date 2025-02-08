@@ -28,7 +28,13 @@
         </ObjectDataProvider>
 
     </UserControl.Resources>
-    <Grid>
+
+    <ScrollViewer
+        Style="{StaticResource CustomScroll}"
+        VerticalScrollBarVisibility="Auto"
+        HorizontalScrollBarVisibility="Auto">
+        
+        <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
@@ -156,4 +162,6 @@
             SelectedDate="{Binding EditedViewModel.RecievingDate}"/>
     </Grid>
     </Grid>
+    </ScrollViewer>
+    
 </UserControl>

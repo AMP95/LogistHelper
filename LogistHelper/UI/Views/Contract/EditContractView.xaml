@@ -10,7 +10,7 @@
              xmlns:converters="clr-namespace:LogistHelper.UI.Converters"
              xmlns:dtos="clr-namespace:DTOs;assembly=DTOs"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="1500">
 
     <UserControl.Resources>
         <ObjectDataProvider 
@@ -35,30 +35,30 @@
         <converters:GuidEmptyToBoolConverter x:Key="GuidEmptyToBoolConverter"/>
     </UserControl.Resources>
 
-    <Grid
-        MaxWidth="1200">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+    <ScrollViewer
+        Style="{StaticResource CustomScroll}"
+        VerticalScrollBarVisibility="Visible"
+        HorizontalScrollBarVisibility="Disabled">
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
 
-        <Grid.Style>
-            <Style>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding EditedViewModel.Status}" Value="{x:Static dtos:ContractStatus.Failed}">
-                        <Setter Property="Grid.IsEnabled" Value="False"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>
+            <Grid.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding EditedViewModel.Status}" Value="{x:Static dtos:ContractStatus.Failed}">
+                            <Setter Property="Grid.IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
 
-        <StackPanel
+            <StackPanel
             Grid.ColumnSpan="3"
             HorizontalAlignment="Center"
             Orientation="Horizontal">
@@ -89,21 +89,21 @@
             </Button>
         </StackPanel>
 
-        <Grid
-            Grid.Row="1"
-            Grid.ColumnSpan="2"
-            MaxWidth="600"
-            HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
+            <Grid
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                MaxWidth="600"
+                HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock
+                <TextBlock
                 Style="{StaticResource DefaultText}"
                 Text="Шаблон заявки:"/>
 
-            <ComboBox
+                <ComboBox
                 Grid.Column="1"
                 MinWidth="300"
                 ItemsSource="{Binding Templates}"
@@ -117,19 +117,178 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-        </Grid>
+            </Grid>
 
-        <StackPanel
-            Margin="10"
-            Grid.Row="2"
-            Grid.Column="2">
+            <WrapPanel
+                HorizontalAlignment="Center"
+                Grid.Row="2"
+                Grid.ColumnSpan="2">
 
-            <TextBlock
+                <StackPanel
+                    Width="580"
+                    Margin="10"
+                    Grid.Row="2">
+                
+                    <TextBlock
+                 Style="{StaticResource HeaderThreeText}"
+                 Foreground="{StaticResource NeutralOneBrush}"
+                 Text="Груз"/>
+                     
+                    <Grid>
+                 <Grid.ColumnDefinitions>
+                     <ColumnDefinition
+                         Width="auto"/>
+                     <ColumnDefinition/>
+                     <ColumnDefinition
+                         Width="auto"/>
+                     <ColumnDefinition/>
+                 </Grid.ColumnDefinitions>
+             
+                 <TextBlock
+                     Style="{StaticResource MiniText}"
+                     Text="Вес, т"/>
+             
+                 <TextBox
+                     Grid.Column="1"
+                     Style="{StaticResource SubCentralTextBox}">
+                     <TextBox.Text>
+                         <Binding Path="EditedViewModel.Weight">
+                             <Binding.ValidationRules>
+                                 <rules:NumberValidationRule Min="0"/>
+                             </Binding.ValidationRules>
+                         </Binding>
+                     </TextBox.Text>
+                 </TextBox>
+             
+                 <TextBlock
+                     Grid.Column="2"
+                     Style="{StaticResource MiniText}"
+                     Text="Объем, м3"/>
+             
+                 <TextBox
+                     Grid.Column="3"
+                     Style="{StaticResource SubCentralTextBox}">
+                     <TextBox.Text>
+                         <Binding Path="EditedViewModel.Volume">
+                             <Binding.ValidationRules>
+                                 <rules:NumberValidationRule Min="0"/>
+                             </Binding.ValidationRules>
+                         </Binding>
+                     </TextBox.Text>
+                 </TextBox>
+             </Grid>
+
+                    <Border
+                Height="2"
+                Background="{StaticResource BorderGradient}"/>
+
+                    <TextBlock
+                Style="{StaticResource HeaderThreeText}"
+                Foreground="{StaticResource NeutralOneBrush}"
+                Text="Загрузка"/>
+
+                    <local:RoutePointView
+                DataContext="{Binding EditedViewModel.LoadPoint}"/>
+
+                    <Border
+                Height="2"
+                Background="{StaticResource BorderGradient}"/>
+
+                    <ItemsControl
+                MaxHeight="400"
+                ItemsSource="{Binding EditedViewModel.UnloadPoints}">
+
+                <ItemsControl.Template>
+                    <ControlTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Выгрузки"/>
+
+                            <Button
+                                Margin="5 5 14 5"
+                                ToolTip="Добавить выгрузку"
+                                Style="{StaticResource IconButton}"
+                                HorizontalAlignment="Right"
+                                Command="{Binding EditedViewModel.AddUnloadCommand}">
+                                <Image
+                                    Source="/UI/Icons/add_icon.png"/>
+                            </Button>
+
+                            <ScrollViewer
+                                Grid.Row="1"
+                                Style="{StaticResource CustomScroll}"
+                                HorizontalScrollBarVisibility="Disabled">
+                                <ItemsPresenter
+                                    Grid.Row="1"/>
+                            </ScrollViewer>
+
+
+                        </Grid>
+                    </ControlTemplate>
+                </ItemsControl.Template>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+
+                        <Border
+                            BorderBrush="{StaticResource BorderGradient}"
+                            BorderThickness="2"
+                            CornerRadius="5"
+                            Margin="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition
+                                        Width="auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <local:RoutePointView
+                                    DataContext="{Binding Item}"/>
+
+                                <Button
+                                    Grid.Column="1"
+                                    VerticalAlignment="Top"
+                                    ToolTip="Удалить выгрузку"
+                                    Style="{StaticResource IconButton}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditContractView}, Path=DataContext.EditedViewModel.DeleteUnloadCommand}"
+                                    CommandParameter="{Binding Id}">
+                                    <Image
+                                        Source="/UI/Icons/remove_icon.png"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+                    <Border
+                        Height="2"
+                        Background="{StaticResource BorderGradient}"/>
+
+
+                </StackPanel>
+
+                <StackPanel
+                    Width="580"
+                    Margin="10"
+                    Grid.Row="2"
+                    Grid.Column="2">
+
+                    <TextBlock
                 Style="{StaticResource HeaderThreeText}"
                 Foreground="{StaticResource NeutralOneBrush}"
                 Text="Заказчик"/>
 
-            <controls:SearchBox
+                    <controls:SearchBox
                 WatermarkText="Название"
                 IsDynamicSearch="True"
                 IsButtonVisible="False"
@@ -146,7 +305,7 @@
                 </controls:SearchBox.ItemTemplate>
             </controls:SearchBox>
 
-            <Grid>
+                    <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto"/>
                     <ColumnDefinition/>
@@ -170,16 +329,16 @@
                 </TextBox>
             </Grid>
 
-            <Border
+                    <Border
                 Height="2"
                 Background="{StaticResource BorderGradient}"/>
 
-            <TextBlock
+                    <TextBlock
                 Style="{StaticResource HeaderThreeText}"
                 Foreground="{StaticResource NeutralOneBrush}"
                 Text="Исполнитель"/>
 
-            <TextBlock
+                    <TextBlock
                 Style="{StaticResource DefaultText}">
                 <Run Text="Перевозчик: " FontWeight="Light"/>
                 <Run Text="{Binding EditedViewModel.Carrier.Name}"/>
@@ -198,7 +357,7 @@
             </Run>
         </TextBlock>
 
-            <controls:SearchBox
+                    <controls:SearchBox
                 WatermarkText="Водитель"
                 IsDynamicSearch="True"
                 IsButtonVisible="False"
@@ -224,11 +383,11 @@
                 </controls:SearchBox.ItemTemplate>
             </controls:SearchBox>
 
-            <TextBlock
+                    <TextBlock
             Style="{StaticResource MiniText}"
             Text="ТС:"/>
 
-            <ComboBox
+                    <ComboBox
                 Grid.Row="1"
                 Grid.Column="1"
                 Style="{StaticResource CustomComboBox}"
@@ -247,7 +406,7 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <Grid>
+                    <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition/>
@@ -340,157 +499,11 @@
 
             </Grid>
             
-        </StackPanel>
+                </StackPanel>
 
-        <StackPanel
-            Margin="10"
-            Grid.Row="2">
-            
-            <TextBlock
-                 Style="{StaticResource HeaderThreeText}"
-                 Foreground="{StaticResource NeutralOneBrush}"
-                 Text="Груз"/>
-             
-            <Grid>
-                 <Grid.ColumnDefinitions>
-                     <ColumnDefinition
-                         Width="auto"/>
-                     <ColumnDefinition/>
-                     <ColumnDefinition
-                         Width="auto"/>
-                     <ColumnDefinition/>
-                 </Grid.ColumnDefinitions>
-             
-                 <TextBlock
-                     Style="{StaticResource MiniText}"
-                     Text="Вес, т"/>
-             
-                 <TextBox
-                     Grid.Column="1"
-                     Style="{StaticResource SubCentralTextBox}">
-                     <TextBox.Text>
-                         <Binding Path="EditedViewModel.Weight">
-                             <Binding.ValidationRules>
-                                 <rules:NumberValidationRule Min="0"/>
-                             </Binding.ValidationRules>
-                         </Binding>
-                     </TextBox.Text>
-                 </TextBox>
-             
-                 <TextBlock
-                     Grid.Column="2"
-                     Style="{StaticResource MiniText}"
-                     Text="Объем, м3"/>
-             
-                 <TextBox
-                     Grid.Column="3"
-                     Style="{StaticResource SubCentralTextBox}">
-                     <TextBox.Text>
-                         <Binding Path="EditedViewModel.Volume">
-                             <Binding.ValidationRules>
-                                 <rules:NumberValidationRule Min="0"/>
-                             </Binding.ValidationRules>
-                         </Binding>
-                     </TextBox.Text>
-                 </TextBox>
-             </Grid>
+            </WrapPanel>
 
-            <Border
-                Height="2"
-                Background="{StaticResource BorderGradient}"/>
-
-            <TextBlock
-                Style="{StaticResource HeaderThreeText}"
-                Foreground="{StaticResource NeutralOneBrush}"
-                Text="Загрузка"/>
-
-            <local:RoutePointView
-                DataContext="{Binding EditedViewModel.LoadPoint}"/>
-
-            <Border
-                Height="2"
-                Background="{StaticResource BorderGradient}"/>
-
-            <ItemsControl
-                MaxHeight="400"
-                ItemsSource="{Binding EditedViewModel.UnloadPoints}">
-
-                <ItemsControl.Template>
-                    <ControlTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="auto"/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock
-                                Style="{StaticResource HeaderThreeText}"
-                                Foreground="{StaticResource NeutralOneBrush}"
-                                Text="Выгрузки"/>
-
-                            <Button
-                                Margin="5 5 14 5"
-                                ToolTip="Добавить выгрузку"
-                                Style="{StaticResource IconButton}"
-                                HorizontalAlignment="Right"
-                                Command="{Binding EditedViewModel.AddUnloadCommand}">
-                                <Image
-                                    Source="/UI/Icons/add_icon.png"/>
-                            </Button>
-
-                            <ScrollViewer
-                                Grid.Row="1"
-                                Style="{StaticResource CustomScroll}"
-                                HorizontalScrollBarVisibility="Disabled">
-                                <ItemsPresenter
-                                    Grid.Row="1"/>
-                            </ScrollViewer>
-
-
-                        </Grid>
-                    </ControlTemplate>
-                </ItemsControl.Template>
-
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-
-                        <Border
-                            BorderBrush="{StaticResource BorderGradient}"
-                            BorderThickness="2"
-                            CornerRadius="5"
-                            Margin="5">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition
-                                        Width="auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <local:RoutePointView
-                                    DataContext="{Binding Item}"/>
-
-                                <Button
-                                    Grid.Column="1"
-                                    VerticalAlignment="Top"
-                                    ToolTip="Удалить выгрузку"
-                                    Style="{StaticResource IconButton}"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditContractView}, Path=DataContext.EditedViewModel.DeleteUnloadCommand}"
-                                    CommandParameter="{Binding Id}">
-                                    <Image
-                                        Source="/UI/Icons/remove_icon.png"/>
-                                </Button>
-                            </Grid>
-                        </Border>
-
-
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-
-        </StackPanel>
-
-        <Grid
+            <Grid
             Grid.ColumnSpan="3"
             Grid.Row="3"
             HorizontalAlignment="Center">
@@ -511,5 +524,7 @@
                 Content="Отправить"/>
         </Grid>
         
-    </Grid>
+        </Grid>
+    </ScrollViewer>
+
 </UserControl>

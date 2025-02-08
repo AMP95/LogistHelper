@@ -90,27 +90,22 @@
             </ComboBox>
 
             <Grid
-                Width="300"
                 Grid.Column="2">
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+                <WrapPanel
+                    VerticalAlignment="Center">
 
-                    <Grid.Style>
+                    <WrapPanel.Style>
                         <Style>
-                            <Setter Property="Grid.Visibility" Value="Hidden"/>
+                            <Setter Property="WrapPanel.Visibility" Value="Hidden"/>
                             <Style.Triggers>
                                 <DataTrigger
                                     Binding="{Binding SelectedFilter.Value}" Value="Дата создания">
-                                    <Setter Property="Grid.Visibility" Value="Visible"/>
+                                    <Setter Property="WrapPanel.Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </Grid.Style>
+                    </WrapPanel.Style>
 
                     <DatePicker
                         Style="{StaticResource CustomDatePicker}"
@@ -125,13 +120,14 @@
                         Grid.Column="2"
                         Style="{StaticResource CustomDatePicker}"
                         SelectedDate="{Binding EndDate, Mode=TwoWay}"/>
-                </Grid>
+                </WrapPanel>
 
                 <controls:WatermarkTextbox
                     Watermark="{Binding SelectedFilter.Value}">
 
                     <controls:WatermarkTextbox.TextBox>
                         <TextBox
+                            Height="40"
                             PreviewKeyUp="searchText_PreviewKeyUp"
                             TextAlignment="Center"
                             Text="{Binding SearchString, Mode=TwoWay}"
@@ -212,23 +208,6 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-
-                <CheckBox
-                    Content="Приоритетный заказчик"
-                    IsChecked="{Binding IsPriority, Mode=TwoWay}">
-                    <CheckBox.Style>
-                        <Style TargetType="{x:Type CheckBox}" BasedOn="{StaticResource CustomCheck}">
-                            <Setter Property="ComboBox.Visibility" Value="Hidden"/>
-                            <Style.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding SelectedFilter.Value}" Value="Приоритет">
-                                    <Setter Property="ComboBox.Visibility" Value="Visible"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </CheckBox.Style>
-                </CheckBox>
-
             </Grid>
 
             <Button
