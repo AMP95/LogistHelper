@@ -311,6 +311,11 @@ namespace LogistHelper.ViewModels.Views
                 _dialog.ShowError("Необходимо полностью заполнить данные выгрузки", "Сохранение");
                 return false;
             }
+            if (_contract.UnloadPoints.Any(p => p.Item.GetDto().DateAndTime <= _contract.LoadPoint.GetDto().DateAndTime)) 
+            {
+                _dialog.ShowError("Дата и время выгрузки не могут быть меньше даты и времени погрузки", "Сохранение");
+                return false;
+            }
             return true;
         }
 

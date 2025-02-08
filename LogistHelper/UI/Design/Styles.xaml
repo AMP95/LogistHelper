@@ -11,8 +11,8 @@
     <!--#region DATE PICKER-->
     
         <Style x:Key="CustomCalendarItem" TargetType="{x:Type CalendarItem}">
-    <Setter Property="Margin" Value="0,3,0,3"/>
-    <Setter Property="Template">
+        <Setter Property="Margin" Value="0,3,0,3"/>
+        <Setter Property="Template">
         <Setter.Value>
             <ControlTemplate>
 
@@ -266,12 +266,12 @@
 </Style>
 
         <Style x:Key="CustomCalendarButton" TargetType="{x:Type CalendarButton}">
-    <Setter Property="MinWidth" Value="40"/>
-    <Setter Property="MinHeight" Value="42"/>
-    <Setter Property="FontSize" Value="10"/>
-    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="Template">
+        <Setter Property="MinWidth" Value="40"/>
+        <Setter Property="MinHeight" Value="42"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
         <Setter.Value>
             
             <ControlTemplate TargetType="{x:Type CalendarButton}">
@@ -324,12 +324,12 @@
 </Style>
                     
         <Style x:Key="CustomCalendarDayButton" TargetType="{x:Type CalendarDayButton}">
-    <Setter Property="MinWidth" Value="5"/>
-    <Setter Property="MinHeight" Value="5"/>
-    <Setter Property="FontSize" Value="10"/>
-    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-    <Setter Property="VerticalContentAlignment" Value="Center"/>
-    <Setter Property="Template">
+        <Setter Property="MinWidth" Value="5"/>
+        <Setter Property="MinHeight" Value="5"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
         <Setter.Value>
             
             <ControlTemplate TargetType="{x:Type CalendarDayButton}">
@@ -484,12 +484,13 @@
             <Setter Property="SelectionMode" Value="SingleDate"/>
         </Style>
 
-    <Style x:Key="CustomDatePickerTextBox" TargetType="{x:Type DatePickerTextBox}">
+        <Style x:Key="CustomDatePickerTextBox" TargetType="{x:Type DatePickerTextBox}">
             <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
             <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
             <Setter Property="TextAlignment" Value="Center"/>
             <Setter Property="FontWeight" Value="DemiBold"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type DatePickerTextBox}">
@@ -538,6 +539,7 @@
                                     <ContentControl 
                                         x:Name="PART_Watermark" 
                                         Focusable="False" 
+                                        Foreground="{TemplateBinding Foreground}"
                                         IsHitTestVisible="False"
                                         Opacity="0" 
                                         Padding="2"/>
@@ -564,6 +566,7 @@
             <Setter Property="CalendarStyle" Value="{StaticResource CustomCalendarSingleDate}"/>
             <Setter Property="Height" Value="40"/>
             <Setter Property="Margin" Value="5"/>
+            <Setter Property="Foreground" Value="{StaticResource DarkBrush}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     
@@ -709,7 +712,7 @@
 
                                     <DatePickerTextBox
                                         x:Name="PART_TextBox"
-                                        Foreground="{StaticResource SemiDarkBrush}"
+                                        Foreground="{StaticResource DarkBrush}"
                                         Style="{DynamicResource CustomDatePickerTextBox}" 
                                         Focusable="{TemplateBinding Focusable}" 
                                         HorizontalContentAlignment="Stretch" 

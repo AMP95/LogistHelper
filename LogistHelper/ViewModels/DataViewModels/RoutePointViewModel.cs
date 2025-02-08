@@ -216,6 +216,10 @@ namespace LogistHelper.ViewModels.DataViewModels
             {
                 return false;
             }
+            if (string.IsNullOrWhiteSpace(Time)) 
+            {
+                return false;
+            }
             if (Time.LastOrDefault() == ':') 
             {
                 Time += "00";
