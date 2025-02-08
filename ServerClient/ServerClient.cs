@@ -68,10 +68,14 @@ namespace HelpAPIs
         public async Task<IAccessResult<bool>> UpdateAsync<T>(T value)
         {
             string route = GetRoute(typeof(T));
-            IAccessResult<Guid> result = await SendStringAsync<Guid>(HttpMethod.Put, $"{_url}/{route}", JsonConvert.SerializeObject(value));
-            return await GetResult<bool>(result);
+            IAccessResult<Guid> guidResult = await SendStringAsync<Guid>(HttpMethod.Put, $"{_url}/{route}", JsonConvert.SerializeObject(value));
+            IAccessResult<object> result = await GetResult<object>(guidResult);
+
+            bool.TryParse(result.Result.ToString(), out bool boolResult);
+
+            return new AccessResult<bool>() { IsSuccess = result.IsSuccess, ErrorMessage = result.ErrorMessage, Result = boolResult };
         }
-                          
+
         public async Task<IAccessResult<bool>> UpdatePropertyAsync<T>(Guid id, params KeyValuePair<string, object>[] updates)
         {
             string route = GetRoute(typeof(T));

@@ -225,12 +225,21 @@
                             Style="{StaticResource DefaultText}"
                             TextAlignment="Center"
                             Text="{Binding RecieveType, Converter={StaticResource EnumToDescriptionConverter}}"/>
-                        
+
                         <TextBlock
                             Grid.Column="6"
-                            Style="{StaticResource DefaultText}"
                             TextAlignment="Center"
-                            Text="{Binding Summ, StringFormat=n0}"/>
+                            Text="{Binding Summ, StringFormat=n0}">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultText}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Type}" Value="{x:Static dtos:DocumentType.TTN}">
+                                            <Setter Property="TextBlock.Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
 
                         <Button
                             Grid.Column="7"

@@ -55,7 +55,8 @@ namespace LogistHelper.ViewModels.DataViewModels
         public DocumentBaseViewModel(T document) : this(document, 0) { }
         public DocumentBaseViewModel() : base() { }
 
-        protected override void DefaultInit() { }
+        protected override void DefaultInit() 
+        { }
     }
 
     public class DocumentViewModel : DocumentBaseViewModel<DocumentDto> 
@@ -65,7 +66,7 @@ namespace LogistHelper.ViewModels.DataViewModels
             get => _dto.RecievingDate;
             set
             {
-                _dto.CreationDate = value;
+                _dto.RecievingDate = value;
                 OnPropertyChanged(nameof(RecievingDate));
             }
         }
@@ -93,7 +94,7 @@ namespace LogistHelper.ViewModels.DataViewModels
 
         protected override void DefaultInit()
         {
-            _dto = new DocumentDto();
+            _dto = new DocumentDto() { RecievingDate = DateTime.Now , CreationDate = DateTime.Now};
         }
     }
 
@@ -104,7 +105,7 @@ namespace LogistHelper.ViewModels.DataViewModels
         public PaymentViewModel() : base() { }
         protected override void DefaultInit()
         {
-            _dto = new PaymentDto();
+            _dto = new PaymentDto() { CreationDate = DateTime.Now };
         }
     }
 

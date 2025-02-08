@@ -205,10 +205,6 @@ namespace LogistHelper.ViewModels.DataViewModels
             {
                 return false;
             }
-            if (!Phones.Any() || Phones.Any(p => string.IsNullOrWhiteSpace(p.Item)))
-            {
-                return false;
-            }
             if (Date == DateTime.MinValue) 
             {
                 return false;
