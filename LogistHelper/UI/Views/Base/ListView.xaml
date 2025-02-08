@@ -76,7 +76,7 @@
             <ComboBox
                 Grid.Column="1"
                 Height="40"
-                Width="200"
+                Width="170"
                 ItemsSource="{Binding SearchFirters}"
                 SelectedItem="{Binding SelectedFilter, Mode=TwoWay}"
                 Style="{StaticResource CustomComboBox}">
@@ -90,24 +90,42 @@
             </ComboBox>
 
             <Grid
-                Width="200"
+                Width="300"
                 Grid.Column="2">
 
-                <controls:CustomDatePicker
-                    StartDate="{Binding StartDate, Mode=TwoWay}"
-                    EndDate="{Binding EndDate, Mode=TwoWay}">
-                    <controls:CustomDatePicker.Style>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.Style>
                         <Style>
-                            <Setter Property="controls:CustomDatePicker.Visibility" Value="Hidden"/>
+                            <Setter Property="Grid.Visibility" Value="Hidden"/>
                             <Style.Triggers>
                                 <DataTrigger
                                     Binding="{Binding SelectedFilter.Value}" Value="Дата создания">
-                                    <Setter Property="controls:CustomDatePicker.Visibility" Value="Visible"/>
+                                    <Setter Property="Grid.Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </controls:CustomDatePicker.Style>
-                </controls:CustomDatePicker>
+                    </Grid.Style>
+
+                    <DatePicker
+                        Style="{StaticResource CustomDatePicker}"
+                        SelectedDate="{Binding StartDate, Mode=TwoWay}"/>
+
+                    <TextBlock
+                        Grid.Column="1"
+                        Style="{StaticResource HeaderThreeText}"
+                        Text="-"/>
+
+                    <DatePicker
+                        Grid.Column="2"
+                        Style="{StaticResource CustomDatePicker}"
+                        SelectedDate="{Binding EndDate, Mode=TwoWay}"/>
+                </Grid>
 
                 <controls:WatermarkTextbox
                     Watermark="{Binding SelectedFilter.Value}">
