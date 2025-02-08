@@ -203,13 +203,16 @@
                                 </TextBox>
                             </controls:WatermarkTextbox.TextBox>
                         </controls:WatermarkTextbox>
-                        
 
-                        <Button
-                            Grid.Column="1"
-                            Style="{StaticResource IconButton}"
-                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeletePhoneCommand}"
-                            CommandParameter="{Binding Id}"/>
+
+                                <Button
+                                    Grid.Column="1"
+                                    Style="{StaticResource IconButton}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeletePhoneCommand}"
+                                    CommandParameter="{Binding Id}">
+                                    <Image
+                                        Source="/UI/Icons/remove_icon.png"/>
+                                </Button>
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -269,11 +272,14 @@
                             </controls:WatermarkTextbox.TextBox>
                         </controls:WatermarkTextbox>
 
-                        <Button
-                            Grid.Column="1"
-                            Style="{StaticResource IconButton}"
-                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeleteEmailCommand}"
-                            CommandParameter="{Binding Id}"/>
+                                <Button
+                                    Grid.Column="1"
+                                    Style="{StaticResource IconButton}"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=local:EditCompanyView}, Path=DataContext.DeleteEmailCommand}"
+                                    CommandParameter="{Binding Id}">
+                                    <Image
+                                        Source="/UI/Icons/remove_icon.png"/>
+                                </Button>
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
