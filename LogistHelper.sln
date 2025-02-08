@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MailSender", "MailSender\MailSender.csproj", "{759064FC-7E97-42CA-9451-9E1B21A647D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrintService", "PrintService\PrintService.csproj", "{83A41865-F053-4DFC-92C7-5D6750F07E2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{759064FC-7E97-42CA-9451-9E1B21A647D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{759064FC-7E97-42CA-9451-9E1B21A647D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{759064FC-7E97-42CA-9451-9E1B21A647D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83A41865-F053-4DFC-92C7-5D6750F07E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83A41865-F053-4DFC-92C7-5D6750F07E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83A41865-F053-4DFC-92C7-5D6750F07E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83A41865-F053-4DFC-92C7-5D6750F07E2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

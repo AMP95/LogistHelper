@@ -7,9 +7,7 @@ using Shared;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace LogistHelper.ViewModels.Pages

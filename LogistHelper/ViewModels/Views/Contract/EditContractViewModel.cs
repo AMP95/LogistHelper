@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
 using DTOs.Dtos;
+using LogistHelper.Models.Settings;
 using LogistHelper.Services;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
@@ -17,7 +18,7 @@ namespace LogistHelper.ViewModels.Views
         #region Private
 
         private IFileLoader<FileViewModel> _fileLoader;
-        private FileViewModel _file;
+        private List<FileViewModel> _file;
 
         private IEnumerable<TeplateViewModel> _templates;
         private int _selectedTEmplateIndex;
@@ -34,6 +35,11 @@ namespace LogistHelper.ViewModels.Views
 
         private bool _sendToCarrier;
         private bool _print;
+
+        private IContractSender _contractSender;
+        private IPrintService _printService;
+
+        private OtherSettings _settings;
 
         #endregion Private
 
@@ -129,7 +135,7 @@ namespace LogistHelper.ViewModels.Views
             set => SetProperty(ref _print, value);
         }
 
-        public FileViewModel File
+        public List<FileViewModel> File
         {
             get => _file;
             set => SetProperty(ref _file, value);
@@ -151,9 +157,15 @@ namespace LogistHelper.ViewModels.Views
         public EditContractViewModel(IDataAccess repository, 
                                      IViewModelFactory<ContractDto> factory, 
                                      IMessageDialog dialog,
-                                     IFileLoader<FileViewModel> fileLoader) : base(repository, factory, dialog)
+                                     IFileLoader<FileViewModel> fileLoader,
+                                     IContractSender sender,
+                                     IPrintService printService,
+                                     ISettingsRepository<OtherSettings> settingsRepository) : base(repository, factory, dialog)
         {
             _fileLoader = fileLoader;
+            _contractSender = sender;
+            _printService = printService;
+            _settings = settingsRepository.GetSettings();
 
             #region CommandsInit
 
@@ -174,10 +186,16 @@ namespace LogistHelper.ViewModels.Views
                 if (folderDialog.ShowDialog() == true) 
                 { 
                     string directory = folderDialog.FolderName;
+                    bool result = false;
 
-                    if (await _fileLoader.DownloadFile(directory, File))
+                    foreach (FileViewModel file in File) 
                     {
-                        _dialog.ShowSuccess("Файл сохранен");
+                        result |= await _fileLoader.DownloadFile(directory, file);
+                    }
+
+                    if (result)
+                    {
+                        _dialog.ShowSuccess("Файлы сохранены");
                     }
                     else
                     {
@@ -260,7 +278,7 @@ namespace LogistHelper.ViewModels.Views
 
                     IAccessResult<IEnumerable<FileDto>> files = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
 
-                    File = new FileViewModel(files.Result.FirstOrDefault());
+                    File = files.Result.Select(f => new FileViewModel(f)).ToList();
 
                     var tempate = Templates.FirstOrDefault(t => t.Id == _contract.Template.Id);
 
@@ -319,79 +337,51 @@ namespace LogistHelper.ViewModels.Views
             return true;
         }
 
-        public override async Task Save()
-        {
-            IsBlock = true;
-            BlockText = "Сохранение";
 
-            if (await SaveEntity())
+        protected override async Task<bool> SaveEntity()
+        {
+            if (await base.SaveEntity()) 
             {
                 var fileResult = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
 
                 if (fileResult.IsSuccess)
                 {
-                    File = new FileViewModel(fileResult.Result.First());
+                    File = fileResult.Result.Select(f => new FileViewModel(f)).ToList();
 
                     if (Print)
                     {
-                        PrintContract();
+                        FileViewModel doc = File.FirstOrDefault(f => f.Extension.Contains("doc"));
+
+                        IAccessResult<bool> loadResult = await _access.DownloadFileAsync(doc.Id, doc.LocalNameWithExtension);
+
+                        if (loadResult.Result)
+                        {
+                            await _printService.Print(_settings.DefaultPrinterName, doc.LocalNameWithExtension);
+                        }
+
+                        System.IO.File.Delete(doc.LocalNameWithExtension);
                     }
 
                     if (Send)
                     {
-                        SendContractToCarrier();
+                        string address = _contract.Carrier.Emails.First().Item;
+
+                        FileViewModel pdf = File.FirstOrDefault(f => f.Extension.Contains("pdf"));
+
+                        IAccessResult<bool> loadResult = await _access.DownloadFileAsync(pdf.Id, pdf.LocalNameWithExtension);
+
+                        if (loadResult.Result)
+                        {
+                            await _contractSender.SendContract(address, "Заявка на перевозку", pdf.LocalNameWithExtension);
+                        }
+
+                        System.IO.File.Delete(pdf.LocalNameWithExtension);
                     }
                 }
 
-                _dialog.ShowSuccess("Сохранение");
-
-                if (EditedViewModel.Id == Guid.Empty)
-                {
-                    Load(Guid.Empty);
-                }
+                return true;
             }
-            else
-            {
-                _dialog.ShowError("Не удалось сохранить изменения", "Сохранение");
-            }
-
-            IsBlock = false;
-        }
-
-        public override async Task SaveAndClose()
-        {
-            IsBlock = true;
-            BlockText = "Сохранение";
-
-            if (await SaveEntity())
-            {
-                var fileResult = await _access.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), EditedViewModel.Id.ToString());
-
-                if (fileResult.IsSuccess)
-                {
-                    File = new FileViewModel(fileResult.Result.First());
-
-                    if (Print)
-                    {
-                        PrintContract();
-                    }
-
-                    if (Send)
-                    {
-                        SendContractToCarrier();
-                    }
-                }
-
-                _dialog.ShowSuccess("Сохранение");
-
-                MainParent.SwitchToList();
-            }
-            else
-            {
-                _dialog.ShowError("Не удалось сохранить изменения", "Сохранение");
-            }
-
-            IsBlock = false;
+            return false;
         }
 
         private async Task LoadDriverData(Guid id)
@@ -449,16 +439,6 @@ namespace LogistHelper.ViewModels.Views
                     Clients = null;
                 }
             });
-        }
-
-        private async Task PrintContract()
-        {
-
-        }
-
-        private async Task SendContractToCarrier() 
-        {
-            _dialog.ShowInfo("Заявка отправлена перевозчику", "Новая заявка");
         }
     }
 }

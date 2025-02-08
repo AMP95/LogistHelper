@@ -14,6 +14,7 @@ using MailSender;
 using Microsoft.Extensions.DependencyInjection;
 using Models.Suggest;
 using Models.Sugget;
+using PrintService;
 using Shared;
 using Utilities;
 
@@ -112,7 +113,7 @@ namespace LogistHelper.Services
 
             services.AddSingleton<ISettingsRepository<ApiSettings>, ApiJsonRepository>();
             services.AddSingleton<ISettingsRepository<MailSettings>, MailJsonRepository>();
-            services.AddSingleton<ISettingsRepository<CompanySettings>, ComanyJsonRepository>();
+            services.AddSingleton<ISettingsRepository<OtherSettings>, AppJsonRepository>();
 
             services.AddSingleton<IMessageDialog, CustomDialogService>();
             services.AddSingleton<IAuthDialog<LogistDto>, CustomDialogService>();
@@ -126,6 +127,8 @@ namespace LogistHelper.Services
             services.AddTransient<IDataSuggest<GeoSuggestItem>, YandexGeoSuggestClient>();
             services.AddTransient<IDataAccess, ServerClient>();
             services.AddTransient<IFileLoader<FileViewModel>, FileManager>();
+            services.AddTransient<IContractSender, ContractMailSender>();
+            services.AddTransient<IPrintService, SpirePrintService>();
 
             #endregion Services
 

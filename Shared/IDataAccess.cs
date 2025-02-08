@@ -17,7 +17,7 @@
         Task<IAccessResult<bool>> UpdatePropertyAsync<T>(Guid id, params KeyValuePair<string, object>[] updates);
         Task<IAccessResult<bool>> DeleteAsync<T>(Guid id);
         Task<IAccessResult<Guid>> SendMultipartAsync(MultipartFormDataContent content);
-        Task<IAccessResult<bool>> DownloadFileAsync(Guid fileId, string savePath);
+        Task<IAccessResult<bool>> DownloadFileAsync(Guid fileId, string fullPath);
         Task<IAccessResult<bool>> UploadFileAsync<T>(Guid entityId, T fileDto, string fullFilePath);
         Task<IAccessResult<IEnumerable<T>>> GetRequiredPayments<T>();
         Task<IAccessResult<T>> Login<T>(T dto);

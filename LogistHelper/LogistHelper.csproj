@@ -63,14 +63,13 @@
     <ProjectReference Include="..\Log4NetLogger\Log4NetLogger.csproj" />
     <ProjectReference Include="..\MailSender\MailSender.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\PrintService\PrintService.csproj" />
     <ProjectReference Include="..\ServerClient\HelpAPIs.csproj" />
     <ProjectReference Include="..\Shared\Utilities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="IronPdf" Version="2025.1.1" />
-    <PackageReference Include="IronWord" Version="2025.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />

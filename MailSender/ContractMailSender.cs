@@ -9,14 +9,16 @@ namespace MailSender
     {
         private MailSettings _settings;
         private ILogger _logger;
+        private IMessageDialog _messageDialog;
 
-        public ContractMailSender(ILogger logger, ISettingsRepository<MailSettings> repository)
+        public ContractMailSender(ILogger logger, ISettingsRepository<MailSettings> repository, IMessageDialog dialog)
         {
             _logger = logger;
             _settings = repository.GetSettings();
+            _messageDialog = dialog;
         }
 
-        public async Task<bool> SendContract(string to, string subject, string contactPath)
+        public async Task SendContract(string to, string subject, string contactPath)
         {
             using var emailMessage = new MimeMessage();
 
@@ -38,13 +40,14 @@ namespace MailSender
                     await client.SendAsync(emailMessage);
 
                     await client.DisconnectAsync(true);
-                    return true;
+
+                    _messageDialog.ShowSuccess("Отправка файла");
                 }
             }
             catch (Exception ex)
             {
                 _logger.Log(ex, ex.Message, LogLevel.Error);
-                return false;
+                _messageDialog.ShowError("Не удалось отправить файл","Отправка файла");
             }
         }
     }
