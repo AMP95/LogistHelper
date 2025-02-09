@@ -1,11 +1,12 @@
 ﻿using DTOs.Dtos;
+using Microsoft.Win32;
 using Shared;
 using System.Windows;
 using Utilities;
 
 namespace CustomDialog
 {
-    public class CustomDialogService : IMessageDialog, IAuthDialog<LogistDto>
+    public class CustomDialogService : IMessageDialog, IAuthDialog<LogistDto>, IFileDialog
     {
         private void ShowStatementWindow(string message, string title, DialogType type)
         {
@@ -70,6 +71,29 @@ namespace CustomDialog
                 bool? result = window.ShowDialog();
                 return result.HasValue ? result.Value : false;
             }));
+        }
+
+        public bool ShowSaveDialog(out string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ShowOpenDialog(out string[] paths)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ShowFolderDialog(out string folder)
+        {
+            folder = string.Empty;
+            OpenFolderDialog folderDialog = new OpenFolderDialog();
+
+            if (folderDialog.ShowDialog() == true)
+            {
+                folder = folderDialog.FolderName;
+                return true;
+            }
+            return false;
         }
     }
 }

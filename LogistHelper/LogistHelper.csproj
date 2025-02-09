@@ -36,6 +36,7 @@
     <None Remove="UI\Icons\image_icon2.png" />
     <None Remove="UI\Icons\jpeg_icon.png" />
     <None Remove="UI\Icons\logout_icon.png" />
+    <None Remove="UI\Icons\mail_icon.png" />
     <None Remove="UI\Icons\new_icon.png" />
     <None Remove="UI\Icons\pdf_icon.png" />
     <None Remove="UI\Icons\png_icon.png" />
@@ -162,6 +163,7 @@
     <Resource Include="UI\Icons\logout_icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="UI\Icons\mail_icon.png" />
     <Resource Include="UI\Icons\new_icon.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

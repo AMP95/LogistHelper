@@ -1,10 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DTOs;
 using DTOs.Dtos;
+using LogistHelper.Models.Settings;
 using LogistHelper.ViewModels.Base;
 using LogistHelper.ViewModels.DataViewModels;
 using Microsoft.Win32;
 using Shared;
+using System.Diagnostics.Contracts;
+using System.Runtime;
 using System.Windows.Input;
 using Utilities;
 
@@ -19,9 +22,11 @@ namespace LogistHelper.ViewModels.Views
         private DateTime _startDate;
         private DateTime _endDate;
         private IFileLoader<FileViewModel> _fileLoader;
+        private IPrintService _printService;
+        private IContractSender _contractSender;
+        private OtherSettings _settings;
 
         #endregion Private
-
 
         #region Public
 
@@ -71,17 +76,25 @@ namespace LogistHelper.ViewModels.Views
         public ICommand AddDocumentCommand { get; set; }
         public ICommand SetFailCommand { get; set; }
         public ICommand DownloadFileCommand { get; set; }
+        public ICommand PrintFileCommand { get; set; }
+        public ICommand SendFileCommand { get; set; }
 
         #endregion Commands
 
         public ContractListViewModel(IDataAccess repository, 
                                      IViewModelFactory<ContractDto> factory, 
                                      IMessageDialog dialog,
-                                     IFileLoader<FileViewModel> fileLoader) : base(repository, factory, dialog)
+                                     IFileLoader<FileViewModel> fileLoader,
+                                     IPrintService printService,
+                                     IContractSender sender,
+                                     ISettingsRepository<OtherSettings> settingsRepository) : base(repository, factory, dialog)
         {
             IsBackwardAwaliable = false;
             IsForwardAwaliable = false;
             _fileLoader = fileLoader;
+            _printService = printService;
+            _contractSender = sender;
+            _settings = settingsRepository.GetSettings();
 
             SearchFirters = new Dictionary<string, string>()
             {
@@ -147,6 +160,58 @@ namespace LogistHelper.ViewModels.Views
                         }
                     }
                 }
+            });
+
+            PrintFileCommand = new RelayCommand<Guid>(async (id) => 
+            {
+                IsBlock = true;
+                BlockText = "Загрузка";
+
+                IAccessResult<IEnumerable<FileDto>> fileResult = await _client.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), id.ToString());
+
+                if (fileResult.IsSuccess && fileResult.Result.Any())
+                {
+                    FileDto doc = fileResult.Result.FirstOrDefault(f => f.FileNameWithExtencion.Contains("doc"));
+
+                    IAccessResult<bool> loadResult = await _client.DownloadFileAsync(doc.Id, doc.FileNameWithExtencion);
+
+                    if (loadResult.Result)
+                    {
+                        await _printService.Print(_settings.DefaultPrinterName, doc.FileNameWithExtencion);
+                    }
+
+                    System.IO.File.Delete(doc.FileNameWithExtencion);
+                }
+
+                IsBlock = false;
+            });
+
+            SendFileCommand = new RelayCommand<Guid>(async (id) => 
+            {
+                IsBlock = true;
+                BlockText = "Загрузка";
+
+                ContractViewModel contract = List.FirstOrDefault(c => c.Id == id) as ContractViewModel;
+
+                string address = contract.Carrier.Emails.First().Item;
+
+                IAccessResult<IEnumerable<FileDto>> fileResult = await _client.GetFilteredAsync<FileDto>(nameof(FileDto.DtoId), id.ToString());
+
+                if (fileResult.IsSuccess && fileResult.Result.Any())
+                {
+                    FileDto pdf = fileResult.Result.FirstOrDefault(f => f.FileNameWithExtencion.Contains("pdf"));
+
+                    IAccessResult<bool> loadResult = await _client.DownloadFileAsync(pdf.Id, pdf.FileNameWithExtencion);
+
+                    if (loadResult.Result)
+                    {
+                        await _contractSender.SendContract(address, "Заявка на перевозку", pdf.FileNameWithExtencion);
+                    }
+
+                    System.IO.File.Delete(pdf.FileNameWithExtencion);
+                }
+
+                IsBlock = false;
             });
 
             #endregion CommandsInit

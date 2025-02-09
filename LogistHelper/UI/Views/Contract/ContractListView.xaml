@@ -46,126 +46,120 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
 
-
-
                         <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition
-                                            Width="150"/>
-                                        <ColumnDefinition
-                                            Width="70"/>
-                                        <ColumnDefinition
-                                            Width="70"/>
-                                        <ColumnDefinition
-                                            Width="70"/>
-                                        <ColumnDefinition
-                                            Width="70"/>
-                                        <ColumnDefinition
-                                            Width="100"/>
-                                        <ColumnDefinition
-                                            Width="200"/>
-                                        <ColumnDefinition
-                                            MinWidth="200"/>
-                                        <ColumnDefinition
-                                            MinWidth="200"/>
-                                        <ColumnDefinition
-                                            MinWidth="200"/>
-                                        <ColumnDefinition
-                                            Width="120"/>
-                                        <ColumnDefinition
-                                            Width="120"/>
-                                        <ColumnDefinition
-                                            Width="120"/>
-                                    </Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition
+                                    Width="150"/>
+                                <ColumnDefinition
+                                    Width="70"/>
+                                <ColumnDefinition
+                                    Width="70"/>
+                                <ColumnDefinition
+                                    Width="70"/>
+                                <ColumnDefinition
+                                    Width="70"/>
+                                <ColumnDefinition
+                                    Width="100"/>
+                                <ColumnDefinition
+                                    Width="200"/>
+                                <ColumnDefinition
+                                    MinWidth="200"/>
+                                <ColumnDefinition
+                                    MinWidth="200"/>
+                                <ColumnDefinition
+                                    MinWidth="200"/>
+                                <ColumnDefinition
+                                    Width="120"/>
+                                <ColumnDefinition
+                                    Width="120"/>
+                                <ColumnDefinition
+                                    Width="120"/>
+                            </Grid.ColumnDefinitions>
 
-                                    <Button
-                                        Style="{StaticResource IconButton}"
-                                        ToolTip="Новая заявка"
-                                        Command="{Binding AddCommand}">
-                                        <Image
-                                            Source="/UI/Icons/add_icon.png"/>
-                                    </Button>
+                            <Button
+                                Style="{StaticResource IconButton}"
+                                ToolTip="Новая заявка"
+                                Command="{Binding AddCommand}">
+                                <Image
+                                    Source="/UI/Icons/add_icon.png"/>
+                            </Button>
 
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        Style="{StaticResource HeaderThreeText}"
-                                        Foreground="{StaticResource NeutralOneBrush}"
-                                        Text="Статус"/>
+                            <TextBlock
+                                Grid.Column="1"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Статус"/>
 
-                                    <TextBlock
-                                         Grid.Column="2"
-                                         Style="{StaticResource HeaderThreeText}"
-                                         Foreground="{StaticResource NeutralOneBrush}"
-                                         Text="НДС"/>
+                            <TextBlock
+                                 Grid.Column="2"
+                                 Style="{StaticResource HeaderThreeText}"
+                                 Foreground="{StaticResource NeutralOneBrush}"
+                                 Text="НДС"/>
 
-                                    <TextBlock
-                                        Grid.Column="3"
-                                        Style="{StaticResource HeaderThreeText}"
-                                        Foreground="{StaticResource NeutralOneBrush}"
-                                        Text="Логист"/>
+                            <TextBlock
+                                Grid.Column="3"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Логист"/>
 
-                                    <TextBlock
-                                        Grid.Column="4"
-                                        Style="{StaticResource HeaderThreeText}"
-                                        Foreground="{StaticResource NeutralOneBrush}"
-                                        Text="№"/>
+                            <TextBlock
+                                Grid.Column="4"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="№"/>
 
-                                    <TextBlock
-                                        Grid.Column="5"
-                                        Style="{StaticResource HeaderThreeText}"
-                                        Foreground="{StaticResource NeutralOneBrush}"
-                                        Text="Дата"/>
+                            <TextBlock
+                                Grid.Column="5"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Дата"/>
 
-                                    <TextBlock
-                                        Grid.Column="6"
-                                        Style="{StaticResource HeaderThreeText}"
-                                        Foreground="{StaticResource NeutralOneBrush}"
-                                        Text="Маршрут"/>
+                            <TextBlock
+                                Grid.Column="6"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Маршрут"/>
 
-                                    <TextBlock
-                                        Grid.Column="7"
-                                        Style="{StaticResource HeaderThreeText}"
-                                        Foreground="{StaticResource NeutralOneBrush}"
-                                        Text="Перевозчик"/>
+                            <TextBlock
+                                Grid.Column="7"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Перевозчик"/>
 
-                                    <TextBlock
-                                        Grid.Column="8"
-                                        Style="{StaticResource HeaderThreeText}"
-                                        Foreground="{StaticResource NeutralOneBrush}"
-                                        Text="Водитель"/>
+                            <TextBlock
+                                Grid.Column="8"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Водитель"/>
 
-                                    <TextBlock
-                                        Grid.Column="9"
-                                        Style="{StaticResource HeaderThreeText}"
-                                        Foreground="{StaticResource NeutralOneBrush}"
-                                        Text="ТС"/>
+                            <TextBlock
+                                Grid.Column="9"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="ТС"/>
 
-                                    <TextBlock
-                                        Grid.Column="10"
-                                        Style="{StaticResource HeaderThreeText}"
-                                        Foreground="{StaticResource NeutralOneBrush}"
-                                        Text="Расход"/>
+                            <TextBlock
+                                Grid.Column="10"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Расход"/>
 
-                                    <TextBlock
-                                        Grid.Column="11"
-                                        Style="{StaticResource HeaderThreeText}"
-                                        Foreground="{StaticResource NeutralOneBrush}"
-                                        Text="Приход"/>
+                            <TextBlock
+                                Grid.Column="11"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Приход"/>
 
-                                    <TextBlock
-                                        Grid.Column="12"
-                                        Style="{StaticResource HeaderThreeText}"
-                                        Foreground="{StaticResource NeutralOneBrush}"
-                                        Text="Прибыль"/>
+                            <TextBlock
+                                Grid.Column="12"
+                                Style="{StaticResource HeaderThreeText}"
+                                Foreground="{StaticResource NeutralOneBrush}"
+                                Text="Прибыль"/>
 
-                                </Grid>
-
-
+                        </Grid>
 
                         <ItemsPresenter
-                                    Grid.Row="1"/>
-
-
+                             Grid.Row="1"/>
                     </Grid>
                 </ScrollViewer>
             </ControlTemplate>
@@ -265,17 +259,7 @@
                         </Style>
                     </Grid.Style>
 
-                    <StackPanel
-                        Orientation="Horizontal">
-
-                        <Button
-                            ToolTip="Редактировать"
-                            Style="{StaticResource IconButton}"
-                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.EditCommand}"
-                            CommandParameter="{Binding Id}">
-                            <Image
-                                Source="/UI/Icons/edit_icon.png"/>
-                        </Button>
+                    <WrapPanel>
 
                         <Button
                             ToolTip="Добавить документы"
@@ -287,45 +271,16 @@
                         </Button>
 
                         <Button
-                            ToolTip="Скачать файл заявки"
+                            ToolTip="Редактировать"
                             Style="{StaticResource IconButton}"
-                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.DownloadFileCommand}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.EditCommand}"
                             CommandParameter="{Binding Id}">
                             <Image
-                                Source="/UI/Icons/download_icon.png"/>
+                                Source="/UI/Icons/edit_icon.png"/>
                         </Button>
 
-                    </StackPanel>
-
-                    <Grid
-                        Grid.Column="1">
-                        <Image
-                            Height="45">
-                            <Image.Style>
-                                <Style>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Created}">
-                                            <Setter Property="Image.Source" Value="/UI/Icons/new_icon.png"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.DocumentsRecieved}">
-                                            <Setter Property="Image.Source" Value="/UI/Icons/recieve_icon.png"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.DocumentSended}">
-                                            <Setter Property="Image.Source" Value="/UI/Icons/send_icon.png"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Closed}">
-                                            <Setter Property="Image.Source" Value="/UI/Icons/done_icon.png"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Failed}">
-                                            <Setter Property="Image.Source" Value="/UI/Icons/fail_icon.png"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Image.Style>
-                        </Image>
-
                         <Button
-                            ToolTip="Срыв"
+                            ToolTip="Срыв перевозки"
                             Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.SetFailCommand}"
                             CommandParameter="{Binding Id}">
                             <Button.Style>
@@ -339,7 +294,68 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                    </Grid>
+
+                        
+
+                        <Button
+                            ToolTip="Скачать файл заявки"
+                            Style="{StaticResource IconButton}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.DownloadFileCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Image
+                                Source="/UI/Icons/download_icon.png"/>
+                        </Button>
+
+                        <Button
+                            ToolTip="Распечатать файл заявки"
+                            Style="{StaticResource IconButton}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.PrintFileCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Image
+                                Source="/UI/Icons/print_icon.png"/>
+                        </Button>
+
+                        <Button
+                            ToolTip="Отправить перевозчику"
+                            Style="{StaticResource IconButton}"
+                            Command="{Binding RelativeSource={RelativeSource AncestorType=local:ContractListView}, Path=DataContext.SendFileCommand}"
+                            CommandParameter="{Binding Id}">
+                            <Image
+                                Source="/UI/Icons/mail_icon.png"/>
+                        </Button>
+
+                    </WrapPanel>
+
+                    <Image
+                        Grid.Column="1"
+                        Height="45">
+                        <Image.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Created}">
+                                        <Setter Property="Image.Source" Value="/UI/Icons/new_icon.png"/>
+                                        <Setter Property="Image.ToolTip" Value="Новая"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.DocumentsRecieved}">
+                                        <Setter Property="Image.Source" Value="/UI/Icons/recieve_icon.png"/>
+                                        <Setter Property="Image.ToolTip" Value="Документы получены"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.DocumentSended}">
+                                        <Setter Property="Image.Source" Value="/UI/Icons/send_icon.png"/>
+                                        <Setter Property="Image.ToolTip" Value="Документы отправленны"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Closed}">
+                                        <Setter Property="Image.Source" Value="/UI/Icons/done_icon.png"/>
+                                        <Setter Property="Image.ToolTip" Value="Закрыта"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Status}" Value="{x:Static dtos:ContractStatus.Failed}">
+                                        <Setter Property="Image.Source" Value="/UI/Icons/fail_icon.png"/>
+                                        <Setter Property="Image.ToolTip" Value="Сорвана"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
 
                     <TextBlock
                         Grid.Column="2"
@@ -446,7 +462,5 @@
                 </Grid>
             </DataTemplate>
         </ItemsControl.ItemTemplate>
-
     </ItemsControl>
-
 </UserControl>
